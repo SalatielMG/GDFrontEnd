@@ -1,0 +1,64 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
+<div class="tamaño-titulo-encabezado">
+  <div class="tam-titulo-encabezado">
+    <h2 class="text-light">Backups Usuario: <a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h2>
+    <a></a>
+  </div>
+</div>
+<div class="container text-center" *ngIf="backService.backups.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">El usuario todavia no ha realizado ningun respaldo</h2>
+</div>
+<div *ngIf="backService.backups.length > 0">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla">Backup</th>
+      <!--th scope="col">Usuario</th-->
+      <th scope="col" class="Encabezado-Tabla">Automatico</th>
+      <th scope="col" class="Encabezado-Tabla">Fecha creación</th>
+      <th scope="col" class="Encabezado-Tabla">Fecha descarga</th>
+      <th scope="col" class="Encabezado-Tabla">Version</th>
+      <th scope="col" class="Encabezado-Tabla">Operacion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let back of backService.backups; let i = index" >
+
+      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+      <td class="Celdas-Tabla" [routerLink]="['/backup', (i+1), back.id_backup]">{{back.id_backup}}</td>
+      <!--td class="text-center">{{back.id_user}}</td-->
+      <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+      <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+      <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+      <td class="Celdas-Tabla">{{back.created_in}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
+        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination pagination-lg" style="justify-content: center;">
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">Anterior</a></li>
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">1</a></li>
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">2</a></li>
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">3</a></li>
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">4</a></li>
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">5</a></li>
+      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">Siguiente</a></li>
+    </ul>
+  </nav>
+
+</div>
+

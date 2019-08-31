@@ -1,0 +1,76 @@
+<div class="tamaño-titulo-encabezado">
+  <div class="tam-titulo-encabezado">
+    <h2 class="text-light">{{userService.User.email}}</h2>
+  </div>
+</div>
+
+<div class="row" style="margin: 0px;">
+  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 " style="padding-left: 10px">
+    <div class="phone-generic">
+      <div class="card" *ngIf="userService.User.ios == 1" style="margin-bottom: 50px;">
+        <div class="card-header-pills text-center" >
+          <label class="card-title font-weight-bold " >IOS</label>
+        </div>
+        <div class="card-body text-center">
+          <label class="card-subtitle font-weight-light"><strong>version_ios: </strong>{{userService.User.version_ios}}</label>
+        </div>
+      </div>
+      <div class="card" *ngIf="userService.User.android_v2 == 1 || userService.User.android_v3 == 1">
+        <div class="card-header-pills text-center" >
+          <label class="card-title font-weight-bold ">ANDROID</label>
+        </div>
+        <div class="card-body text-center">
+          <label class="card-subtitle font-weight-light"><strong>device_name: </strong>{{userService.User.device_name}}</label><br>
+          <label class="card-subtitle font-weight-light"><strong>device_model: </strong>{{userService.User.device_model}}</label><br>
+          <label class="card-subtitle font-weight-light"><strong>device_os_version: </strong>{{userService.User.device_os_version}}</label><br>
+          <label class="card-subtitle font-weight-light"><strong>android_v2: </strong>{{userService.User.version_v2}}</label><br>
+          <label class="card-subtitle font-weight-light"><strong>android_v3: </strong>{{userService.User.version_v3}}</label><br>
+          <label class="card-subtitle font-weight-light"><strong>license: </strong>{{userService.User.license}}</label><br>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="width:100%; border: 1px solid #000000;margin-top: 10px; border-radius: 15px; padding: 20px;">
+    <div class="row" >
+      <div class="col text-left">
+        <h3 class="font-weight-light"><strong>Codigo País: </strong>{{userService.User.country_code}}</h3>
+      </div>
+      <div class="col text-right">
+        <h3 class="font-weight-light"><strong>Ciudad: </strong>{{userService.User.city}}</h3>
+      </div>
+    </div>
+    <div class="row text-center" style="margin-top: 15px; margin-bottom: 15px">
+      <h3 class="font-weight-bold text-center" style="width: 100%; ">GRAFICAS</h3>
+      <ul class="nav nav-tabs nav-color" style="width: calc(100% + 10px); margin-left: -5px; margin-right: -5px">
+        <li class="nav-item tam-tab tammm">
+          <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['gastos']">Gastos</a>
+        </li>
+        <li class="nav-item tam-tab tammm">
+          <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['entradas']">Ingresos</a>
+        </li>
+        <li class="nav-item tam-tab tammm">
+          <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['gastosvsEntradas']">Gastos vs Ingresos</a>
+        </li>
+      </ul>
+      <router-outlet></router-outlet>
+
+    </div>
+    <div class="row text-center">
+      <div class="col">
+        <div class="row">
+          <h3 class="font-weight-bold" style="width: 100%; ">RESPALDOS</h3>
+        </div>
+        <div class="row">
+          <div class="col" style="text-align: left">
+            <button class="btn btn-outline-primary" (click)="paginaBackup(['/backup', 1, backService.backups[0].id_backup])">Primer Respaldo<br>{{backService.backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
+          </div>
+          <div class="col" style="text-align: right" *ngIf="backService.backups.length > 0">
+            <button class="btn btn-outline-secondary" (click)="paginaBackup(['/backup', backService.backups.length, backService.backups[backService.backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.backups[backService.backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

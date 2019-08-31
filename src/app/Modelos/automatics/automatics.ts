@@ -1,0 +1,18 @@
+export interface Automatics {
+  id_backup: number,
+  id_operation: number,
+  id_account: number,
+  id_category: number,
+  period: number,
+  repeat_number: number,
+  each_number: number,
+  enabled: number,
+  amount: number,
+  sign: string,
+  detail: string,
+  initial_date: string,
+  next_date: string,
+  operation_code: string,
+  rate: number,
+  counter: number,
+}

@@ -1,0 +1,68 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
+
+<div class="row" style="margin-top: 50px;">
+
+  <div class="col-3">
+    <div class="form-group row">
+      <label for="backup" class="col-sm-4 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
+      <div class="col-sm-8">
+        <select id="backup" class="form-control" [(ngModel)]="backup" name="backup" (change)="busquedaFiltrosGastos()">
+          <option *ngFor="let b of backups;" value="{{b.id_backup}}">{{b.id_backup}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3">
+    <div class="form-group row">
+      <label for="account" class="col-sm-4 col-form-label" style="font-size: 18px; font-weight: normal">Cuentas:</label>
+      <div class="col-sm-8">
+        <select id="account" class="form-control" [(ngModel)]="account" name="account" (change)="busquedaFiltrosGastos()">
+          <option *ngFor="let a of accounts;" value="{{a.id_account}}">{{a.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3">
+    <div class="form-group row">
+      <label for="year" class="col-sm-4 col-form-label" style="font-size: 18px; font-weight: normal">Año:</label>
+      <div class="col-sm-8">
+        <select id="year" class="form-control" [(ngModel)]="year" name="year" (change)="busquedaFiltrosGastos()">
+          <option *ngFor="let y of years;" value="{{y.year}}">{{(y.year == '0') ? 'Todos' : y.year}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3">
+    <div class="form-group row">
+      <label for="month" class="col-sm-3 col-form-label" style="font-size: 18px; font-weight: normal">Mes:</label>
+      <div class="col-sm-9">
+        <select id="month" class="form-control" [(ngModel)]="month" name="month" (change)="busquedaFiltrosGastos()">
+          <option *ngFor="let m of months;" value="{{m.monthNumber}}">{{m.monthName}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div style="display: block">
+  <canvas baseChart
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [colors]="pieChartColors"
+          [legend]="pieChartLegend">
+  ></canvas>
+</div>

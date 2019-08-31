@@ -1,0 +1,24 @@
+.avatar {
+  vertical-align: middle;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+li{
+  padding-top: 25px !important;
+  padding-bottom: 25px !important;
+}
+
+.text-light {
+  color: #bbbbbb !important;
+}
+.text-light:hover {
+  color: #dbdbdb !important;
+}
+
+.nav-link.active {
+  color: #ffffff !important;
+
+}
+

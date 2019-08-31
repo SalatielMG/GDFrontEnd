@@ -1,0 +1,85 @@
+/* You can add global styles to this file, and also import other style files */
+/*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+
+
+.tamaño-titulo-encabezado {
+  width: 100%; height: 300px; background-color: rgba(82, 103, 124, 0.82);
+}
+.tam-titulo-encabezado {
+  padding-top: 200px; text-align: center;
+}
+
+.btn-redondo {
+  height: 100px !important;
+  width: 100px !important;
+  border-radius: 50%;
+}
+
+.navEncode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 125px;
+  padding: 30px 25px;
+  /*background-color: #52677C;*/
+  background-color: rgba(82, 103, 124, 1);
+  z-index: 10;
+}
+
+.imgLogo {
+  padding-left: 50px;
+  width: 270px;
+}
+
+.tamaño-font {
+  font-size: 18px;
+}
+
+.Encabezado-Tabla {
+  font-size: 20px;
+  height: 110px;
+  color: #fff;
+  background-color: #000000 !important;
+  border-color: #454d55;
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+
+.Celdas-Tabla {
+  font-size: 20px !important;
+  height: 110px !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+}
+.tam-tab {
+  height: 112px;
+  width: 11.111%;
+  text-align: center;
+}
+
+.tam-a {
+  border: 1px solid #ffad00 !important;
+  border-bottom: transparent !important;
+  height: 112px;
+  padding-top: 50px;
+}
+.nav-color {
+  background-color: #FF9100 !important;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  /* font-weight: bold; */
+  color: #495057 !important;
+  background-color: var(--white);
+  border-color: var(--orange) var(--orange) #fff;
+  font-weight: bold;
+}
+app-gastos {
+  width: 100%;
+}
+app-entradas {
+  width: 100%;
+}
+app-gastos-entradas {
+  width: 100%;
+}

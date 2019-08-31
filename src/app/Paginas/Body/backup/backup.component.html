@@ -1,0 +1,36 @@
+<div class="tamaño-titulo-encabezado">
+  <div class="tam-titulo-encabezado">
+    <h2 class="text-light">Detalles Respaldo # {{numBack}} Backup {{idBack}}</h2>
+    <h4 class="text-light">{{userService.User.email}}</h4>
+  </div>
+</div>
+<ul class="nav nav-tabs nav-color">
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts']">Accounts</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['automatics']">Automatics</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['budgets']">Budgets</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['cardviews']">CardViews</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['categories']">Categories</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['currencies']">Currencies</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['extras']">Extras</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['movements']">Movements</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['preferences']">Preferences</a>
+  </li>
+</ul>
+<router-outlet></router-outlet>

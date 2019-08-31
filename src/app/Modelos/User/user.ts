@@ -1,0 +1,17 @@
+export interface User {
+  id_user: number,
+  email: string,
+  password: string,
+  license: number,
+  android_v2: number,
+  android_v3: number,
+  ios: number,
+  country_code: string,
+  city: string,
+  device_name: string,
+  device_model: string,
+  device_os_version: string,
+  version_v2:string,
+  version_v3: string,
+  version_ios: string,
+}
