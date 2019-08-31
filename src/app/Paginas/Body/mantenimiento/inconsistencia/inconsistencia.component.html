@@ -1,6 +1,52 @@
-<p>inconsistencia works!</p>
-<p>inconsistencia works!</p>
-<p>inconsistencia works!</p>
-<p>inconsistencia works!</p>
-<p>inconsistencia works!</p>
-<p>inconsistencia works!</p>
+<!-- Buscador -->
+<div class="tamaño-titulo-encabezado">
+  <div class="tam-titulo-encabezado" style="padding-top: 160px !important;">
+    <nav class="navbar navbar-light bg-light" style = "padding-left: 40px;
+    padding-right: 40px; background: transparent !important">
+      <form class="form-row" style="width: 100% !important">
+        <div class="col-11">
+          <input class="form-control-lg inputSearch" type="email" placeholder="Ingrese el correo del cliente" aria-label="Search" >
+        </div>
+        <div class="col-1">
+          <button class="btn btn-lg btn-primary btnSearch" type="submit">Buscar</button>
+        </div>
+      </form>
+    </nav>
+  </div>
+</div>
+<!-- Buscador -->
+<div class="text-center" style=" padding: 50px">
+  <h2 class="font-weight-bold">Inconsistencia de Datos</h2>
+  <button class="btn  btn-outline-success">Corregir Tabla</button>
+</div>
+
+<ul class="nav nav-tabs nav-color">
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts']">Accounts</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['automatics']">Automatics</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['budgets']">Budgets</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['cardviews']">CardViews</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['categories']">Categories</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['currencies']">Currencies</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['extras']">Extras</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['movements']">Movements</a>
+  </li>
+  <li class="nav-item tam-tab">
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['preferences']">Preferences</a>
+  </li>
+</ul>
+<router-outlet></router-outlet>

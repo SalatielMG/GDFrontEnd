@@ -1,0 +1,69 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
+
+<div class="container text-center" *ngIf="accountService.Accounts.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">La tabla Account no tiene inconsistencia de datos</h2>
+</div>
+<div *ngIf="accountService.Accounts.length > 0">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+
+    <tr>
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
+      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
+      <th scope="col" class="Encabezado-Tabla">Id Cuenta</th>
+      <th scope="col" class="Encabezado-Tabla">Nombre</th>
+      <th scope="col" class="Encabezado-Tabla">Detalles</th>
+      <th scope="col" class="Encabezado-Tabla">Signo</th>
+      <th scope="col" class="Encabezado-Tabla">Ingreso</th>
+      <th scope="col" class="Encabezado-Tabla">Gasto</th>
+      <th scope="col" class="Encabezado-Tabla">Balance inical</th>
+      <th scope="col" class="Encabezado-Tabla">Balance final</th>
+      <!--th scope="col" class="Encabezado-Tabla">Mes</th>
+      <th scope="col" class="Encabezado-Tabla">Año</th>
+      <th scope="col" class="Encabezado-Tabla">Limite positivo</th>
+      <th scope="col" class="Encabezado-Tabla">Limite negativo</th>
+      <th scope="col" class="Encabezado-Tabla">positive_max</th>
+      <th scope="col" class="Encabezado-Tabla">negative_max</th-->
+      <th scope="col" class="Encabezado-Tabla">iso_code</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let account of accountService.Accounts; let i = index" >
+
+      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+      <td class="Celdas-Tabla">{{account.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla">{{account.id_backup}}</td>
+      <td class="Celdas-Tabla">{{account.id_account}}</td>
+      <td class="Celdas-Tabla">{{account.name}}</td>
+      <td class="Celdas-Tabla">{{account.detail}}</td>
+      <td class="Celdas-Tabla">{{account.sign}}</td>
+      <td class="Celdas-Tabla">{{account.income}}</td>
+      <td class="Celdas-Tabla">{{account.expense}}</td>
+      <td class="Celdas-Tabla">{{account.initial_balance}}</td>
+      <td class="Celdas-Tabla">{{account.final_balance }}</td>
+      <!--td class="Celdas-Tabla">{{account.month}}</td>
+      <td class="Celdas-Tabla">{{account.year}}</td>
+      <td class="Celdas-Tabla">{{account.positive_limit}}</td>
+      <td class="Celdas-Tabla">{{account.negative_limit}}</td>
+      <td class="Celdas-Tabla">{{account.positive_max}}</td>
+      <td class="Celdas-Tabla">{{account.negative_max}}</td-->
+      <td class="Celdas-Tabla">{{account.iso_code}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" class="btn btn-primary">Corregir</button>
+        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
+        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>

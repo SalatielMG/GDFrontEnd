@@ -11,13 +11,13 @@ import { UsuarioService } from './Servicios/Usuario/usuario.service';
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'home', component: EncodeMXComponent,  canActivate: [UsuarioService]},
-  { path: "backups", component: BackupsComponent, canActivate: [UsuarioService]},
-  { path: "backup/:numBack/:idBack", canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/backup/backup.module').then(m => m.BackupModule)},
-  { path: "detalleUsuario", canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/detalle-usuario/detalle-usuario.module').then(m => m.DetalleUsuarioModule)},
-  { path: "usuario", canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/usuarios/usuarios.module').then(m => m.UsuariosModule)},
-  { path: "exportacion", canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/exportacion/exportacion.module').then(m => m.ExportacionModule)},
-  { path: "mantenimiento", canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/mantenimiento/mantenimiento.module').then(m => m.MantenimientoModule)},
-  { path: "**", component: PaginaNoEmcontradaComponent},
+  { path: 'backups', component: BackupsComponent, canActivate: [UsuarioService]},
+  { path: 'backup/:numBack/:idBack', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/backup/backup.module').then(m => m.BackupModule)},
+  { path: 'detalleUsuario', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/detalle-usuario/detalle-usuario.module').then(m => m.DetalleUsuarioModule)},
+  { path: 'usuario', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/usuarios/usuarios.module').then(m => m.UsuariosModule)},
+  { path: 'exportacion', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/exportacion/exportacion.module').then(m => m.ExportacionModule)},
+  { path: 'mantenimiento', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/mantenimiento/mantenimiento.module').then(m => m.MantenimientoModule)},
+  { path: '**', component: PaginaNoEmcontradaComponent},
 ];
 
 @NgModule({

@@ -1,0 +1,52 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
+
+<div class="container text-center" *ngIf="budgetService.Budgets.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">La tabla Budgets no tiene inconsistencia de datos</h2>
+</div>
+<div *ngIf="budgetService.Budgets.length > 0">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
+      <th scope="col" class="Encabezado-Tabla">id_backup</th>
+      <th scope="col" class="Encabezado-Tabla">id_account</th>
+      <th scope="col" class="Encabezado-Tabla">id_category</th>
+      <th scope="col" class="Encabezado-Tabla">period</th>
+      <th scope="col" class="Encabezado-Tabla">amount</th>
+      <th scope="col" class="Encabezado-Tabla">budget</th>
+      <th scope="col" class="Encabezado-Tabla">initial_date</th>
+      <th scope="col" class="Encabezado-Tabla">final_date</th>
+      <th scope="col" class="Encabezado-Tabla">number</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let budget of budgetService.Budgets; let i = index" >
+      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+      <td class="Celdas-Tabla">{{budget.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla">{{budget.id_backup}}</td>
+      <td class="Celdas-Tabla">{{budget.id_account}}</td>
+      <td class="Celdas-Tabla">{{budget.id_category}}</td>
+      <td class="Celdas-Tabla">{{budget.period}}</td>
+      <td class="Celdas-Tabla">{{budget.amount}}</td>
+      <td class="Celdas-Tabla">{{budget.budget}}</td>
+      <td class="Celdas-Tabla">{{(budget.initial_date == "0000-00-00") ? "Sin fecha" : budget.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla">{{(budget.final_date == "0000-00-00") ? "Sin fecha" : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla">{{budget.number}}</td>
+      <td class="Celdas-Tabla">
+        <button class="btn btn-primary">Corregir</button>
+        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
+        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BackupComponent } from './backup.component';
 import { BackupRoutingModule } from './backup-routing.module';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 /*Componentes*/
 import { AccountsComponent } from './accounts/accounts.component';

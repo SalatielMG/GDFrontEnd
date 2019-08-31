@@ -1,1 +1,1 @@
-export const URL = "http://localhost/gastosdiarios/";
+export const URL = "http://localhost/GDBackEnd/";

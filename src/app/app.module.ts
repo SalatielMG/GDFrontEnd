@@ -37,6 +37,7 @@ import { DetalleUsuarioModule } from './Paginas/Body/detalle-usuario/detalle-usu
 import { MantenimientoModule } from './Paginas/Body/mantenimiento/mantenimiento.module';
 import { ExportacionModule } from './Paginas/Body/exportacion/exportacion.module';
 import { UsuariosModule } from './Paginas/Body/usuarios/usuarios.module';
+import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistencia/inconsistencia.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { UsuariosModule } from './Paginas/Body/usuarios/usuarios.module';
       preventDuplicates: true,
       closeButton: true
     }),
-    NgxSpinnerModule, ChartsModule, MantenimientoModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule
+    NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule
   ],
   providers: [
     DatePipe,

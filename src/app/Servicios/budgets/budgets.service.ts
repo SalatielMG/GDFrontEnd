@@ -19,4 +19,9 @@ export class BudgetsService {
     return this.http.get(URL + 'buscarBudgetsBackup', {params:{idBack: idBackup}});
   }
 
+  public inconsistenciaDatos(): Observable<any> {
+    this.Budgets = [];
+    return this.http.get(URL + 'buscarInconsistenciaDatosBudgets');
+  }
+
 }

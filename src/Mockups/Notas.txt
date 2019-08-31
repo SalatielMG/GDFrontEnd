@@ -1,0 +1,137 @@
+npm i ngx-spinner
+
+npm install ng2-charts 	
+npm install chart.js
+
+npm install bootstrap
+
+npm i ngx-toastr
+
+ng generate module <name> --module app --flat --routing
+
+SELECT * FROM backup_movements bm, backups b WHERE b.id_backup = bm.id_backup AND b.id_user=31 AND bm.sign="-" GROUP BY bm.id_category
+
+
+SET sql_mode = '';
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+SELECT @@sql_mode
+ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+Pendiente:::
+Formato carta aceptacion(NOP)
+Actualizar los diseños de mockup(NOP)
+Cronograma de activiades.(NOP)
+Fechas de seguimientos conla profa Jannet. (SI)
+Modificar la base de datos en la lap para el correcto funcioanmiento (SI)
+
+
+COUNT(bm.id_category) AS CantidadCategoria
+
+**************************
+SELECT bm.id_backup, b.id_user, b.date_creation, bm.id_category, sum(bm.amount) AS totalGastos FROM backup_movements bm, backups b 
+WHERE b.id_backup = bm.id_backup AND  bm.sign = '-' and b.id_user = 41 group BY bm.id_category ORDER BY totalGastos DESC
+
+
+
+AND bm.id_category = bc.id_category AND bm.id_backup = bc.id_backup
+, backup_categories bc 
+ bc.name,
+ ORDER BY totalGastos DESC
+ 
+
+
+
+---------Orden Descendente TotalGastos(Con Categoria)--------------
+SET @numero=0;
+SELECT @numero:=@numero+1 AS `posicion`, b.id_user, bm.id_category,bc.name, COUNT(bm.id_category) AS CantidadCategoria, sum(bm.amount) AS totalGastos FROM backup_movements bm, backups b, backup_categories bc 
+WHERE b.id_backup = bm.id_backup
+AND bm.id_category = bc.id_category AND bm.id_backup = bc.id_backup
+AND bm.sign = '-' and b.id_user = 41 group BY bm.id_category ORDER BY totalGastos DESC
+
+
+--------Ordenando por posicion(Con Categoria)--------------------
+SET @numero=0;
+SELECT @numero:=@numero+1 AS `posicion`, b.id_user, bm.id_category,bc.name, COUNT(bm.id_category) AS CantidadCategoria, sum(bm.amount) AS totalGastos FROM backup_movements bm, backups b, backup_categories bc 
+WHERE b.id_backup = bm.id_backup
+AND bm.id_category = bc.id_category AND bm.id_backup = bc.id_backup
+AND bm.sign = '-' and b.id_user = 41 group BY bm.id_category ORDER BY posicion
+
+
+--------Ordenando por posicion(Sin Categoria)--------------------
+SET @numero=0;
+SELECT @numero:=@numero+1 AS `posicion`, b.id_user, bm.id_category, COUNT(bm.id_category) AS CantidadCategoria, sum(bm.amount) AS totalGastos FROM backup_movements bm, backups b
+WHERE b.id_backup = bm.id_backup
+AND bm.sign = '-' and b.id_user = 41 group BY bm.id_category ORDER BY posicion
+
+
+----------Ordendando por TotalGastos DESC (Sin Categoria)----------------
+SET @numero=0;
+SELECT @numero:=@numero+1 AS `posicion`, b.id_user, bm.id_category, COUNT(bm.id_category) AS CantidadCategoria, sum(bm.amount) AS totalGastos FROM backup_movements bm, backups b
+WHERE b.id_backup = bm.id_backup
+AND bm.sign = '-' and b.id_user = 41 group BY bm.id_category ORDER BY totalGastos DESC
+
+
+
+
+Budgets (Y)
+Categories (Y)
+Movements (1089)
+__ConCat:= 3511
+
+
+/*
+$select = $this -> m -> mostrar("bm.id_backup = bc.id_backup AND bm.id_backup = bac.id_backup AND bm.id_account = bac.id_account AND bm.id_backup = bcat.id_backup AND bm.id_category = bcat.id_category AND bm.id_backup = $idBackup",
+            "bm.*, bc.symbol, bac.name as account, bcat.name as category",
+            "backup_movements bm, backup_currencies bc, backup_accounts bac, backup_categories bcat");
+*/
+//$sqlConCategoria = "SELECT bm.*, bc.symbol FROM backup_movements bm, backup_currencies bc WHERE bm.id_backup = bc.id_backup AND bm.id_backup = 173";
+//$sqlSinCategoria = "SELECT bm.*, bc.symbol, bac.name as account, bcat.name as category FROM backup_movements bm, backup_currencies bc, backup_accounts bac, backup_categories bcat WHERE bm.id_backup = bc.id_backup AND bm.id_backup = bac.id_backup AND bm.id_account = bac.id_account AND bm.id_backup = bcat.id_backup AND bm.id_category = bcat.id_category AND bm.id_backup = 173";
+//$sqlSinCategoriaMod = "SELECT bm.*, bc.symbol, bac.name as account, bcat.name as category FROM backup_movements bm, backup_currencies bc, backup_accounts bac, backup_categories bcat WHERE bm.id_backup = bc.id_backup AND bm.id_backup = bac.id_backup AND bm.id_account = bac.id_account AND bm.id_backup = bcat.id_backup AND (bm.id_category = bcat.id_category OR bm.id_category >= 10000) AND bm.id_backup = 173";
+        
+
+
+
+
+
+Investigar paginaciones.
+
+
+SET @var1 = null;
+SELECT ba.*, bc.symbol, IF((@var1 = (SELECT NAME from backup_accounts WHERE id_backup = 179 AND id_account = ba.id_account) IS NULL) ,'No encontrada', @var1) AS account, (SELECT NAME from backup_categories  WHERE id_backup = 179 AND id_category = ba.id_category) as category FROM backup_automatics ba, backup_currencies bc WHERE ba.id_backup = bc.id_backup AND ba.id_backup = 179
+SELECT ba.*, bc.symbol, bac.name as account, bcat.name as category FROM backup_automatics ba, backup_currencies bc, backup_accounts bac, backup_categories bcat WHERE ba.id_backup = bc.id_backup AND ba.id_backup = bac.id_backup AND ba.id_account = bac.id_account AND ba.id_backup = bcat.id_backup AND ba.id_category = bcat.id_category AND ba.id_backup = 179
+            UNION
+            SELECT ba.*, bc.symbol, bac.name as account, '' as category FROM backup_automatics ba, backup_currencies bc, backup_accounts bac WHERE ba.id_backup = bc.id_backup AND ba.id_backup = bac.id_backup AND ba.id_account = bac.id_account AND ba.id_category >= 10000 AND ba.id_backup = 179
+			
+			
+			
+DELIMITER //
+CREATE FUNCTION nameAccount (idBackup INT, idAccount INT) RETURNS VARCHAR
+BEGIN
+	
+  DECLARE nameAccount VARCHAR;
+  SET nameAccount = (SELECT NAME FROM backup_accounts WHERE id_backup = idBackup AND id_account = idAccount);
+  
+  if (nameAccount IS NULL) then
+  	SET nameAccount = (SELECT account FROM backup_extras WHERE id_extra = idAccount);
+  	if(nameAccount IS NULL) then
+  		SET nameAccount = 'Categoria no encontrada';
+  	END if;
+  END if;
+
+  return nameAccount;
+  
+END; //
+DELIMITER;
+
+DECLARE nameAccount VARCHAR;
+  SET nameAccount = (SELECT NAME FROM backup_accounts WHERE id_backup = idBackup AND id_account = idAccount);
+  
+  if (nameAccount IS NULL) then
+  	SET nameAccount = (SELECT account FROM backup_extras WHERE id_extra = idAccount);
+  	if(nameAccount IS NULL) then
+  		SET nameAccount = 'Categoria no encontrada';
+  	END if;
+  END if;
+
+  return nameAccount;
