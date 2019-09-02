@@ -1,1 +1,54 @@
-<p>movements works!</p>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
+
+<div class="container text-center" *ngIf="movementsService.Movements.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">La tabla Movements no tiene inconsistencia de datos</h2>
+</div>
+<div *ngIf="movementsService.Movements.length > 0">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla">Cantidad repetida</th>
+      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
+      <th scope="col" class="Encabezado-Tabla">id_account</th>
+      <th scope="col" class="Encabezado-Tabla">id_category</th>
+      <th scope="col" class="Encabezado-Tabla">amount</th>
+      <th scope="col" class="Encabezado-Tabla">sign</th>
+      <th scope="col" class="Encabezado-Tabla">detail</th>
+      <th scope="col" class="Encabezado-Tabla">date_record</th>
+      <th scope="col" class="Encabezado-Tabla">time_record</th>
+      <th scope="col" class="Encabezado-Tabla">confirmed</th>
+      <th scope="col" class="Encabezado-Tabla">iso_code</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let movement of movementsService.Movements; let i = index" >
+      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+      <td class="Celdas-Tabla">{{movement.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla">{{movement.id_backup}}</td>
+      <td class="Celdas-Tabla">{{movement.id_account}}</td>
+      <td class="Celdas-Tabla">{{movement.id_category}}</td>
+      <td class="Celdas-Tabla">{{movement.amount}}</td>
+      <td class="Celdas-Tabla">{{(movement.sign == "-") ? "Gastos": "Ingresos"}}</td>
+      <td class="Celdas-Tabla">{{movement.detail}}</td>
+      <td class="Celdas-Tabla">{{movement.date_record | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla">{{movement.time_record}}</td>
+      <td class="Celdas-Tabla">{{movement.confirmed}}</td>
+      <td class="Celdas-Tabla">{{movement.iso_code}}</td>
+      <td class="Celdas-Tabla">
+        <button class="btn btn-primary">Corregir</button>
+        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
+        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>

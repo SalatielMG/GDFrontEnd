@@ -1,1 +1,45 @@
-<p>extras works!</p>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
+
+<div class="container text-center" *ngIf="extrasService.Extras.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">La tabla Extra no tiene inconsistencia de datos</h2>
+</div>
+<div *ngIf="extrasService.Extras.length > 0">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla">Cantidad repetida</th>
+      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
+      <th scope="col" class="Encabezado-Tabla">id_extra</th>
+      <th scope="col" class="Encabezado-Tabla">account</th>
+      <th scope="col" class="Encabezado-Tabla">category</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
+
+    </thead>
+    <tbody>
+    <tr *ngFor="let extra of extrasService.Extras; let i = index" >
+      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+      <td class="Celdas-Tabla">{{extra.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla">{{extra.id_backup}}</td>
+      <td class="Celdas-Tabla">{{extra.id_extra}}</td>
+      <td class="Celdas-Tabla">{{extra.account}}</td>
+      <td class="Celdas-Tabla">{{extra.category}}</td>
+
+      <td class="Celdas-Tabla">
+        <button class="btn btn-primary">Corregir</button>
+
+        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
+        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>

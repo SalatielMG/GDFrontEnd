@@ -14,10 +14,11 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { InconsistenciaComponent } from './inconsistencia.component';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [InconsistenciaComponent, AccountsComponent, AutomaticsComponent, BudgetsComponent, CardviewsComponent, CategoriesComponent, CurrenciesComponent, ExtrasComponent, MovementsComponent, PreferencesComponent],
-  imports: [
+  imports: [ReactiveFormsModule, FormsModule,
     NgxSpinnerModule,
     CommonModule,
     InconsistenciaRoutingModule

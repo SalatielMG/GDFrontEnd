@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MantenimientoRoutingModule } from './mantenimiento-routing.module';
 import { BackupsComponent } from './backups/backups.component';
 import { MantenimientoComponent } from './mantenimiento.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [MantenimientoComponent, BackupsComponent],
-  imports: [
+  imports: [FormsModule,
     CommonModule,
     MantenimientoRoutingModule
   ]

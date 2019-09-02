@@ -17,5 +17,9 @@ export class ExtrasService {
     this.Extras = [];
     return this.http.get(URL + 'buscarExtrasBackup', {params:{idBack: idBackup}});
   }
+  public inconsistenciaDatos(email): Observable<any> {
+    this.Extras = [];
+    return this.http.get(URL + 'buscarInconsistenciaDatosExtras', {params: {email: email}});
+  }
 
 }

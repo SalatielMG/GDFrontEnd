@@ -14,7 +14,7 @@ export class BudgetsComponent implements OnInit {
   constructor(private budgetService: BudgetsService, private util: Utilerias) {
     this.msj = 'Buscando inconsistencia de datos en la tabla Budgets';
     this.util.crearLoading().then(() => {
-      this.budgetService.inconsistenciaDatos().subscribe(result => {
+      this.budgetService.inconsistenciaDatos(this.util.emailUserMntInconsistencia).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {

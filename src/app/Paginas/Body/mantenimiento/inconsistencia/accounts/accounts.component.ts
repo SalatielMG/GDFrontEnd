@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
 import {AccountsService} from "../../../../../Servicios/accounts/accounts.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 
@@ -15,7 +14,7 @@ export class AccountsComponent implements OnInit {
   constructor(private accountService: AccountsService, private util: Utilerias) {
     this.msj = 'Buscando inconsistencia de datos en la tabla Accounts';
     this.util.crearLoading().then(() => {
-      this.accountService.buscarInconsistenciaDatos().subscribe(result => {
+      this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
@@ -29,6 +28,7 @@ export class AccountsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("ngOnInit()");
   }
 
 }

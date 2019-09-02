@@ -1,13 +1,13 @@
 <!-- Buscador -->
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado" style="padding-top: 160px !important;">
-    <nav class="navbar navbar-light bg-light" style = "padding-left: 40px;
+    <nav class="navbar navbar-light bg-light" style="padding-left: 40px;
     padding-right: 40px; background: transparent !important">
-      <form class="form-row" style="width: 100% !important">
-        <div class="col-11">
-          <input class="form-control-lg inputSearch" type="email" placeholder="Ingrese el correo del cliente" aria-label="Search" >
+      <form class="form-row" style="width: 100% !important" (submit)="search()">
+        <div class="col-10">
+          <input [(ngModel)]="email" name="correo" class="form-control-lg inputSearch" type="email" placeholder="Ingrese el correo del cliente" aria-label="Search" >
         </div>
-        <div class="col-1">
+        <div class="col-2">
           <button class="btn btn-lg btn-primary btnSearch" type="submit">Buscar</button>
         </div>
       </form>
@@ -17,6 +17,10 @@
 <!-- Buscador -->
 <div class="text-center" style=" padding: 50px">
   <h2 class="font-weight-bold">Inconsistencia de Datos</h2>
+  <br>
+  <h3 class="font-weight-light">{{util.emailUserMntInconsistencia}}</h3>
+  <br>
+
   <button class="btn  btn-outline-success">Corregir Tabla</button>
 </div>
 

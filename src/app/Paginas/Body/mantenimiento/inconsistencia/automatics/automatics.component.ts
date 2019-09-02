@@ -13,7 +13,7 @@ export class AutomaticsComponent implements OnInit {
   constructor(private automaticsService: AutomaticsService, private util: Utilerias) {
     this.msj = 'Buscando inconsistencia de datos en la tabla Automatics';
     this.util.crearLoading().then(() => {
-      this.automaticsService.buscarInconsistenciaDatos().subscribe(result => {
+      this.automaticsService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {

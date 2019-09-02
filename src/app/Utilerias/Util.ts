@@ -10,6 +10,11 @@ export class Utilerias {
   public CataAccount_all = "Todas las cuentas";
   public CatCategory_all = "Todas las categorias";
 
+  public emailUserMntInconsistencia = "Generales";
+  public emailUserMntBackup = "Generales";
+
+  public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
+
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService){
   }
   public asignarNombre(id, nombre){

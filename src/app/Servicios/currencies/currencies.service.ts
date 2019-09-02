@@ -17,5 +17,9 @@ export class CurrenciesService {
     this.Currencies = [];
     return this.http.get(URL + 'buscarCurrenciesBackup', {params:{idBack: idBackup}});
   }
+  public inconsistenciaDatos(email): Observable<any> {
+    this.Currencies = [];
+    return this.http.get(URL + 'buscarInconsistenciaDatosCurrencies', {params: {email: email}});
+  }
 
 }
