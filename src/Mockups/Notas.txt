@@ -135,3 +135,13 @@ DECLARE nameAccount VARCHAR;
   END if;
 
   return nameAccount;
+
+ALTER IGNORE TABLE mascotas ADD UNIQUE INDEX(nombre, edad, raza, genero);
+ALTER IGNORE TABLE `user_server` ADD UNIQUE INDEX (`user_id`, `server_id`);
+
+
+Inconsistencia de datos:
+https://dev.mysql.com/doc/refman/5.7/en/alter-table.html
+https://rstopup.com/quitar-filas-duplicadas-en-mysql.html
+https://dba.stackovernet.com/es/q/43256
+https://es.stackoverflow.com/questions/60315/problema-al-crear-tablas-mysql-con-phpmyadmin
