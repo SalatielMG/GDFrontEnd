@@ -22,4 +22,8 @@ export class BackupService {
     return this.http.get(URL + 'buscarBackups', {params:{idUser: idUser}});
   }
 
+  public corregirInconsistencia(Tabla): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla);
+  }
+
 }

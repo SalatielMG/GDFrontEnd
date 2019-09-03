@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from '@angular/router';
+import {BackupService} from "../../../../Servicios/backup/backup.service";
 
 @Component({
   selector: 'app-inconsistencia',
@@ -12,7 +13,7 @@ export class InconsistenciaComponent implements OnInit {
   private email: string = "";
   //  public usuarioMntSearch: FormGroup;
 
-  constructor(private util: Utilerias,  private route: ActivatedRoute,
+  constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
               private router: Router) { }
 
   ngOnInit() {
@@ -41,49 +42,76 @@ export class InconsistenciaComponent implements OnInit {
   private compararRutaHija(ruta) {
     switch (ruta) {
       case "/mantenimiento/inconsistenciaMnt/accounts":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["accounts"], {relativeTo: this.route});
-        });
+        this.navegacion("accounts");
         break;
       case "/mantenimiento/inconsistenciaMnt/automatics":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["automatics"], {relativeTo: this.route});
-        });
+        this.navegacion("automatics");
         break;
       case "/mantenimiento/inconsistenciaMnt/budgets":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["budgets"], {relativeTo: this.route});
-        });
+        this.navegacion("budgets");
         break;
       case "/mantenimiento/inconsistenciaMnt/cardviews":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["cardviews"], {relativeTo: this.route});
-        });
+        this.navegacion("cardviews");
         break;
       case "/mantenimiento/inconsistenciaMnt/categories":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["categories"], {relativeTo: this.route});
-        });
+        this.navegacion("categories");
         break;
       case "/mantenimiento/inconsistenciaMnt/currencies":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["currencies"], {relativeTo: this.route});
-        });
+        this.navegacion("currencies");
         break;
       case "/mantenimiento/inconsistenciaMnt/extras":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["extras"], {relativeTo: this.route});
-        });
+        this.navegacion("extras");
         break;
       case "/mantenimiento/inconsistenciaMnt/movements":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["movements"], {relativeTo: this.route});
-        });
+        this.navegacion("movements");
         break;
       case "/mantenimiento/inconsistenciaMnt/preferences":
-        this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-          this.router.navigate(["preferences"], {relativeTo: this.route});
-        });
+        this.navegacion("preferences");
+        break;
+    }
+  }
+  private navegacion(tabla){
+    this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
+      this.router.navigate([tabla], {relativeTo: this.route});
+    });
+  }
+  private operacion(tabla){
+    this.backupService.corregirInconsistencia(tabla).subscribe(result => {
+      this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
+        this.router.navigate([tabla], {relativeTo: this.route});
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
+  }
+  public corregirTabla(){
+    switch (this.router.url) {
+      case "/mantenimiento/inconsistenciaMnt/accounts":
+        this.operacion("accounts");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/automatics":
+        this.operacion("automatics");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/budgets":
+        this.operacion("budgets");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/cardviews":
+        this.operacion("cardviews");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/categories":
+        this.operacion("categories");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/currencies":
+        this.operacion("currencies");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/extras":
+        this.operacion("extras");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/movements":
+        this.operacion("movements");
+        break;
+      case "/mantenimiento/inconsistenciaMnt/preferences":
+        this.operacion("preferences");
         break;
     }
   }
