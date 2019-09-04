@@ -1,0 +1,80 @@
+Orignal											:= 1128040 [275,818‬]
+SELECT COUNT(*) FROM `full_backup_accounts`		:= 852222
+SELECT COUNT(*) FROM `backup_accounts`     		:= 852214
+													  [8]
+
+Orignal											:=
+SELECT COUNT(*) FROM `full_backup_movements`	:=
+SELECT COUNT(*) FROM `backup_movements`			:= 30239528
+													  [-]
+
+Orignal											:= 505577 [116,851‬]
+SELECT COUNT(*) FROM `full_backup_automatics`	:= 388726
+SELECT COUNT(*) FROM `backup_automatics`		:= 388726
+													  [0]
+
+Orignal											:= 939219 [202,525‬]
+SELECT COUNT(*) FROM `full_backup_budgets`		:= 736694
+SELECT COUNT(*) FROM `backup_budgets`			:= 736694
+													  [0]
+
+Orignal											:= 1990770 [459,300‬]
+SELECT COUNT(*) FROM `full_backup_cardviews`	:= 1531470
+SELECT COUNT(*) FROM `backup_cardviews` 		:= 1531200
+													 [270]
+
+Orignal											:= 31138547 [7,838,754‬]
+SELECT count(*) FROM `full_backup_categories`	:= 23299793
+SELECT COUNT(*) FROM `backup_categories`		:= 23299793
+													  [0]
+
+Orignal											:= 325632 [70,243‬]
+SELECT count(*) FROM `full_backup_currencies`	:= 255389
+SELECT count(*) FROM `backup_currencies`		:= 255152
+													[237]
+
+Orignal											:= 1618366 [397,537‬]
+SELECT count(*) FROM `full_backup_extras`		:= 1220829
+SELECT count(*) FROM `backup_extras`			:= 1220814
+													  [15]
+
+Orignal											:= 391518 [87,196‬]
+SELECT count(*) FROM `full_backup_preferences`	:= 304322
+SELECT count(*) FROM `backup_preferences`		:= 304322
+													  [0]
+
+								Total Orignal	:=
+													  --network-timeout, -M
+                            mysqldump --opt --events --routines --triggers --default-character-set=utf8 -u root --password="" | gzip -c > rspaldo`date +%Y%m%d_%H%M%S`.sql.gz
+
+<?php
+/**
+ * Created by PhpStorm.
+ * User: pc-hp
+ * Date: 13/08/2019
+ * Time: 12:15 AM
+ */
+
+$db_host = 'localhost';
+$db_name = 'gastos5_app';
+$db_user = 'gastos5_admin';
+$db_pass = 'hBV30aJDl.SQL';
+
+$dump = "mysqldump -h$db_host -u$db_user -p$db_pass --opt --where='1 limit 100000000' $db_name > respaldo.sql";
+
+system($dump, $output);
+
+/*
+ *
+--network-timeout	Increase network timeouts to permit larger table dumps	8.0.1
+--no-autocommit	    Enclose the INSERT statements for each dumped table within SET autocommit = 0 and COMMIT statements
+--no-create-db	    Do not write CREATE DATABASE statements
+--no-create-info	Do not write CREATE TABLE statements that re-create each dumped table
+--no-data	        Do not dump table contents
+--no-defaults	    Read no option files
+--no-set-names	    Same as --skip-set-charset
+--no-tablespaces	Do not write any CREATE LOGFILE GROUP or CREATE TABLESPACE statements in output
+--opt	            Shorthand for --add-drop-table --add-locks --create-options --disable-keys --extended-insert --lock-tables --quick --set-charset.
+ https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html
+
+* */
