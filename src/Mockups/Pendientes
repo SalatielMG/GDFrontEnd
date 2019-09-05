@@ -1,8 +1,10 @@
-implementar fontawesome como dependencia de angular
+implementar fontawesome como dependencia de angular [Completaado]
 
 
-Arreglas la inconsistencia de datos en laBD
-Crear paginaciones de cada consulta.
+Arreglas la inconsistencia de datos en laBD [Pendiente pero ya se puede continuar]
+Crear paginaciones de cada consulta. [Pendiente]
+SUPER [Crear animacion de desplicgue y exapanzion con rendre2 en agular]
+
 REalizar las consultas id_x =  nombre
 Evitar duplicidades.
 
@@ -11,3 +13,9 @@ Eliminar registros relacionados con la tabla backups
 Agregar registros relacionados con la tabla backups
 
 RESPONSIVE DESIGN
+
+
+
+Investigar
+timeout.
+Error 500.

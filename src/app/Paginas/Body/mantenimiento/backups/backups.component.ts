@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-backups',
@@ -11,6 +13,9 @@ export class BackupsComponent implements OnInit {
 
   private email: string = "";
   private msj = "";
+  public faArrowCircleDown = faArrowDown;
+  public faArrowCircleUp = faArrowUp;
+
   //public usuarioMntSearch: FormGroup;
 
   constructor(private util: Utilerias, private backupService: BackupService) {
@@ -59,6 +64,40 @@ export class BackupsComponent implements OnInit {
         this.util.msjErrorInterno(error);
       });
     });
+  }
+
+  public verficarExpansion(indice, idUser, email) {
+
+    if (this.backupService.mntBackups[indice].collapsed == 0) { // Expandir
+      this.msj = "Cargando backups del usuario: " + email;
+      this.util.crearLoading().then(() => {
+        this.backupService.buscarBackups(idUser).subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          this.backupService.mntBackups[indice].msj = result.msj;
+          this.backupService.mntBackups[indice].cantRep = result.backups.length;
+          console.log(result.backups);
+
+          if (!result.error){
+            this.backupService.mntBackups[indice].backups = result.backups;
+            this.backupService.mntBackups[indice].collapsed  = 1;
+          }
+        }, error =>  {
+          this.util.detenerLoading();
+          this.util.msjErrorInterno(error);
+        });
+      });
+
+      //return true;
+    } else { // Minimizar
+      this.backupService.mntBackups[indice].collapsed  = 0;
+
+      //return false;
+    }
+    console.log(this.backupService.mntBackups[indice].collapsed );
+  }
+  public encabezado(i){
+    return "#" + i;
   }
 
 }

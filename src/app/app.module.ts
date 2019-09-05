@@ -14,6 +14,8 @@ import {HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from 'ng2-charts';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 /*Componentes*/
 import { AppComponent } from './app.component';
@@ -50,6 +52,7 @@ import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistenci
     PaginaNoEmcontradaComponent,
   ],
   imports: [
+    NgbModule,
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -60,7 +63,7 @@ import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistenci
       preventDuplicates: true,
       closeButton: true
     }),
-    NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule
+    FontAwesomeModule, NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule
   ],
   providers: [
     DatePipe,

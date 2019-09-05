@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../Servicios/Usuario/usuario.service';
 import { Utilerias } from '../../../Utilerias/Util';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   public usuario: FormGroup;
+  public faCheck = faCheck;
 
   constructor(public userSerevice: UsuarioService, public formBuilder: FormBuilder, private util: Utilerias, private route: ActivatedRoute,
               private router: Router) { }

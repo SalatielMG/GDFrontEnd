@@ -31,12 +31,7 @@
           <label for="backup" class="col-form-label" style="font-size: 18px; font-weight: normal">Rango:</label>
         </div>
         <div class="col-5">
-          <select id="backup" class="form-control"  name="backup" >
-           <option>05</option>
-           <option>10</option>
-           <option>15</option>
-           <option>20</option>
-          </select>
+          <input type="number" value="10" class="form-control"pattern="^[0-9]">
         </div>
         <div class="col-5">
           <button class="btn btn-outline-success">Limpiar</button>
@@ -45,24 +40,85 @@
     </div>
   </div>
 </div>
+
 <div id="accordion" style="padding-left: 50px;padding-right: 50px" *ngIf="backupService.mntBackups.length > 0">
-  <div class="card" *ngFor="let user of backupService.mntBackups; let i = index">
-    <div class="card-header" id="i">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          {{user.email}} tiene := {{user.cantRep}} backups
+  <div   class="card" *ngFor="let user of backupService.mntBackups; let i = index" >
+
+    <div class="card-header" >
+      <div class="float-left" style="width: 90% !important; padding: 10px;">
+        <div class="row">
+          <div class="col-8">
+            <div class="row">
+              <div class="col-2">
+                <h5 class="font-weight-bold">Usuario: </h5>
+              </div>
+              <div class="col-10">
+                <h5 class="font-weight-light"> {{user.email}} </h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="row">
+              <div class="col-4">
+                <h5 class="font-weight-bold">Backups: </h5>
+              </div>
+              <div class="col-8">
+                <h5 class="font-weight-light"> {{user.cantRep}} </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float-right">
+        <button type="button" class="btn btn-outline-info rounded-circle" (click)="verficarExpansion(i, user.id_user, user.email)" style="height: 50px; width: 50px;"
+                [attr.aria-expanded]="!user.collapsed" aria-controls="collapseExample">
+          <span>
+              <fa-icon *ngIf="user.collapsed" [icon]="faArrowCircleDown"></fa-icon>
+              <fa-icon *ngIf="!user.collapsed" [icon]="faArrowCircleUp"></fa-icon>
+            </span>
         </button>
-      </h5>
-    </div>
-
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="i" data-parent="#accordion">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
       </div>
     </div>
-  </div>
+    <div id="collapseExample" [ngbCollapse]="user.collapsed">
 
+      <div class="card-body" [id]="i">
+        <div  *ngIf="user.cantRep != 0">
+          <table class="table table-striped" data-spy="scroll" [attr.data-target]="encabezado(i)">
+            <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" sortable="name" (sort)="onSort($event)">Backup</th>
+              <th scope="col" sortable="area" (sort)="onSort($event)">Automatico</th>
+              <th scope="col" sortable="population" (sort)="onSort($event)">Fecha de creacion</th>
+              <th scope="col" sortable="population" (sort)="onSort($event)">Fecha de descarga</th>
+              <th scope="col" sortable="population" (sort)="onSort($event)">Version</th>
+              <th scope="col">Operacion</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let back of user.backups; let pos = index">
+              <th scope="row">{{ pos + 1 }}</th>
+              <td scope="row">{{ back.id_backup }}</td>
+              <td scope="row">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
+              <td scope="row">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
+              <td scope="row">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+              <td scope="row">{{ back.created_in }}</td>
+              <td scope="row">
+                <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px">Eliminar</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="container" *ngIf="user.cantRep == 0">
+          <h5 class="font-weight-lighter">{{user.msj}}</h5>
+        </div>
+
+
+        </div>
+    </div>
+  </div>
 </div>
 <div class="container" *ngIf="backupService.mntBackups.length == 0">
   <h3 class="font-weight-lighter">{{msj}}</h3>
