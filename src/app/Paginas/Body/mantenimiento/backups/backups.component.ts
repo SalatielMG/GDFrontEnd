@@ -34,7 +34,9 @@ export class BackupsComponent implements OnInit {
     } else {
       if ((this.util.regex_email).exec(this.email)) {
         this.util.emailUserMntBackup = this.email;
+        console.log("this.util.emailUserMntBackup ", this.util.emailUserMntBackup );
         this.buscarBackups();
+
       } else {
         this.util.msjToast("Porfavor ingrese un correo valido", "Email no Valido", true);
       }
@@ -42,14 +44,16 @@ export class BackupsComponent implements OnInit {
 
   }
   private buscarBackups() {
-    this.msj = "Buscando backups " + ((this.util.emailUserMntBackup = "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
+    this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
     this.util.crearLoading().then(() => {
       this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, 10).subscribe(result => {
         this.util.detenerLoading();
+        this.msj = result.msj;
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
           this.backupService.mntBackups = result.backups;
         }
+        console.log(result);
       }, error => {
         this.util.detenerLoading();
         this.util.msjErrorInterno(error);

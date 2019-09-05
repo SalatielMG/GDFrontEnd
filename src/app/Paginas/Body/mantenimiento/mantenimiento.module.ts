@@ -4,10 +4,12 @@ import { MantenimientoRoutingModule } from './mantenimiento-routing.module';
 import { BackupsComponent } from './backups/backups.component';
 import { MantenimientoComponent } from './mantenimiento.component';
 import {FormsModule} from '@angular/forms';
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 @NgModule({
   declarations: [MantenimientoComponent, BackupsComponent],
-  imports: [FormsModule,
+  imports: [NgxSpinnerModule,
+    FormsModule,
     CommonModule,
     MantenimientoRoutingModule
   ]

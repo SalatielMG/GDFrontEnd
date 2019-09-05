@@ -1,3 +1,11 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{msj}}</p>
+</ngx-spinner>
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado"  style="padding-top: 160px !important;">
     <nav class="navbar navbar-light bg-light" style = "padding-left: 40px; padding-right: 40px; background: transparent !important">
@@ -37,3 +45,26 @@
     </div>
   </div>
 </div>
+<div id="accordion" style="padding-left: 50px;padding-right: 50px" *ngIf="backupService.mntBackups.length > 0">
+  <div class="card" *ngFor="let user of backupService.mntBackups; let i = index">
+    <div class="card-header" id="i">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          {{user.email}} tiene := {{user.cantRep}} backups
+        </button>
+      </h5>
+    </div>
+
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="i" data-parent="#accordion">
+      <div class="card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="container" *ngIf="backupService.mntBackups.length == 0">
+  <h3 class="font-weight-lighter">{{msj}}</h3>
+</div>
+
