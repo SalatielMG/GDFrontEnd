@@ -14,6 +14,11 @@ $ npm install @fortawesome/free-solid-svg-icons
 $ npm install @fortawesome/angular-fontawesome@<version>
 ng generate module <name> --module app --flat --routing
 
+
+Scrolling
+npm install @angular/cdk@7.0.0
+ng add @angular/cdk@7.0.0
+
 SELECT * FROM backup_movements bm, backups b WHERE b.id_backup = bm.id_backup AND b.id_user=31 AND bm.sign="-" GROUP BY bm.id_category
 
 

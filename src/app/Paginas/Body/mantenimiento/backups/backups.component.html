@@ -31,10 +31,10 @@
           <label for="backup" class="col-form-label" style="font-size: 18px; font-weight: normal">Rango:</label>
         </div>
         <div class="col-5">
-          <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups">
+          <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups" name="rangoBackups">
         </div>
         <div class="col-5">
-          <button class="btn btn-outline-success">Limpiar</button>
+          <button class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" >Limpiar</button>
         </div >
       </div>
     </div>
@@ -44,7 +44,7 @@
 <div id="accordion" style="padding-left: 50px;padding-right: 50px" *ngIf="backupService.mntBackups.length > 0">
   <div   class="card" *ngFor="let user of backupService.mntBackups; let i = index" >
 
-    <div class="card-header" >
+    <div class="card-header" [id] = "i">
       <div class="float-left" style="width: 90% !important; padding: 10px;">
         <div class="row">
           <div class="col-8">
@@ -70,57 +70,81 @@
         </div>
       </div>
       <div class="float-right">
-        <button type="button" class="btn btn-outline-info rounded-circle" (click)="verficarExpansion(i, user.id_user, user.email)" style="height: 50px; width: 50px;"
-                [attr.aria-expanded]="!user.collapsed" aria-controls="collapseExample">
+        <button type="button" class="btn btn-outline-info rounded-circle" (click)="verficarExpansion(i, user.id_user, user.email)" style="height: 50px; width: 50px;">
           <span>
-              <fa-icon *ngIf="user.collapsed" [icon]="faArrowCircleDown"></fa-icon>
-              <fa-icon *ngIf="!user.collapsed" [icon]="faArrowCircleUp"></fa-icon>
+              <fa-icon *ngIf="user.collapsed == 0" [icon]="faArrowCircleDown"></fa-icon>
+              <fa-icon *ngIf="user.collapsed == 1" [icon]="faArrowCircleUp"></fa-icon>
             </span>
         </button>
       </div>
     </div>
-    <div id="collapseExample" [ngbCollapse]="user.collapsed">
 
-      <div class="card-body" [id]="i">
-        <div  *ngIf="user.cantRep != 0">
-          <table class="table table-striped" data-spy="scroll" [attr.data-target]="encabezado(i)">
+    <div #cntBackupsUser class="tarjetaCuerpo">
+
+      <div class="card-body">
+        <!--table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Backup</th>
+            <th scope="col">Automatico</th>
+            <th scope="col">Fecha de creacion</th>
+            <th scope="col">Fecha de descarga</th>
+            <th scope="col">Version</th>
+            <th scope="col">Operacion</th>
+          </tr>
+          </thead></table-->
+        <cdk-virtual-scroll-viewport  style="height: 500px;" itemSize="1" >
+
+        <table class="table table-striped">
+
             <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col" sortable="name" (sort)="onSort($event)">Backup</th>
-              <th scope="col" sortable="area" (sort)="onSort($event)">Automatico</th>
-              <th scope="col" sortable="population" (sort)="onSort($event)">Fecha de creacion</th>
-              <th scope="col" sortable="population" (sort)="onSort($event)">Fecha de descarga</th>
-              <th scope="col" sortable="population" (sort)="onSort($event)">Version</th>
-              <th scope="col">Operacion</th>
-            </tr>
+              <tr class="text-center" >
+                <th scope="col" style="vertical-align: middle">#</th>
+                <th scope="col" style="vertical-align: middle">Backup</th>
+                <th scope="col" style="vertical-align: middle">Automatico</th>
+                <th scope="col" style="vertical-align: middle">Fecha de creacion</th>
+                <th scope="col" style="vertical-align: middle">Fecha de descarga</th>
+                <th scope="col" style="vertical-align: middle">Version</th>
+                <th scope="col" style="vertical-align: middle">
+
+                  Operacion
+                  <br>
+                  <button class="btn btn-outline-success" (click)="limpiar(user.id_user, user.email)">
+                    limpiar
+                  </button>
+                </th>
+              </tr>
             </thead>
-            <tbody>
-            <tr *ngFor="let back of user.backups; let pos = index">
-              <th scope="row">{{ pos + 1 }}</th>
-              <td scope="row">{{ back.id_backup }}</td>
-              <td scope="row">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
-              <td scope="row">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
-              <td scope="row">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
-              <td scope="row">{{ back.created_in }}</td>
-              <td scope="row">
-                <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px">Eliminar</button>
-              </td>
+
+          <tbody>
+
+            <tr *cdkVirtualFor="let back of user.backups; let pos = index" class="text-center">
+              <ng-container>
+                <th scope="row">{{ pos + 1 }}</th>
+                <td scope="row">{{ back.id_backup }}</td>
+                <td scope="row">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
+                <td scope="row">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
+                <td scope="row">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+                <td scope="row">{{ back.created_in }}</td>
+                <td scope="row">
+                  <button type="button" class="btn btn-danger" style="width: 100px; font-size: 20px" (click)="eliminar(i, pos, back.id_backup)">Eliminar</button>
+                </td>
+              </ng-container>
             </tr>
             </tbody>
-          </table>
-        </div>
+        </table>
+        </cdk-virtual-scroll-viewport>
 
         <div class="container" *ngIf="user.cantRep == 0">
           <h5 class="font-weight-lighter">{{user.msj}}</h5>
         </div>
-
 
         </div>
     </div>
   </div>
 </div>
 <div class="container" *ngIf="backupService.mntBackups.length == 0">
-  <h3 class="font-weight-lighter">{{msj}}</h3>
+  <h3 class="font-weight-lighter text-center">{{msj}}</h3>
 </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChildren, Renderer2, HostListener} from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
@@ -13,13 +13,15 @@ import {CampoNumerico} from '../../../../Utilerias/validacionCampoNumerico';
 export class BackupsComponent implements OnInit {
 
   private email: string = "";
+  private rangoBackups: number = 10;
   private msj = "";
   public faArrowCircleDown = faArrowDown;
   public faArrowCircleUp = faArrowUp;
+  @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
   //public usuarioMntSearch: FormGroup;
 
-  constructor(private util: Utilerias, private backupService: BackupService) {
+  constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2) {
     this.buscarBackups();
   }
 
@@ -53,7 +55,7 @@ export class BackupsComponent implements OnInit {
   private buscarBackups() {
     this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
     this.util.crearLoading().then(() => {
-      this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, 10).subscribe(result => {
+      this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups).subscribe(result => {
         this.util.detenerLoading();
         this.msj = result.msj;
         this.util.msjToast(result.msj, result.titulo, result.error);
@@ -69,11 +71,14 @@ export class BackupsComponent implements OnInit {
   }
 
   public verficarExpansion(indice, idUser, email) {
+    // Nuevo metodo.
 
+
+    //Metodo antiguo.
     if (this.backupService.mntBackups[indice].collapsed == 0) { // Expandir
       this.msj = "Cargando backups del usuario: " + email;
       this.util.crearLoading().then(() => {
-        this.backupService.buscarBackups(idUser).subscribe(result => {
+        this.backupService.buscarBackups(idUser, 'asc').subscribe(result => {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.mntBackups[indice].msj = result.msj;
@@ -82,6 +87,7 @@ export class BackupsComponent implements OnInit {
 
           if (!result.error){
             this.backupService.mntBackups[indice].backups = result.backups;
+            this.expandir(500, 13, this.cntBackupsUser['_results'][indice].nativeElement);
             this.backupService.mntBackups[indice].collapsed  = 1;
           }
         }, error =>  {
@@ -89,17 +95,66 @@ export class BackupsComponent implements OnInit {
           this.util.msjErrorInterno(error);
         });
       });
-
-      //return true;
     } else { // Minimizar
+      this.minimizar(this.cntBackupsUser['_results'][indice].nativeElement);
       this.backupService.mntBackups[indice].collapsed  = 0;
-
-      //return false;
     }
     console.log(this.backupService.mntBackups[indice].collapsed );
+    console.log(this.cntBackupsUser['_results']);
+  }
+  private minimizar(content: any) {
+    console.log(content);
+    this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
+    this.renderer.setStyle(content, "height", "0px");
+    this.renderer.setStyle(content, "max-height", "0px");
+    this.renderer.setStyle(content, "padding", "0px 16px");
+    this.renderer.setStyle(content, "overflow", "hidden");
+  }
+  private expandir(H, P, content) {
+    console.log(content);
+    this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
+    this.renderer.setStyle(content, "height", H + "px");
+    this.renderer.setStyle(content, "max-height", H + "px");
+    this.renderer.setStyle(content, "padding", P + "px 16px");
   }
   public encabezado(i){
     return "#" + i;
   }
+  @HostListener("window:scroll", ['$event'])
+  doSomethingOnWindowScroll($event:Event){
+    /*let scrollOffset = $event.srcElement.children[0].scrollTop;
+    console.log("window scroll: ", scrollOffset);*/
+  }
+  public eliminar(indice, numBack, idBack) {
+    let opcion = confirm("Esta seguro de eliminar el Respaldo num: " + (numBack + 1) + ", Backup: " + idBack + "?");
+    if (opcion) {
+      // On Delete On Cascada.
+      this.util.crearLoading().then(()=> {
+        this.backupService.eliminarBackup(idBack).subscribe(
+          result => {
+            this.util.detenerLoading();
+            this.util.msjToast(result.msj, result.titulo, result.error);
+            if (!result.error) {
+              // Backuo Eliminado correctamente.
+              this.backupService.mntBackups[indice].backups.splice(numBack,1);
+              // this.backupService.backups.splice(numBack,1);
+            }
+            console.log(result);
+          },
+          error => {
+            this.util.detenerLoading();
+            this.util.msjErrorInterno(error);
+          });
+      });
+    }
+    console.log('Opcion Elegida', opcion);
+  }
 
+  public limpiar(idUser = 0, email = "Generales") {
+    let opcion = confirm("¿ Estas seguro de limpiar los backups " + ((idUser == 0) ? "de todos los usuarios generales ?": "del usuario : " + email ));
+    if (opcion) {
+
+    }
+    console.log(opcion);
+  }
 }

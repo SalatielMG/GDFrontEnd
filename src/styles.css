@@ -1,5 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+.tarjetaCuerpo {
+  height: 0px;
+  line-height: 1.5;
+  transition: max-height 500ms, padding 500ms;
+  overflow: hidden;
+}
+
 .inputSearch {
   width: 100%; height: 80px;
   background: rgba(255, 255, 255, 0.16);

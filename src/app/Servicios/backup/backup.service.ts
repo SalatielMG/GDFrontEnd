@@ -20,9 +20,9 @@ export class BackupService {
     return this.http.delete(URL + 'eliminarBackup', {params: {id: id}});
   }
 
-  public buscarBackups(idUser): Observable<any> {
+  public buscarBackups(idUser, order = "desc"): Observable<any> {
     this.backups = [];
-    return this.http.get(URL + 'buscarBackups', {params: {idUser: idUser}});
+    return this.http.get(URL + 'buscarBackups', {params: {idUser: idUser, orderby: order}});
   }
 
   public buscarBackupsUserCantidad(email, cantidad): Observable<any> {
