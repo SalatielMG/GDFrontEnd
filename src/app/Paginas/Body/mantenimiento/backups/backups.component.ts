@@ -3,6 +3,7 @@ import {Utilerias} from '../../../../Utilerias/Util';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
+import {CampoNumerico} from '../../../../Utilerias/validacionCampoNumerico';
 
 @Component({
   selector: 'app-backups',
@@ -23,6 +24,7 @@ export class BackupsComponent implements OnInit {
   }
 
   ngOnInit() {
+    new CampoNumerico("#rangoBackups");
     //this.construirFormulario();
   }
   /*public construirFormulario() {
