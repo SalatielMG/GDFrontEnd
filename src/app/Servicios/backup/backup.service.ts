@@ -32,5 +32,9 @@ export class BackupService {
   public corregirInconsistencia(Tabla): Observable<any> {
     return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla);
   }
+  public limpiarBackups(idUser, email, rango , cantidad):Observable<any> {
+    const param = (idUser == "0") ? {idUser: idUser, rango: rango} : {idUser: idUser, email: email , rango: rango, cantidad: cantidad};
+    return this.http.delete(URL + 'limpiarBackups', {params : param});
+  }
 
 }

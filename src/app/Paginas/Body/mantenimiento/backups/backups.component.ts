@@ -150,10 +150,30 @@ export class BackupsComponent implements OnInit {
     console.log('Opcion Elegida', opcion);
   }
 
-  public limpiar(idUser = 0, email = "Generales") {
-    let opcion = confirm("¿ Estas seguro de limpiar los backups " + ((idUser == 0) ? "de todos los usuarios generales ?": "del usuario : " + email ));
+  public limpiarBackups(idUser, email, cantidad, pos = 0) {
+    let Quien = (idUser == 0) ? "de todos los usuarios " + email : "del usuario : " + email;
+    let opcion = confirm("¿ Estas seguro de limpiar los backups " + Quien + " ?");
     if (opcion) {
+      this.msj = "Limpiando backups " + Quien;
+      this.util.crearLoading().then(() => {
+        this.backupService.limpiarBackups(idUser, email, this.rangoBackups, cantidad).subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          this.msj = result.msj;
+          if (!result.error) {
+            if (idUser != 0) {
+              this.backupService.mntBackups.splice(pos, 1);
 
+            } else {
+              this.backupService.mntBackups = [];
+            }
+          }
+          console.log(result);
+        },error => {
+          this.util.detenerLoading();
+          this.util.msjErrorInterno(error);
+        });
+      });
     }
     console.log(opcion);
   }
