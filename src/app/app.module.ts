@@ -50,6 +50,7 @@ import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistenci
     EncodeMXComponent,
     BackupsComponent,
     PaginaNoEmcontradaComponent,
+
   ],
   imports: [
     NgbModule,

@@ -31,7 +31,7 @@
           <label for="backup" class="col-form-label" style="font-size: 18px; font-weight: normal">Rango:</label>
         </div>
         <div class="col-5">
-          <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups" name="rangoBackups">
+          <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups" name="rangoBackups" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="col-5">
           <button class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, 'Generales', 0)">Limpiar</button>
@@ -143,6 +143,15 @@
         </div>
     </div>
   </div>
+
+  <div
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="1000"
+    (scrolled)="onScroll()">
+  </div>
+
+
 </div>
 <div class="container" *ngIf="backupService.mntBackups.length == 0">
   <h3 class="font-weight-lighter text-center">{{msj}}</h3>

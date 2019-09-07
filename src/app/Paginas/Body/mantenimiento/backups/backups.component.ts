@@ -14,28 +14,31 @@ export class BackupsComponent implements OnInit {
 
   private email: string = "";
   private rangoBackups: number = 10;
+  private pagina: number = 0;
+  private beforeRangoBackups: number;
   private msj = "";
   public faArrowCircleDown = faArrowDown;
   public faArrowCircleUp = faArrowUp;
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
-  //public usuarioMntSearch: FormGroup;
-
   constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2) {
+    this.resetearVariables();
+    this.buscarBackups();
+  }
+  onScroll () {
+    console.log('scrolled!!');
     this.buscarBackups();
   }
 
   ngOnInit() {
     new CampoNumerico("#rangoBackups");
-    //this.construirFormulario();
   }
-  /*public construirFormulario() {
-    this.usuarioMntSearch = this.formBuilder.group({
-      email: ['', [Validators.email, Validators.required]],
-    });
-  }*/
-
+  private resetearVariables() {
+    this.pagina = 0;
+    this.backupService.mntBackups = [];
+  }
   public search() {
+    this.resetearVariables();
     console.log("email user:", this.email);
     if (this.email.length == 0) {
       this.util.emailUserMntBackup = "Generales";
@@ -53,21 +56,36 @@ export class BackupsComponent implements OnInit {
 
   }
   private buscarBackups() {
-    this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
-    this.util.crearLoading().then(() => {
-      this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups).subscribe(result => {
-        this.util.detenerLoading();
-        this.msj = result.msj;
-        this.util.msjToast(result.msj, result.titulo, result.error);
-        if (!result.error) {
-          this.backupService.mntBackups = result.backups;
-        }
-        console.log(result);
+    if (this.pagina == 0) {
+      this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
+      this.util.crearLoading().then(() => {
+        this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
+          this.resultado(result);
+        }, error => {
+          this.util.detenerLoading();
+          this.util.msjErrorInterno(error);
+        });
+      });
+    } else {
+      this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
+        this.resultado(result, true);
       }, error => {
         this.util.detenerLoading();
         this.util.msjErrorInterno(error);
       });
-    });
+    }
+
+  }
+  private resultado(result, bnd = false) {
+    if (!bnd)
+      this.util.detenerLoading();
+    this.msj = result.msj;
+    this.util.msjToast(result.msj, result.titulo, result.error);
+    if (!result.error) {
+      this.pagina += 1;
+      this.backupService.mntBackups = this.backupService.mntBackups.concat(result.backups);
+    }
+    console.log(result);
   }
 
   public verficarExpansion(indice, idUser, email) {
@@ -158,14 +176,22 @@ export class BackupsComponent implements OnInit {
       this.util.crearLoading().then(() => {
         this.backupService.limpiarBackups(idUser, email, this.rangoBackups, cantidad).subscribe(result => {
           this.util.detenerLoading();
-          this.util.msjToast(result.msj, result.titulo, result.error);
-          this.msj = result.msj;
           if (!result.error) {
-            if (idUser != 0) {
+            if (idUser != 0) { // Un solo usuario
               this.backupService.mntBackups.splice(pos, 1);
-
-            } else {
+            } else { // General
               this.backupService.mntBackups = [];
+            }
+            this.util.msjToast(result.msj, result.titulo, result.error);
+            this.msj = result.msj;
+          } else  {
+            if (idUser == 0) {
+              this.util.msjErrorInterno(result.msj, result.titulo);
+              for (let errorUSer of result.errorUser) {
+                this.util.msjToast(errorUSer.msj, errorUSer.titulo, errorUSer.error);
+              }
+            } else {
+              this.util.msjToast(result.msj, result.titulo, result.error);
             }
           }
           console.log(result);
@@ -176,5 +202,20 @@ export class BackupsComponent implements OnInit {
       });
     }
     console.log(opcion);
+  }
+  afterBlur(event) {
+    // console.log("event Rango", event.target.value);
+    // console.log("This.Rango", this.rangoBackups);
+    if (this.beforeRangoBackups != this.rangoBackups) {
+      console.log('Adelante se tiene que hacer una consulta nueva.');
+      this.buscarBackups();
+
+    } else {
+      console.log("Ohh nada");
+    }
+  }
+  beforeBlur(event) {
+    // console.log("beforeBlur", event.target.value);
+    this.beforeRangoBackups = event.target.value;
   }
 }

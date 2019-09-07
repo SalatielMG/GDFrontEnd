@@ -119,8 +119,8 @@ export class Utilerias {
     this.toast.error(msj, titulo, );
   }
 
-  public msjErrorInterno(error) {
-    console.log('¡ ERROR INTERNO !',error);
+  public msjErrorInterno(error, titulo = '¡ ERROR INTERNO !') {
+    console.log(titulo, error);
     this.toast.warning(error, "¡ ERROR INTERNO !", {
       closeButton: true,
       disableTimeOut: true,

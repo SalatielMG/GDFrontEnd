@@ -25,9 +25,9 @@ export class BackupService {
     return this.http.get(URL + 'buscarBackups', {params: {idUser: idUser, orderby: order}});
   }
 
-  public buscarBackupsUserCantidad(email, cantidad): Observable<any> {
+  public buscarBackupsUserCantidad(email, cantidad, pagina): Observable<any> {
     this.mntBackups = [];
-    return this.http.get(URL + 'buscarBackupUserCantidad', {params: {email: email, cantidad: cantidad}});
+    return this.http.get(URL + 'buscarBackupUserCantidad', {params: {email: email, cantidad: cantidad, pagina: pagina}});
   }
   public corregirInconsistencia(Tabla): Observable<any> {
     return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla);
