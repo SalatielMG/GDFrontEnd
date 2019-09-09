@@ -20,13 +20,13 @@ export class BackupService {
     return this.http.delete(URL + 'eliminarBackup', {params: {id: id}});
   }
 
-  public buscarBackups(idUser, order = "desc"): Observable<any> {
-    this.backups = [];
-    return this.http.get(URL + 'buscarBackups', {params: {idUser: idUser, orderby: order}});
+  public buscarBackups(idUser, pagina, order = "desc"): Observable<any> {
+    //this.backups = [];
+    return this.http.get(URL + 'buscarBackups', {params: {idUser: idUser, pagina: pagina, orderby: order}});
   }
 
   public buscarBackupsUserCantidad(email, cantidad, pagina): Observable<any> {
-    this.mntBackups = [];
+    // this.mntBackups = [];
     return this.http.get(URL + 'buscarBackupUserCantidad', {params: {email: email, cantidad: cantidad, pagina: pagina}});
   }
   public corregirInconsistencia(Tabla): Observable<any> {

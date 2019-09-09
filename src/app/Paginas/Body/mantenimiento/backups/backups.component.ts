@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChildren, Renderer2, HostListener} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChildren, Renderer2} from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +11,6 @@ import {CampoNumerico} from '../../../../Utilerias/validacionCampoNumerico';
   styleUrls: ['./backups.component.css']
 })
 export class BackupsComponent implements OnInit {
-
   private email: string = "";
   private rangoBackups: number = 10;
   private pagina: number = 0;
@@ -29,9 +28,9 @@ export class BackupsComponent implements OnInit {
     console.log('scrolled!!');
     this.buscarBackups();
   }
-
   ngOnInit() {
     new CampoNumerico("#rangoBackups");
+    this.util.ready();
   }
   private resetearVariables() {
     this.pagina = 0;
@@ -48,12 +47,10 @@ export class BackupsComponent implements OnInit {
         this.util.emailUserMntBackup = this.email;
         console.log("this.util.emailUserMntBackup ", this.util.emailUserMntBackup );
         this.buscarBackups();
-
       } else {
         this.util.msjToast("Porfavor ingrese un correo valido", "Email no Valido", true);
       }
     }
-
   }
   private buscarBackups() {
     if (this.pagina == 0) {
@@ -62,41 +59,36 @@ export class BackupsComponent implements OnInit {
         this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
-          this.util.detenerLoading();
           this.util.msjErrorInterno(error);
         });
       });
     } else {
       this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
-        this.resultado(result, true);
+        this.resultado(result, false);
       }, error => {
-        this.util.detenerLoading();
-        this.util.msjErrorInterno(error);
+        this.util.msjErrorInterno(error, false);
       });
     }
-
   }
-  private resultado(result, bnd = false) {
-    if (!bnd)
+  private resultado(result, bnd = true) {
+    if (bnd)
       this.util.detenerLoading();
     this.msj = result.msj;
     this.util.msjToast(result.msj, result.titulo, result.error);
     if (!result.error) {
       this.pagina += 1;
       this.backupService.mntBackups = this.backupService.mntBackups.concat(result.backups);
+      //let nuevoBack = this.backupService.mntBackups.concat(result.backups);
+      console.log("this.backupService.mntBackups", this.backupService.mntBackups);
     }
-    console.log(result);
+    // console.log(result);
   }
 
   public verficarExpansion(indice, idUser, email) {
-    // Nuevo metodo.
-
-
-    //Metodo antiguo.
     if (this.backupService.mntBackups[indice].collapsed == 0) { // Expandir
       this.msj = "Cargando backups del usuario: " + email;
       this.util.crearLoading().then(() => {
-        this.backupService.buscarBackups(idUser, 'asc').subscribe(result => {
+        this.backupService.buscarBackups(idUser, '-1' ,'asc').subscribe(result => {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.mntBackups[indice].msj = result.msj;
@@ -109,7 +101,6 @@ export class BackupsComponent implements OnInit {
             this.backupService.mntBackups[indice].collapsed  = 1;
           }
         }, error =>  {
-          this.util.detenerLoading();
           this.util.msjErrorInterno(error);
         });
       });
@@ -138,12 +129,8 @@ export class BackupsComponent implements OnInit {
   public encabezado(i){
     return "#" + i;
   }
-  @HostListener("window:scroll", ['$event'])
-  doSomethingOnWindowScroll($event:Event){
-    /*let scrollOffset = $event.srcElement.children[0].scrollTop;
-    console.log("window scroll: ", scrollOffset);*/
-  }
   public eliminar(indice, numBack, idBack) {
+    console.log(this.backupService.mntBackups[indice]);
     let opcion = confirm("Esta seguro de eliminar el Respaldo num: " + (numBack + 1) + ", Backup: " + idBack + "?");
     if (opcion) {
       // On Delete On Cascada.
@@ -160,7 +147,6 @@ export class BackupsComponent implements OnInit {
             console.log(result);
           },
           error => {
-            this.util.detenerLoading();
             this.util.msjErrorInterno(error);
           });
       });
@@ -196,7 +182,6 @@ export class BackupsComponent implements OnInit {
           }
           console.log(result);
         },error => {
-          this.util.detenerLoading();
           this.util.msjErrorInterno(error);
         });
       });

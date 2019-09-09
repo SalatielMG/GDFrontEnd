@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+declare var $: any;
 
 @Injectable()
 
@@ -66,6 +67,21 @@ export class Utilerias {
     }
     return color.slice(0, (length - 1));
   }
+  public ready(up = 'right') {
+    $('.up-' + up).hide();
+    $(window).scroll(function(){
+      if ($(this).scrollTop() > 100) {
+        $('.up-' + up).fadeIn('1000');
+      } else {
+        $('.up-' + up).fadeOut('1000');
+      }
+    });
+  }
+  public subir() {
+    $('body, html').animate({
+      scrollTop: 0
+    }, 200);
+  }
   public backgroundColor = [
     "rgba(128, 0, 128, 0.5)",
     "rgba(255, 0, 255, 0.5)",
@@ -119,7 +135,8 @@ export class Utilerias {
     this.toast.error(msj, titulo, );
   }
 
-  public msjErrorInterno(error, titulo = '¡ ERROR INTERNO !') {
+  public msjErrorInterno(error, bnd = true, titulo = '¡ ERROR INTERNO !') {
+    if (bnd) this.detenerLoading();
     console.log(titulo, error);
     this.toast.warning(error, "¡ ERROR INTERNO !", {
       closeButton: true,

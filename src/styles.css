@@ -1,5 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+.up-right {
+  border: 0px;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  background: #E45E4E;
+  z-index: 3;
+}
+.up-left {
+  border: 0px;
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  background: #E45E4E;
+  z-index: 3;
+}
+
 .tarjetaCuerpo {
   height: 0px;
   line-height: 1.5;

@@ -15,6 +15,11 @@
 <div class="container text-center" *ngIf="backService.backups.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">El usuario todavia no ha realizado ningun respaldo</h2>
 </div>
+<button class="up-left rounded-circle" (click)="util.subir()">
+    <span>
+      <fa-icon [icon]="faArrowUp"></fa-icon>
+    </span>
+</button>
 <div *ngIf="backService.backups.length > 0">
   <table class="table table-hover">
     <thead class="thead-dark">
@@ -31,7 +36,6 @@
     </thead>
     <tbody>
     <tr *ngFor="let back of backService.backups; let i = index" >
-
       <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
       <td class="Celdas-Tabla" [routerLink]="['/backup', (i+1), back.id_backup]">{{back.id_backup}}</td>
       <!--td class="text-center">{{back.id_user}}</td-->
@@ -44,21 +48,11 @@
         <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
       </td>
     </tr>
-
+    <div
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      (scrolled)="onScroll()">
+    </div>
     </tbody>
   </table>
-
-  <nav aria-label="Page navigation example">
-    <ul class="pagination pagination-lg" style="justify-content: center;">
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">Anterior</a></li>
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">1</a></li>
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">2</a></li>
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">3</a></li>
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">4</a></li>
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">5</a></li>
-      <li class="page-item text-primary"><a class="page-link" (click)="prueba()">Siguiente</a></li>
-    </ul>
-  </nav>
-
 </div>
-

@@ -6,6 +6,7 @@ import { registerLocaleData } from '@angular/common';
 registerLocaleData(localeEs);
 
 import { AppRoutingModule } from './app-routing.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /*Dependencias*/
 import { ToastrModule } from 'ngx-toastr';
@@ -53,6 +54,7 @@ import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistenci
 
   ],
   imports: [
+    InfiniteScrollModule,
     NgbModule,
     BrowserModule,
     ReactiveFormsModule,
