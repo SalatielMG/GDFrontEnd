@@ -17,9 +17,8 @@ export class MovementsService {
     this.Movements = [];
     return this.http.get(URL + 'buscarMovementsBackup', {params:{idBack: idBackup}});
   }
-  public inconsistenciaDatos(email): Observable<any> {
-    this.Movements = [];
-    return this.http.get(URL + 'buscarInconsistenciaDatosMovements', {params: {email: email}});
+  public inconsistenciaDatos(email, pagina): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosMovements', {params: {email: email, pagina: pagina}});
   }
 
 }

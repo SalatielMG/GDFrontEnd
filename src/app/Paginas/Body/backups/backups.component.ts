@@ -49,10 +49,11 @@ export class BackupsComponent implements OnInit {
     }
   }
   private resultado(result, bnd = true) {
-    if (bnd)
+    if (bnd) {
       this.util.detenerLoading();
-    this.msj = result.msj;
-    this.util.msjToast(result.msj, result.titulo, result.error);
+      this.msj = result.msj;
+      this.util.msjToast(result.msj, result.titulo, result.error);
+    }
     if (!result.error) {
       this.pagina += 1;
       this.backService.backups = this.backService.backups.concat(result.backups);

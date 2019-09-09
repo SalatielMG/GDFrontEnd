@@ -10,24 +10,51 @@ import {MovementsService} from '../../../../../Servicios/movements/movements.ser
 export class MovementsComponent implements OnInit {
 
   public msj;
+  private pagina: number = 0;
 
   constructor(private movementsService: MovementsService, private util: Utilerias) {
-    this.msj = 'Buscando inconsistencia de datos en la tabla Movements';
-    this.util.crearLoading().then(() => {
-      this.movementsService.inconsistenciaDatos(this.util.emailUserMntInconsistencia).subscribe(result => {
-        this.util.detenerLoading();
-        this.util.msjToast(result.msj, result.titulo, result.error);
-        if (!result.error) {
-          this.movementsService.Movements = result.movements;
-        }
-      }, error => {
-        this.util.detenerLoading();
-        this.util.msjErrorInterno(error);
-      });
-    });
+    this.resetearVariables();
+    this.buscarInconsistencias();
   }
 
   ngOnInit() {
+    this.util.ready();
+  }
+  public onScroll() {
+    this.buscarInconsistencias();
+  }
+  private resetearVariables() {
+    this.movementsService.Movements = [];
+    this.pagina = 0;
+  }
+  private buscarInconsistencias() {
+    if (this.pagina == 0) {
+      this.msj = 'Buscando inconsistencia de datos en la tabla Movements';
+      this.util.crearLoading().then(() => {
+        this.movementsService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+          this.resultado(result);
+        }, error => {
+          this.util.msjErrorInterno(error);
+        });
+      });
+    } else {
+      this.movementsService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.resultado(result, false);
+      }, error => {
+        this.util.msjErrorInterno(error, false);
+      });
+    }
+  }
+  private resultado(result, bnd =  true) {
+    if (bnd) {
+      this.util.detenerLoading();
+      this.msj = result.msj;
+      this.util.msjToast(result.msj, result.titulo, result.error);
+    }
+    if (!result.error) {
+      this.pagina += 1;
+      this.movementsService.Movements = this.movementsService.Movements.concat(result.movements);
+    }
   }
 
 }

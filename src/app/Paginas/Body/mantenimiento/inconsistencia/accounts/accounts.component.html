@@ -7,13 +7,18 @@
   <p style="font-size: 20px; color: white">{{msj}}</p>
 </ngx-spinner>
 
+<button class="up-right rounded-circle" (click)="util.subir()">
+    <span>
+      <fa-icon [icon]="faArrowUp"></fa-icon>
+    </span>
+</button>
+
 <div class="container text-center" *ngIf="accountService.Accounts.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">La tabla Account no tiene inconsistencia de datos</h2>
 </div>
 <div *ngIf="accountService.Accounts.length > 0">
   <table class="table table-hover">
     <thead class="thead-dark">
-
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
       <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
@@ -63,7 +68,11 @@
         <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
       </td>
     </tr>
-
+    <div
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      (scrolled)="onScroll()">
+    </div>
     </tbody>
   </table>
 </div>

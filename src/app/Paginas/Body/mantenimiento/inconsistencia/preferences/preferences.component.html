@@ -7,6 +7,12 @@
   <p style="font-size: 20px; color: white">{{msj}}</p>
 </ngx-spinner>
 
+<button class="up-right rounded-circle" (click)="util.subir()">
+    <span>
+      <fa-icon [icon]="util.faArrowUp"></fa-icon>
+    </span>
+</button>
+
 <div class="container text-center" *ngIf="preferencesService.Preferences.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">La tabla Preferences no tiene inconsistencia de datos</h2>
 </div>
@@ -35,7 +41,11 @@
         <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
       </td>
     </tr>
-
+    <div
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      (scrolled)="onScroll()">
+    </div>
     </tbody>
   </table>
 </div>

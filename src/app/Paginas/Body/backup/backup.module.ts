@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { BackupComponent } from './backup.component';
 import { BackupRoutingModule } from './backup-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 
 /*Componentes*/
 import { AccountsComponent } from './accounts/accounts.component';
@@ -30,6 +33,8 @@ import { PreferencesService } from '../../../Servicios/preferences/preferences.s
 @NgModule({
   declarations: [BackupComponent, AccountsComponent, AutomaticsComponent, BudgetsComponent, CardviewsComponent, CategoriesComponent, CurrenciesComponent, ExtrasComponent, MovementsComponent, PreferencesComponent],
   imports: [
+    FontAwesomeModule,
+    InfiniteScrollModule,
     NgxSpinnerModule,
     CommonModule,
     BackupRoutingModule

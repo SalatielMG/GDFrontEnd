@@ -71,10 +71,11 @@ export class BackupsComponent implements OnInit {
     }
   }
   private resultado(result, bnd = true) {
-    if (bnd)
+    if (bnd){
       this.util.detenerLoading();
-    this.msj = result.msj;
-    this.util.msjToast(result.msj, result.titulo, result.error);
+      this.msj = result.msj;
+      this.util.msjToast(result.msj, result.titulo, result.error);
+    }
     if (!result.error) {
       this.pagina += 1;
       this.backupService.mntBackups = this.backupService.mntBackups.concat(result.backups);
@@ -193,6 +194,7 @@ export class BackupsComponent implements OnInit {
     // console.log("This.Rango", this.rangoBackups);
     if (this.beforeRangoBackups != this.rangoBackups) {
       console.log('Adelante se tiene que hacer una consulta nueva.');
+      this.resetearVariables();
       this.buscarBackups();
 
     } else {
