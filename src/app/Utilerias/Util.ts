@@ -18,7 +18,9 @@ export class Utilerias {
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
 
-  private faArrowUp = faArrowUp;
+  public faArrowUp = faArrowUp;
+  public loading: boolean = true;
+
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService){
   }
@@ -140,6 +142,7 @@ export class Utilerias {
   }
 
   public msjErrorInterno(error, bnd = true, titulo = '¡ ERROR INTERNO !') {
+    this.loading = false;
     if (bnd) this.detenerLoading();
     console.log(titulo, error);
     this.toast.warning(error, "¡ ERROR INTERNO !", {

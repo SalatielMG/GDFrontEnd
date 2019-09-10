@@ -29,6 +29,7 @@ export class CategoriesComponent implements OnInit {
     this.pagina = 0;
   }
   private buscarInconsistencia() {
+    this.util.loading = true;
     if (this.pagina == 0){
       this.msj = 'Buscando inconsistencia de datos en la tabla Categories';
       this.util.crearLoading().then(() => {
@@ -56,5 +57,6 @@ export class CategoriesComponent implements OnInit {
       this.pagina += 1;
       this.categoriesService.Categories = this.categoriesService.Categories.concat(result.categories);
     }
+    this.util.loading = false;
   }
 }

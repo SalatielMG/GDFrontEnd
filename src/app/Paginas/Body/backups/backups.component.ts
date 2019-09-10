@@ -31,6 +31,7 @@ export class BackupsComponent implements OnInit {
     this.backService.backups = [];
   }
   private buscar() {
+    this.util.loading = true;
     if (this.pagina == 0) {
       this.msj = "Buscando Backups del usuario: " + this.userService.User.email;
       this.util.crearLoading().then(() => {
@@ -58,6 +59,7 @@ export class BackupsComponent implements OnInit {
       this.pagina += 1;
       this.backService.backups = this.backService.backups.concat(result.backups);
     }
+    this.util.loading = false;
   }
   public eliminar(numBack, idBack) {
     let opcion = confirm("Esta seguro de eliminar el Respaldo num: " + (numBack + 1) + ", Backup: " + idBack + "?");

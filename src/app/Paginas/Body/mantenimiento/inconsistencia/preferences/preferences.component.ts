@@ -31,6 +31,7 @@ export class PreferencesComponent implements OnInit {
   }
 
   private buscarInconsistencias(){
+    this.util.loading = true;
     if (this.pagina == 0) {
       this.msj = 'Buscando inconsistencia de datos en la tabla Preferences';
       this.util.crearLoading().then(() => {
@@ -59,6 +60,7 @@ export class PreferencesComponent implements OnInit {
       this.pagina += 1;
       this.preferencesService.Preferences = this.preferencesService.Preferences.concat(result.preferences);
     }
+    this.util.loading = false;
   }
 
 }

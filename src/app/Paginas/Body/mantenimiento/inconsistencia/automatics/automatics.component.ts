@@ -31,6 +31,7 @@ export class AutomaticsComponent implements OnInit {
   }
 
   private buscarInconsistencia() {
+    this.util.loading = true;
     if(this.pagina == 0) {
       this.msj = 'Buscando inconsistencia de datos en la tabla Automatics';
       this.util.crearLoading().then(() => {
@@ -59,6 +60,7 @@ export class AutomaticsComponent implements OnInit {
       this.pagina += 1;
       this.automaticsService.Automatics = this.automaticsService.Automatics.concat(result.automatics);
     }
+    this.util.loading = false;
   }
 
 }

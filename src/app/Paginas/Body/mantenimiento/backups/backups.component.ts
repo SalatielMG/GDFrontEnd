@@ -18,6 +18,7 @@ export class BackupsComponent implements OnInit {
   private msj = "";
   public faArrowCircleDown = faArrowDown;
   public faArrowCircleUp = faArrowUp;
+
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
   constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2) {
@@ -53,6 +54,7 @@ export class BackupsComponent implements OnInit {
     }
   }
   private buscarBackups() {
+    this.util.loading = true;
     if (this.pagina == 0) {
       this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
       this.util.crearLoading().then(() => {
@@ -82,6 +84,7 @@ export class BackupsComponent implements OnInit {
       //let nuevoBack = this.backupService.mntBackups.concat(result.backups);
       console.log("this.backupService.mntBackups", this.backupService.mntBackups);
     }
+    this.util.loading = false;
     // console.log(result);
   }
 
@@ -118,7 +121,7 @@ export class BackupsComponent implements OnInit {
     this.renderer.setStyle(content, "height", "0px");
     this.renderer.setStyle(content, "max-height", "0px");
     this.renderer.setStyle(content, "padding", "0px 16px");
-    this.renderer.setStyle(content, "overflow", "hidden");
+    // this.renderer.setStyle(content, "overflow", "hidden");
   }
   private expandir(H, P, content) {
     console.log(content);
@@ -143,6 +146,7 @@ export class BackupsComponent implements OnInit {
             if (!result.error) {
               // Backuo Eliminado correctamente.
               this.backupService.mntBackups[indice].backups.splice(numBack,1);
+
               // this.backupService.backups.splice(numBack,1);
             }
             console.log(result);
@@ -204,5 +208,15 @@ export class BackupsComponent implements OnInit {
   beforeBlur(event) {
     // console.log("beforeBlur", event.target.value);
     this.beforeRangoBackups = event.target.value;
+  }
+  public prueba(event){
+    if (event.key == "Enter") {
+      if (this.rangoBackups != this.beforeRangoBackups) {
+        this.resetearVariables();
+
+        this.afterBlur(event);
+
+      }
+    }
   }
 }

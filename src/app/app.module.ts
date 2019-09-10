@@ -41,6 +41,7 @@ import { MantenimientoModule } from './Paginas/Body/mantenimiento/mantenimiento.
 import { ExportacionModule } from './Paginas/Body/exportacion/exportacion.module';
 import { UsuariosModule } from './Paginas/Body/usuarios/usuarios.module';
 import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistencia/inconsistencia.module';
+import { LoadingSpinnerModule } from './Components/loading-spinner/loading-spinner/loading-spinner.module';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistenci
 
   ],
   imports: [
+    LoadingSpinnerModule,
     InfiniteScrollModule,
     NgbModule,
     BrowserModule,

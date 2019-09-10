@@ -20,6 +20,9 @@
     </nav>
   </div>
 </div>
+
+
+
 <div class="text-center" style=" padding: 50px">
   <h2 class="font-weight-bold">Backups</h2>
   <h3 class="font-weight-lighter">{{util.emailUserMntBackup}}</h3>
@@ -31,7 +34,7 @@
           <label for="backup" class="col-form-label" style="font-size: 18px; font-weight: normal">Rango:</label>
         </div>
         <div class="col-5">
-          <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups" name="rangoBackups" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
+          <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups" name="rangoBackups" (keyup)="pruegitba($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="col-5">
           <button class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, 'Generales', 0)">Limpiar</button>
@@ -87,54 +90,46 @@
 
     <div #cntBackupsUser class="tarjetaCuerpo">
 
-      <div class="card-body">
-        <cdk-virtual-scroll-viewport  style="height: 500px;" itemSize="1">
-
-        <table class="table table-striped">
-
-            <thead>
-              <tr class="text-center" >
-                <th scope="col" style="vertical-align: middle">#</th>
-                <th scope="col" style="vertical-align: middle">Backup</th>
-                <th scope="col" style="vertical-align: middle">Automatico</th>
-                <th scope="col" style="vertical-align: middle">Fecha de creacion</th>
-                <th scope="col" style="vertical-align: middle">Fecha de descarga</th>
-                <th scope="col" style="vertical-align: middle">Version</th>
-                <th scope="col" style="vertical-align: middle">
-
-                  Operacion
-                  <br>
-                  <button class="btn btn-outline-success" (click)="limpiarBackups(user.id_user, user.email, user.cantRep, i)">
-                    limpiar
-                  </button>
-                </th>
-              </tr>
-            </thead>
-
-          <tbody>
-          <ng-container *cdkVirtualFor="let back of user.backups; let pos = index">
-            <tr class="text-center">
-                <th scope="row">{{ pos + 1 }}</th>
-                <td scope="row">{{ back.id_backup }}</td>
-                <td scope="row">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
-                <td scope="row">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
-                <td scope="row">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
-                <td scope="row">{{ back.created_in }}</td>
-                <td scope="row">
-                  <button type="button" class="btn btn-danger" style="width: 100px; font-size: 20px" (click)="eliminar(i, pos, back.id_backup)">Eliminar</button>
-                </td>
+      <div class="card-body" style="height: 100%; overflow-y: scroll;">
+          <table class="table table-hover" *ngIf="user.cantRep > 0" >
+            <thead >
+            <tr class="text-center" >
+              <th scope="col" style="vertical-align: middle">#</th>
+              <th scope="col" style="vertical-align: middle">Backup</th>
+              <th scope="col" style="vertical-align: middle">Automatico</th>
+              <th scope="col" style="vertical-align: middle">Fecha de creacion</th>
+              <th scope="col" style="vertical-align: middle">Fecha de descarga</th>
+              <th scope="col" style="vertical-align: middle">Version</th>
+              <th scope="col" style="vertical-align: middle">
+                Operacion
+                <br>
+                <button class="btn btn-outline-success" (click)="limpiarBackups(user.id_user, user.email, user.cantRep, i)">
+                  limpiar
+                </button>
+              </th>
             </tr>
-          </ng-container>
-
-          </tbody>
-        </table>
-        </cdk-virtual-scroll-viewport>
+            </thead>
+            <tbody style="overflow-y: scroll !important; height: 300px">
+            <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
+              <th scope="row">{{ pos + 1 }}</th>
+              <td scope="row">{{ back.id_backup }}</td>
+              <td scope="row">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
+              <td scope="row">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
+              <td scope="row">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+              <td scope="row">{{ back.created_in }}</td>
+              <td scope="row">
+                <button type="button" class="btn btn-danger" style="width: 100px; font-size: 20px" (click)="eliminar(i, pos, back.id_backup)">Eliminar</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
 
         <div class="container" *ngIf="user.cantRep == 0">
           <h5 class="font-weight-lighter">{{user.msj}}</h5>
         </div>
 
         </div>
+
     </div>
   </div>
 
@@ -143,6 +138,8 @@
     [infiniteScrollDistance]="2"
     (scrolled)="onScroll()">
   </div>
+
+  <loading-spinner *ngIf="util.loading"></loading-spinner>
 
 </div>
 <div class="container" *ngIf="backupService.mntBackups.length == 0">

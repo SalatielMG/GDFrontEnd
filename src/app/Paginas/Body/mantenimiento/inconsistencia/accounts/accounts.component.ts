@@ -35,6 +35,7 @@ export class AccountsComponent implements OnInit {
   }
 
   private buscarInconsistencia() {
+    this.util.loading = true;
     if (this.pagina == 0) {
       this.msj = 'Buscando inconsistencia de datos en la tabla Accounts';
       this.util.crearLoading().then(() => {
@@ -64,6 +65,8 @@ export class AccountsComponent implements OnInit {
       this.pagina += 1;
       this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
     }
+    this.util.loading = false;
+
   }
 
 

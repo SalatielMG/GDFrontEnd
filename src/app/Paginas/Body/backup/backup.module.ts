@@ -6,7 +6,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
-
 /*Componentes*/
 import { AccountsComponent } from './accounts/accounts.component';
 import { AutomaticsComponent } from './automatics/automatics.component';

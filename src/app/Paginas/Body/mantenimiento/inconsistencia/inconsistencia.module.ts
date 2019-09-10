@@ -17,6 +17,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {LoadingSpinnerModule} from '../../../../Components/loading-spinner/loading-spinner/loading-spinner.module';
+
 
 @NgModule({
   declarations: [InconsistenciaComponent, AccountsComponent, AutomaticsComponent, BudgetsComponent, CardviewsComponent, CategoriesComponent, CurrenciesComponent, ExtrasComponent, MovementsComponent, PreferencesComponent],
@@ -24,7 +26,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     InfiniteScrollModule,
     NgxSpinnerModule,
     CommonModule,
-    InconsistenciaRoutingModule
+    InconsistenciaRoutingModule,
+    LoadingSpinnerModule
   ]
 })
 export class InconsistenciaModule { }

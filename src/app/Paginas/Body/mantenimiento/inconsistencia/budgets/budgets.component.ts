@@ -31,6 +31,7 @@ export class BudgetsComponent implements OnInit {
     this.pagina = 0;
   }
   private buscarInconsistencia() {
+    this.util.loading = true;
     if (this.pagina == 0) {
       this.msj = 'Buscando inconsistencia de datos en la tabla Budgets';
       this.util.crearLoading().then(() => {
@@ -58,6 +59,7 @@ export class BudgetsComponent implements OnInit {
       this.pagina += 1;
       this.budgetService.Budgets = this.budgetService.Budgets.concat(result.budgets);
     }
+    this.util.loading = false;
   }
 
 }
