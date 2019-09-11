@@ -11,19 +11,17 @@ import {BackupService} from "../../../../Servicios/backup/backup.service";
 export class InconsistenciaComponent implements OnInit {
 
   private email: string = "";
+  private backup: number = 0;
   //  public usuarioMntSearch: FormGroup;
 
   constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
               private router: Router) { }
 
   ngOnInit() {
-    // this.construirFormulario();
   }
-  /*public construirFormulario() {
-    this.usuarioMntSearch = this.formBuilder.group({
-      email: ['', [Validators.email, Validators.required]],
-    });
-  }*/
+  private prueba() {
+    console.log('Valor backup:= ', this.backup);
+  }
   public search() {
     console.log("email user:", this.email);
     if (this.email.length == 0){

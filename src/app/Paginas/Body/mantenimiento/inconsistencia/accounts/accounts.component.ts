@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AccountsService} from "../../../../../Servicios/accounts/accounts.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
+import {BackupService} from "../../../../../Servicios/backup/backup.service";
 
 
 @Component({
@@ -15,7 +16,7 @@ export class AccountsComponent implements OnInit {
   private pagina: number = 0;
   private faArrowUp = faArrowUp;
 
-  constructor(private accountService: AccountsService, private util: Utilerias) {
+  constructor(private backupService: BackupService, private accountService: AccountsService, private util: Utilerias) {
     this.resetearVariables();
     this.buscarInconsistencia();
   }
@@ -30,6 +31,7 @@ export class AccountsComponent implements OnInit {
   }
 
   private resetearVariables() {
+    this.backupService.backups = [];
     this.accountService.Accounts = [];
     this.pagina = 0;
   }
@@ -64,6 +66,7 @@ export class AccountsComponent implements OnInit {
     if (!result.error) {
       this.pagina += 1;
       this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
+      this.backupService.backups = result.backupsUser;
     }
     this.util.loading = false;
 

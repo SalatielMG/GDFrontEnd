@@ -10,18 +10,36 @@
         <div class="col-2">
           <button class="btn btn-lg btn-primary btnSearch" type="submit">Buscar</button>
         </div>
+
       </form>
     </nav>
   </div>
 </div>
+
 <!-- Buscador -->
 <div class="text-center" style=" padding: 50px">
-  <h2 class="font-weight-bold">Inconsistencia de Datos</h2>
-  <br>
-  <h3 class="font-weight-light">{{util.emailUserMntInconsistencia}}</h3>
-  <br>
-
-  <button class="btn  btn-outline-success" (click)="corregirTabla()">Corregir Tabla</button>
+  <div class="row" style="display: block">
+    <h2 class="font-weight-bold text-center">Inconsistencia de Datos</h2>
+  </div>
+  <div class="row" >
+    <div class="col-2"></div>
+    <div class="col-8">
+      <h3 class="font-weight-light text-center">{{util.emailUserMntInconsistencia}}</h3>
+    </div>
+    <div class="col-2">
+        <div class="form-group row">
+          <label for="backup" class="col-sm-4 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
+          <div class="col-sm-8">
+            <select id="backup" class="form-control" [(ngModel)]="backup" name="backup" (change)="prueba()">
+              <option *ngFor="let b of backupService.backups;" value="{{b.id_backup}}">{{b.id_backup}}</option>
+            </select>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row" style="display: block">
+    <button class="btn  btn-outline-success" (click)="corregirTabla()">Corregir Tabla</button>
+  </div>
 </div>
 
 <ul class="nav nav-tabs nav-color">
