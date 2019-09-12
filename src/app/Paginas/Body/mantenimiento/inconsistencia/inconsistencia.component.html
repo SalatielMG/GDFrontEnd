@@ -1,18 +1,78 @@
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalCenterTitle">FILTRO BACKUPS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrar()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="row" style="width: 100%; display: block">
+          <h3 class="font-weight-normal text-center">Usuario{{((util.emailUserMntInconsistencia == "Generales")  ? "s ": ": ") + util.emailUserMntInconsistencia}}</h3>
+        </div>
+        <div *ngIf="backupService.backups.length > 0">
+          <form class="form-row">
+            <div class="col-11" style="padding-right: 5px">
+              <input class="form-control mr-sm-2" style="margin-right: 0px" type="search" placeholder="Filtros backups" aria-label="Search">
+            </div>
+            <button class="btn btn-outline-success my-2 my-sm-0 col-1" type="submit">
+              <span>
+                <fa-icon [icon]="util.faSearch"></fa-icon>
+              </span>
+            </button>
+          </form>
+          <br>
+          <div class="main-principal">
+            <table class="table table-hover">
+              <thead>
+              <tr class="text-center">
+                <th scope="col">#</th>
+                <th scope="col">Backup</th>
+                <th scope="col" *ngIf="util.emailUserMntInconsistencia == 'Generales'">Usuario</th>
+                <th scope="col">Automatico</th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col">Fecha de descarga</th>
+                <th scope="col">Version</th>
+                <th scope="col">Seleccionar</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let back of backupService.backups; let i = index" class="text-center" (click)="checkBackup(i)">
+                <th scope="row">{{(i + 1)}}</th>
+                <td>{{back.id_backup}}</td>
+                <td  *ngIf="util.emailUserMntInconsistencia == 'Generales'">{{back.email}}</td>
+                <td>{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                <td>{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                <td>{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                <td>{{back.created_in}}</td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
+                    <label class="custom-control-label" [attr.for]="i"></label>
+                  </div>
+                </td>
+              </tr>
+              <div
+                [fromRoot]="true"
+                infiniteScroll
+                [infiniteScrollDistance]="2"
+                infiniteScrollContainer=".main-principal"
+                (scrolled)="onScroll()"
+              >
+              </div>
+              </tbody>
+            </table>
+            <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
+          </div>
+        </div>
+        <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups == 0">
+          <h4 class="font-weight-light">{{util.msjModal}}</h4>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cerrar()">Cerrar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="guardarValorBackups()">Guardar</button>
       </div>
     </div>
   </div>
@@ -51,15 +111,17 @@
         <div class="form-group row">
           <label for="backup" class="col-sm-4 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
           <div class="col-sm-8">
-            <select id="backup" class="form-control" [(ngModel)]="backup" name="backup" (change)="prueba()">
-              <option *ngFor="let b of backupService.backups;" value="{{b.id_backup}}">{{b.id_backup}}</option>
+            <select id="backup" multiple class="form-control" [(ngModel)]="backup" name="backup" (change)="prueba($event)">
+              <option *ngFor="let b of backupService.backups; let indice = index" value="{{b.id_backup}}">{{b.id_backup}}</option>
             </select>
           </div>
         </div>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-        Modal
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" (click)="abrirModal()">
+        <span>
+          <fa-icon [icon]="util.faFilter"></fa-icon>
+        </span>
       </button>
     </div>
   </div>

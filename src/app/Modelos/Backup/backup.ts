@@ -10,4 +10,5 @@ export interface Backup {
   backups: Backup[],
   msj: string,
   cantRep: number,
+  checked: boolean
 }

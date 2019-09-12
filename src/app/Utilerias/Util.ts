@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
+import {faFilter} from "@fortawesome/free-solid-svg-icons";
 
 declare var $: any;
 
@@ -19,6 +21,8 @@ export class Utilerias {
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
 
   public faArrowUp = faArrowUp;
+  public faSearch = faSearch;
+  public faFilter = faFilter;
   public loadingMain: boolean = true;
   public loadingModal: boolean = true;
   public msjModal: string = "";

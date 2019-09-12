@@ -11,16 +11,26 @@ import {BackupService} from "../../../../Servicios/backup/backup.service";
 export class InconsistenciaComponent implements OnInit {
 
   private email: string = "";
-  private backup: number = 0;
-  //  public usuarioMntSearch: FormGroup;
+  private backup = [];
+  private backupIndex = [];
+  private backupTemp = [];
+  private backupIndexTemp = [];
 
   constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
-              private router: Router) { }
-
+              private router: Router) {
+    this.search();
+  }
   ngOnInit() {
   }
-  private prueba() {
-    console.log('Valor backup:= ', this.backup);
+  private prueba(event) {
+    let indices = [];
+    console.log('Valor event:= ', event.target.selectedOptions);
+    for (let option of event.target.selectedOptions) {
+      console.log(option.value);
+      let key = option.value.split(":");
+      indices.push(key);
+    }
+    this.backupIndex = indices;
   }
   public search() {
     console.log("email user:", this.email);
@@ -36,20 +46,9 @@ export class InconsistenciaComponent implements OnInit {
       }
     }
   }
-
   private compararRutaHija(ruta) {
     this.backupService.resetearBaackups();
-    this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
-      this.util.loadingModal = false;
-      this.util.msjModal = result.msj;
-      if (!result.error) {
-        this.backupService.paginaB += 1;
-        this.backupService.backups = result.backups;
-      }
-    }, error => {
-      this.util.msjErrorInterno(error, false, false);
-    });
-
+    this.buscarBackups();
     switch (ruta) {
       case "/mantenimiento/inconsistenciaMnt/accounts":
         this.navegacion("accounts");
@@ -79,6 +78,19 @@ export class InconsistenciaComponent implements OnInit {
         this.navegacion("preferences");
         break;
     }
+  }
+  private buscarBackups() {
+    this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
+      this.util.loadingModal = false;
+      this.util.msjModal = result.msj;
+      if (!result.error) {
+        this.backupService.paginaB += 1;
+        this.backupService.backups = this.backupService.backups.concat(result.backups);
+        console.log("this.backupService.backups", this.backupService.backups);
+      }
+    }, error => {
+      this.util.msjErrorInterno(error, false, false);
+    });
   }
   private navegacion(tabla) {
     this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
@@ -125,5 +137,71 @@ export class InconsistenciaComponent implements OnInit {
         break;
     }
   }
+  public onScroll() {
+    console.log("Scrolled !!!");
+    this.buscarBackups();
+  }
+  public checkBackup(index) {
+    if (this.backupService.backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
+      let pos = this.backupTemp.indexOf(this.backupService.backups[index].id_backup);
+      if (pos != -1) {
+        this.backupTemp.splice(pos,1);
+        this.backupIndexTemp.splice(pos,1);
+      }
+    } else {
+      this.backupTemp.push(this.backupService.backups[index].id_backup);
+      this.backupIndexTemp.push(index);
+    }
+    this.backupService.backups[index].checked = !this.backupService.backups[index].checked;
+    console.log("this.backupsTemp", this.backupTemp);
+    console.log("this.backupIndexTemp", this.backupIndexTemp);
+    console.log("this.backupIndex", this.backupIndex);
+  }
+  public guardarValorBackups() {
+    console.log("//--------------------------------Guardando datos------------------------------//");
+    this.reset();
+    this.backup = this.backup.concat(this.backupTemp);
+    this.backupIndex =  this.backupIndex.concat(this.backupIndexTemp);
+  }
+  private reset() {
+    this.backup = [];
+    this.backupIndex = [];
+  }
+  private resetTemp() {
+    this.backupTemp = [];
+    this.backupIndexTemp = [];
+  }
+  public cerrar() {
+    //----------------------------------------------------------------------------------
+    console.log("//--------------------------------Cerrando modal------------------------------//");
+    console.log("this.backupIndexTemp", this.backupIndexTemp);
+    console.log("this.backupIndex", this.backupIndex);
+    if (this.backupIndexTemp.length > this.backupIndex.length) { //--- Deselecciona ---//
+      let deseleccionar = this.backupIndexTemp.filter(el => !this.backupIndex.includes(el));
+      console.log(deseleccionar);
+      for(let index of deseleccionar) {
+        this.backupService.backups[index].checked = false;
+      }
+    } else  { //--- Selecciona ---//
+      let seleccionar = this.backupIndex.filter(el => !this.backupIndexTemp.includes(el));
+      console.log(seleccionar);
+      for(let index of seleccionar) {
+        this.backupService.backups[index].checked = true;
+      }
+    }
+    this.resetTemp();
+    this.backupIndexTemp = this.backupIndexTemp.concat(this.backupIndex);
+    this.backupTemp = this.backupTemp.concat(this.backup);
+    //----------------------------------------------------------------------------------
+  }
+  public abrirModal() {
+    console.log("//--------------------------------Abreiendo modal------------------------------//");
+    console.log("this.backupIndexTemp", this.backupIndexTemp);
+    console.log("this.backupIndex", this.backupIndex);
+    console.log("this.backup", this.backup);
+    console.log("this.backupTemp", this.backupTemp);
 
+    //----------------------------------------------------------------------------------
+
+  }
 }

@@ -1,0 +1,13 @@
+.main-principal {
+  height: 700px; overflow: scroll;
+}
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
+  /* background-color: rgba(0, 123, 255, 0.5); */
+  color: #fff !important;
+  border-color: #007bff !important;
+  background-color: #007bff !important;
+}
+
+.custom-control-input:disabled ~ .custom-control-label::before {
+  background-color: #ffffff !important;
+}
