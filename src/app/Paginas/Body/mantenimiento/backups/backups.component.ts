@@ -54,18 +54,18 @@ export class BackupsComponent implements OnInit {
     }
   }
   private buscarBackups() {
-    this.util.loading = true;
+    this.util.loadingMain = true;
     if (this.pagina == 0) {
       this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
       this.util.crearLoading().then(() => {
-        this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
+        this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.backupService.buscarBackupsUserCantidad(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
+      this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);
@@ -84,7 +84,7 @@ export class BackupsComponent implements OnInit {
       //let nuevoBack = this.backupService.mntBackups.concat(result.backups);
       console.log("this.backupService.mntBackups", this.backupService.mntBackups);
     }
-    this.util.loading = false;
+    this.util.loadingMain = false;
     // console.log(result);
   }
 
@@ -92,7 +92,7 @@ export class BackupsComponent implements OnInit {
     if (this.backupService.mntBackups[indice].collapsed == 0) { // Expandir
       this.msj = "Cargando backups del usuario: " + email;
       this.util.crearLoading().then(() => {
-        this.backupService.buscarBackups(idUser, '-1' ,'asc').subscribe(result => {
+        this.backupService.buscarBackupsUserId(idUser, '-1' ,'asc').subscribe(result => {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.mntBackups[indice].msj = result.msj;
@@ -177,7 +177,7 @@ export class BackupsComponent implements OnInit {
             this.msj = result.msj;
           } else  {
             if (idUser == 0) {
-              this.util.msjErrorInterno(result.msj, result.titulo);
+              this.util.msjErrorInterno(result.msj, true, true, result.titulo);
               for (let errorUSer of result.errorUser) {
                 this.util.msjToast(errorUSer.msj, errorUSer.titulo, errorUSer.error);
               }

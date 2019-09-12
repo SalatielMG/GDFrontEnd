@@ -31,18 +31,18 @@ export class BackupsComponent implements OnInit {
     this.backService.backups = [];
   }
   private buscar() {
-    this.util.loading = true;
+    this.util.loadingMain = true;
     if (this.pagina == 0) {
       this.msj = "Buscando Backups del usuario: " + this.userService.User.email;
       this.util.crearLoading().then(() => {
-        this.backService.buscarBackups(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
+        this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.backService.buscarBackups(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
+      this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);
@@ -59,7 +59,7 @@ export class BackupsComponent implements OnInit {
       this.pagina += 1;
       this.backService.backups = this.backService.backups.concat(result.backups);
     }
-    this.util.loading = false;
+    this.util.loadingMain = false;
   }
   public eliminar(numBack, idBack) {
     let opcion = confirm("Esta seguro de eliminar el Respaldo num: " + (numBack + 1) + ", Backup: " + idBack + "?");

@@ -29,7 +29,7 @@ export class CurrenciesComponent implements OnInit {
     this.pagina = 0;
   }
   private buscarInconsistencia() {
-    this.util.loading = true;
+    this.util.loadingMain = true;
     if (this.pagina == 0) {
       this.msj = 'Buscando inconsistencia de datos en la tabla Currencies';
       this.util.crearLoading().then(() => {
@@ -57,7 +57,7 @@ export class CurrenciesComponent implements OnInit {
       this.pagina += 1;
       this.currenciesService.Currencies = this.currenciesService.Currencies.concat(result.currencies);
     }
-    this.util.loading = false;
+    this.util.loadingMain = false;
   }
 
 }

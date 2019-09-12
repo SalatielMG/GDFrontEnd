@@ -16,7 +16,7 @@ export class AccountsComponent implements OnInit {
   private pagina: number = 0;
   private faArrowUp = faArrowUp;
 
-  constructor(private backupService: BackupService, private accountService: AccountsService, private util: Utilerias) {
+  constructor(private accountService: AccountsService, private util: Utilerias) {
     this.resetearVariables();
     this.buscarInconsistencia();
   }
@@ -31,13 +31,13 @@ export class AccountsComponent implements OnInit {
   }
 
   private resetearVariables() {
-    this.backupService.backups = [];
+
     this.accountService.Accounts = [];
     this.pagina = 0;
   }
 
   private buscarInconsistencia() {
-    this.util.loading = true;
+    this.util.loadingMain = true;
     if (this.pagina == 0) {
       this.msj = 'Buscando inconsistencia de datos en la tabla Accounts';
       this.util.crearLoading().then(() => {
@@ -66,9 +66,9 @@ export class AccountsComponent implements OnInit {
     if (!result.error) {
       this.pagina += 1;
       this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
-      this.backupService.backups = result.backupsUser;
+
     }
-    this.util.loading = false;
+    this.util.loadingMain = false;
 
   }
 

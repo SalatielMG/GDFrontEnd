@@ -24,7 +24,7 @@ export class InconsistenciaComponent implements OnInit {
   }
   public search() {
     console.log("email user:", this.email);
-    if (this.email.length == 0){
+    if (this.email.length == 0) {
       this.util.emailUserMntInconsistencia = "Generales";
       this.compararRutaHija(this.router.url);
     } else {
@@ -38,6 +38,18 @@ export class InconsistenciaComponent implements OnInit {
   }
 
   private compararRutaHija(ruta) {
+    this.backupService.resetearBaackups();
+    this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
+      this.util.loadingModal = false;
+      this.util.msjModal = result.msj;
+      if (!result.error) {
+        this.backupService.paginaB += 1;
+        this.backupService.backups = result.backups;
+      }
+    }, error => {
+      this.util.msjErrorInterno(error, false, false);
+    });
+
     switch (ruta) {
       case "/mantenimiento/inconsistenciaMnt/accounts":
         this.navegacion("accounts");
@@ -68,12 +80,12 @@ export class InconsistenciaComponent implements OnInit {
         break;
     }
   }
-  private navegacion(tabla){
+  private navegacion(tabla) {
     this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
       this.router.navigate([tabla], {relativeTo: this.route});
     });
   }
-  private operacion(tabla){
+  private operacion(tabla) {
     this.backupService.corregirInconsistencia(tabla).subscribe(result => {
       this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
         this.router.navigate([tabla], {relativeTo: this.route});
