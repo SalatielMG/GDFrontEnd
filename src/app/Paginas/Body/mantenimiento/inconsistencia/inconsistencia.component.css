@@ -11,3 +11,12 @@
 .custom-control-input:disabled ~ .custom-control-label::before {
   background-color: #ffffff !important;
 }
+.display-in-block {
+  display: inline-block;
+}
+.vertical-align-middle {
+  vertical-align: middle;
+}
+.table .thead-light th {
+  color: #000000;
+}

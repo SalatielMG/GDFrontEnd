@@ -15,6 +15,28 @@ export class InconsistenciaComponent implements OnInit {
   private backupIndex = [];
   private backupTemp = [];
   private backupIndexTemp = [];
+  private todo: boolean = false;
+
+  //-----------------------------------------------------------------
+  private isSearch: boolean = false;
+  private criterioBusqueda: string = "";
+  //-----------------------------------------------------------------
+
+  private backupSearch = [];
+  private filtrosSearch = {
+    backup: "",
+    isbackup: false,
+    usuario: "",
+    isusuario: false,
+    automatico: "-1",
+    isautomatico: false,
+    creacion: "",
+    iscreacion: false,
+    descarga: "",
+    isdescarga: false,
+    version: "",
+    isversion: false
+  };
 
   constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
               private router: Router) {
@@ -23,12 +45,19 @@ export class InconsistenciaComponent implements OnInit {
   ngOnInit() {
   }
   private prueba(event) {
+    this.todo = false;
     let indices = [];
     console.log('Valor event:= ', event.target.selectedOptions);
     for (let option of event.target.selectedOptions) {
       console.log(option.value);
       let key = option.value.split(":");
-      indices.push(key);
+      console.log("key", key);
+      indices.push(key[0]);
+      if (key[0] == "0") {
+        this.todo = true;
+        this.deseleccionarEventoTodo();
+        return;
+      }
     }
     this.backupIndex = indices;
   }
@@ -149,8 +178,10 @@ export class InconsistenciaComponent implements OnInit {
         this.backupIndexTemp.splice(pos,1);
       }
     } else {
-      this.backupTemp.push(this.backupService.backups[index].id_backup);
-      this.backupIndexTemp.push(index);
+      if (!this.backupTemp.includes(this.backupService.backups[index].id_backup)) {
+        this.backupTemp.push(this.backupService.backups[index].id_backup);
+        this.backupIndexTemp.push(index);
+      }
     }
     this.backupService.backups[index].checked = !this.backupService.backups[index].checked;
     console.log("this.backupsTemp", this.backupTemp);
@@ -171,12 +202,12 @@ export class InconsistenciaComponent implements OnInit {
     this.backupTemp = [];
     this.backupIndexTemp = [];
   }
-  public cerrar() {
+  public cerrarModal() {
     //----------------------------------------------------------------------------------
     console.log("//--------------------------------Cerrando modal------------------------------//");
     console.log("this.backupIndexTemp", this.backupIndexTemp);
     console.log("this.backupIndex", this.backupIndex);
-    if (this.backupIndexTemp.length > this.backupIndex.length) { //--- Deselecciona ---//
+    if (this.backupIndexTemp.length >= this.backupIndex.length) { //--- Deselecciona ---//
       let deseleccionar = this.backupIndexTemp.filter(el => !this.backupIndex.includes(el));
       console.log(deseleccionar);
       for(let index of deseleccionar) {
@@ -195,13 +226,142 @@ export class InconsistenciaComponent implements OnInit {
     //----------------------------------------------------------------------------------
   }
   public abrirModal() {
-    console.log("//--------------------------------Abreiendo modal------------------------------//");
+    console.log("//--------------------------------Abriendo modal------------------------------//");
     console.log("this.backupIndexTemp", this.backupIndexTemp);
     console.log("this.backupIndex", this.backupIndex);
     console.log("this.backup", this.backup);
     console.log("this.backupTemp", this.backupTemp);
-
     //----------------------------------------------------------------------------------
+    if (this.todo) {
+      this.deseleccionarEventoTodo();
+      return;
+    }
+    if (this.backupIndex.length >= this.backupIndexTemp.length) { //--- Los sobrantes se seleccionanan
+      let seleccionar = this.backupIndex.filter(el => !this.backupIndexTemp.includes(el));
+      console.log(seleccionar);
+      for(let index of seleccionar) {
+        this.backupService.backups[index].checked = true;
+      }
+    } else { // -- Los faltantes se deseleccionan
+      let deseleccionar = this.backupIndexTemp.filter(el => !this.backupIndex.includes(el));
+      console.log(deseleccionar);
+      for(let index of deseleccionar) {
+        this.backupService.backups[index].checked = false;
+      }
+    }
+    this.resetTemp();
+    this.backupIndexTemp = this.backupIndexTemp.concat(this.backupIndex);
+    this.backupTemp = this.backupTemp.concat(this.backup);
+  }
+  
+  public todosBackups(event) {
+    this.todo = event.target.checked;
+    console.log(event.target.checked);
+    if (this.todo)
+      this.deseleccionarEventoTodo();
+  }
+  private deseleccionarEventoTodo() {
+      for (let index of this.backupIndexTemp) {
+        this.backupService.backups[index].checked = false;
+      }
+      this.resetTemp();
+      this.reset();
+      this.backupIndexTemp.push("0");
+      this.backupIndex.push("0");
+      this.backup.push("0");
+      this.backupTemp.push("0");
+  }
+  //-----------------------------------------------------------------------
+  //Busqueda
+  public keyUp(event) {
+    if (event.key == "Enter") {
+      this.filtrarBusqueda();
+    }
+  }
+  public filtrarBusqueda() {
+    if (this.criterioBusqueda != "") {
+      this.isSearch = true;
+      console.log("Busqueda Activada", this.isSearch);
+      //---- Operacion Busqueda -----
+      //this.backupService.backups.
+    }
+  }
+  public resetearFiltrosBusqueda() {
+    this.isSearch = false;
+    this.criterioBusqueda = "";
+    console.log("Busqueda descativada", this.isSearch);
+  }
+  //-----------------------------------------------------------------------
+
+
+  //-----------------------------------------------------------------------
+  private selectAumtomatics(event) {
+    console.log(event);
+    this.filtrosSearch.isautomatico = false;
+    if (event != "-1") {
+      this.filtrosSearch.isautomatico = true;
+    }
+  }
+  private dateChange(event) {
+    console.log(event);
+  }
+  private eventDate(event, value) {
+    if (event != "") {
+      this.filtrosSearch["is" + value] = true;
+      switch (value) {
+        case "creacion":
+          break;
+        case "descarga":
+          break;
+      }
+      console.log(event);
+    }
 
   }
+  private keyUpSearch(event, value) {
+    if (event.key == "Enter") {
+      this.filtrosSearch["is" + value] = true;
+      switch (value) {
+        case "backup":
+
+          break;
+        case "usuario":
+
+          break;
+        case "version":
+
+          break;
+      }
+    }
+  }
+  private resetValuefiltroSearch(value) {
+    switch (value) {
+        case "backup":
+          this.filtrosSearch.backup = "";
+          this.filtrosSearch.isbackup = false;
+          break;
+        case "usuario":
+          this.filtrosSearch.usuario = "";
+          this.filtrosSearch.isusuario = false;
+          break;
+        case "automatico":
+          this.filtrosSearch.automatico = "-1";
+          this.filtrosSearch.isautomatico = false;
+          break;
+        case "creacion":
+          this.filtrosSearch.creacion = "";
+          this.filtrosSearch.iscreacion = false;
+          break;
+        case "descarga":
+          this.filtrosSearch.descarga = "";
+          this.filtrosSearch.isdescarga = false;
+          break;
+        case "version":
+          this.filtrosSearch.version = "";
+          this.filtrosSearch.isversion = false;
+          break;
+    }
+  }
+  //-----------------------------------------------------------------------
+
 }

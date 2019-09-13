@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">FILTRO BACKUPS</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrar()">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrarModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -12,41 +12,129 @@
           <h3 class="font-weight-normal text-center">Usuario{{((util.emailUserMntInconsistencia == "Generales")  ? "s ": ": ") + util.emailUserMntInconsistencia}}</h3>
         </div>
         <div *ngIf="backupService.backups.length > 0">
-          <form class="form-row">
+          <!--form class="form-row">
             <div class="col-11" style="padding-right: 5px">
-              <input class="form-control mr-sm-2" style="margin-right: 0px" type="search" placeholder="Filtros backups" aria-label="Search">
+              <input class="form-control mr-sm-2" style="margin-right: 0px" type="search"  [(ngModel)]="criterioBusqueda" name="criterioBusqueda"  placeholder="Filtros backups" aria-label="Search" [disabled]="todo" (keyup)="keyUp($event)">
             </div>
-            <button class="btn btn-outline-success my-2 my-sm-0 col-1" type="submit">
+            <button class="btn btn-outline-success my-2 my-sm-0 col-1" type="submit" [disabled]="todo" (click)="filtrarBusqueda()">
               <span>
                 <fa-icon [icon]="util.faSearch"></fa-icon>
               </span>
             </button>
           </form>
           <br>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="isSearch">
+            <strong>Resultados!</strong> Busqueda.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="resetearFiltrosBusqueda()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div-->
           <div class="main-principal">
             <table class="table table-hover">
-              <thead>
+              <thead class="thead-light" style="color: black">
               <tr class="text-center">
-                <th scope="col">#</th>
-                <th scope="col">Backup</th>
-                <th scope="col" *ngIf="util.emailUserMntInconsistencia == 'Generales'">Usuario</th>
-                <th scope="col">Automatico</th>
-                <th scope="col">Fecha de creación</th>
-                <th scope="col">Fecha de descarga</th>
-                <th scope="col">Version</th>
-                <th scope="col">Seleccionar</th>
+                <th scope="col" class="vertical-align-middle">#</th>
+                <th scope="col">
+                  <div class="row display-in-block">
+                    Backup
+                  </div>
+                  <div class="row">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.backup" name="backup" (keyup)="keyUpSearch($event, 'backup')">
+                  </div>
+                  <div class="row display-in-block" *ngIf="filtrosSearch.isbackup">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('backup')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col"  *ngIf="util.emailUserMntInconsistencia == 'Generales'">
+                  <div class="row display-in-block">
+                    Usuario
+                  </div>
+                  <div class="row">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.usuario" name="usuario" (keyup)="keyUpSearch($event, 'usuario')">
+                  </div>
+                  <div class="row display-in-block" *ngIf="filtrosSearch.isusuario">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('usuario')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                 </th>
+                <th scope="col" >
+                  <div class="row display-in-block">
+                    Automatico
+                  </div>
+                  <div class="row">
+                    <select class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.automatico" name="automatico" (ngModelChange)="selectAumtomatics($event)">
+                      <option value="-1">Ambos</option>
+                      <option value="0">No</option>
+                      <option value="1">Si</option>
+                    </select>
+                  </div>
+                  <div class="row display-in-block" *ngIf="filtrosSearch.isautomatico">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('automatico')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col">
+                  <div class="row display-in-block">
+                    Fecha de creación
+                  </div>
+                  <div class="row">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.creacion" name="creacion" (ngModelChange)="eventDate($event, 'creacion')">
+                  </div>
+                  <div class="row display-in-block" *ngIf="filtrosSearch.iscreacion">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('creacion')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col" >
+                  <div class="row display-in-block">
+                    Fecha de descarga
+                  </div>
+                  <div class="row">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.descarga" name="descarga" (ngModelChange)="eventDate($event, 'descarga')">
+                  </div>
+                  <div class="row display-in-block" *ngIf="filtrosSearch.isdescarga">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('descarga')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col" >
+                  <div class="row display-in-block">
+                    Version
+                  </div>
+                  <div class="row">
+                    <input type="text" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.version" name="version" (keyup)="keyUpSearch($event, 'version')">
+                  </div>
+                  <div class="row display-in-block" *ngIf="filtrosSearch.isversion">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('version')">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </th>
+                <th scope="col" class="vertical-align-middle">
+                  Seleccionar
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input " id="todo" [checked]="todo"  (change)="todosBackups($event)">
+                    <label class="custom-control-label" for="todo">Todos</label>
+                  </div>
+                </th>
               </tr>
               </thead>
-              <tbody>
-              <tr *ngFor="let back of backupService.backups; let i = index" class="text-center" (click)="checkBackup(i)">
-                <th scope="row">{{(i + 1)}}</th>
-                <td>{{back.id_backup}}</td>
-                <td  *ngIf="util.emailUserMntInconsistencia == 'Generales'">{{back.email}}</td>
-                <td>{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                <td>{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-                <td>{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
-                <td>{{back.created_in}}</td>
-                <td>
+              <tbody *ngIf="!todo">
+              <tr *ngFor="let back of backupService.backups; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)" >
+                <th  scope="row" *ngIf="back.id_backup != 0">{{(back.pos)}}</th>
+                <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
+                <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
+                <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                <td *ngIf="back.id_backup != 0">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                <td *ngIf="back.id_backup != 0">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                <td *ngIf="back.id_backup != 0">{{back.created_in}}</td>
+                <td *ngIf="back.id_backup != 0">
                   <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
                     <label class="custom-control-label" [attr.for]="i"></label>
@@ -66,12 +154,12 @@
             <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
           </div>
         </div>
-        <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups == 0">
+        <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups == 0 && !todo">
           <h4 class="font-weight-light">{{util.msjModal}}</h4>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cerrar()">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cerrarModal()">Cerrar</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="guardarValorBackups()">Guardar</button>
       </div>
     </div>
@@ -103,27 +191,28 @@
     <h2 class="font-weight-bold text-center">Inconsistencia de Datos</h2>
   </div>
   <div class="row" >
-    <div class="col-2"></div>
-    <div class="col-7">
+    <div class="col-3"></div>
+    <div class="col-6">
       <h3 class="font-weight-light text-center">{{util.emailUserMntInconsistencia}}</h3>
     </div>
-    <div class="col-2">
+    <div class="col-3">
         <div class="form-group row">
-          <label for="backup" class="col-sm-4 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
-          <div class="col-sm-8">
-            <select id="backup" multiple class="form-control" [(ngModel)]="backup" name="backup" (change)="prueba($event)">
-              <option *ngFor="let b of backupService.backups; let indice = index" value="{{b.id_backup}}">{{b.id_backup}}</option>
+          <label for="backup" class="col-3 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
+          <div class="col-7">
+            <select id="backup" [multiple]="!todo" class="form-control" [(ngModel)]="backup" name="backup" (change)="prueba($event)">
+              <option *ngFor="let b of backupService.backups" value="{{b.id_backup}}">{{(b.id_backup == 0) ? 'Todos': b.id_backup}}</option>
             </select>
+          </div>
+          <div class="col-2">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" (click)="abrirModal()">
+              <span>
+                <fa-icon [icon]="util.faFilter"></fa-icon>
+              </span>
+            </button>
           </div>
         </div>
     </div>
-    <div class="col-1">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" (click)="abrirModal()">
-        <span>
-          <fa-icon [icon]="util.faFilter"></fa-icon>
-        </span>
-      </button>
-    </div>
+
   </div>
   <div class="row" style="display: block">
     <button class="btn  btn-outline-success" (click)="corregirTabla()">Corregir Tabla</button>
