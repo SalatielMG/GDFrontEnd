@@ -9,7 +9,6 @@ import {PreferencesService} from '../../../../../Servicios/preferences/preferenc
 })
 export class PreferencesComponent implements OnInit {
 
-  public msj;
   private pagina: number = 0;
 
   constructor(private preferencesService: PreferencesService, private util: Utilerias) {
@@ -33,7 +32,7 @@ export class PreferencesComponent implements OnInit {
   private buscarInconsistencias(){
     this.util.loadingMain = true;
     if (this.pagina == 0) {
-      this.msj = 'Buscando inconsistencia de datos en la tabla Preferences';
+      this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Preferences';
       this.util.crearLoading().then(() => {
         this.preferencesService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
@@ -53,7 +52,7 @@ export class PreferencesComponent implements OnInit {
   private resultado(result, bnd = true) {
     if (bnd) {
       this.util.detenerLoading();
-      this.msj =  result.msj;
+      this.util.msjLoading =  result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {

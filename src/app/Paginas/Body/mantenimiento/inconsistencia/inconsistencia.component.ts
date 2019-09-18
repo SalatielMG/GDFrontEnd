@@ -127,13 +127,23 @@ export class InconsistenciaComponent implements OnInit {
     });
   }
   private operacion(tabla) {
-    this.backupService.corregirInconsistencia(tabla).subscribe(result => {
-      this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-        this.router.navigate([tabla], {relativeTo: this.route});
-      }, error => {
-        this.util.msjErrorInterno(error);
+    let opcion = confirm("¿ Desea corregir las inconsistencias de la Tabla : "+ tabla +" ? ");
+    if (opcion) {
+      this.util.msjLoading = "Corrigiendo inconsistencia de datos en la Tabla : " + tabla;
+      this.util.crearLoading().then(() => {
+        this.backupService.corregirInconsistencia(tabla).subscribe(result => {
+          this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
+            this.util.detenerLoading();
+            this.router.navigate([tabla], {relativeTo: this.route});
+            for (let res of result.Result) {
+              this.util.msjToast(res.msj, res.titulo, res.error);
+            }
+          }, error => {
+            this.util.msjErrorInterno(error);
+          });
+        });
       });
-    });
+    }
   }
   public corregirTabla(){
     switch (this.router.url) {

@@ -31,27 +31,19 @@ export class LoginComponent implements OnInit {
 
   public login() {
     console.log(this.usuario.value);
-
-
     this.util.crearLoading().then(()=> {
       this.userSerevice.login(this.usuario.value).subscribe(result => {
-        console.log('Resultado', result);
         if (!result.error){
           this.userSerevice.id = result.id;
           this.userSerevice.actualizarStorage();
           this.router.navigate(['/home']);
-
         }
-
         this.util.msjToast(result.msj, result. titulo, result.error);
         this.util.detenerLoading();
       }, error => {
         this.util.detenerLoading();
-
         this.util.msjErrorInterno(error);
       });
     });
-
   }
-
 }

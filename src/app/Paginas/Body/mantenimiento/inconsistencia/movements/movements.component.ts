@@ -9,7 +9,6 @@ import {MovementsService} from '../../../../../Servicios/movements/movements.ser
 })
 export class MovementsComponent implements OnInit {
 
-  public msj;
   private pagina: number = 0;
 
   constructor(private movementsService: MovementsService, private util: Utilerias) {
@@ -30,7 +29,7 @@ export class MovementsComponent implements OnInit {
   private buscarInconsistencias() {
     this.util.loadingMain = true;
     if (this.pagina == 0) {
-      this.msj = 'Buscando inconsistencia de datos en la tabla Movements';
+      this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Movements';
       this.util.crearLoading().then(() => {
         this.movementsService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
@@ -49,7 +48,7 @@ export class MovementsComponent implements OnInit {
   private resultado(result, bnd =  true) {
     if (bnd) {
       this.util.detenerLoading();
-      this.msj = result.msj;
+      this.util.msjLoading = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
