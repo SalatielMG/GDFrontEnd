@@ -267,8 +267,9 @@ export class InconsistenciaComponent implements OnInit {
   public todosBackups(event) {
     this.todo = event.target.checked;
     console.log(event.target.checked);
-    if (this.todo)
+    if (this.todo) {
       this.deseleccionarEventoTodo();
+    }
   }
   private deseleccionarEventoTodo() {
       for (let index of this.backupIndexTemp) {
