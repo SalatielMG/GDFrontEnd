@@ -22,7 +22,7 @@ export class InconsistenciaComponent implements OnInit {
   private criterioBusqueda: string = "";
   //-----------------------------------------------------------------
 
-  private backupSearch = [];
+  private backupsModalTemp = [];
   private filtrosSearch = {
     backup: "",
     isbackup: false,
@@ -77,6 +77,7 @@ export class InconsistenciaComponent implements OnInit {
   }
   private compararRutaHija(ruta) {
     this.backupService.resetearBaackups();
+    //this.backupFiltros = [];
     this.buscarBackups();
     switch (ruta) {
       case "/mantenimiento/inconsistenciaMnt/accounts":
@@ -115,7 +116,6 @@ export class InconsistenciaComponent implements OnInit {
       if (!result.error) {
         this.backupService.paginaB += 1;
         this.backupService.backups = this.backupService.backups.concat(result.backups);
-        console.log("this.backupService.backups", this.backupService.backups);
       }
     }, error => {
       this.util.msjErrorInterno(error, false, false);
@@ -177,8 +177,10 @@ export class InconsistenciaComponent implements OnInit {
     }
   }
   public onScroll() {
-    console.log("Scrolled !!!");
-    this.buscarBackups();
+    if (this.verficarFiltrosActivados() == 0) {
+      console.log("Scrolled !!!");
+      this.buscarBackups();
+    }
   }
   public checkBackup(index) {
     if (this.backupService.backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
@@ -269,18 +271,36 @@ export class InconsistenciaComponent implements OnInit {
     console.log(event.target.checked);
     if (this.todo) {
       this.deseleccionarEventoTodo();
+    } else {
+      this.resetTemp();
+      this.reset();
     }
   }
   private deseleccionarEventoTodo() {
       for (let index of this.backupIndexTemp) {
         this.backupService.backups[index].checked = false;
       }
+      this.resetearFiltroSearch();
       this.resetTemp();
       this.reset();
       this.backupIndexTemp.push("0");
       this.backupIndex.push("0");
       this.backup.push("0");
       this.backupTemp.push("0");
+  }
+  private resetearFiltroSearch() {
+      this.filtrosSearch.backup = "";
+      this.filtrosSearch.isbackup = false;
+      this.filtrosSearch.usuario = "";
+      this.filtrosSearch.isusuario = false;
+      this.filtrosSearch.automatico = "-1";
+      this.filtrosSearch.isautomatico = false;
+      this.filtrosSearch.creacion = "";
+      this.filtrosSearch.iscreacion = false;
+      this.filtrosSearch.descarga = "";
+      this.filtrosSearch.isdescarga = false;
+      this.filtrosSearch.version = "";
+      this.filtrosSearch.isversion = false;
   }
   //-----------------------------------------------------------------------
   //Busqueda
@@ -329,12 +349,22 @@ export class InconsistenciaComponent implements OnInit {
     }
 
   }
+
+  /*
+  * Si es el primer filtro se activa => se procede a realizar una copia temporal de backupServic.backup
+  * Si se desactivan
+  * */
   private keyUpSearch(event, value) {
+    console.log("event KeyUp:= ", event);
     if (event.key == "Enter") {
       this.filtrosSearch["is" + value] = true;
+      if (this.verficarFiltrosActivados() == 1) { // PrimerActivado => Realizar el respaldo
+        this.backupsModalTemp = [];
+        this.backupsModalTemp = this.backupsModalTemp.concat(this.backupService.backups);
+      }
       switch (value) {
         case "backup":
-
+          this.filtroBackup();
           break;
         case "usuario":
 
@@ -345,6 +375,37 @@ export class InconsistenciaComponent implements OnInit {
       }
     }
   }
+
+  // ----------------------------------------------------------------------
+  /* ----- Filtro Backup ------ */
+  private filtroBackup() {
+    console.log("Antes:=", this.backupService.backups);
+    // let filtroTemp = [];
+    for (let i = 0; i < this.backupService.backups.length; i++) {
+      if (!this.backupService.backups[i].id_backup.toString().includes(this.filtrosSearch.backup)) {
+        console.log(this.backupService.backups[i].id_backup + " != " + this.filtrosSearch.backup);
+        console.log("Eliminado backup := " + this.backupService.backups[i].id_backup);
+        this.backupService.backups.splice(i, 1);
+
+      } else  {
+        console.log(this.backupService.backups[i].id_backup + " == " + this.filtrosSearch.backup);
+        console.log("Coincidentes", this.backupService.backups[i].id_backup);
+      }
+    }
+    console.log("Despues:=", this.backupService.backups);
+
+    //console.log("backupService.backups", this.backupService.backups);
+    /*this.backupService.backups.forEach(back => {
+      if (back.id_backup.toString().includes(this.filtrosSearch.backup)) {
+        console.log(back);
+        //filtroTemp.push(back);
+      } else {
+        this.backupService.backups.splice(1, 1);
+      }
+    });*/
+  }
+  // ----------------------------------------------------------------------
+
   private resetValuefiltroSearch(value) {
     switch (value) {
         case "backup":
@@ -374,5 +435,16 @@ export class InconsistenciaComponent implements OnInit {
     }
   }
   //-----------------------------------------------------------------------
-
+  private verficarFiltrosActivados(): number {
+    let bndTrue = 0;
+    for (let filtrosSearchKey in this.filtrosSearch) {
+      if (filtrosSearchKey.includes("is")) {
+        if (this.filtrosSearch[filtrosSearchKey]) {
+          bndTrue = bndTrue + 1;
+          break;
+        }
+      }
+    }
+    return bndTrue;
+  }
 }

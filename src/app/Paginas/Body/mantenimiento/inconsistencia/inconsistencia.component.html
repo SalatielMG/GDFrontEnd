@@ -135,7 +135,7 @@
               </thead>
               <tbody *ngIf="!todo">
               <tr *ngFor="let back of backupService.backups; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)" >
-                <th  scope="row" *ngIf="back.id_backup != 0">{{(back.pos)}}</th>
+                <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
                 <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
                 <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
@@ -174,7 +174,6 @@
   </div>
 </div>
 
-
 <!-- Buscador -->
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado" style="padding-top: 160px !important;">
@@ -187,7 +186,6 @@
         <div class="col-2">
           <button class="btn btn-lg btn-primary btnSearch" type="submit">Buscar</button>
         </div>
-
       </form>
     </nav>
   </div>
@@ -220,7 +218,6 @@
           </div>
         </div>
     </div>
-
   </div>
   <div class="row" style="display: block">
     <button class="btn  btn-outline-success" (click)="corregirTabla()">Corregir Tabla</button>
@@ -257,6 +254,3 @@
   </li>
 </ul>
 <router-outlet></router-outlet>
-
-
-
