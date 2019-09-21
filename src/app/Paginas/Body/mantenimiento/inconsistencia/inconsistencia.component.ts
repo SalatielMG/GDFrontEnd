@@ -22,7 +22,7 @@ export class InconsistenciaComponent implements OnInit {
   private criterioBusqueda: string = "";
   //-----------------------------------------------------------------
 
-  private backupsModalTemp = [];
+  //private backupsModalTemp = [];
   private filtrosSearch = {
     backup: "",
     isbackup: false,
@@ -177,10 +177,11 @@ export class InconsistenciaComponent implements OnInit {
     }
   }
   public onScroll() {
-    if (this.verficarFiltrosActivados() == 0) {
-      console.log("Scrolled !!!");
-      this.buscarBackups();
-    }
+    /*if (this.verficarFiltrosActivados() == 0) {
+
+    }*/
+    console.log("Scrolled !!!");
+    this.buscarBackups();
   }
   public checkBackup(index) {
     if (this.backupService.backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
@@ -357,14 +358,15 @@ export class InconsistenciaComponent implements OnInit {
   private keyUpSearch(event, value) {
     console.log("event KeyUp:= ", event);
     if (event.key == "Enter") {
+      if (this.filtrosSearch[value] == "") return ;
       this.filtrosSearch["is" + value] = true;
-      if (this.verficarFiltrosActivados() == 1) { // PrimerActivado => Realizar el respaldo
+      /*if (this.verficarFiltrosActivados() == 1) { // PrimerActivado => Realizar el respaldo
         this.backupsModalTemp = [];
         this.backupsModalTemp = this.backupsModalTemp.concat(this.backupService.backups);
-      }
+      }*/
       switch (value) {
         case "backup":
-          this.filtroBackup();
+          // this.filtroBackup();
           break;
         case "usuario":
 
@@ -378,37 +380,28 @@ export class InconsistenciaComponent implements OnInit {
 
   // ----------------------------------------------------------------------
   /* ----- Filtro Backup ------ */
-  private filtroBackup() {
+  /*private filtroBackup() {
     console.log("Antes:=", this.backupService.backups);
-    // let filtroTemp = [];
-    for (let i = 0; i < this.backupService.backups.length; i++) {
-      if (!this.backupService.backups[i].id_backup.toString().includes(this.filtrosSearch.backup)) {
-        console.log(this.backupService.backups[i].id_backup + " != " + this.filtrosSearch.backup);
-        console.log("Eliminado backup := " + this.backupService.backups[i].id_backup);
-        this.backupService.backups.splice(i, 1);
-
-      } else  {
-        console.log(this.backupService.backups[i].id_backup + " == " + this.filtrosSearch.backup);
-        console.log("Coincidentes", this.backupService.backups[i].id_backup);
-      }
-    }
-    console.log("Despues:=", this.backupService.backups);
-
-    //console.log("backupService.backups", this.backupService.backups);
-    /*this.backupService.backups.forEach(back => {
+    let contadorDelete = 0;
+    let filtroTemp = [];
+    console.log("length this.backupsService.length", this.backupService.backups.length);
+    let length = this.backupService.backups.length;
+    this.backupService.backups.forEach((back, index) => {
+      console.log("[" + index + "] := " + back );
       if (back.id_backup.toString().includes(this.filtrosSearch.backup)) {
-        console.log(back);
-        //filtroTemp.push(back);
-      } else {
-        this.backupService.backups.splice(1, 1);
+        // this.backupService.backups.splice(index, 1);
+        filtroTemp.push(back);
       }
-    });*/
-  }
+    });
+    this.backupService.backups = filtroTemp;
+  }*/
   // ----------------------------------------------------------------------
 
   private resetValuefiltroSearch(value) {
     switch (value) {
         case "backup":
+          // this.backupService.backups = [];
+          // this.backupService.backups = this.backupService.backups.concat(this.backupsModalTemp);
           this.filtrosSearch.backup = "";
           this.filtrosSearch.isbackup = false;
           break;
@@ -435,7 +428,7 @@ export class InconsistenciaComponent implements OnInit {
     }
   }
   //-----------------------------------------------------------------------
-  private verficarFiltrosActivados(): number {
+  /*private verficarFiltrosActivados(): number {
     let bndTrue = 0;
     for (let filtrosSearchKey in this.filtrosSearch) {
       if (filtrosSearchKey.includes("is")) {
@@ -446,5 +439,5 @@ export class InconsistenciaComponent implements OnInit {
       }
     }
     return bndTrue;
-  }
+  }*/
 }
