@@ -53,7 +53,7 @@ export class GastosEntradasComponent implements OnInit {
       /*this.util.detenerLoading();
       this.util.msjToast(result.msj, result.titulo, result.error);
       this.backups = result.backups;
-      this.backup = result.ultimoBackup;
+      this.id_backup = result.ultimoBackup;
 
       this.years = result.años;
       this.year = result.ultimoAño;
@@ -61,7 +61,7 @@ export class GastosEntradasComponent implements OnInit {
       console.log("this.years", this.years);
       console.log("this.year", this.year);
       console.log("this.backups", this.backups);
-      console.log("this.backup", this.backup);
+      console.log("this.id_backup", this.id_backup);
       if (!result.error) {
 
         this.barChartData[0].data = result.Gastos;
@@ -82,7 +82,7 @@ export class GastosEntradasComponent implements OnInit {
   }
   public prueba(){
     this.resetbarchar();
-    console.log("this.backup", this.backup);
+    console.log("this.id_backup", this.backup);
     console.log("this.year", this.year);
     this.msj = "Generando Grafica de Gastos vs Ingresos, ¡ Porfavor espere !";
     this.util.crearLoading().then(() => {
@@ -107,7 +107,7 @@ export class GastosEntradasComponent implements OnInit {
     console.log("this.years", this.years);
     console.log("this.year", this.year);
     console.log("this.backups", this.backups);
-    console.log("this.backup", this.backup);
+    console.log("this.id_backup", this.backup);
     if (!result.error) {
 
       this.barChartData[0].data = result.Gastos;

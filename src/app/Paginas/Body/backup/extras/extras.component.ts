@@ -14,7 +14,7 @@ export class ExtrasComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private extrasService: ExtrasService, private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Extras relacionados con el backup';
+      this.msj = 'Buscando Extras relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.extrasService.buscarExtrasBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();

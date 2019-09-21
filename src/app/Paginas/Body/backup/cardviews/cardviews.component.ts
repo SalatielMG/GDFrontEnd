@@ -13,7 +13,7 @@ export class CardviewsComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private cardviewService: CardviewsService, private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Cardviews relacionados con el backup';
+      this.msj = 'Buscando Cardviews relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.cardviewService.buscarCardviewsBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();

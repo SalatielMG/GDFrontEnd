@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
+import {Backup} from "../../../../Modelos/Backup/backup";
+import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-backups";
 
 @Component({
   selector: 'app-inconsistencia',
@@ -17,29 +19,12 @@ export class InconsistenciaComponent implements OnInit {
   private backupIndexTemp = [];
   private todo: boolean = false;
 
-  //-----------------------------------------------------------------
-  private isSearch: boolean = false;
-  private criterioBusqueda: string = "";
-  //-----------------------------------------------------------------
-
-  //private backupsModalTemp = [];
-  private filtrosSearch = {
-    backup: "",
-    isbackup: false,
-    usuario: "",
-    isusuario: false,
-    automatico: "-1",
-    isautomatico: false,
-    creacion: "",
-    iscreacion: false,
-    descarga: "",
-    isdescarga: false,
-    version: "",
-    isversion: false
-  };
+  private filtrosSearch = new FiltrosSearchBackups();
+  private backupsFiltro: Backup[];
 
   constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
               private router: Router) {
+    // this.resetearFiltroSearch();
     this.search();
   }
   ngOnInit() {
@@ -177,11 +162,10 @@ export class InconsistenciaComponent implements OnInit {
     }
   }
   public onScroll() {
-    /*if (this.verficarFiltrosActivados() == 0) {
-
-    }*/
-    console.log("Scrolled !!!");
-    this.buscarBackups();
+    if (!this.isFilter()) {
+      console.log("Scrolled !!!");
+      this.buscarBackups();
+    }
   }
   public checkBackup(index) {
     if (this.backupService.backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
@@ -242,7 +226,7 @@ export class InconsistenciaComponent implements OnInit {
     console.log("//--------------------------------Abriendo modal------------------------------//");
     console.log("this.backupIndexTemp", this.backupIndexTemp);
     console.log("this.backupIndex", this.backupIndex);
-    console.log("this.backup", this.backup);
+    console.log("this.id_backup", this.backup);
     console.log("this.backupTemp", this.backupTemp);
     //----------------------------------------------------------------------------------
     if (this.todo) {
@@ -290,120 +274,78 @@ export class InconsistenciaComponent implements OnInit {
       this.backupTemp.push("0");
   }
   private resetearFiltroSearch() {
-      this.filtrosSearch.backup = "";
-      this.filtrosSearch.isbackup = false;
-      this.filtrosSearch.usuario = "";
-      this.filtrosSearch.isusuario = false;
-      this.filtrosSearch.automatico = "-1";
-      this.filtrosSearch.isautomatico = false;
-      this.filtrosSearch.creacion = "";
-      this.filtrosSearch.iscreacion = false;
-      this.filtrosSearch.descarga = "";
-      this.filtrosSearch.isdescarga = false;
-      this.filtrosSearch.version = "";
-      this.filtrosSearch.isversion = false;
+    this.filtrosSearch = new FiltrosSearchBackups();
   }
-  //-----------------------------------------------------------------------
-  //Busqueda
-  public keyUp(event) {
-    if (event.key == "Enter") {
-      this.filtrarBusqueda();
-    }
-  }
-  public filtrarBusqueda() {
-    if (this.criterioBusqueda != "") {
-      this.isSearch = true;
-      console.log("Busqueda Activada", this.isSearch);
-      //---- Operacion Busqueda -----
-      //this.backupService.backups.
-    }
-  }
-  public resetearFiltrosBusqueda() {
-    this.isSearch = false;
-    this.criterioBusqueda = "";
-    console.log("Busqueda descativada", this.isSearch);
-  }
-  //-----------------------------------------------------------------------
-
 
   //-----------------------------------------------------------------------
   private selectAumtomatics(event) {
     console.log(event);
-    this.filtrosSearch.isautomatico = false;
     if (event != "-1") {
-      this.filtrosSearch.isautomatico = true;
+      this.resetFilterisActive();
+      this.filtrosSearch.automatic.isFilter = true;
+      this.proccessFilter("automatic");
+    } else {
+      this.filtrosSearch.automatic.isFilter = false;
     }
   }
-  private dateChange(event) {
-    console.log(event);
+  private actionFilterEvent(event, value, isKeyUp = false) {
+    if (isKeyUp && event.key != "Enter") return;
+    if (this.filtrosSearch[value].value == "") return;
+
+    this.resetFilterisActive();
+    console.log("Value of " + value + " :=", this.filtrosSearch[value].value);
+    this.filtrosSearch[value].isFilter = true;
+    this.proccessFilter(value);
+    /*switch (value) {
+      case "date_creation":
+        break;
+      case "date_download":
+        break;
+      case "id_backup":
+        break;
+      case "email":
+        break;
+      case "created_in":
+        break;
+    }*/
   }
-  private eventDate(event, value) {
-    if (event != "") {
-      this.filtrosSearch["is" + value] = true;
-      switch (value) {
-        case "creacion":
-          break;
-        case "descarga":
-          break;
-      }
-      console.log(event);
-    }
-
-  }
-
-  /*
-  * Si es el primer filtro se activa => se procede a realizar una copia temporal de backupServic.backup
-  * Si se desactivan
-  * */
-  private keyUpSearch(event, value) {
-    console.log("event KeyUp:= ", event);
-    if (event.key == "Enter") {
-      if (this.filtrosSearch[value] == "") return ;
-      this.filtrosSearch["is" + value] = true;
-      /*if (this.verficarFiltrosActivados() == 1) { // PrimerActivado => Realizar el respaldo
-        this.backupsModalTemp = [];
-        this.backupsModalTemp = this.backupsModalTemp.concat(this.backupService.backups);
-      }*/
-      switch (value) {
-        case "backup":
-          // this.filtroBackup();
-          break;
-        case "usuario":
-
-          break;
-        case "version":
-
-          break;
-      }
+  private resetFilterisActive() {
+    if (!this.isFilter()) {
+      this.backupsFiltro = [];
+      this.backupsFiltro =  this.backupsFiltro.concat(this.backupService.backups);
     }
   }
+  private proccessFilter(key) {
+    console.log("After:=", this.backupsFiltro);
 
-  // ----------------------------------------------------------------------
-  /* ----- Filtro Backup ------ */
-  /*private filtroBackup() {
-    console.log("Antes:=", this.backupService.backups);
-    let contadorDelete = 0;
-    let filtroTemp = [];
-    console.log("length this.backupsService.length", this.backupService.backups.length);
-    let length = this.backupService.backups.length;
-    this.backupService.backups.forEach((back, index) => {
-      console.log("[" + index + "] := " + back );
-      if (back.id_backup.toString().includes(this.filtrosSearch.backup)) {
-        // this.backupService.backups.splice(index, 1);
-        filtroTemp.push(back);
+    let temp = [];
+    for (let back of this.backupsFiltro) {
+      if (back.id_backup != 0) {
+        if (key == "automatic") {
+          if (back[key].toString() == this.filtrosSearch[key].value) {
+            temp.push(back);
+          }
+        } else {
+          if (back[key].toString().includes(this.filtrosSearch[key].value)) {
+            temp.push(back);
+          }
+        }
       }
-    });
-    this.backupService.backups = filtroTemp;
-  }*/
-  // ----------------------------------------------------------------------
+    }
+    this.backupsFiltro = temp;
 
-  private resetValuefiltroSearch(value) {
-    switch (value) {
-        case "backup":
-          // this.backupService.backups = [];
-          // this.backupService.backups = this.backupService.backups.concat(this.backupsModalTemp);
-          this.filtrosSearch.backup = "";
-          this.filtrosSearch.isbackup = false;
+    console.log("before:=", this.backupsFiltro);
+  }
+
+  private resetValuefiltroSearch(key) {
+    this.filtrosSearch[key].value =  "";
+    this.filtrosSearch[key].isFilter =  false;
+    if (key == "automatic") this.filtrosSearch[key].value = "-1";
+
+    /*switch (key) {
+        case "id_backup":
+          this.filtrosSearch.id_backup = "";
+          this.filtrosSearch.isid_backup = false;
           break;
         case "usuario":
           this.filtrosSearch.usuario = "";
@@ -425,19 +367,14 @@ export class InconsistenciaComponent implements OnInit {
           this.filtrosSearch.version = "";
           this.filtrosSearch.isversion = false;
           break;
-    }
+    }*/
   }
-  //-----------------------------------------------------------------------
-  /*private verficarFiltrosActivados(): number {
-    let bndTrue = 0;
-    for (let filtrosSearchKey in this.filtrosSearch) {
-      if (filtrosSearchKey.includes("is")) {
-        if (this.filtrosSearch[filtrosSearchKey]) {
-          bndTrue = bndTrue + 1;
-          break;
-        }
-      }
+
+  private isFilter(): boolean {
+    for (let key in this.filtrosSearch) {
+      if (this.filtrosSearch[key].isFilter) return true;
     }
-    return bndTrue;
-  }*/
+    return false;
+  }
+
 }

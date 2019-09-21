@@ -14,7 +14,7 @@ export class PreferencesComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private preferencesService: PreferencesService,  private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Preferences relacionados con el backup';
+      this.msj = 'Buscando Preferences relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.preferencesService.buscarPreferencesBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();

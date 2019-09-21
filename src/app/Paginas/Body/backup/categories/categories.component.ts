@@ -14,7 +14,7 @@ export class CategoriesComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private categoriesService: CategoriesService,  private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Categories relacionados con el backup';
+      this.msj = 'Buscando Categories relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.categoriesService.buscarCategoriesBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();

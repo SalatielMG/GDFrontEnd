@@ -64,10 +64,10 @@
         </div>
         <div class="row">
           <div class="col" style="text-align: left">
-            <button class="btn btn-outline-primary" (click)="paginaBackup(['/backup', 1, backService.backups[0].id_backup])">Primer Respaldo<br>{{backService.backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
+            <button class="btn btn-outline-primary" (click)="paginaBackup(['/id_backup', 1, backService.backups[0].id_backup])">Primer Respaldo<br>{{backService.backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
           </div>
           <div class="col" style="text-align: right" *ngIf="backService.backups.length > 0">
-            <button class="btn btn-outline-secondary" (click)="paginaBackup(['/backup', backService.backups.length, backService.backups[backService.backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.backups[backService.backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
+            <button class="btn btn-outline-secondary" (click)="paginaBackup(['/id_backup', backService.backups.length, backService.backups[backService.backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.backups[backService.backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
           </div>
         </div>
       </div>

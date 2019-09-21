@@ -13,7 +13,7 @@ export class AccountsComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private accountService: AccountsService, private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Accounts relacionados con el backup';
+      this.msj = 'Buscando Accounts relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.accountService.buscarAccountsBackup(params.get('idBack')).subscribe(
           result => {

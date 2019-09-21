@@ -15,7 +15,7 @@ export class CurrenciesComponent implements OnInit {
                private router: Router, private currenciesService: CurrenciesService, private util: Utilerias) {
 
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Currencies relacionados con el backup';
+      this.msj = 'Buscando Currencies relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.currenciesService.buscarCurrenciesBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();

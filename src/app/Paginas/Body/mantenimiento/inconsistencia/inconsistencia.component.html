@@ -47,10 +47,10 @@
                     Backup
                   </div>
                   <div class="row">
-                    <input type="search" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.backup" name="backup" (keyup)="keyUpSearch($event, 'backup')">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
                   </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.isbackup">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('backup')">
+                  <div class="row display-in-block" *ngIf="filtrosSearch.id_backup.isFilter">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('id_backup')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -60,10 +60,10 @@
                     Usuario
                   </div>
                   <div class="row">
-                    <input type="search" class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.usuario" name="usuario" (keyup)="keyUpSearch($event, 'usuario')">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
                   </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.isusuario">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('usuario')">
+                  <div class="row display-in-block" *ngIf="filtrosSearch.email.isFilter">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('email')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -73,14 +73,14 @@
                     Automatico
                   </div>
                   <div class="row">
-                    <select class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.automatico" name="automatico" (ngModelChange)="selectAumtomatics($event)">
+                    <select class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="selectAumtomatics($event)">
                       <option value="-1">Ambos</option>
                       <option value="0">No</option>
                       <option value="1">Si</option>
                     </select>
                   </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.isautomatico">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('automatico')">
+                  <div class="row display-in-block" *ngIf="filtrosSearch.automatic.isFilter">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('automatic')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -90,10 +90,10 @@
                     Fecha de creación
                   </div>
                   <div class="row">
-                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.creacion" name="creacion" (ngModelChange)="eventDate($event, 'creacion')">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
                   </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.iscreacion">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('creacion')">
+                  <div class="row display-in-block" *ngIf="filtrosSearch.date_creation.isFilter">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_creation')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -103,10 +103,10 @@
                     Fecha de descarga
                   </div>
                   <div class="row">
-                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.descarga" name="descarga" (ngModelChange)="eventDate($event, 'descarga')">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
                   </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.isdescarga">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('descarga')">
+                  <div class="row display-in-block" *ngIf="filtrosSearch.date_download.isFilter">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_download')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -116,10 +116,10 @@
                     Version
                   </div>
                   <div class="row">
-                    <input type="text" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.version" name="version" (keyup)="keyUpSearch($event, 'version')">
+                    <input type="text" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
                   </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.isversion">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('version')">
+                  <div class="row display-in-block" *ngIf="filtrosSearch.created_in.isFilter">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('created_in')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -133,8 +133,8 @@
                 </th>
               </tr>
               </thead>
-              <tbody *ngIf="!todo">
-              <tr *ngFor="let back of backupService.backups; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)" >
+              <tbody *ngIf="!todo && !isFilter()">
+              <tr *ngFor="let back of backupService.backups; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)"  >
                 <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
                 <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
                 <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
@@ -158,6 +158,25 @@
               >
               </div>
               </tbody>
+
+              <tbody *ngIf="!todo && isFilter()">
+              <tr *ngFor="let back of backupsFiltro; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)"  >
+                <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
+                <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
+                <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
+                <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                <td *ngIf="back.id_backup != 0">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                <td *ngIf="back.id_backup != 0">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                <td *ngIf="back.id_backup != 0">{{back.created_in}}</td>
+                <td *ngIf="back.id_backup != 0">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
+                    <label class="custom-control-label" [attr.for]="i"></label>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+
             </table>
             <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
           </div>

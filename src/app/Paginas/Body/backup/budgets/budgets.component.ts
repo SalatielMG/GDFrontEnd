@@ -14,7 +14,7 @@ export class BudgetsComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private budgetService: BudgetsService,  private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Budgest relacionados con el backup';
+      this.msj = 'Buscando Budgest relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.budgetService.buscarBudgetsBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();

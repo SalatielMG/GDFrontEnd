@@ -14,7 +14,7 @@ export class MovementsComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private movementsService: MovementsService, private util: Utilerias) {
     this.route.parent.paramMap.subscribe(params => {
-      this.msj = 'Buscando Movements relacionados con el backup';
+      this.msj = 'Buscando Movements relacionados con el id_backup';
       this.util.crearLoading().then(() => {
         this.movementsService.buscarMovementsBackup(params.get('idBack')).subscribe(result => {
           this.util.detenerLoading();
