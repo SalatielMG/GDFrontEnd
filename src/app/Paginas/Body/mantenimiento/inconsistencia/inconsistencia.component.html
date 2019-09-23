@@ -42,6 +42,7 @@
               <thead class="thead-light" style="color: black">
               <tr class="text-center">
                 <th scope="col" class="vertical-align-middle">#</th>
+                <th scope="col" class="vertical-align-middle">Pos</th>
                 <th scope="col">
                   <div class="row display-in-block">
                     Backup
@@ -73,7 +74,7 @@
                     Automatico
                   </div>
                   <div class="row">
-                    <select class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="selectAumtomatics($event)">
+                    <select class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
                       <option value="-1">Ambos</option>
                       <option value="0">No</option>
                       <option value="1">Si</option>
@@ -135,7 +136,8 @@
               </thead>
               <tbody *ngIf="!todo && !isFilter()">
               <tr *ngFor="let back of backupService.backups; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)"  >
-                <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
+                <th  scope="row" *ngIf="back.id_backup != 0">{{(i)}}</th>
+                <td *ngIf="back.id_backup != 0">{{back.pos}}</td>
                 <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
                 <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
@@ -160,8 +162,9 @@
               </tbody>
 
               <tbody *ngIf="!todo && isFilter()">
-              <tr *ngFor="let back of backupsFiltro; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)"  >
+              <tr *ngFor="let back of backupsFiltro; let i = index" class="font-weight-normal text-center" (click)="checkBackup(back.pos)"  >
                 <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
+                <td *ngIf="back.id_backup != 0">{{back.pos}}</td>
                 <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
                 <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
@@ -224,8 +227,10 @@
         <div class="form-group row">
           <label for="backup" class="col-3 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
           <div class="col-7">
-            <select id="backup" [multiple]="!todo" class="form-control" [(ngModel)]="backup" name="backup" (change)="prueba($event)">
-              <option *ngFor="let b of backupService.backups" value="{{b.id_backup}}">{{(b.id_backup == 0) ? 'Todos': b.id_backup}}</option>
+            <select id="backup" [multiple]="!todo" class="form-control" [(ngModel)]="backup" name="backup" (change)="changeOptionSelect($event)" *ngIf="backupService.backups.length > 0">
+              <ng-container *ngFor="let b of backupService.backups">
+                <option  value="{{b.id_backup}}">{{(b.id_backup == 0) ? 'Todos': b.id_backup}}</option>
+              </ng-container>
             </select>
           </div>
           <div class="col-2">
@@ -245,31 +250,31 @@
 
 <ul class="nav nav-tabs nav-color">
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts']">Accounts</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts', stringyfyJSON()]">Accounts</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['automatics']">Automatics</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['automatics', stringyfyJSON()]">Automatics</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['budgets']">Budgets</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['budgets', stringyfyJSON()]">Budgets</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['cardviews']">CardViews</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['cardviews', stringyfyJSON()]">CardViews</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['categories']">Categories</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['categories', stringyfyJSON()]">Categories</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['currencies']">Currencies</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['currencies', stringyfyJSON()]">Currencies</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['extras']">Extras</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['extras', stringyfyJSON()]">Extras</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['movements']">Movements</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['movements', stringyfyJSON()]">Movements</a>
   </li>
   <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['preferences']">Preferences</a>
+    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['preferences', stringyfyJSON()]">Preferences</a>
   </li>
 </ul>
 <router-outlet></router-outlet>

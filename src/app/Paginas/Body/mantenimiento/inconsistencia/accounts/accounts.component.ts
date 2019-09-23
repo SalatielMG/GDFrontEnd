@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AccountsService} from "../../../../../Servicios/accounts/accounts.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -13,10 +14,18 @@ export class AccountsComponent implements OnInit {
 
   private pagina: number = 0;
   private faArrowUp = faArrowUp;
+  private backup = [];
 
-  constructor(private accountService: AccountsService, private util: Utilerias) {
-    this.resetearVariables();
-    this.buscarInconsistencia();
+  constructor(private route: ActivatedRoute,
+              private router: Router, private accountService: AccountsService, private util: Utilerias) {
+    this.route.paramMap.subscribe((params) => {
+      this.backup = JSON.parse(params.get("backups"));
+      console.log(this.backup);
+      console.log("params", params);
+      this.resetearVariables();
+      this.buscarInconsistencia();
+    });
+
   }
 
   ngOnInit() {

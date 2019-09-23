@@ -14,15 +14,15 @@ import { PreferencesComponent } from './preferences/preferences.component';
 
 const routes: Routes = [
   {path: '', component: InconsistenciaComponent, children: [
-      {path: 'accounts', component: AccountsComponent, },
-      {path: 'automatics', component: AutomaticsComponent},
-      {path: 'budgets', component: BudgetsComponent},
-      {path: 'cardviews', component: CardviewsComponent},
-      {path: 'categories', component: CategoriesComponent},
-      {path: 'currencies', component: CurrenciesComponent},
-      {path: 'extras', component: ExtrasComponent},
-      {path: 'movements', component: MovementsComponent},
-      {path: 'preferences', component: PreferencesComponent},
+      {path: 'accounts/:backups', component: AccountsComponent, },
+      {path: 'automatics/:backups', component: AutomaticsComponent},
+      {path: 'budgets/:backups', component: BudgetsComponent},
+      {path: 'cardviews/:backups', component: CardviewsComponent},
+      {path: 'categories/:backups', component: CategoriesComponent},
+      {path: 'currencies/:backups', component: CurrenciesComponent},
+      {path: 'extras/:backups', component: ExtrasComponent},
+      {path: 'movements/:backups', component: MovementsComponent},
+      {path: 'preferences/:backups', component: PreferencesComponent},
     ]
   }
 ];

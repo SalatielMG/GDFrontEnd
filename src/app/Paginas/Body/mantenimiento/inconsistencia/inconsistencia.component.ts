@@ -13,8 +13,8 @@ import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-ba
 export class InconsistenciaComponent implements OnInit {
 
   private email: string = "";
-  private backup = [];
-  private backupIndex = [];
+  private backup = ["0"];
+  private backupIndex = ["0"];
   private backupTemp = [];
   private backupIndexTemp = [];
   private todo: boolean = false;
@@ -29,7 +29,7 @@ export class InconsistenciaComponent implements OnInit {
   }
   ngOnInit() {
   }
-  private prueba(event) {
+  private changeOptionSelect(event) {
     this.todo = false;
     let indices = [];
     console.log('Valor event:= ', event.target.selectedOptions);
@@ -45,52 +45,65 @@ export class InconsistenciaComponent implements OnInit {
       }
     }
     this.backupIndex = indices;
+    this.searchWithFilter();
   }
-  public search() {
+  public search(isFiltro = false) {
     console.log("email user:", this.email);
     if (this.email.length == 0) {
       this.util.emailUserMntInconsistencia = "Generales";
-      this.compararRutaHija(this.router.url);
+      this.compararRutaHija(this.router.url, isFiltro);
     } else {
       if ((this.util.regex_email).exec(this.email)) {
         this.util.emailUserMntInconsistencia = this.email;
-        this.compararRutaHija(this.router.url);
+        this.compararRutaHija(this.router.url, isFiltro);
       } else {
         this.util.msjToast("Porfavor ingrese un correo valido", "Email no Valido", true);
       }
     }
   }
-  private compararRutaHija(ruta) {
-    this.backupService.resetearBaackups();
-    //this.backupFiltros = [];
-    this.buscarBackups();
+  private resetVariables() {
+  this.backup = ["0"];
+  this.backupIndex = ["0"];
+  this.backupTemp = [];
+  this.backupIndexTemp = [];
+  this.todo = true;
+
+  this.filtrosSearch = new FiltrosSearchBackups();
+  this.backupsFiltro= [];
+  }
+  private compararRutaHija(ruta, isFiltro) {
+    if (!isFiltro) {
+      this.backupService.resetearBaackups();
+      this.resetVariables();
+      this.buscarBackups();
+    }
     switch (ruta) {
       case "/mantenimiento/inconsistenciaMnt/accounts":
-        this.navegacion("accounts");
+        this.navegacion("accounts", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/automatics":
-        this.navegacion("automatics");
+        this.navegacion("automatics", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/budgets":
-        this.navegacion("budgets");
+        this.navegacion("budgets", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/cardviews":
-        this.navegacion("cardviews");
+        this.navegacion("cardviews", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/categories":
-        this.navegacion("categories");
+        this.navegacion("categories", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/currencies":
-        this.navegacion("currencies");
+        this.navegacion("currencies", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/extras":
-        this.navegacion("extras");
+        this.navegacion("extras", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/movements":
-        this.navegacion("movements");
+        this.navegacion("movements", isFiltro);
         break;
       case "/mantenimiento/inconsistenciaMnt/preferences":
-        this.navegacion("preferences");
+        this.navegacion("preferences", isFiltro);
         break;
     }
   }
@@ -106,10 +119,17 @@ export class InconsistenciaComponent implements OnInit {
       this.util.msjErrorInterno(error, false, false);
     });
   }
-  private navegacion(tabla) {
-    this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-      this.router.navigate([tabla], {relativeTo: this.route});
-    });
+  private navegacion(tabla, isFilter) {
+    if (isFilter) {
+      this.router.navigate([tabla, this.stringyfyJSON()], {relativeTo: this.route});
+    } else {
+      this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
+        this.router.navigate([tabla, this.stringyfyJSON()], {relativeTo: this.route});
+      });
+    }
+  }
+  private stringyfyJSON() {
+    return JSON.stringify(this.backup);
   }
   private operacion(tabla) {
     let opcion = confirm("¿ Desea corregir las inconsistencias de la Tabla : "+ tabla +" ? ");
@@ -190,6 +210,14 @@ export class InconsistenciaComponent implements OnInit {
     this.reset();
     this.backup = this.backup.concat(this.backupTemp);
     this.backupIndex =  this.backupIndex.concat(this.backupIndexTemp);
+    this.searchWithFilter();
+  }
+  private searchWithFilter() {
+    if (this.backup.length == 0) {
+      alert("Porfavor filtre el(los) backup(s) " + ((this.util.emailUserMntInconsistencia == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.emailUserMntInconsistencia);
+      return;
+    }
+    this.search(true);
   }
   private reset() {
     this.backup = [];
@@ -278,39 +306,23 @@ export class InconsistenciaComponent implements OnInit {
   }
 
   //-----------------------------------------------------------------------
-  private selectAumtomatics(event) {
-    console.log(event);
-    if (event != "-1") {
-      if (this.filtrosSearch.automatic.value == this.filtrosSearch.automatic.valueAnt) return;
-      this.resetFilterisActive();
-      this.filtrosSearch.automatic.isFilter = true;
-      this.filtrosSearch.automatic.valueAnt = this.filtrosSearch.automatic.value;
-      this.proccessFilter("automatic");
-    } else {
-      this.filtrosSearch.automatic.isFilter = false;
-    }
-  }
   private actionFilterEvent(event, value, isKeyUp = false) {
-    if (isKeyUp && event.key != "Enter") return;
-    if (this.filtrosSearch[value].value == "") return;
+    if (value == "automatic") {
+      if (this.filtrosSearch[value].value == "-1") {
+        this.filtrosSearch[value].isFilter = false;
+        this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
+        this.proccessFilter();
+        return;
+      }
+    } else {
+      if (isKeyUp && event.key != "Enter") return;
+      if (this.filtrosSearch[value].value == "") return;
+    }
     if (this.filtrosSearch[value].value == this.filtrosSearch[value].valueAnt) return;
     this.resetFilterisActive();
-    console.log("Value of " + value + " :=", this.filtrosSearch[value].value);
     this.filtrosSearch[value].isFilter = true;
     this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
-    this.proccessFilter(value);
-    /*switch (value) {
-      case "date_creation":
-        break;
-      case "date_download":
-        break;
-      case "id_backup":
-        break;
-      case "email":
-        break;
-      case "created_in":
-        break;
-    }*/
+    this.proccessFilter();
   }
   private resetFilterisActive() {
     if (!this.isFilter()) {
@@ -318,36 +330,7 @@ export class InconsistenciaComponent implements OnInit {
       this.backupsFiltro =  this.backupsFiltro.concat(this.backupService.backups);
     }
   }
-  private proccessFilter(key) {
-    console.log("After:=", this.backupsFiltro);
-
-    let temp = [];
-    for (let back of this.backupsFiltro) {
-      if (back.id_backup != 0) {
-        if (key == "automatic") {
-          if (back[key].toString() == this.filtrosSearch[key].value) {
-            temp.push(back);
-          }
-        } else {
-          if (back[key].toString().includes(this.filtrosSearch[key].value)) {
-            temp.push(back);
-          }
-        }
-      }
-    }
-    this.backupsFiltro = temp;
-
-    console.log("before:=", this.backupsFiltro);
-  }
-
-  private resetValuefiltroSearch(key) {
-
-    this.filtrosSearch[key].value =  "";
-    this.filtrosSearch[key].valueAnt =  "";
-    this.filtrosSearch[key].isFilter =  false;
-    if (key == "automatic") this.filtrosSearch[key].value = "-1";
-
-    if (!this.isFilter()) return;
+  private proccessFilter() {
     let temp = [];
     this.backupService.backups.forEach((back) => {
       if (back.id_backup != 0) {
@@ -355,7 +338,7 @@ export class InconsistenciaComponent implements OnInit {
         let bnd = true;
         for (let k in this.filtrosSearch) {
           if (this.filtrosSearch[k].isFilter) {
-            if (k == "automatic") {
+            if (k == "automatic" && this.filtrosSearch[k].value != "-1") {
               if (back[k].toString() != this.filtrosSearch[k].value) {
                 bnd = false;
                 break;
@@ -374,34 +357,22 @@ export class InconsistenciaComponent implements OnInit {
         }
       }
     });
+    this.backupsFiltro = [];
+    this.backupsFiltro = this.backupsFiltro.concat(temp);
+    temp = null;
+  }
 
-    this.backupsFiltro = temp;
-    /*switch (key) {
-        case "id_backup":
-          this.filtrosSearch.id_backup = "";
-          this.filtrosSearch.isid_backup = false;
-          break;
-        case "usuario":
-          this.filtrosSearch.usuario = "";
-          this.filtrosSearch.isusuario = false;
-          break;
-        case "automatico":
-          this.filtrosSearch.automatico = "-1";
-          this.filtrosSearch.isautomatico = false;
-          break;
-        case "creacion":
-          this.filtrosSearch.creacion = "";
-          this.filtrosSearch.iscreacion = false;
-          break;
-        case "descarga":
-          this.filtrosSearch.descarga = "";
-          this.filtrosSearch.isdescarga = false;
-          break;
-        case "version":
-          this.filtrosSearch.version = "";
-          this.filtrosSearch.isversion = false;
-          break;
-    }*/
+  private resetValuefiltroSearch(key) {
+    this.filtrosSearch[key].value =  "";
+    this.filtrosSearch[key].valueAnt =  "";
+    this.filtrosSearch[key].isFilter =  false;
+    if (key == "automatic") this.filtrosSearch[key].value = "-1";
+
+    if (!this.isFilter()) {
+      this.backupsFiltro = [];
+      return;
+    }
+    this.proccessFilter();
   }
 
   private isFilter(): boolean {
