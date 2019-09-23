@@ -281,8 +281,10 @@ export class InconsistenciaComponent implements OnInit {
   private selectAumtomatics(event) {
     console.log(event);
     if (event != "-1") {
+      if (this.filtrosSearch.automatic.value == this.filtrosSearch.automatic.valueAnt) return;
       this.resetFilterisActive();
       this.filtrosSearch.automatic.isFilter = true;
+      this.filtrosSearch.automatic.valueAnt = this.filtrosSearch.automatic.value;
       this.proccessFilter("automatic");
     } else {
       this.filtrosSearch.automatic.isFilter = false;
@@ -291,10 +293,11 @@ export class InconsistenciaComponent implements OnInit {
   private actionFilterEvent(event, value, isKeyUp = false) {
     if (isKeyUp && event.key != "Enter") return;
     if (this.filtrosSearch[value].value == "") return;
-
+    if (this.filtrosSearch[value].value == this.filtrosSearch[value].valueAnt) return;
     this.resetFilterisActive();
     console.log("Value of " + value + " :=", this.filtrosSearch[value].value);
     this.filtrosSearch[value].isFilter = true;
+    this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
     this.proccessFilter(value);
     /*switch (value) {
       case "date_creation":
@@ -338,10 +341,41 @@ export class InconsistenciaComponent implements OnInit {
   }
 
   private resetValuefiltroSearch(key) {
+
     this.filtrosSearch[key].value =  "";
+    this.filtrosSearch[key].valueAnt =  "";
     this.filtrosSearch[key].isFilter =  false;
     if (key == "automatic") this.filtrosSearch[key].value = "-1";
 
+    if (!this.isFilter()) return;
+    let temp = [];
+    this.backupService.backups.forEach((back) => {
+      if (back.id_backup != 0) {
+
+        let bnd = true;
+        for (let k in this.filtrosSearch) {
+          if (this.filtrosSearch[k].isFilter) {
+            if (k == "automatic") {
+              if (back[k].toString() != this.filtrosSearch[k].value) {
+                bnd = false;
+                break;
+              }
+            } else {
+              if (!back[k].toString().includes(this.filtrosSearch[k].value)){
+                bnd = false;
+                break;
+              }
+            }
+          }
+        }
+
+        if (bnd) {
+          temp.push(back);
+        }
+      }
+    });
+
+    this.backupsFiltro = temp;
     /*switch (key) {
         case "id_backup":
           this.filtrosSearch.id_backup = "";

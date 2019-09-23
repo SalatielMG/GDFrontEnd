@@ -1,26 +1,32 @@
 export class FiltrosSearchBackups {
   id_backup = {
     value: "",
+    valueAnt: "",
     isFilter: false
   };
   email = {
     value: "",
+    valueAnt: "",
     isFilter: false
   };
   automatic = {
     value: "-1",
+    valueAnt: "",
     isFilter: false
   };
   date_creation = {
     value:  "",
+    valueAnt: "",
     isFilter: false
   };
   date_download = {
     value:  "",
+    valueAnt: "",
     isFilter: false
   };
   created_in = {
     value: "",
+    valueAnt: "",
     isFilter: false
   };
   constructor(){
