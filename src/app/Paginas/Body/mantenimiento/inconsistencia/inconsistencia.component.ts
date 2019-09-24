@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import {Backup} from "../../../../Modelos/Backup/backup";
 import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-backups";
+import {promise} from "selenium-webdriver";
 
 @Component({
   selector: 'app-inconsistencia',
@@ -18,6 +19,7 @@ export class InconsistenciaComponent implements OnInit {
   private backupTemp = [];
   private backupIndexTemp = [];
   private todo: boolean = false;
+  private errorValidacionUserBackup: boolean = true;
 
   private filtrosSearch = new FiltrosSearchBackups();
   private backupsFiltro: Backup[];
@@ -67,6 +69,7 @@ export class InconsistenciaComponent implements OnInit {
   this.backupTemp = [];
   this.backupIndexTemp = [];
   this.todo = true;
+  this.errorValidacionUserBackup = true;
 
   this.filtrosSearch = new FiltrosSearchBackups();
   this.backupsFiltro= [];
@@ -75,54 +78,62 @@ export class InconsistenciaComponent implements OnInit {
     if (!isFiltro) {
       this.backupService.resetearBaackups();
       this.resetVariables();
-      this.buscarBackups();
+      this.buscarBackups().then(() => {
+        if (!this.errorValidacionUserBackup) this.routeNavigate(ruta, isFiltro);
+      });
+    } else {
+      this.routeNavigate(ruta, isFiltro);
     }
+  }
+  private routeNavigate(ruta, isFiltro)  {
     let route = ruta.split("/");
     if (route.length == 3) return;
     ruta = route[3];
     this.navegacion(ruta, isFiltro);
-
-    /*switch (ruta) {
-      case "accounts":
-        this.navegacion("accounts", isFiltro);
-        break;
-      case "automatics":
-        this.navegacion("automatics", isFiltro);
-        break;
-      case "budgets":
-        this.navegacion("budgets", isFiltro);
-        break;
-      case "cardviews":
-        this.navegacion("cardviews", isFiltro);
-        break;
-      case "categories":
-        this.navegacion("categories", isFiltro);
-        break;
-      case "currencies":
-        this.navegacion("currencies", isFiltro);
-        break;
-      case "extras":
-        this.navegacion("extras", isFiltro);
-        break;
-      case "movements":
-        this.navegacion("movements", isFiltro);
-        break;
-      case "preferences":
-        this.navegacion("preferences", isFiltro);
-        break;
-    }*/
   }
   private buscarBackups() {
-    this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
-      this.util.loadingModal = false;
-      this.util.msjModal = result.msj;
-      if (!result.error) {
-        this.backupService.paginaB += 1;
-        this.backupService.backups = this.backupService.backups.concat(result.backups);
-      }
-    }, error => {
-      this.util.msjErrorInterno(error, false, false);
-    });
+    let promise;
+    if (this.backupService.paginaB == 0) { // Es la primera busqueda implica un loading
+      promise = new Promise(()=>{
+        this.util.msjLoading = "Validando usuario" + ((this.util.emailUserMntInconsistencia == "Generales") ? "s ": ": ") + this.util.emailUserMntInconsistencia + " y backups relacionados ";
+        this.util.crearLoading().then(() => {
+          return this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
+            this.util.detenerLoading();
+            this.util.loadingModal = false;
+            this.util.msjModal = result.msj;
+            this.errorValidacionUserBackup = result.error;
+
+            if (!result.error) {
+              this.backupService.paginaB += 1;
+              this.backupService.backups = this.backupService.backups.concat(result.backups);
+            } else {
+              this.util.msjToast(result.msj, result.titulo, result.error);
+            }
+          }, error => {
+            this.util.msjErrorInterno(error, true, true);
+          });
+        });
+      });
+
+    } else {
+      promise = new promise(() => {
+        this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
+          this.util.loadingModal = false;
+          this.util.msjModal = result.msj;
+
+          if (!result.error) {
+            this.backupService.paginaB += 1;
+            this.backupService.backups = this.backupService.backups.concat(result.backups);
+          } else {
+            this.util.msjToast(result.msj, result.titulo, result.error);
+          }
+        }, error => {
+          this.util.msjErrorInterno(error, false, false);
+        });
+      });
+    }
+    return promise;
+
   }
   private navegacion(tabla, isFilter) {
     if (isFilter) {

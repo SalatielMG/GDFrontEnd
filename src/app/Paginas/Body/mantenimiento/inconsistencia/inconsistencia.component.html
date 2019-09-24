@@ -184,7 +184,7 @@
             <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
           </div>
         </div>
-        <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups == 0 && !todo">
+        <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups.length == 0">
           <h4 class="font-weight-light">{{util.msjModal}}</h4>
         </div>
       </div>
@@ -244,37 +244,43 @@
     </div>
   </div>
   <div class="row" style="display: block">
-    <button class="btn  btn-outline-success" (click)="corregirTabla()">Corregir Tabla</button>
+    <button class="btn  btn-outline-success" (click)="corregirTabla()" [disabled]="errorValidacionUserBackup">Corregir Tabla</button>
   </div>
 </div>
 
-<ul class="nav nav-tabs nav-color">
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts', stringyfyJSON()]">Accounts</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['automatics', stringyfyJSON()]">Automatics</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['budgets', stringyfyJSON()]">Budgets</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['cardviews', stringyfyJSON()]">CardViews</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['categories', stringyfyJSON()]">Categories</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['currencies', stringyfyJSON()]">Currencies</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['extras', stringyfyJSON()]">Extras</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['movements', stringyfyJSON()]">Movements</a>
-  </li>
-  <li class="nav-item tam-tab">
-    <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['preferences', stringyfyJSON()]">Preferences</a>
-  </li>
-</ul>
-<router-outlet></router-outlet>
+<ng-container *ngIf="!errorValidacionUserBackup">
+  <ul class="nav nav-tabs nav-color">
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts', stringyfyJSON()]">Accounts</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['automatics', stringyfyJSON()]">Automatics</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['budgets', stringyfyJSON()]">Budgets</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['cardviews', stringyfyJSON()]">CardViews</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['categories', stringyfyJSON()]">Categories</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['currencies', stringyfyJSON()]">Currencies</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['extras', stringyfyJSON()]">Extras</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['movements', stringyfyJSON()]">Movements</a>
+    </li>
+    <li class="nav-item tam-tab">
+      <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['preferences', stringyfyJSON()]">Preferences</a>
+    </li>
+  </ul>
+  <router-outlet></router-outlet>
+</ng-container>
+
+<div *ngIf="errorValidacionUserBackup">
+  <h3 class="font-weight-normal text-center">{{util.msjModal}}</h3>
+</div>
