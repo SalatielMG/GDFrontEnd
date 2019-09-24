@@ -77,35 +77,40 @@ export class InconsistenciaComponent implements OnInit {
       this.resetVariables();
       this.buscarBackups();
     }
-    switch (ruta) {
-      case "/mantenimiento/inconsistenciaMnt/accounts":
+    let route = ruta.split("/");
+    if (route.length == 3) return;
+    ruta = route[3];
+    this.navegacion(ruta, isFiltro);
+
+    /*switch (ruta) {
+      case "accounts":
         this.navegacion("accounts", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/automatics":
+      case "automatics":
         this.navegacion("automatics", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/budgets":
+      case "budgets":
         this.navegacion("budgets", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/cardviews":
+      case "cardviews":
         this.navegacion("cardviews", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/categories":
+      case "categories":
         this.navegacion("categories", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/currencies":
+      case "currencies":
         this.navegacion("currencies", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/extras":
+      case "extras":
         this.navegacion("extras", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/movements":
+      case "movements":
         this.navegacion("movements", isFiltro);
         break;
-      case "/mantenimiento/inconsistenciaMnt/preferences":
+      case "preferences":
         this.navegacion("preferences", isFiltro);
         break;
-    }
+    }*/
   }
   private buscarBackups() {
     this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {

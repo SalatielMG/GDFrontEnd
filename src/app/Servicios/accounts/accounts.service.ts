@@ -18,9 +18,9 @@ export class AccountsService {
     return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: idBackup}});
   }
 
-  public buscarInconsistenciaDatos(email, pagina): Observable<any> {
+  public buscarInconsistenciaDatos(email, pagina, backups): Observable<any> {
     // this.Accounts = [];
-    return this.http.get(URL + 'buscarInconsistenciaDatosAccounts', {params: {email: email, pagina: pagina}});
+    return this.http.get(URL + 'buscarInconsistenciaDatosAccounts', {params: {email: email, pagina: pagina, backups: backups}});
   }
 
 }

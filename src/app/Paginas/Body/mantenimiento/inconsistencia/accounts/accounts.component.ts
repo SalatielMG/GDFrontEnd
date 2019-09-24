@@ -14,13 +14,13 @@ export class AccountsComponent implements OnInit {
 
   private pagina: number = 0;
   private faArrowUp = faArrowUp;
-  private backup = [];
+  private backups;
 
   constructor(private route: ActivatedRoute,
               private router: Router, private accountService: AccountsService, private util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
-      this.backup = JSON.parse(params.get("backups"));
-      console.log(this.backup);
+      this.backups = params.get("backups");
+      console.log(this.backups);
       console.log("params", params);
       this.resetearVariables();
       this.buscarInconsistencia();
@@ -48,14 +48,14 @@ export class AccountsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Accounts';
       this.util.crearLoading().then(() => {
-        this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina, this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);
