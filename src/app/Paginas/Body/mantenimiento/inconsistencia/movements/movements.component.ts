@@ -31,14 +31,14 @@ export class MovementsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Movements';
       this.util.crearLoading().then(() => {
-        this.movementsService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.movementsService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.movementsService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.movementsService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

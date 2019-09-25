@@ -48,14 +48,14 @@ export class AccountsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Accounts';
       this.util.crearLoading().then(() => {
-        this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina, this.backups).subscribe(result => {
+        this.accountService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.accountService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina, this.backups).subscribe(result => {
+      this.accountService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

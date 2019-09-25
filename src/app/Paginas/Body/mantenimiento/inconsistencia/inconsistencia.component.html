@@ -17,7 +17,7 @@
       </div>
       <div class="modal-body">
         <div class="row" style="width: 100%; display: block">
-          <h3 class="font-weight-normal text-center">Usuario{{((util.emailUserMntInconsistencia == "Generales")  ? "s ": ": ") + util.emailUserMntInconsistencia}}</h3>
+          <h3 class="font-weight-normal text-center">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h3>
         </div>
         <div *ngIf="backupService.backups.length > 0">
           <!--form class="form-row">
@@ -56,7 +56,7 @@
                     </button>
                   </div>
                 </th>
-                <th scope="col"  *ngIf="util.emailUserMntInconsistencia == 'Generales'">
+                <th scope="col"  *ngIf="util.userMntInconsistencia.email == 'Generales'">
                   <div class="row display-in-block">
                     Usuario
                   </div>
@@ -139,7 +139,7 @@
                 <th  scope="row" *ngIf="back.id_backup != 0">{{(i)}}</th>
                 <td *ngIf="back.id_backup != 0">{{back.pos}}</td>
                 <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
-                <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
+                <td *ngIf="util.userMntInconsistencia.email == 'Generales' && back.id_backup != 0">{{back.email}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
                 <td *ngIf="back.id_backup != 0">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
@@ -166,7 +166,7 @@
                 <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
                 <td *ngIf="back.id_backup != 0">{{back.pos}}</td>
                 <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
-                <td *ngIf="util.emailUserMntInconsistencia == 'Generales' && back.id_backup != 0">{{back.email}}</td>
+                <td *ngIf="util.userMntInconsistencia.email == 'Generales' && back.id_backup != 0">{{back.email}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
                 <td *ngIf="back.id_backup != 0">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
                 <td *ngIf="back.id_backup != 0">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
@@ -221,7 +221,7 @@
   <div class="row" >
     <div class="col-3"></div>
     <div class="col-6">
-      <h3 class="font-weight-light text-center">{{util.emailUserMntInconsistencia}}</h3>
+      <h3 class="font-weight-light text-center">{{util.userMntInconsistencia.email}}</h3>
     </div>
     <div class="col-3">
         <div class="form-group row">

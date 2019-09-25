@@ -34,14 +34,14 @@ export class AutomaticsComponent implements OnInit {
     if(this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Automatics';
       this.util.crearLoading().then(() => {
-        this.automaticsService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.automaticsService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.automaticsService.buscarInconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.automaticsService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

@@ -15,7 +15,11 @@ export class Utilerias {
   public CataAccount_all = "Todas las cuentas";
   public CatCategory_all = "Todas las categorias";
 
-  public emailUserMntInconsistencia = "Generales";
+  public userMntInconsistencia = {
+    email : "Generales",
+    id : "0",
+  };
+
   public emailUserMntBackup = "Generales";
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;

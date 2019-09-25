@@ -32,14 +32,14 @@ export class CurrenciesComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Currencies';
       this.util.crearLoading().then(() => {
-        this.currenciesService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.currenciesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.currenciesService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.currenciesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

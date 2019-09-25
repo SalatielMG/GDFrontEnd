@@ -34,14 +34,14 @@ export class BudgetsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Budgets';
       this.util.crearLoading().then(() => {
-        this.budgetService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.budgetService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

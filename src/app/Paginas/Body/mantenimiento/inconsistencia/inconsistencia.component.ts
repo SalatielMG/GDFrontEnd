@@ -35,6 +35,7 @@ export class InconsistenciaComponent implements OnInit {
     this.todo = false;
     let indices = [];
     console.log('Valor event:= ', event.target.selectedOptions);
+    this.searchWithFilter();
     for (let option of event.target.selectedOptions) {
       console.log(option.value);
       let key = option.value.split(":");
@@ -47,16 +48,15 @@ export class InconsistenciaComponent implements OnInit {
       }
     }
     this.backupIndex = indices;
-    this.searchWithFilter();
   }
   public search(isFiltro = false) {
     console.log("email user:", this.email);
     if (this.email.length == 0) {
-      this.util.emailUserMntInconsistencia = "Generales";
+      this.util.userMntInconsistencia.email = "Generales";
       this.compararRutaHija(this.router.url, isFiltro);
     } else {
       if ((this.util.regex_email).exec(this.email)) {
-        this.util.emailUserMntInconsistencia = this.email;
+        this.util.userMntInconsistencia.email = this.email;
         this.compararRutaHija(this.router.url, isFiltro);
       } else {
         this.util.msjToast("Porfavor ingrese un correo valido", "Email no Valido", true);
@@ -95,9 +95,9 @@ export class InconsistenciaComponent implements OnInit {
     let promise;
     if (this.backupService.paginaB == 0) { // Es la primera busqueda implica un loading
       promise = new Promise(()=>{
-        this.util.msjLoading = "Validando usuario" + ((this.util.emailUserMntInconsistencia == "Generales") ? "s ": ": ") + this.util.emailUserMntInconsistencia + " y backups relacionados ";
+        this.util.msjLoading = "Validando usuario" + ((this.util.userMntInconsistencia.email == "Generales") ? "s ": ": ") + this.util.userMntInconsistencia.email + " y backups relacionados ";
         this.util.crearLoading().then(() => {
-          return this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
+          return this.backupService.buscarBackupsUserEmail(this.util.userMntInconsistencia.email, this.backupService.paginaB).subscribe(result => {
             this.util.detenerLoading();
             this.util.loadingModal = false;
             this.util.msjModal = result.msj;
@@ -106,6 +106,7 @@ export class InconsistenciaComponent implements OnInit {
             if (!result.error) {
               this.backupService.paginaB += 1;
               this.backupService.backups = this.backupService.backups.concat(result.backups);
+              this.util.userMntInconsistencia.id = result.id_user;
             } else {
               this.util.msjToast(result.msj, result.titulo, result.error);
             }
@@ -116,8 +117,8 @@ export class InconsistenciaComponent implements OnInit {
       });
 
     } else {
-      promise = new promise(() => {
-        this.backupService.buscarBackupsUserEmail(this.util.emailUserMntInconsistencia, this.backupService.paginaB).subscribe(result => {
+      promise = new Promise(() => {
+        this.backupService.buscarBackupsUserEmail(this.util.userMntInconsistencia.email, this.backupService.paginaB).subscribe(result => {
           this.util.loadingModal = false;
           this.util.msjModal = result.msj;
 
@@ -230,7 +231,7 @@ export class InconsistenciaComponent implements OnInit {
   }
   private searchWithFilter() {
     if (this.backup.length == 0) {
-      alert("Porfavor filtre el(los) backup(s) " + ((this.util.emailUserMntInconsistencia == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.emailUserMntInconsistencia);
+      alert("Porfavor filtre el(los) backup(s) " + ((this.util.userMntInconsistencia.email == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.userMntInconsistencia.email);
       return;
     }
     this.search(true);

@@ -32,14 +32,14 @@ export class ExtrasComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Extras';
       this.util.crearLoading().then(() => {
-        this.extrasService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.extrasService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result)
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.extrasService.inconsistenciaDatos(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.extrasService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
         this.resultado(result, false)
       }, error => {
         this.util.msjErrorInterno(error, false);

@@ -32,14 +32,14 @@ export class CategoriesComponent implements OnInit {
     if (this.pagina == 0){
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Categories';
       this.util.crearLoading().then(() => {
-        this.categoriesService.inconsistenciaDato(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+        this.categoriesService.inconsistenciaDato(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.categoriesService.inconsistenciaDato(this.util.emailUserMntInconsistencia, this.pagina).subscribe(result => {
+      this.categoriesService.inconsistenciaDato(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);
