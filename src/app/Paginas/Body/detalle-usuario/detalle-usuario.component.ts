@@ -21,7 +21,7 @@ export class DetalleUsuarioComponent implements OnInit {
       this.user = JSON.parse(params.get('user'));
       console.log('Value User Receive in DetalleUsuarioComponent', this.user);
     });*/
-    this.router.navigate(["gastos"], {relativeTo: this.route});
+    //this.router.navigate(["gastos"], {relativeTo: this.route});
 
     // this.msj = "Creando Grafica de movimientos negativos del usuario solicitado";
     /*this.util.crearLoading().then(() => {

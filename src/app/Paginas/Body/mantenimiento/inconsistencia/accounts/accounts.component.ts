@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountsService} from "../../../../../Servicios/accounts/accounts.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
-import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {ActivatedRoute, Router} from "@angular/router";
 
 
@@ -13,7 +12,6 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class AccountsComponent implements OnInit {
 
   private pagina: number = 0;
-  private faArrowUp = faArrowUp;
   private backups;
 
   constructor(private route: ActivatedRoute,

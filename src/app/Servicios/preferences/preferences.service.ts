@@ -17,8 +17,8 @@ export class PreferencesService {
     this.Preferences = [];
     return this.http.get(URL + 'buscarPreferencesBackup', {params:{idBack: idBackup}});
   }
-  public inconsistenciaDatos(email, pagina): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosPreferences', {params: {email: email, pagina: pagina}});
+  public inconsistenciaDatos(data, pagina, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosPreferences', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
 }

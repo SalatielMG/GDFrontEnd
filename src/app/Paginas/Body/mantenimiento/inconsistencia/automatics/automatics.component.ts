@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AutomaticsService} from "../../../../../Servicios/automatics/automatics.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
-import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {ActivatedRoute, Router} from "@angular/router";
 @Component({
   selector: 'app-automatics',
   templateUrl: './automatics.component.html',
@@ -10,11 +10,20 @@ import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
 export class AutomaticsComponent implements OnInit {
 
   private pagina: number = 0;
-  private faArrowUp = faArrowUp;
+  private backups;
 
-  constructor(private automaticsService: AutomaticsService, private util: Utilerias) {
-    this.resetearVariable();
-    this.buscarInconsistencia();
+  constructor(private route: ActivatedRoute,
+              private router: Router, private automaticsService: AutomaticsService, private util: Utilerias) {
+    this.route.paramMap.subscribe((params) => {
+      this.backups = params.get("backups");
+      console.log(this.backups);
+      console.log("params", params);
+      this.resetearVariable();
+      this.buscarInconsistencia();
+    });
+
+
+
   }
 
   ngOnInit() {
@@ -34,14 +43,14 @@ export class AutomaticsComponent implements OnInit {
     if(this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Automatics';
       this.util.crearLoading().then(() => {
-        this.automaticsService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+        this.automaticsService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina,  this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.automaticsService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+      this.automaticsService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina,  this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

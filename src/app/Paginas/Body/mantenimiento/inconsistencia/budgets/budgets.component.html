@@ -9,7 +9,7 @@
 
 <button class="up-right rounded-circle" (click)="util.subir()">
     <span>
-      <fa-icon [icon]="faArrowUp"></fa-icon>
+      <fa-icon [icon]="util.faArrowUp"></fa-icon>
     </span>
 </button>
 
@@ -31,7 +31,7 @@
       <th scope="col" class="Encabezado-Tabla">initial_date</th>
       <th scope="col" class="Encabezado-Tabla">final_date</th>
       <th scope="col" class="Encabezado-Tabla">number</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </thead>
     <tbody>
     <tr *ngFor="let budget of budgetService.Budgets; let i = index" >
@@ -46,11 +46,9 @@
       <td class="Celdas-Tabla">{{(budget.initial_date == "0000-00-00") ? "Sin fecha" : budget.initial_date | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla">{{(budget.final_date == "0000-00-00") ? "Sin fecha" : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla">{{budget.number}}</td>
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button class="btn btn-primary">Corregir</button>
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

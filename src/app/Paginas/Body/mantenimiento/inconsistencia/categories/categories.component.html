@@ -17,7 +17,7 @@
   <h2 class="font-weight-lighter">La tabla Categoty no tiene inconsistencia de datos</h2>
 </div>
 <div *ngIf="categoriesService.Categories.length > 0">
-  <table class="table table-hover">
+  <table class="table table-hover ">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
@@ -28,7 +28,7 @@
       <th scope="col" class="Encabezado-Tabla">Nombre</th>
       <th scope="col" class="Encabezado-Tabla">Tipo</th>
       <th scope="col" class="Encabezado-Tabla">Numero</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </thead>
     <tbody>
     <tr *ngFor="let category of categoriesService.Categories; let i = index" >
@@ -40,11 +40,9 @@
       <td class="Celdas-Tabla">{{category.name}}</td>
       <td class="Celdas-Tabla">{{(category.sign == '-') ? 'Gastos': 'Ingresos'}}</td>
       <td class="Celdas-Tabla">{{category.number}}</td>
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button class="btn btn-primary">Corregir</button>
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

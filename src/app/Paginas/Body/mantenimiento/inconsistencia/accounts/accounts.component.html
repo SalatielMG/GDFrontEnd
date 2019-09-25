@@ -1,6 +1,6 @@
 <button class="up-right rounded-circle" (click)="util.subir()">
     <span>
-      <fa-icon [icon]="faArrowUp"></fa-icon>
+      <fa-icon [icon]="util.faArrowUp"></fa-icon>
     </span>
 </button>
 
@@ -29,7 +29,7 @@
       <th scope="col" class="Encabezado-Tabla">positive_max</th>
       <th scope="col" class="Encabezado-Tabla">negative_max</th-->
       <th scope="col" class="Encabezado-Tabla">iso_code</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </tr>
     </thead>
     <tbody>
@@ -53,11 +53,9 @@
       <td class="Celdas-Tabla">{{account.positive_max}}</td>
       <td class="Celdas-Tabla">{{account.negative_max}}</td-->
       <td class="Celdas-Tabla">{{account.iso_code}}</td>
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button type="button" class="btn btn-primary">Corregir</button>
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

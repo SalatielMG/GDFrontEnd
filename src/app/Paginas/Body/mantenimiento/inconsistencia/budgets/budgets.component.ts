@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BudgetsService} from "../../../../../Servicios/budgets/budgets.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
-import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-budgets',
@@ -11,11 +11,17 @@ import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
 export class BudgetsComponent implements OnInit {
 
   private pagina: number = 0;
-  private faArrowUp = faArrowUp;
+  private backups;
 
-  constructor(private budgetService: BudgetsService, private util: Utilerias) {
-    this.resetearVariable();
-    this.buscarInconsistencia();
+  constructor(private route: ActivatedRoute,
+              private router: Router, private budgetService: BudgetsService, private util: Utilerias) {
+    this.route.paramMap.subscribe((params) => {
+      this.backups = params.get("backups");
+      console.log(this.backups);
+      console.log("params", params);
+      this.resetearVariable();
+      this.buscarInconsistencia();
+    });
   }
 
   ngOnInit() {
@@ -34,14 +40,14 @@ export class BudgetsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Budgets';
       this.util.crearLoading().then(() => {
-        this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+        this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+      this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

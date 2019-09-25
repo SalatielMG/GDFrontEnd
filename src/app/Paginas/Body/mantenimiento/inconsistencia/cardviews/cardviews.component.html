@@ -29,7 +29,7 @@
       <th scope="col" class="Encabezado-Tabla">sign</th>
       <th scope="col" class="Encabezado-Tabla">show_card</th>
       <th scope="col" class="Encabezado-Tabla">number</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </thead>
     <tbody>
     <tr *ngFor="let cardView of cardviewService.Cardviews; let i = index" >
@@ -42,11 +42,9 @@
       <td class="Celdas-Tabla">{{cardView.sign}}</td>
       <td class="Celdas-Tabla">{{cardView.show_card}}</td>
       <td class="Celdas-Tabla">{{cardView.number}}</td>
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button class="btn btn-primary">Corregir</button>
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

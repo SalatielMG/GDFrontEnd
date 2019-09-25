@@ -27,7 +27,7 @@
       <th scope="col" class="Encabezado-Tabla">symbol</th>
       <th scope="col" class="Encabezado-Tabla">icon_name</th>
       <th scope="col" class="Encabezado-Tabla">selected</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </thead>
     <tbody>
     <tr *ngFor="let currencie of currenciesService.Currencies; let i = index" >
@@ -38,13 +38,9 @@
       <td class="Celdas-Tabla">{{currencie.symbol}}</td>
       <td class="Celdas-Tabla">{{currencie.icon_name}}</td>
       <td class="Celdas-Tabla">{{currencie.selected}}</td>
-
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button class="btn btn-primary">Corregir</button>
-
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

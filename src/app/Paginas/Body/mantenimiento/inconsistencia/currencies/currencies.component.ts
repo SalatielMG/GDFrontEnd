@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CurrenciesService} from '../../../../../Servicios/currencies/currencies.service';
 import {Utilerias} from '../../../../../Utilerias/Util';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-currencies',
@@ -10,10 +11,17 @@ import {Utilerias} from '../../../../../Utilerias/Util';
 export class CurrenciesComponent implements OnInit {
 
   private pagina: number = 0;
+  private backups;
 
-  constructor(private currenciesService: CurrenciesService, private util:Utilerias) {
-    this.resetearVariables();
-    this.buscarInconsistencia();
+  constructor(private route: ActivatedRoute,
+              private router: Router, private currenciesService: CurrenciesService, private util:Utilerias) {
+    this.route.paramMap.subscribe((params) => {
+      this.backups = params.get("backups");
+      console.log(this.backups);
+      console.log("params", params);
+      this.resetearVariables();
+      this.buscarInconsistencia();
+    });
   }
 
   ngOnInit() {
@@ -32,14 +40,14 @@ export class CurrenciesComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Currencies';
       this.util.crearLoading().then(() => {
-        this.currenciesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+        this.currenciesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.currenciesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+      this.currenciesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

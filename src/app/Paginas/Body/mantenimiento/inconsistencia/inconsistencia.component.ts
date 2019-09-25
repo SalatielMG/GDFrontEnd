@@ -154,7 +154,17 @@ export class InconsistenciaComponent implements OnInit {
       this.util.msjLoading = "Corrigiendo inconsistencia de datos en la Tabla : " + tabla;
       this.util.crearLoading().then(() => {
         this.backupService.corregirInconsistencia(tabla).subscribe(result => {
-          this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
+          this.util.detenerLoading();
+          if (result.indice) { //Existe indice
+             this.util.msjToast(result.msj, result.titulo, result.indice);
+          } else {
+            this.navegacion(tabla, false);
+            for (let res of result.Result) {
+              this.util.msjToast(res.msj, res.titulo, res.error);
+            }
+          }
+
+          /*this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
             this.util.detenerLoading();
             this.router.navigate([tabla], {relativeTo: this.route});
             for (let res of result.Result) {
@@ -162,13 +172,19 @@ export class InconsistenciaComponent implements OnInit {
             }
           }, error => {
             this.util.msjErrorInterno(error);
-          });
+          });*/
+        }, error => {
+          this.util.msjErrorInterno(error);
         });
       });
     }
   }
   public corregirTabla(){
-    switch (this.router.url) {
+    let route = this.router.url.split("/");
+    if (route.length == 3) return;
+    let ruta = route[3];
+    this.operacion(ruta);
+    /*switch (this.router.url) {
       case "/mantenimiento/inconsistenciaMnt/accounts":
         this.operacion("accounts");
         break;
@@ -196,7 +212,7 @@ export class InconsistenciaComponent implements OnInit {
       case "/mantenimiento/inconsistenciaMnt/preferences":
         this.operacion("preferences");
         break;
-    }
+    }*/
   }
   public onScroll() {
     if (!this.isFilter()) {

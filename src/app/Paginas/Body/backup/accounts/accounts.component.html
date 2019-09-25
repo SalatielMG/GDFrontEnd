@@ -16,7 +16,7 @@
 
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
+      <!--th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th-->
       <th scope="col" class="Encabezado-Tabla">Id Cuenta</th>
       <th scope="col" class="Encabezado-Tabla">Nombre</th>
       <th scope="col" class="Encabezado-Tabla">Detalles</th>
@@ -39,7 +39,7 @@
     <tr *ngFor="let account of accountService.Accounts; let i = index" >
 
       <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{account.cantidadRepetida}}</td>
+      <!--td class="Celdas-Tabla">{{account.cantidadRepetida}}</td-->
       <td class="Celdas-Tabla">{{account.id_account}}</td>
       <td class="Celdas-Tabla">{{account.name}}</td>
       <td class="Celdas-Tabla">{{account.detail}}</td>

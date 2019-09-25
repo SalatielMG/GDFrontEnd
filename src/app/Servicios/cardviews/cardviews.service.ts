@@ -19,8 +19,8 @@ export class CardviewsService {
     return this.http.get(URL + 'buscarCardviewsBackup', {params:{idBack: idBackup}});
   }
 
-  public inconsistenciaDatos(email, pagina): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosCardviews', {params: {email: email, pagina: pagina}});
+  public inconsistenciaDatos(data, pagina, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosCardviews', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
 }

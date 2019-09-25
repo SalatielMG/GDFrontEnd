@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {PreferencesService} from '../../../../../Servicios/preferences/preferences.service';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-preferences',
@@ -10,10 +11,17 @@ import {PreferencesService} from '../../../../../Servicios/preferences/preferenc
 export class PreferencesComponent implements OnInit {
 
   private pagina: number = 0;
+  private backups;
 
-  constructor(private preferencesService: PreferencesService, private util: Utilerias) {
-    this.resetearVariables();
-    this.buscarInconsistencias();
+  constructor(private route: ActivatedRoute,
+              private router: Router, private preferencesService: PreferencesService, private util: Utilerias) {
+    this.route.paramMap.subscribe((params) => {
+      this.backups = params.get("backups");
+      console.log(this.backups);
+      console.log("params", params);
+      this.resetearVariables();
+      this.buscarInconsistencias();
+    });
   }
 
   ngOnInit() {
@@ -34,14 +42,14 @@ export class PreferencesComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Preferences';
       this.util.crearLoading().then(() => {
-        this.preferencesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+        this.preferencesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.preferencesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+      this.preferencesService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

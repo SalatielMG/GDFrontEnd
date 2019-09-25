@@ -129,3 +129,19 @@ app-entradas {
 app-gastos-entradas {
   width: 100%;
 }
+.inline-grid {
+  padding-left: 15px;
+  padding-right: 15px;
+  display: inline-grid !important;
+  width: 100%;
+}
+
+.input-header {
+  background-color: #212529 !important;
+  border: transparent !important;
+  color: #adb5bd;
+  text-align: center;
+}
+.input-header:focus {
+  color: #d0d8e0;
+}

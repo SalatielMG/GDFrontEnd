@@ -17,7 +17,7 @@
   <h2 class="font-weight-lighter">La tabla Movements no tiene inconsistencia de datos</h2>
 </div>
 <div *ngIf="movementsService.Movements.length > 0">
-  <table class="table table-hover">
+  <table class="table table-hover table-responsive">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
@@ -32,7 +32,7 @@
       <th scope="col" class="Encabezado-Tabla">time_record</th>
       <th scope="col" class="Encabezado-Tabla">confirmed</th>
       <th scope="col" class="Encabezado-Tabla">iso_code</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </thead>
     <tbody>
     <tr *ngFor="let movement of movementsService.Movements; let i = index" >
@@ -48,11 +48,9 @@
       <td class="Celdas-Tabla">{{movement.time_record}}</td>
       <td class="Celdas-Tabla">{{movement.confirmed}}</td>
       <td class="Celdas-Tabla">{{movement.iso_code}}</td>
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button class="btn btn-primary">Corregir</button>
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

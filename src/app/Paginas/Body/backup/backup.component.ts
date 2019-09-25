@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../Servicios/user/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import {Utilerias} from "../../../Utilerias/Util";
 
 @Component({
   selector: 'app-backup',
@@ -11,7 +12,7 @@ export class BackupComponent implements OnInit {
   private numBack;
   private idBack;
   constructor(private userService: UserService, private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router, private util: Utilerias) {
     this.route.paramMap.subscribe(params => {
       this.numBack = params.get('numBack');
       this.idBack = params.get('idBack');

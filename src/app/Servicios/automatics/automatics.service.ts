@@ -18,8 +18,8 @@ export class AutomaticsService {
     return this.http.get(URL + 'buscarAutomaticsBackup', {params:{idBack: idBackup}});
   }
 
-  public buscarInconsistenciaDatos(email, pagina): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosAutomatics', {params: {email: email, pagina: pagina}});
+  public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosAutomatics', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
 }

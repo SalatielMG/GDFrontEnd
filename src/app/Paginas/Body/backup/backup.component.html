@@ -1,7 +1,27 @@
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado">
-    <h2 class="text-light">Detalles Respaldo # {{numBack}} Backup {{idBack}}</h2>
-    <h4 class="text-light">{{userService.User.email}}</h4>
+    <div class="row">
+      <div class="col-2">
+        <div class="row" style="display: inline-block">
+          <button class="btn btn-outline-info rounded-circle" style="width: 50px; height: 50px">
+          <span>
+            <fa-icon [icon]="util.faArrowLeft"></fa-icon>
+          </span>
+          </button>
+          <button class="btn btn-outline-info rounded-circle" style="width: 50px; height: 50px">
+          <span>
+            <fa-icon [icon]="util.faRecycle"></fa-icon>
+          </span>
+          </button>
+        </div>
+
+      </div>
+      <div class="col-8">
+        <h2 class="text-light">Detalles Respaldo # {{numBack}} Backup {{idBack}}</h2>
+      </div>
+      <div class="col-2"></div>
+    </div>
+    <h4 class="text-light"><a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h4>
   </div>
 </div>
 <ul class="nav nav-tabs nav-color">

@@ -9,7 +9,7 @@
 
 <button class="up-right rounded-circle" (click)="util.subir()">
     <span>
-      <fa-icon [icon]="faArrowUp"></fa-icon>
+      <fa-icon [icon]="util.faArrowUp"></fa-icon>
     </span>
 </button>
 
@@ -17,7 +17,7 @@
   <h2 class="font-weight-lighter">La tabla Automatics no tiene inconsistencia de datos</h2>
 </div>
 <div *ngIf="automaticsService.Automatics.length > 0">
-  <table class="table table-hover">
+  <table class="table table-hover table-responsive">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
@@ -37,7 +37,7 @@
       <th scope="col" class="Encabezado-Tabla">Fecha siguiente</th>
       <th scope="col" class="Encabezado-Tabla">rate</th>
       <th scope="col" class="Encabezado-Tabla">counter</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
     </tr>
     </thead>
     <tbody>
@@ -60,11 +60,9 @@
       <td class="Celdas-Tabla">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla">{{automatic.rate}}</td>
       <td class="Celdas-Tabla">{{automatic.counter}}</td>
-      <td class="Celdas-Tabla">
+      <!--td class="Celdas-Tabla">
         <button class="btn btn-primary">Corregir</button>
-        <!--button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button-->
-      </td>
+      </td-->
     </tr>
     <div
       infiniteScroll

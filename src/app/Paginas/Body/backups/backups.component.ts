@@ -87,4 +87,8 @@ export class BackupsComponent implements OnInit {
   ngOnInit() {
     this.util.ready("left");
   }
+
+  prueba (i, back) {
+    this.router.navigate(['/id_backup', (i + 1), back.id_backup]);
+  }
 }

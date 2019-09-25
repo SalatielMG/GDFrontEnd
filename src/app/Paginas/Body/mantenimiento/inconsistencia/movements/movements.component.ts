@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {MovementsService} from '../../../../../Servicios/movements/movements.service';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-movements',
@@ -10,10 +11,17 @@ import {MovementsService} from '../../../../../Servicios/movements/movements.ser
 export class MovementsComponent implements OnInit {
 
   private pagina: number = 0;
+  private backups;
 
-  constructor(private movementsService: MovementsService, private util: Utilerias) {
-    this.resetearVariables();
-    this.buscarInconsistencias();
+  constructor(private route: ActivatedRoute,
+              private router: Router, private movementsService: MovementsService, private util: Utilerias) {
+    this.route.paramMap.subscribe((params) => {
+      this.backups = params.get("backups");
+      console.log(this.backups);
+      console.log("params", params);
+      this.resetearVariables();
+      this.buscarInconsistencias();
+    });
   }
 
   ngOnInit() {
@@ -31,14 +39,14 @@ export class MovementsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Movements';
       this.util.crearLoading().then(() => {
-        this.movementsService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+        this.movementsService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.movementsService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina).subscribe(result => {
+      this.movementsService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);

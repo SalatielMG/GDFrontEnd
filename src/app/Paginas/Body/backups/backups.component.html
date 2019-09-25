@@ -25,28 +25,73 @@
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Backup</th>
-      <!--th scope="col">Usuario</th-->
-      <th scope="col" class="Encabezado-Tabla">Automatico</th>
-      <th scope="col" class="Encabezado-Tabla">Fecha creación</th>
-      <th scope="col" class="Encabezado-Tabla">Fecha descarga</th>
-      <th scope="col" class="Encabezado-Tabla">Version</th>
+      <th scope="col" class="Encabezado-Tabla" >
+        <div class="row inline-grid">
+          Backup
+          <input type="search" class="form-control mr-sm-2 form-control-md input-header">
+          <button type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Automatico
+          <select class="form-control mr-sm-2 form-control-md input-header" >
+            <option value="-1">Ambos</option>
+            <option value="0">No</option>
+            <option value="1">Si</option>
+          </select>
+          <button type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Fecha creación
+          <input type="date" class="form-control mr-sm-2 form-control-md input-header" >
+          <button type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Fecha descarga
+          <input type="date" class="form-control mr-sm-2 form-control-md input-header" >
+          <button type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Version
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" >
+          <button type="button" class="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
       <th scope="col" class="Encabezado-Tabla">Operacion</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let back of backService.backups; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla" [routerLink]="['/id_backup', (i+1), back.id_backup]">{{back.id_backup}}</td>
-      <!--td class="text-center">{{back.id_user}}</td-->
-      <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-      <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-      <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
-      <td class="Celdas-Tabla">{{back.created_in}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
-      </td>
+      <ng-container>
+        <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+        <td class="Celdas-Tabla" style="cursor: pointer;" (click)="prueba(i, back)">{{back.id_backup}}</td>
+        <!--td class="text-center">{{back.id_user}}</td-->
+        <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+        <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+        <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+        <td class="Celdas-Tabla">{{back.created_in}}</td>
+        <td class="Celdas-Tabla" >
+          <button type="submit" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
+          <button type="submit" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
+        </td>
+      </ng-container>
     </tr>
     <div
       infiniteScroll

@@ -18,8 +18,8 @@ export class CategoriesService {
     return this.http.get(URL + 'buscarCategoriesBackup', {params:{idBack: idBackup}});
   }
 
-  public inconsistenciaDato(email, pagina): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosCategories', {params: {email: email, pagina: pagina}});
+  public inconsistenciaDato(data, pagina, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosCategories', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
 }
