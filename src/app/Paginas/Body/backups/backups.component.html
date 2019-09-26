@@ -6,6 +6,55 @@
 >
   <p style="font-size: 20px; color: white">{{msj}}</p>
 </ngx-spinner>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="exampleModalCenterTitle">Actualizar Backup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrarModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="backup" (ngSubmit)="actualizarBackup()">
+        <div class="modal-body">
+          <!--div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
+            <h3 class="text-center" style="font-weight: 500;">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h3>
+          </div-->
+        <div class="container">
+          <div class="form-group">
+            <label for="automatic">Automático: </label>
+            <select class="form-control" id="automatic" formControlName="automatic">
+              <option value="0">NO</option>
+              <option value="1">SI</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="date_creation">Fecha creación</label>
+              <input type="datetime-local" class="form-control" id="date_creation" formControlName="date_creation">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="date_download">Fecha descarga</label>
+              <input type="datetime-local" class="form-control" id="date_download" formControlName="date_creation">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="created_in">Versión: </label>
+            <input type="text" class="form-control" id="created_in" formControlName="created_in">
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cerrar</button>
+          <button type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="backup.invalid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado">
     <h2 class="text-light">Backups Usuario: <a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h2>
@@ -15,21 +64,30 @@
 <div class="container text-center" *ngIf="backService.backups.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">El usuario todavia no ha realizado ningun respaldo</h2>
 </div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
 <button class="up-left rounded-circle" (click)="util.subir()">
     <span>
-      <fa-icon [icon]="faArrowUp"></fa-icon>
+      <fa-icon [icon]="util.faArrowUp"></fa-icon>
     </span>
 </button>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<button class="btn btn-outline-info rounded-circle backNavigation" routerLink="/home">
+          <span>
+            <fa-icon [icon]="util.faChevronLeft"></fa-icon>
+          </span>
+</button>
+<!-- ------------------------------------------------------------------------------------------------------ -->
 <div *ngIf="backService.backups.length > 0">
   <table class="table table-hover">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
+      <!--th scope="col" class="Encabezado-Tabla">Pos</th-->
       <th scope="col" class="Encabezado-Tabla" >
         <div class="row inline-grid">
           Backup
-          <input type="search" class="form-control mr-sm-2 form-control-md input-header">
-          <button type="button" class="close">
+          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
+          <button type="button" [ngClass]="(filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('id_backup')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -37,12 +95,12 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Automatico
-          <select class="form-control mr-sm-2 form-control-md input-header" >
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
             <option value="-1">Ambos</option>
             <option value="0">No</option>
             <option value="1">Si</option>
           </select>
-          <button type="button" class="close">
+          <button type="button" [ngClass]="(filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('automatic')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -50,8 +108,8 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Fecha creación
-          <input type="date" class="form-control mr-sm-2 form-control-md input-header" >
-          <button type="button" class="close">
+          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
+          <button type="button" [ngClass]="(filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_creation')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -59,8 +117,8 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Fecha descarga
-          <input type="date" class="form-control mr-sm-2 form-control-md input-header" >
-          <button type="button" class="close">
+          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
+          <button type="button" [ngClass]="(filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_download')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -68,8 +126,8 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Version
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" >
-          <button type="button" class="close">
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header"  [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
+          <button type="button" [ngClass]="(filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('created_in')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -77,26 +135,60 @@
       <th scope="col" class="Encabezado-Tabla">Operacion</th>
     </tr>
     </thead>
-    <tbody>
-    <tr *ngFor="let back of backService.backups; let i = index" >
+    <!-- ------------------------------------------------------------------------------------------------------ -->
+    <tbody *ngIf="!isFilter()">
+      <tr *ngFor="let back of backService.backups; let i = index" >
+        <ng-container>
+          <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+          <!--td class="Celdas-Tabla">{{back.pos}}</td-->
+          <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
+          <!--td class="text-center">{{back.id_user}}</td-->
+          <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+          <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+          <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+          <td class="Celdas-Tabla">{{back.created_in}}</td>
+          <td class="Celdas-Tabla" >
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar(back)">
+              <span>
+                <fa-icon [icon]="util.faPen"></fa-icon>
+              </span>
+            </button>
+            <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([i, back.pos], back)">
+              <span>
+                <fa-icon [icon]="util.faTrash"></fa-icon>
+              </span>
+            </button>
+          </td>
+        </ng-container>
+      </tr>
+      <div
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        (scrolled)="onScroll()">
+      </div>
+    </tbody>
+    <!-- ------------------------------------------------------------------------------------------------------ -->
+    <tbody *ngIf="isFilter()">
+    <tr *ngFor="let back of backupsFiltro; let i = index" >
       <ng-container>
         <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-        <td class="Celdas-Tabla" style="cursor: pointer;" (click)="prueba(i, back)">{{back.id_backup}}</td>
+        <!--td class="Celdas-Tabla">{{back.pos}}</td-->
+        <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
         <!--td class="text-center">{{back.id_user}}</td-->
         <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
         <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
         <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
         <td class="Celdas-Tabla">{{back.created_in}}</td>
         <td class="Celdas-Tabla" >
-          <button type="submit" class="btn btn-primary" style="width: 90px; margin-right: 10px; font-size: 18px" >
-            <span>
-              <fa-icon [icon]="util.faPen"></fa-icon>
-            </span>
+          <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar(back)">
+              <span>
+                <fa-icon [icon]="util.faPen"></fa-icon>
+              </span>
           </button>
-          <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar(i, back.id_backup)">
-            <span>
-              <fa-icon [icon]="util.faTrash"></fa-icon>
-            </span>
+          <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([back.pos, i], back)">
+              <span>
+                <fa-icon [icon]="util.faTrash"></fa-icon>
+              </span>
           </button>
         </td>
       </ng-container>
@@ -107,6 +199,7 @@
       (scrolled)="onScroll()">
     </div>
     </tbody>
+    <!-- ------------------------------------------------------------------------------------------------------ -->
   </table>
 
   <loading-spinner *ngIf="util.loadingMain"></loading-spinner>

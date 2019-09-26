@@ -1,5 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+.backNavigation {
+  /*border: 0px;*/
+  position: fixed !important;
+  top: 36px !important;
+  left: 15px !important;
+  width: 50px !important;
+  height: 50px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  /*color: #ffffff;*/
+  cursor: pointer !important;
+  /*background: #E45E4E;*/
+  z-index: 100 !important;
+}
 .up-right {
   border: 0px;
   position: fixed;
@@ -143,8 +158,17 @@ app-gastos-entradas {
   text-align: center;
 }
 .input-header:focus {
-  color: #d0d8e0;
+  color: #dde5ed;
 }
 .v-a-middle {
   vertical-align: middle !important;
+}
+.btnFilter-disabled{
+  visibility: hidden;
+  line-height: 1;
+}
+.centerTitleModal {
+  width: 100% !important;
+  text-align: center !important;
+  margin-left: 30px !important;
 }

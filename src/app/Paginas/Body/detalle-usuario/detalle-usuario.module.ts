@@ -9,6 +9,8 @@ import { EntradasComponent } from './entradas/entradas.component';
 import { GastosEntradasComponent } from './gastos-entradas/gastos-entradas.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ChartsModule } from 'ng2-charts';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 
 @NgModule({
@@ -17,7 +19,8 @@ import { ChartsModule } from 'ng2-charts';
     NgxSpinnerModule,
     CommonModule,
     DetalleUsuarioRoutingModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ]
 })
 export class DetalleUsuarioModule { }

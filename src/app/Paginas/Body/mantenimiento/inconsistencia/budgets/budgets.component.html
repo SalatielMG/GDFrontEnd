@@ -14,7 +14,7 @@
 </button>
 
 <div class="container text-center" *ngIf="budgetService.Budgets.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">La tabla Budgets no tiene inconsistencia de datos</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
 <div *ngIf="budgetService.Budgets.length > 0">
   <table class="table table-hover">

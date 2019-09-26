@@ -3,7 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Utilerias } from '../../../Utilerias/Util';
 import { BackupService } from '../../../Servicios/backup/backup.service';
 import { UserService } from '../../../Servicios/user/user.service';
-import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
+import {Backup} from "../../../Modelos/Backup/backup";
+import {FiltrosSearchBackupsUser} from "../../../Modelos/Backup/filtros-search-backups-user"
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-backups',
@@ -11,20 +13,24 @@ import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./backups.component.css']
 })
 export class BackupsComponent implements OnInit {
-  public msj;
-  public faArrowUp = faArrowUp;
+  private msj;
   private pagina = 0;
+  private filtrosSearch = new FiltrosSearchBackupsUser();
+  private backupsFiltro: Backup[];
+  //private backupSelected: Backup;
+  private backup: FormGroup;
 
   constructor(private userService: UserService, private backService: BackupService, private util: Utilerias, private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router, private formBuilder: FormBuilder) {
 
     //Consutar los bakups del usuario encontrado.
+    // this.backupSelected.id_backup = 0;
+    this.construirFormulario();
     this.resetearVariables();
     this.buscar();
   }
   onScroll () {
-    console.log('scrolled!!');
-    this.buscar();
+    if (!this.isFilter()) this.buscar();
   }
   private resetearVariables() {
     this.pagina = 0;
@@ -61,18 +67,27 @@ export class BackupsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  public eliminar(numBack, idBack) {
-    let opcion = confirm("Esta seguro de eliminar el Respaldo num: " + (numBack + 1) + ", Backup: " + idBack + "?");
+  public eliminar(numBack, back) {
+    let index = numBack[0];
+    let bnd = this.isFilter();
+    if (bnd) {
+      let index = <number>this.backService.backups.indexOf(back);
+    }
+    let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + ((bnd) ? index: index + 1) + ", Backup: " + back.id_backup + " ?");
     if (opcion) {
       // On Delete On Cascada.
       this.util.crearLoading().then(()=> {
-        this.backService.eliminarBackup(idBack).subscribe(
+        this.backService.eliminarBackup(back.id_backup).subscribe(
           result => {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);
             if (!result.error) {
-              // Backuo Eliminado correctamente.
-              this.backService.backups.splice(numBack,1);
+              if (bnd) {
+                if (index != -1) this.backService.backups.splice((index -1),1);
+                this.backupsFiltro.splice(numBack[1], 1);
+              } else {
+                this.backService.backups.splice(index,1);
+              }
             }
             console.log(result);
           },
@@ -83,12 +98,104 @@ export class BackupsComponent implements OnInit {
     }
     console.log('Opcion Elegida', opcion);
   }
+  private abrirModalActualizar(back: Backup) {
+    // this.backupSelected = back;
+    console.log("backup seleccionado", back);
+    this.construirFormulario(back.id_backup, back.automatic, back.date_creation, back.date_download, back.created_in);
+  }
+  private construirFormulario(id_backup = 0, automatic = 0, date_creation = "", date_download = "", created_in = "") {
+    this.backup = this.formBuilder.group({
+      id_backup: [id_backup, Validators.required],
+      automatic: [automatic, Validators.required],
+      date_creation: [date_creation, Validators.required],
+      date_download: [date_download, Validators.required],
+      created_in: [created_in, Validators.required]
+    });
+  }
+  private actualizarBackup(){
+    console.log(this.backup.value);
+  }
 
   ngOnInit() {
     this.util.ready("left");
   }
 
-  prueba (i, back) {
-    this.router.navigate(['/id_backup', (i + 1), back.id_backup]);
+  // --------------------------------------------------------------------------------------------
+  // Filtro Backups User
+  private actionFilterEvent(event, value, isKeyUp = false) {
+    if (value == "automatic") {
+      if (this.filtrosSearch[value].value == "-1") {
+        this.filtrosSearch[value].isFilter = false;
+        this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
+        this.proccessFilter();
+        return;
+      }
+    } else {
+      if (isKeyUp && event.key != "Enter") return;
+      if (this.filtrosSearch[value].value == "") return;
+    }
+    if (this.filtrosSearch[value].value == this.filtrosSearch[value].valueAnt) return;
+    this.resetFilterisActive();
+    this.filtrosSearch[value].isFilter = true;
+    this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
+    this.proccessFilter();
   }
+  private resetValuefiltroSearch(key) {
+    this.filtrosSearch[key].value =  "";
+    this.filtrosSearch[key].valueAnt =  "";
+    this.filtrosSearch[key].isFilter =  false;
+    if (key == "automatic") this.filtrosSearch[key].value = "-1";
+
+    if (!this.isFilter()) {
+      this.backupsFiltro = [];
+      return;
+    }
+    this.proccessFilter();
+  }
+  private resetFilterisActive() {
+    if (!this.isFilter()) {
+      this.backupsFiltro = [];
+      this.backupsFiltro =  this.backupsFiltro.concat(this.backService.backups);
+    }
+  }
+  private proccessFilter() {
+    let temp = [];
+    this.backService.backups.forEach((back) => {
+      if (back.id_backup != 0) {
+
+        let bnd = true;
+        for (let k in this.filtrosSearch) {
+          if (this.filtrosSearch[k].isFilter) {
+            if (k == "automatic" && this.filtrosSearch[k].value != "-1") {
+              if (back[k].toString() != this.filtrosSearch[k].value) {
+                bnd = false;
+                break;
+              }
+            } else {
+              if (!back[k].toString().includes(this.filtrosSearch[k].value)){
+                bnd = false;
+                break;
+              }
+            }
+          }
+        }
+
+        if (bnd) {
+          temp.push(back);
+        }
+      }
+    });
+    this.backupsFiltro = [];
+    this.backupsFiltro = this.backupsFiltro.concat(temp);
+    temp = null;
+  }
+  private isFilter(): boolean {
+    for (let key in this.filtrosSearch) {
+      if (this.filtrosSearch[key].isFilter) return true;
+    }
+    return false;
+  }
+  // --------------------------------------------------------------------------------------------
+
+
 }

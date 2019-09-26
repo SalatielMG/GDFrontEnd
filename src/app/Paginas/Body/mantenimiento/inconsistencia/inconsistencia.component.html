@@ -30,8 +30,8 @@
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
                     Backup
-                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('id_backup')" *ngIf="filtrosSearch.id_backup.isFilter">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
+                    <button type="button" [ngClass]="(filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('id_backup')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -39,8 +39,8 @@
                 <th scope="col"  *ngIf="util.userMntInconsistencia.email == 'Generales'" class="vertical-align-middle">
                   <div class="row inline-grid">
                     Usuario
-                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header"  [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('email')" *ngIf="filtrosSearch.email.isFilter">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
+                    <button type="button" [ngClass]="(filtrosSearch.email.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('email')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -48,12 +48,12 @@
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
                     Automatico
-                    <select class="form-control mr-sm-2 form-control-sm input-header"  [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
+                    <select class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
                       <option value="-1">Ambos</option>
                       <option value="0">No</option>
                       <option value="1">Si</option>
                     </select>
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('automatic')" *ngIf="filtrosSearch.automatic.isFilter">
+                    <button type="button" [ngClass]="(filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('automatic')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -61,8 +61,8 @@
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
                     Fecha de creación
-                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_creation')"*ngIf="filtrosSearch.date_creation.isFilter">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
+                    <button type="button" [ngClass]="(filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_creation')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -70,8 +70,8 @@
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
                     Fecha de descarga
-                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_download')"*ngIf="filtrosSearch.date_download.isFilter">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
+                    <button type="button" [ngClass]="(filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_download')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -79,8 +79,8 @@
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
                     Version
-                    <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('created_in')"*ngIf="filtrosSearch.created_in.isFilter">
+                    <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
+                    <button type="button" [ngClass]="(filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('created_in')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>

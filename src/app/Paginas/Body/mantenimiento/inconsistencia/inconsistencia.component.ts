@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import {Backup} from "../../../../Modelos/Backup/backup";
 import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-backups";
-import {promise} from "selenium-webdriver";
 
 @Component({
   selector: 'app-inconsistencia',
@@ -163,16 +162,6 @@ export class InconsistenciaComponent implements OnInit {
               this.util.msjToast(res.msj, res.titulo, res.error);
             }
           }
-
-          /*this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
-            this.util.detenerLoading();
-            this.router.navigate([tabla], {relativeTo: this.route});
-            for (let res of result.Result) {
-              this.util.msjToast(res.msj, res.titulo, res.error);
-            }
-          }, error => {
-            this.util.msjErrorInterno(error);
-          });*/
         }, error => {
           this.util.msjErrorInterno(error);
         });
@@ -184,41 +173,9 @@ export class InconsistenciaComponent implements OnInit {
     if (route.length == 3) return;
     let ruta = route[3];
     this.operacion(ruta);
-    /*switch (this.router.url) {
-      case "/mantenimiento/inconsistenciaMnt/accounts":
-        this.operacion("accounts");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/automatics":
-        this.operacion("automatics");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/budgets":
-        this.operacion("budgets");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/cardviews":
-        this.operacion("cardviews");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/categories":
-        this.operacion("categories");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/currencies":
-        this.operacion("currencies");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/extras":
-        this.operacion("extras");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/movements":
-        this.operacion("movements");
-        break;
-      case "/mantenimiento/inconsistenciaMnt/preferences":
-        this.operacion("preferences");
-        break;
-    }*/
   }
   public onScroll() {
-    if (!this.isFilter()) {
-      console.log("Scrolled !!!");
-      this.buscarBackups();
-    }
+    if (!this.isFilter()) this.buscarBackups();
   }
   public checkBackup(index) {
     if (this.backupService.backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
@@ -246,11 +203,14 @@ export class InconsistenciaComponent implements OnInit {
     this.searchWithFilter();
   }
   private searchWithFilter() {
+    this.lengthBackupFilter();
+    this.search(true);
+  }
+  private lengthBackupFilter() {
     if (this.backup.length == 0) {
       alert("Porfavor filtre el(los) backup(s) " + ((this.util.userMntInconsistencia.email == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.userMntInconsistencia.email);
       return;
     }
-    this.search(true);
   }
   private reset() {
     this.backup = [];
@@ -396,6 +356,7 @@ export class InconsistenciaComponent implements OnInit {
   }
 
   private resetValuefiltroSearch(key) {
+    // console.log("Resetenado datos de la caja de filtros : " + key);
     this.filtrosSearch[key].value =  "";
     this.filtrosSearch[key].valueAnt =  "";
     this.filtrosSearch[key].isFilter =  false;

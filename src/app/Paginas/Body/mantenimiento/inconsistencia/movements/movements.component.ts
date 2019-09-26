@@ -17,9 +17,12 @@ export class MovementsComponent implements OnInit {
               private router: Router, private movementsService: MovementsService, private util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
-      console.log(this.backups);
-      console.log("params", params);
       this.resetearVariables();
+      let backs = JSON.parse(this.backups);
+      if (backs.length == 0) {
+        this.util.msj = "Porfavor filtre los backups a buscar en la tabla Movements";
+        return;
+      }
       this.buscarInconsistencias();
     });
   }
@@ -57,6 +60,7 @@ export class MovementsComponent implements OnInit {
     if (bnd) {
       this.util.detenerLoading();
       this.util.msjLoading = result.msj;
+      this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {

@@ -1,28 +1,17 @@
+
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado">
-    <div class="row">
-      <div class="col-2">
-        <div class="row" style="display: inline-block">
-          <button class="btn btn-outline-info rounded-circle" style="width: 50px; height: 50px; margin-right: 5px;" routerLink="/backups">
-          <span>
-            <fa-icon [icon]="util.faChevronLeft"></fa-icon>
-          </span>
-          </button>
-          <button class="btn btn-outline-info rounded-circle" style="width: 50px; height: 50px; margin-left: 5px;">
-          <span>
-            <fa-icon [icon]="util.faRedo"></fa-icon>
-          </span>
-          </button>
-        </div>
-      </div>
-      <div class="col-8">
+
         <h2 class="text-light">Detalles Respaldo # {{numBack}} Backup {{idBack}}</h2>
-      </div>
-      <div class="col-2"></div>
-    </div>
+
     <h4 class="text-light"><a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h4>
   </div>
 </div>
+<button class="btn btn-outline-info rounded-circle backNavigation" routerLink="/backups">
+          <span>
+            <fa-icon [icon]="util.faChevronLeft"></fa-icon>
+          </span>
+</button>
 <ul class="nav nav-tabs nav-color">
   <li class="nav-item tam-tab">
     <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts']">Accounts</a>

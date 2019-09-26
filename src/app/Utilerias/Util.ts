@@ -37,6 +37,7 @@ export class Utilerias {
   public loadingModal: boolean = true;
   public msjModal: string = "";
   public msjLoading: string = "";
+  public msj: string = "";
 
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService){

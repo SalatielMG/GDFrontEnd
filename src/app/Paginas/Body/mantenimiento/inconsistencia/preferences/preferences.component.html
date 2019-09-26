@@ -14,7 +14,7 @@
 </button>
 
 <div class="container text-center" *ngIf="preferencesService.Preferences.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">La tabla Preferences no tiene inconsistencia de datos</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
 <div *ngIf="preferencesService.Preferences.length > 0">
   <table class="table table-hover ">

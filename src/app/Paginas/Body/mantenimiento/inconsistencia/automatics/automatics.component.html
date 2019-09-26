@@ -14,7 +14,7 @@
 </button>
 
 <div class="container text-center" *ngIf = "automaticsService.Automatics.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">La tabla Automatics no tiene inconsistencia de datos</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
 <div *ngIf="automaticsService.Automatics.length > 0">
   <table class="table table-hover table-responsive">
