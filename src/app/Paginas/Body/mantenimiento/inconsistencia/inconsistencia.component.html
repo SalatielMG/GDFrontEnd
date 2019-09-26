@@ -16,111 +16,71 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row" style="width: 100%; display: block">
-          <h3 class="font-weight-normal text-center">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h3>
+        <div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
+          <h3 class="text-center" style="font-weight: 500;">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h3>
         </div>
+
         <div *ngIf="backupService.backups.length > 0">
-          <!--form class="form-row">
-            <div class="col-11" style="padding-right: 5px">
-              <input class="form-control mr-sm-2" style="margin-right: 0px" type="search"  [(ngModel)]="criterioBusqueda" name="criterioBusqueda"  placeholder="Filtros backups" aria-label="Search" [disabled]="todo" (keyup)="keyUp($event)">
-            </div>
-            <button class="btn btn-outline-success my-2 my-sm-0 col-1" type="submit" [disabled]="todo" (click)="filtrarBusqueda()">
-              <span>
-                <fa-icon [icon]="util.faSearch"></fa-icon>
-              </span>
-            </button>
-          </form>
-          <br>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="isSearch">
-            <strong>Resultados!</strong> Busqueda.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="resetearFiltrosBusqueda()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div-->
           <div class="main-principal">
             <table class="table table-hover">
-              <thead class="thead-light" style="color: black">
+              <thead class="thead-dark">
               <tr class="text-center">
                 <th scope="col" class="vertical-align-middle">#</th>
-                <th scope="col" class="vertical-align-middle">Pos</th>
-                <th scope="col">
-                  <div class="row display-in-block">
+                <!--th scope="col" class="vertical-align-middle">Pos</th-->
+                <th scope="col" class="vertical-align-middle">
+                  <div class="row inline-grid">
                     Backup
-                  </div>
-                  <div class="row">
-                    <input type="search" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
-                  </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.id_backup.isFilter">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('id_backup')">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('id_backup')" *ngIf="filtrosSearch.id_backup.isFilter">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </th>
-                <th scope="col"  *ngIf="util.userMntInconsistencia.email == 'Generales'">
-                  <div class="row display-in-block">
+                <th scope="col"  *ngIf="util.userMntInconsistencia.email == 'Generales'" class="vertical-align-middle">
+                  <div class="row inline-grid">
                     Usuario
-                  </div>
-                  <div class="row">
-                    <input type="search" class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
-                  </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.email.isFilter">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('email')">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header"  [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('email')" *ngIf="filtrosSearch.email.isFilter">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                  </th>
-                <th scope="col" >
-                  <div class="row display-in-block">
+                <th scope="col" class="vertical-align-middle">
+                  <div class="row inline-grid">
                     Automatico
-                  </div>
-                  <div class="row">
-                    <select class="form-control mr-sm-2 form-control-sm"  [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
+                    <select class="form-control mr-sm-2 form-control-sm input-header"  [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
                       <option value="-1">Ambos</option>
                       <option value="0">No</option>
                       <option value="1">Si</option>
                     </select>
-                  </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.automatic.isFilter">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('automatic')">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('automatic')" *ngIf="filtrosSearch.automatic.isFilter">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </th>
-                <th scope="col">
-                  <div class="row display-in-block">
+                <th scope="col" class="vertical-align-middle">
+                  <div class="row inline-grid">
                     Fecha de creación
-                  </div>
-                  <div class="row">
-                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
-                  </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.date_creation.isFilter">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_creation')">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_creation')"*ngIf="filtrosSearch.date_creation.isFilter">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </th>
-                <th scope="col" >
-                  <div class="row display-in-block">
+                <th scope="col" class="vertical-align-middle">
+                  <div class="row inline-grid">
                     Fecha de descarga
-                  </div>
-                  <div class="row">
-                    <input type="date" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
-                  </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.date_download.isFilter">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_download')">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('date_download')"*ngIf="filtrosSearch.date_download.isFilter">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                 </th>
-                <th scope="col" >
-                  <div class="row display-in-block">
+                <th scope="col" class="vertical-align-middle">
+                  <div class="row inline-grid">
                     Version
-                  </div>
-                  <div class="row">
-                    <input type="text" class="form-control mr-sm-2 form-control-sm" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
-                  </div>
-                  <div class="row display-in-block" *ngIf="filtrosSearch.created_in.isFilter">
-                    <button type="button" class="close" (click)="resetValuefiltroSearch('created_in')">
+                    <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
+                    <button type="button" class="close" (click)="resetValuefiltroSearch('created_in')"*ngIf="filtrosSearch.created_in.isFilter">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -135,22 +95,24 @@
               </tr>
               </thead>
               <tbody *ngIf="!todo && !isFilter()">
-              <tr *ngFor="let back of backupService.backups; let i = index" class="font-weight-normal text-center" (click)="checkBackup(i)"  >
-                <th  scope="row" *ngIf="back.id_backup != 0">{{(i)}}</th>
-                <td *ngIf="back.id_backup != 0">{{back.pos}}</td>
-                <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
-                <td *ngIf="util.userMntInconsistencia.email == 'Generales' && back.id_backup != 0">{{back.email}}</td>
-                <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                <td *ngIf="back.id_backup != 0">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-                <td *ngIf="back.id_backup != 0">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
-                <td *ngIf="back.id_backup != 0">{{back.created_in}}</td>
-                <td *ngIf="back.id_backup != 0">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
-                    <label class="custom-control-label" [attr.for]="i"></label>
-                  </div>
-                </td>
-              </tr>
+              <ng-container *ngFor="let back of backupService.backups; let i = index">
+                <tr  class="font-weight-normal text-center" *ngIf="back.id_backup != 0" style="height: 70px;" (click)="checkBackup(i)">
+                  <th class="v-a-middle"  scope="row">{{(i)}}</th>
+                  <!--td *ngIf="back.id_backup != 0">{{back.pos}}</td-->
+                  <td class="v-a-middle">{{back.id_backup}}</td>
+                  <td class="v-a-middle" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
+                  <td class="v-a-middle">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                  <td class="v-a-middle">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle">{{back.created_in}}</td>
+                  <td class="v-a-middle">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
+                      <label class="custom-control-label" [attr.for]="i"></label>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
               <div
                 [fromRoot]="true"
                 infiniteScroll
@@ -162,24 +124,25 @@
               </tbody>
 
               <tbody *ngIf="!todo && isFilter()">
-              <tr *ngFor="let back of backupsFiltro; let i = index" class="font-weight-normal text-center" (click)="checkBackup(back.pos)"  >
-                <th  scope="row" *ngIf="back.id_backup != 0">{{(i + 1)}}</th>
-                <td *ngIf="back.id_backup != 0">{{back.pos}}</td>
-                <td *ngIf="back.id_backup != 0">{{back.id_backup}}</td>
-                <td *ngIf="util.userMntInconsistencia.email == 'Generales' && back.id_backup != 0">{{back.email}}</td>
-                <td *ngIf="back.id_backup != 0">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                <td *ngIf="back.id_backup != 0">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-                <td *ngIf="back.id_backup != 0">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
-                <td *ngIf="back.id_backup != 0">{{back.created_in}}</td>
-                <td *ngIf="back.id_backup != 0">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
-                    <label class="custom-control-label" [attr.for]="i"></label>
-                  </div>
-                </td>
-              </tr>
+              <ng-container *ngFor="let back of backupsFiltro; let i = index">
+                <tr class="font-weight-normal text-center" *ngIf="back.id_backup != 0" style="height: 70px;" (click)="checkBackup(back.pos)">
+                  <th class="v-a-middle"  scope="row" >{{(i + 1)}}</th>
+                  <!--td>{{back.pos}}</td-->
+                  <td class="v-a-middle">{{back.id_backup}}</td>
+                  <td class="v-a-middle" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
+                  <td class="v-a-middle">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                  <td class="v-a-middle">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle">{{back.created_in}}</td>
+                  <td class="v-a-middle">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
+                      <label class="custom-control-label" [attr.for]="i"></label>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
               </tbody>
-
             </table>
             <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
           </div>
@@ -202,11 +165,15 @@
     <nav class="navbar navbar-light bg-light" style="padding-left: 40px;
     padding-right: 40px; background: transparent !important">
       <form class="form-row" style="width: 100% !important" (submit)="search()">
-        <div class="col-10">
+        <div class="col-11">
           <input [(ngModel)]="email" name="correo" class="form-control-lg inputSearch" type="email" placeholder="Ingrese el correo del cliente" aria-label="Search" >
         </div>
-        <div class="col-2">
-          <button class="btn btn-lg btn-primary btnSearch" type="submit">Buscar</button>
+        <div class="col-1">
+          <button class="btn btn-lg btn-primary btnSearch" type="submit">
+            <span>
+              <fa-icon [icon]="util.faSearch"></fa-icon>
+            </span>
+          </button>
         </div>
       </form>
     </nav>
@@ -234,9 +201,9 @@
             </select>
           </div>
           <div class="col-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" (click)="abrirModal()">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter" (click)="abrirModal()">
               <span>
-                <fa-icon [icon]="util.faFilter"></fa-icon>
+                <fa-icon [icon]="util.faSlidersH"></fa-icon>
               </span>
             </button>
           </div>
@@ -244,7 +211,11 @@
     </div>
   </div>
   <div class="row" style="display: block">
-    <button class="btn  btn-outline-success" (click)="corregirTabla()" [disabled]="errorValidacionUserBackup">Corregir Tabla</button>
+    <button class="btn  btn-outline-success" (click)="corregirTabla()" [disabled]="errorValidacionUserBackup">
+      <span>
+        <fa-icon [icon]="util.faTools"></fa-icon>
+      </span>
+      Corregir Tabla</button>
   </div>
 </div>
 

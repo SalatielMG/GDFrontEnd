@@ -10,11 +10,15 @@
   <div class="tam-titulo-encabezado"  style="padding-top: 160px !important;">
     <nav class="navbar navbar-light bg-light" style = "padding-left: 40px; padding-right: 40px; background: transparent !important">
       <form class="form-row" style="width: 100% !important" (submit)="search()">
-        <div class="col-10">
+        <div class="col-11">
           <input [(ngModel)]="email" name="correo" class="form-control-lg inputSearch" type="email" placeholder="Ingrese el correo del cliente" aria-label="Search">
         </div>
-        <div class="col-2">
-          <button class="btn btn-lg btn-primary btnSearch" type="submit" >Buscar</button>
+        <div class="col-1">
+          <button class="btn btn-lg btn-primary btnSearch" type="submit" >
+            <span>
+              <fa-icon [icon]="util.faSearch"></fa-icon>
+            </span>
+          </button>
         </div>
       </form>
     </nav>
@@ -28,14 +32,18 @@
     <div class="col-9"></div>
     <div class="col-3">
       <div class="form-group row">
-        <div class="col-2">
+        <div class="col-3">
           <label for="backup" class="col-form-label" style="font-size: 18px; font-weight: normal">Rango:</label>
         </div>
-        <div class="col-5">
+        <div class="col-4">
           <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups" name="rangoBackups" (keyup)="prueba($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="col-5">
-          <button class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, 'Generales', 0)">Limpiar</button>
+          <button class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, 'Generales', 0)">
+            <span>
+              <fa-icon [icon]="util.faTools"></fa-icon>
+            </span>
+            Limpiar</button>
         </div >
       </div>
     </div>
@@ -102,6 +110,9 @@
                 Operacion
                 <br>
                 <button class="btn btn-outline-success" (click)="limpiarBackups(user.id_user, user.email, user.cantRep, i)">
+                  <span>
+                    <fa-icon [icon]="util.faTools"></fa-icon>
+                  </span>
                   limpiar
                 </button>
               </th>
@@ -109,14 +120,18 @@
             </thead>
             <tbody style="overflow-y: scroll !important; height: 300px">
             <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
-              <th scope="row">{{ pos + 1 }}</th>
-              <td scope="row">{{ back.id_backup }}</td>
-              <td scope="row">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
-              <td scope="row">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
-              <td scope="row">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
-              <td scope="row">{{ back.created_in }}</td>
-              <td scope="row">
-                <button type="button" class="btn btn-danger" style="width: 100px; font-size: 20px" (click)="eliminar(i, pos, back.id_backup)">Eliminar</button>
+              <th scope="row" class="v-a-middle">{{ pos + 1 }}</th>
+              <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
+              <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
+              <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
+              <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+              <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
+              <td scope="row" class="v-a-middle">
+                <button type="button" class="btn btn-danger" style="width: 90px; font-size: 16px" (click)="eliminar(i, pos, back.id_backup)">
+                  <span>
+                    <fa-icon [icon]="util.faTrash"></fa-icon>
+                  </span>
+                </button>
               </td>
             </tr>
             </tbody>

@@ -88,8 +88,16 @@
         <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
         <td class="Celdas-Tabla">{{back.created_in}}</td>
         <td class="Celdas-Tabla" >
-          <button type="submit" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-          <button type="submit" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
+          <button type="submit" class="btn btn-primary" style="width: 90px; margin-right: 10px; font-size: 18px" >
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar(i, back.id_backup)">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
         </td>
       </ng-container>
     </tr>

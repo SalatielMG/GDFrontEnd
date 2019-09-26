@@ -26,7 +26,7 @@ export class EncodeMXComponent implements OnInit {
 
   public construirFormulario() {
     this.usuarioSearch = this.formBuilder.group({
-      email: ['jorge@ezfera.mx', Validators.email],
+      email: ['eduardocrysnamuk@gmail.com', Validators.email],
     });
   }
 

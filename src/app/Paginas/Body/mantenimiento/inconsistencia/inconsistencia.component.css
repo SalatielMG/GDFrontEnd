@@ -15,7 +15,14 @@
   display: inline-block;
 }
 .vertical-align-middle {
-  vertical-align: middle;
+  font-size: 18px;
+  height: 80px;
+  color: #fff;
+  background-color: #000000 !important;
+  border-color: #454d55;
+  vertical-align: middle !important;
+  text-align: center !important;
+  font-weight: 500;
 }
 .table .thead-light th {
   color: #000000;

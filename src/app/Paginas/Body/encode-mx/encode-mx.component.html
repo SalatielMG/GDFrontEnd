@@ -22,7 +22,11 @@
                 <!--button id="newsletter_form_submit" type="submit" [disabled]="usuarioSearch.invalid" class="button newsletter_submit_button trans_200" value="Submit">
                   BUSCAR
                 </button-->
-                <button class="btn btn-primary buttonP" type="submit" [disabled]="usuarioSearch.invalid">BUSCAR</button>
+                <button class="btn btn-primary buttonP" type="submit" [disabled]="usuarioSearch.invalid">
+                  <span>
+                    <fa-icon [icon]="util.faSearch"></fa-icon>
+                  </span>
+                </button>
               </div>
 
             </div>

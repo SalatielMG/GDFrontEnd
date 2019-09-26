@@ -130,8 +130,8 @@ app-gastos-entradas {
   width: 100%;
 }
 .inline-grid {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
   display: inline-grid !important;
   width: 100%;
 }
@@ -144,4 +144,7 @@ app-gastos-entradas {
 }
 .input-header:focus {
   color: #d0d8e0;
+}
+.v-a-middle {
+  vertical-align: middle !important;
 }

@@ -11,8 +11,8 @@
 }
 
 .buttonP {
-  font-size: 20px;
-  width: 150px;
+  font-size: 30px;
+  width: 100px;
   height: 90px;
   margin-top: -15px;
 }
@@ -1421,10 +1421,10 @@ section
 .newsletter_email
 {
   height: 90px;
-  background: #D7D7D8;
+  background: #bbbbbb;
   border: none;
   padding-left: 30px;
-  width: calc(100% - 174px - 26px);
+  width: calc(100% - 130px);
   margin-right: 22px;
   color: white;
   font-size: 25px;
