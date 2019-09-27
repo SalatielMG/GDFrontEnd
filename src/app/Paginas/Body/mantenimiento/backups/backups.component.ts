@@ -4,6 +4,10 @@ import {BackupService} from "../../../../Servicios/backup/backup.service";
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {CampoNumerico} from '../../../../Utilerias/validacionCampoNumerico';
+import {Backup} from "../../../../Modelos/Backup/backup";
+import {UserSelect} from "./userSelect";
+import {forEachComment} from "tslint";
+import {tryCatch} from "rxjs/internal-compatibility";
 
 @Component({
   selector: 'app-backups',
@@ -12,9 +16,16 @@ import {CampoNumerico} from '../../../../Utilerias/validacionCampoNumerico';
 })
 export class BackupsComponent implements OnInit {
   private email: string = "";
-  private rangoBackups: number = 10;
+  private rangoBackups = {
+    value : 10,
+    beforeValue: 0,
+  };
+  private rangoUsers = {
+    value : 5,
+    beforeValue: 0,
+  };
+  private usersSelected : UserSelect[];
   private pagina: number = 0;
-  private beforeRangoBackups: number;
   private msj = "";
   public faArrowCircleDown = faArrowDown;
   public faArrowCircleUp = faArrowUp;
@@ -22,14 +33,17 @@ export class BackupsComponent implements OnInit {
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
   constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2) {
+    this.usersSelected = [];
     this.resetearVariables();
     this.buscarBackups();
   }
-  onScroll () {
+
+  private onScroll () {
     console.log('scrolled!!');
     this.buscarBackups();
   }
   ngOnInit() {
+    new CampoNumerico("#rangoUsers");
     new CampoNumerico("#rangoBackups");
     this.util.ready();
   }
@@ -58,14 +72,15 @@ export class BackupsComponent implements OnInit {
     if (this.pagina == 0) {
       this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
       this.util.crearLoading().then(() => {
-        this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
+        this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value, this.pagina).subscribe(result => {
           this.resultado(result);
+          this.collapseSelected();
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups, this.pagina).subscribe(result => {
+      this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value, this.pagina).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);
@@ -165,7 +180,7 @@ export class BackupsComponent implements OnInit {
     if (opcion) {
       this.msj = "Limpiando backups " + Quien;
       this.util.crearLoading().then(() => {
-        this.backupService.limpiarBackups(idUser, email, this.rangoBackups, cantidad).subscribe(result => {
+        this.backupService.limpiarBackups(idUser, email, this.rangoBackups.value, cantidad).subscribe(result => {
           this.util.detenerLoading();
           if (!result.error) {
             if (idUser != 0) { // Un solo usuario
@@ -193,30 +208,93 @@ export class BackupsComponent implements OnInit {
     }
     console.log(opcion);
   }
-  afterBlur(event) {
-    // console.log("event Rango", event.target.value);
-    // console.log("This.Rango", this.rangoBackups);
-    if (this.beforeRangoBackups != this.rangoBackups) {
-      console.log('Adelante se tiene que hacer una consulta nueva.');
+
+
+  private eventSelectCollapse(index){
+    console.log("After Event Collapse Activated:= ", this.backupService.mntBackups[index]);
+    console.log("this.backupService.mntBackups[index].checked ", this.backupService.mntBackups[index].checked);
+    if (!this.backupService.mntBackups[index].checked || this.backupService.mntBackups[index].checked == undefined) { //Checked => push userSelected
+      let user = new UserSelect(this.backupService.mntBackups[index].id_user, index);
+      this.usersSelected.push(user);
+      console.log("Agregado user.index:=", index);
+    } else { //No Checked => splice userSelected
+      this.usersSelected.forEach((userU, indexU) => {
+        if (userU.index == index) {
+          this.usersSelected.splice(indexU, 1);
+          console.log("Elimnado user.index:=", index);
+        }
+      });
+    }
+    this.rangoUsers.value = this.usersSelected.length;
+    this.rangoUsers.beforeValue = this.usersSelected.length;
+    this.backupService.mntBackups[index].checked = !this.backupService.mntBackups[index].checked;
+    console.log("Before Event Collapse Activated:= ", this.backupService.mntBackups[index]);
+    console.log("this.usersSelected", this.usersSelected);
+  }
+  private collapseSelected() {
+    this.usersSelected = [];
+    this.rangoUsers.value = 10;
+    this.rangoUsers.beforeValue = 10;
+    console.log("this.rangoUsers.value", this.rangoUsers.value);
+    if (this.backupService.mntBackups.length >= this.rangoUsers.value) {
+      for (let i = 0; i < this.rangoUsers.value; i++) {
+        this.backupService.mntBackups[i].checked = true;
+        console.log("this.backupService.mntBackups[" + i + "].checked", this.backupService.mntBackups[i].checked);
+        let user = new UserSelect(this.backupService.mntBackups[i].id_user, i);
+        this.usersSelected.push(user);
+      }
+    } else {
+      for (let user of this.backupService.mntBackups) {
+        user.checked = true;
+      }
+    }
+    console.log("this.usersSelected", this.usersSelected);
+  }
+  private afterBlur(event) {
+    if (this.rangoBackups.beforeValue != this.rangoBackups.value) {
       this.resetearVariables();
       this.buscarBackups();
 
-    } else {
-      console.log("Ohh nada");
     }
   }
-  beforeBlur(event) {
-    // console.log("beforeBlur", event.target.value);
-    this.beforeRangoBackups = event.target.value;
+  private beforeBlur(event) {
+    this.rangoBackups.beforeValue = this.rangoBackups.value;
   }
-  public prueba(event){
+  private keyUpEvent(event){
     if (event.key == "Enter") {
-      if (this.rangoBackups != this.beforeRangoBackups) {
-        this.resetearVariables();
-
-        this.afterBlur(event);
-
-      }
+      console.log("this.rangoBackups.value", this.rangoBackups.value);
+      console.log("this.rangoBackups.beforeValue", this.rangoBackups.beforeValue);
+      this.afterBlur(event);
+      this.beforeBlur(event);
     }
+  }
+  private keyUpEventRangoUsers(event) {
+    if (event.key == "Enter") {
+      this.afterBlurRangoUsers(event);
+      this.beforeBlurRangoUsers(event);
+    }
+  }
+  private afterBlurRangoUsers(event) {// Evento filtroSeleccionar
+    console.log("this.rangoUsers", this.rangoUsers);
+    if (this.rangoUsers.value > this.rangoUsers.beforeValue) { //Selecionar usuarios faatantes
+      let faltantes = this.rangoUsers.value - this.rangoUsers.beforeValue;
+      console.log("Usuarios faltantes", faltantes);
+
+      this.backupService.mntBackups.forEach((back, index) => {
+        if (faltantes == 0) return;
+        if (!back.checked || back.checked == undefined) {
+          this.backupService.mntBackups[index].checked = true;
+          let user = new UserSelect(back.id_user, index);
+          this.usersSelected.push(user);
+          faltantes -= 1;
+        }
+        console.log("encontrado faltantes", faltantes);
+      });
+    } else { //Deseleccionar usuarios restantes.
+
+    }
+  }
+  private beforeBlurRangoUsers(event) {
+    this.rangoUsers.beforeValue = this.rangoUsers.value;
   }
 }

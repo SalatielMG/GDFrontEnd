@@ -172,3 +172,16 @@ app-gastos-entradas {
   text-align: center !important;
   margin-left: 30px !important;
 }
+.HeaderSelected {
+  background-color: rgb(35, 200, 0) !important;
+}
+.BodySelected {
+  background-color: rgba(35, 200, 0, 0.5) !important;
+}
+
+.HeaderNoSelected {
+  background-color: #e1e1e1 !important;
+}
+.BodyNoSelected {
+  background-color: white !important;
+}
