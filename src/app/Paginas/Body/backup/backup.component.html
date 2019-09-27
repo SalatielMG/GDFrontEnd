@@ -1,17 +1,15 @@
 
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado">
-
-        <h2 class="text-light">Detalles Respaldo # {{numBack}} Backup {{idBack}}</h2>
-
+    <h2 class="text-light">Detalles Respaldo # {{numBack}} Backup {{idBack}}</h2>
     <h4 class="text-light"><a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h4>
   </div>
 </div>
-<button class="btn btn-outline-info rounded-circle backNavigation" routerLink="/backups">
+<!--button class="btn btn-outline-info rounded-circle backNavigation" routerLink="/backups">
           <span>
             <fa-icon [icon]="util.faChevronLeft"></fa-icon>
           </span>
-</button>
+</button-->
 <ul class="nav nav-tabs nav-color">
   <li class="nav-item tam-tab">
     <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts']">Accounts</a>
