@@ -33,15 +33,15 @@
     <div class="col-3">
       <div class="form-row">
         <div class="form-group col-4">
-          <label for="rangoUsers" class="col-form-label" style="font-size: 18px; font-weight: normal">Núm. Usuarios:</label>
+          <label for="rangoUsers" class="col-form-label" style="font-size: 18px; font-weight: normal">Núm. Usuarios a limpiar:</label>
           <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" [(ngModel)]="rangoUsers.value" id="rangoUsers" name="rangoUsers" (keyup)="keyUpEventRangoUsers($event)" (blur)="afterBlurRangoUsers($event)" (focus)="beforeBlurRangoUsers($event)">
         </div>
         <div class="form-group col-4">
-          <label for="rangoBackups" class="col-form-label" style="font-size: 18px; font-weight: normal">Núm. Backups:</label>
+          <label for="rangoBackups" class="col-form-label" style="font-size: 18px; font-weight: normal">Backups mayores a:</label>
           <input type="number" value="10" class="form-control" pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups.value" name="rangoBackups" (keyup)="keyUpEvent($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
-        <div class="form-group col-4" style="padding-top: 40px;">
-          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, util.emailUserMntBackup, 0)">
+        <div class="form-group col-4" style="padding-top: 68px;">
+          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackupsUser()">
             <span>
               <fa-icon [icon]="util.faTools"></fa-icon>
             </span>
@@ -111,7 +111,7 @@
               <th scope="col" style="vertical-align: middle">
                 Operacion
                 <br>
-                <button class="btn btn-outline-success" (click)="limpiarBackups(user.id_user, user.email, user.cantRep, i)">
+                <button class="btn btn-outline-success" (click)="limpiarBackupsUser(false, user, i)">
                   <span>
                     <fa-icon [icon]="util.faTools"></fa-icon>
                   </span>

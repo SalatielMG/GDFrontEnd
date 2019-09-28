@@ -146,6 +146,14 @@ export class Utilerias {
   ];
 
   public msjToast(msj, titulo, error) {
+    if (error == "warning"){
+      this.msjToastWarning(msj, titulo);
+      return;
+    }
+    if (error == "success"){
+      this.msjToastSucces(msj, titulo);
+      return;
+    }
     if (error) {
       this.msjToastError(msj, titulo);
     } else {
@@ -158,9 +166,15 @@ export class Utilerias {
   }
 
   private msjToastError(msj, titulo) {
-    this.toast.error(msj, titulo, );
+    this.toast.error(msj, titulo);
   }
-
+  private msjToastWarning(msj, titulo) {
+    this.toast.warning(msj, titulo, {
+      closeButton: true,
+      disableTimeOut: true,
+      timeOut: 6000
+    });
+  }
   public msjErrorInterno(error, detenerLoading = true, loadingMain = true, titulo = '¡ ERROR INTERNO !') {
     if (loadingMain) this.loadingMain = false; else this.loadingModal = false;
     if (detenerLoading) this.detenerLoading();

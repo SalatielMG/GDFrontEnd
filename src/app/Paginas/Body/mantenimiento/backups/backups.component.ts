@@ -8,6 +8,7 @@ import {Backup} from "../../../../Modelos/Backup/backup";
 import {UserSelect} from "./userSelect";
 import {forEachComment} from "tslint";
 import {tryCatch} from "rxjs/internal-compatibility";
+import {User} from "../../../../Modelos/User/user";
 
 @Component({
   selector: 'app-backups',
@@ -174,7 +175,73 @@ export class BackupsComponent implements OnInit {
     console.log('Opcion Elegida', opcion);
   }
 
-  public limpiarBackups(idUser, email, cantidad, pos = 0) {
+  private limpiarBackupsUser(isUserSelected: boolean = true, userSpecified =  null, i = 0) {
+    let users: UserSelect[] = [];
+    if (isUserSelected) {
+      users = users.concat(this.usersSelected);
+    } else {
+      let user = new UserSelect(userSpecified.id_user, userSpecified.email, userSpecified.cantRep, i);
+      users.push(user);
+    }
+
+    if (users.length == 0) {
+      this.util.msjToast("Porfavor selecione a los usuarios a limpiar", "", true);
+      return;
+    }
+
+    let Quien = "";
+    for (let user of users)
+      Quien = Quien + user.email + ", \n";
+    let opcion = confirm("¿ Estas seguro de limpiar los backups del usuario: ?\n" + Quien);
+
+    // Process
+
+    if (opcion) {
+      this.msj = "Limpiando backups :\n" + Quien;
+      this.util.crearLoading().then(() => {
+        this.backupService.limpiarBackupsUsers(users, this.rangoBackups.value).subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          for (let resultUser of result.resultCleanBackupsUser) {
+            this.util.msjToast(resultUser.msj, resultUser.titulo, resultUser.error);
+            console.log("resultUser:=", resultUser);
+            /*if (resultUser.error == "success") {
+            } else {
+              console.log("Limpiado SIN exito:=", resultUser);
+            }*/
+          }
+          /*if (result.error) { //Error => NO Resetear userSelected, eliminar de la lista los user limpiados.
+          } else { //Success => Resetear userSelected y seleccionar los siguientes user [10]
+            /*if (users.length == 1) {
+              this.backupService.mntBackups.splice(users[0].index, 1);
+            } else {
+              let backups = [];
+              users.forEach((user) => {
+                backups.push(this.backupService.mntBackups[user.index]);
+              });
+              users.forEach((user, index) => {
+                let i = this.backupService.mntBackups.indexOf(backups[index]);
+                if (i != -1) {
+                  this.backupService.mntBackups.splice(i, 1);
+                }
+              });
+            }*/
+          //}
+          this.search();
+          users = [];
+        }, error => {
+          this.util.msjErrorInterno(error);
+          users = [];
+        });
+      });
+    }
+
+    // Process
+
+    console.log("users Selected:=", users);
+  }
+
+  private limpiarBackups(idUser, email, cantidad, pos = 0) {
     if (this.usersSelected.length == 0) {
       this.util.msjToast("Porfavor seleccione a los usuarios a limpiar", "", true);
       return;
@@ -221,7 +288,6 @@ export class BackupsComponent implements OnInit {
     }
     console.log(opcion);
   }
-
 
   private eventSelectCollapse(index){
     console.log("After Event Collapse Activated:= ", this.backupService.mntBackups[index]);

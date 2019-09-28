@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {ObjectUnsubscribedError, Observable} from 'rxjs';
 import {Backup} from '../../Modelos/Backup/backup';
 
 @Injectable({
@@ -43,5 +43,7 @@ export class BackupService {
     const param = (email == "Generales") ? {idUser: idUser, rango: rango} : {idUser: idUser, email: email , rango: rango, cantidad: cantidad};
     return this.http.delete(URL + 'limpiarBackups', {params : param});
   }
-
+  public limpiarBackupsUsers(users, rangoBackups): Observable<any> {
+    return this.http.delete(URL + "limpiarBackupsUsers", {params: {users: JSON.stringify(users), rangoBackups: rangoBackups}});
+  }
 }
