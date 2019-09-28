@@ -1,5 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 /*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+.addButton {
+  /*border: 0px;*/
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  width: 55px !important;
+  height: 55px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  /*color: #ffffff;*/
+  cursor: pointer !important;
+  /*background: #E45E4E;*/
+  z-index: 100 !important;
+}
 .backNavigation {
   /*border: 0px;*/
   position: fixed !important;

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools} from "@fortawesome/free-solid-svg-icons";
+import {faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 declare var $: any;
 
@@ -26,6 +26,8 @@ export class Utilerias {
   public faSearch = faSearch;
   public faArrowLeft = faArrowLeft;
   public faRecycle = faRecycle;
+  public faPlusSquare = faPlusSquare;
+  public faPlus = faPlus;
   public faTools = faTools;
   public faSlidersH = faSlidersH;
   public faTrash = faTrash;

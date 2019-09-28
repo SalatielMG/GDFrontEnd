@@ -175,8 +175,21 @@ export class BackupsComponent implements OnInit {
   }
 
   public limpiarBackups(idUser, email, cantidad, pos = 0) {
-    let Quien = (idUser == 0) ? "de todos los usuarios " + email : "del usuario : " + email;
-    let opcion = confirm("¿ Estas seguro de limpiar los backups " + Quien + " ?");
+    if (this.usersSelected.length == 0) {
+      this.util.msjToast("Porfavor seleccione a los usuarios a limpiar", "", true);
+      return;
+    }
+    if (email == "Generales") {
+      idUser = 0;
+    } else {
+      idUser = this.backupService.mntBackups[0].id_user;
+      cantidad = this.backupService.mntBackups[0].cantRep;
+    }
+    let Quien = "";
+    for (let user of this.usersSelected){
+      Quien = Quien + this.backupService.mntBackups[user.index]["email"] + ", \n";
+    }
+    let opcion = confirm("¿ Estas seguro de limpiar los backups del usuario: ?\n" + Quien);
     if (opcion) {
       this.msj = "Limpiando backups " + Quien;
       this.util.crearLoading().then(() => {
@@ -214,7 +227,7 @@ export class BackupsComponent implements OnInit {
     console.log("After Event Collapse Activated:= ", this.backupService.mntBackups[index]);
     console.log("this.backupService.mntBackups[index].checked ", this.backupService.mntBackups[index].checked);
     if (!this.backupService.mntBackups[index].checked || this.backupService.mntBackups[index].checked == undefined) { //Checked => push userSelected
-      let user = new UserSelect(this.backupService.mntBackups[index].id_user, index);
+      let user = new UserSelect(this.backupService.mntBackups[index].id_user, this.backupService.mntBackups[index]["email"], this.backupService.mntBackups[index]["cantRep"], index);
       this.usersSelected.push(user);
       console.log("Agregado user.index:=", index);
     } else { //No Checked => splice userSelected
@@ -240,13 +253,18 @@ export class BackupsComponent implements OnInit {
       for (let i = 0; i < this.rangoUsers.value; i++) {
         this.backupService.mntBackups[i].checked = true;
         console.log("this.backupService.mntBackups[" + i + "].checked", this.backupService.mntBackups[i].checked);
-        let user = new UserSelect(this.backupService.mntBackups[i].id_user, i);
+        let user = new UserSelect(this.backupService.mntBackups[i].id_user, this.backupService.mntBackups[i]["email"], this.backupService.mntBackups[i]["cantRep"], i);
         this.usersSelected.push(user);
       }
     } else {
-      for (let user of this.backupService.mntBackups) {
-        user.checked = true;
-      }
+      this.usersSelected = [];
+      this.backupService.mntBackups.forEach((back, index) => {
+        let user = new UserSelect(back.id_user, back["email"], back["cantRep"], index);
+        this.usersSelected.push(user);
+        back.checked = true;
+      });
+      this.rangoUsers.value = this.usersSelected.length;
+      this.rangoUsers.beforeValue = this.usersSelected.length;
     }
     console.log("this.usersSelected", this.usersSelected);
   }
@@ -284,14 +302,18 @@ export class BackupsComponent implements OnInit {
         if (faltantes == 0) return;
         if (!back.checked || back.checked == undefined) {
           this.backupService.mntBackups[index].checked = true;
-          let user = new UserSelect(back.id_user, index);
+          let user = new UserSelect(back.id_user, back["email"], back["cantRep"], index);
           this.usersSelected.push(user);
           faltantes -= 1;
         }
         console.log("encontrado faltantes", faltantes);
       });
     } else { //Deseleccionar usuarios restantes.
-
+      for (let i = (this.usersSelected.length - 1); i >= this.rangoUsers.value; i--) {
+        this.backupService.mntBackups[i].checked = false;
+      }
+      this.usersSelected.splice(this.rangoUsers.value, (this.rangoUsers.beforeValue - this.rangoUsers.value));
+      console.log("this.usersSelected", this.usersSelected);
     }
   }
   private beforeBlurRangoUsers(event) {

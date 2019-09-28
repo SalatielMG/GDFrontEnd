@@ -41,7 +41,7 @@
           <input type="number" value="10" class="form-control" pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups.value" name="rangoBackups" (keyup)="keyUpEvent($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="form-group col-4" style="padding-top: 40px;">
-          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, 'Generales', 0)">
+          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.mntBackups.length == 0" (click)="limpiarBackups(0, util.emailUserMntBackup, 0)">
             <span>
               <fa-icon [icon]="util.faTools"></fa-icon>
             </span>
@@ -70,7 +70,7 @@
                 <h5 class="font-weight-bold">Usuario: </h5>
               </div>
               <div class="col-10">
-                <h5 class="font-weight-light"> {{user.email}}  id: {{user.id_user}}</h5>
+                <h5 class="font-weight-light"> {{user.email}}</h5>
               </div>
             </div>
           </div>
