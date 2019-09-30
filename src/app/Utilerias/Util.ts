@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 
 declare var $: any;
 
@@ -12,6 +12,10 @@ export class Utilerias {
   public CatTransfer = "Trasnferencias";
   public CataAccount_all = "Todas las cuentas";
   public CatCategory_all = "Todas las categorias";
+  public QueryComplete = {
+    isComplete:  false,
+    msj: "Consulta Completa"
+  };
 
   public userMntInconsistencia = {
     email : "Generales",
@@ -22,6 +26,7 @@ export class Utilerias {
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
 
+  public faArrowDown = faArrowDown;
   public faArrowUp = faArrowUp;
   public faSearch = faSearch;
   public faArrowLeft = faArrowLeft;

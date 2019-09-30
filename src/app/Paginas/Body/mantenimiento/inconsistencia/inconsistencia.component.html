@@ -29,7 +29,7 @@
                 <!--th scope="col" class="vertical-align-middle">Pos</th-->
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
-                    Backup
+                    Id_backup
                     <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
                     <button type="button" [ngClass]="(filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('id_backup')">
                       <span aria-hidden="true">&times;</span>
@@ -38,7 +38,7 @@
                 </th>
                 <th scope="col"  *ngIf="util.userMntInconsistencia.email == 'Generales'" class="vertical-align-middle">
                   <div class="row inline-grid">
-                    Usuario
+                    Email
                     <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
                     <button type="button" [ngClass]="(filtrosSearch.email.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('email')">
                       <span aria-hidden="true">&times;</span>
@@ -47,7 +47,7 @@
                  </th>
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
-                    Automatico
+                    Automatic
                     <select class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
                       <option value="-1">Ambos</option>
                       <option value="0">No</option>
@@ -60,7 +60,7 @@
                 </th>
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
-                    Fecha de creación
+                    Date_creation
                     <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
                     <button type="button" [ngClass]="(filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_creation')">
                       <span aria-hidden="true">&times;</span>
@@ -69,7 +69,7 @@
                 </th>
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
-                    Fecha de descarga
+                    Date_download
                     <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
                     <button type="button" [ngClass]="(filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_download')">
                       <span aria-hidden="true">&times;</span>
@@ -78,7 +78,7 @@
                 </th>
                 <th scope="col" class="vertical-align-middle">
                   <div class="row inline-grid">
-                    Version
+                    Created_in
                     <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
                     <button type="button" [ngClass]="(filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('created_in')">
                       <span aria-hidden="true">&times;</span>

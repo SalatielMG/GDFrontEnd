@@ -62,18 +62,25 @@ export class BackupsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
+      this.util.QueryComplete.isComplete = false;
       this.pagina += 1;
       this.backService.backups = this.backService.backups.concat(result.backups);
+    } else {
+      if (this.pagina == 0) {
+        this.util.QueryComplete.isComplete = false;
+      } else {
+        this.util.QueryComplete.isComplete = true;
+      }
     }
     this.util.loadingMain = false;
   }
-  public eliminar(numBack, back) {
-    let index = numBack[0];
-    let bnd = this.isFilter();
-    if (bnd) {
-      let index = <number>this.backService.backups.indexOf(back);
+  public eliminar(indiceBackup, back, isFilter = false) {
+    let index = indiceBackup[0];
+    //let bnd = this.isFilter();
+    if (isFilter) {
+      index = <number>this.backService.backups.indexOf(back);
     }
-    let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + ((bnd) ? index: index + 1) + ", Backup: " + back.id_backup + " ?");
+    let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (index + 1) + ", Id_Backup: " + back.id_backup + " ?");
     if (opcion) {
       // On Delete On Cascada.
       this.util.crearLoading().then(()=> {
@@ -82,9 +89,9 @@ export class BackupsComponent implements OnInit {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);
             if (!result.error) {
-              if (bnd) {
-                if (index != -1) this.backService.backups.splice((index -1),1);
-                this.backupsFiltro.splice(numBack[1], 1);
+              if (isFilter) {
+                if (index != -1) this.backService.backups.splice((index),1);
+                this.backupsFiltro.splice(indiceBackup[1], 1);
               } else {
                 this.backService.backups.splice(index,1);
               }

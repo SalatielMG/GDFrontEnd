@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
 import { HttpClient } from '@angular/common/http';
-import {ObjectUnsubscribedError, Observable} from 'rxjs';
-import {Backup} from '../../Modelos/Backup/backup';
+import { Observable } from 'rxjs';
+import { Backup } from '../../Modelos/Backup/backup';
+import {UserBackupsMnt} from "../../Modelos/User/userBackupsMnt";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import {Backup} from '../../Modelos/Backup/backup';
 export class BackupService {
   public paginaB: number = 0;
   public backups: Backup[];
-  public mntBackups: Backup[];
+  public userBackupsMnt: UserBackupsMnt[] = [];
 
   constructor(public http: HttpClient) {
   }
@@ -33,7 +34,7 @@ export class BackupService {
   }
 
   public buscarBackupsUserMnt(email, cantidad, pagina): Observable<any> {
-    // this.mntBackups = [];
+    // this.userBackupsMnt = [];
     return this.http.get(URL + 'buscarBackupsUserMnt', {params: {email: email, cantidad: cantidad, pagina: pagina}});
   }
   public corregirInconsistencia(Tabla): Observable<any> {

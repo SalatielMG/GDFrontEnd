@@ -6,9 +6,5 @@ export interface Backup {
   date_download: string,
   created_in: string,
 
-  collapsed: number,
-  backups: Backup[],
-  msj: string,
-  cantRep: number,
   checked: boolean
 }

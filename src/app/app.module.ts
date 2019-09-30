@@ -42,6 +42,7 @@ import { ExportacionModule } from './Paginas/Body/exportacion/exportacion.module
 import { UsuariosModule } from './Paginas/Body/usuarios/usuarios.module';
 import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistencia/inconsistencia.module';
 import { LoadingSpinnerModule } from './Components/loading-spinner/loading-spinner/loading-spinner.module';
+import { QueryCompleteModule } from './Components/query-complete/query-complete.module';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,7 @@ import { LoadingSpinnerModule } from './Components/loading-spinner/loading-spinn
       preventDuplicates: true,
       closeButton: true
     }),
-    FontAwesomeModule, NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule
+    FontAwesomeModule, NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule, QueryCompleteModule
   ],
   providers: [
     DatePipe,
