@@ -203,7 +203,7 @@ export class BackupsComponent implements OnInit {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           for (let resultUser of result.resultCleanBackupsUser) {
-            this.util.msjToast(resultUser.msj, resultUser.titulo, resultUser.error);
+            this.util.msjToast(resultUser.msj, "", resultUser.error);
             console.log("resultUser:=", resultUser);
             /*if (resultUser.error == "success") {
             } else {
@@ -227,7 +227,25 @@ export class BackupsComponent implements OnInit {
               });
             }*/
           //}
-          this.search();
+          if (isUserSelected) {
+            this.search();
+
+            /*if (users.length > 1) {
+              this.search();
+            } else {
+              this.usersSelected = [];
+              this.backupService.mntBackups = [];
+            }*/
+          } else {
+            this.backupService.mntBackups.splice(i, 1);
+            this.usersSelected.forEach((user, index) => {
+              if (user.index == i) {
+                this.usersSelected.splice(index, 1);
+                this.rangoUsers.value = this.usersSelected.length;
+                this.rangoUsers.beforeValue = this.usersSelected.length;
+              }
+            });
+          }
           users = [];
         }, error => {
           this.util.msjErrorInterno(error);

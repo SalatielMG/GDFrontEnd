@@ -97,54 +97,48 @@
     </div>
 
     <div #cntBackupsUser class="tarjetaCuerpo" [ngClass]="(user.checked) ? 'BodySelected' : 'BodyNoSelected'">
-
-      <div class="card-body" style="height: 100%; overflow-y: scroll;">
-          <table class="table table-hover" *ngIf="user.cantRep > 0" >
-            <thead >
-            <tr class="text-center" >
-              <th scope="col" style="vertical-align: middle">#</th>
-              <th scope="col" style="vertical-align: middle">Backup</th>
-              <th scope="col" style="vertical-align: middle">Automatico</th>
-              <th scope="col" style="vertical-align: middle">Fecha de creacion</th>
-              <th scope="col" style="vertical-align: middle">Fecha de descarga</th>
-              <th scope="col" style="vertical-align: middle">Version</th>
-              <th scope="col" style="vertical-align: middle">
-                Operacion
-                <br>
-                <button class="btn btn-outline-success" (click)="limpiarBackupsUser(false, user, i)">
-                  <span>
-                    <fa-icon [icon]="util.faTools"></fa-icon>
-                  </span>
-                  limpiar
-                </button>
-              </th>
-            </tr>
-            </thead>
-            <tbody style="overflow-y: scroll !important; height: 300px">
-            <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
-              <th scope="row" class="v-a-middle">{{ pos + 1 }}</th>
-              <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
-              <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
-              <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
-              <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
-              <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
-              <td scope="row" class="v-a-middle">
-                <button type="button" class="btn btn-danger" style="width: 90px; font-size: 16px" (click)="eliminar(i, pos, back.id_backup)">
-                  <span>
-                    <fa-icon [icon]="util.faTrash"></fa-icon>
-                  </span>
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-
-        <div class="container" *ngIf="user.cantRep == 0">
-          <h5 class="font-weight-lighter">{{user.msj}}</h5>
-        </div>
-
-        </div>
-
+      <table class="table table-hover table-fixed" *ngIf="user.cantRep > 0" >
+        <thead >
+        <tr class="text-center" >
+          <th scope="col" class="v-a-middle">#</th>
+          <th scope="col" class="v-a-middle">Backup</th>
+          <th scope="col" class="v-a-middle">Automatico</th>
+          <th scope="col" class="v-a-middle">Fecha de creacion</th>
+          <th scope="col" class="v-a-middle">Fecha de descarga</th>
+          <th scope="col" class="v-a-middle">Version</th>
+          <th scope="col" class="v-a-middle">
+            Operacion
+            <br>
+            <button class="btn btn-outline-success" (click)="limpiarBackupsUser(false, user, i)">
+              <span>
+                <fa-icon [icon]="util.faTools"></fa-icon>
+              </span>
+              limpiar
+            </button>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
+          <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
+          <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
+          <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
+          <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
+          <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+          <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
+          <td scope="row" class="v-a-middle">
+            <button type="button" class="btn btn-danger" style="width: 90px; font-size: 16px" (click)="eliminar(i, pos, back.id_backup)">
+              <span>
+                <fa-icon [icon]="util.faTrash"></fa-icon>
+              </span>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="container" *ngIf="user.cantRep == 0">
+        <h5 class="font-weight-lighter">{{user.msj}}</h5>
+      </div>
     </div>
   </div>
 
@@ -153,7 +147,6 @@
     [infiniteScrollDistance]="2"
     (scrolled)="onScroll()">
   </div>
-
   <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
 
 </div>

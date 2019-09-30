@@ -65,7 +65,7 @@
   height: 0px;
   line-height: 1.5;
   transition: max-height 500ms, padding 500ms;
-  /*overflow-y: scroll !important;*/
+  overflow: hidden;
 }
 
 .inputSearch {
