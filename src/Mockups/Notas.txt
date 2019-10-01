@@ -12,6 +12,7 @@ $ npm install @fortawesome/fontawesome-svg-core
 $ npm install @fortawesome/free-solid-svg-icons
 # See Compatibility table below to choose correct version
 $ npm install @fortawesome/angular-fontawesome@<version>
+npm i ng-pick-datetime
 ng generate module <name> --module app --flat --routing
 
 

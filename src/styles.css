@@ -200,3 +200,51 @@ app-gastos-entradas {
 .BodyNoSelected {
   background-color: white !important;
 }
+.table-fixed,
+.table-fixed-bu {
+  height: 600px;
+  overflow: scroll;
+}
+.table-fixed tbody,
+.table-fixed-bu tbody {
+  height: 450px;
+  overflow-y: scroll;
+  width: 100%;
+}
+.table-fixed thead,
+.table-fixed-bu thead,
+.table-fixed tbody,
+.table-fixed-bu tbody,
+.table-fixed td,
+.table-fixed-bu td,
+.table-fixed th,
+.table-fixed-bu th
+{
+  display: block;
+}
+
+.table-fixed thead tr,
+.table-fixed-bu thead tr,
+.table-fixed tbody tr,
+.table-fixed-bu tbody tr {
+  display: flex;
+}
+
+.table-fixed thead tr th,
+.table-fixed tbody tr td {
+  width: 14.28%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-fixed-bu thead tr th,
+.table-fixed-bu tbody tr td {
+  width: 12.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-fixed thead tr,
+.table-fixed-bu thead tr {
+  width: calc(100% - 17px);
+}

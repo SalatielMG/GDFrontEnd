@@ -165,7 +165,7 @@
           </thead>
           <tbody *ngIf="!isFilter(i)">
           <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
-            <td scope="row" class="v-a-middle font-weight-bold">index[{{ pos + 1 }}]  pos[{{back.pos}}]</td>
+            <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
             <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
             <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
             <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
@@ -182,7 +182,7 @@
           </tbody>
         <tbody *ngIf="isFilter(i)">
         <tr class="text-center"  *ngFor="let back of user.backupsFiltro; let pos = index">
-          <td scope="row" class="v-a-middle font-weight-bold">index[{{ pos + 1 }}]   pos[{{back.pos}}]</td>
+          <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
           <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
           <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
           <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>

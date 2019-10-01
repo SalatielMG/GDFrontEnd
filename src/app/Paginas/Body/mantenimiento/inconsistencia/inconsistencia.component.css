@@ -16,7 +16,7 @@
 }
 .vertical-align-middle {
   font-size: 18px;
-  height: 80px;
+  height: 100px;
   color: #fff;
   background-color: #000000 !important;
   border-color: #454d55;
@@ -26,4 +26,11 @@
 }
 .table .thead-light th {
   color: #000000;
+}
+
+.gralBackups {
+  width: 21.66% !important;
+}
+.noGralBackups {
+  width: 32.5% !important;
 }

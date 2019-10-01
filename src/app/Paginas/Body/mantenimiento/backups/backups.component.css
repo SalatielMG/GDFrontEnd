@@ -1,32 +1,3 @@
-.table-fixed tbody {
-  height: 450px;
-  overflow-y: auto;
-  width: 100%;
-}
-.table-fixed thead,
-.table-fixed tbody,
-.table-fixed td,
-.table-fixed th
-{
-  display: block;
-}
-
-.table-fixed thead tr,
-.table-fixed tbody tr {
-  display: flex;
-}
-
-.table-fixed thead tr th,
-.table-fixed tbody tr td {
-  width: 14.28%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.table-fixed thead tr {
-  width: calc(100% - 17px);
-}
-
 .table-fixed input, select {
   background-color: #21252987 !important;
 }
