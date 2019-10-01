@@ -4,14 +4,14 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="exampleModalCenterTitle">Actualizar Backup</h5>
+        <h5 class="modal-title centerTitleModal" id="exampleModalCenterTitle">Actualizar Backup {{backup.value.id_backup}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrarModal()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -23,32 +23,54 @@
           </div-->
         <div class="container">
           <div class="form-group">
-            <label for="automatic">Automático: </label>
+            <label for="automatic">Automatic: </label>
             <select class="form-control" id="automatic" formControlName="automatic">
               <option value="0">NO</option>
               <option value="1">SI</option>
             </select>
           </div>
-
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="date_creation">Fecha creación</label>
-              <input type="datetime-local" class="form-control" id="date_creation" formControlName="date_creation">
+              <label for="date_creation">Date_creation</label>
+              <div class="row">
+                <div class="col-11">
+                  <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación">
+                </div>
+                <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
+                  <span [owlDateTimeTrigger]="dc" style="cursor: pointer">
+                    <fa-icon [icon]="util.faCalendar" [ngClass]="(isCreated) ? 'color-blue' : 'color-red'"></fa-icon>
+                  </span>
+                  <owl-date-time #dc ></owl-date-time>
+                </div>
+              </div>
             </div>
             <div class="form-group col-md-6">
-              <label for="date_download">Fecha descarga</label>
-              <input type="datetime-local" class="form-control" id="date_download" formControlName="date_creation">
+              <label for="date_download">Date_download</label>
+              <div class="row">
+                <div class="col-11">
+                  <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga">
+                </div>
+                <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
+                  <span [owlDateTimeTrigger]="dd" style="cursor: pointer">
+                    <fa-icon [icon]="util.faCalendar" [ngClass]="(isDownload) ? 'color-blue' : 'color-red'"></fa-icon>
+                  </span>
+                  <owl-date-time #dd ></owl-date-time>
+                </div>
+              </div>
             </div>
           </div>
+
           <div class="form-group">
             <label for="created_in">Versión: </label>
             <input type="text" class="form-control" id="created_in" formControlName="created_in">
           </div>
+
+
         </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cerrar</button>
-          <button type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="backup.invalid">Guardar</button>
+          <button type="submit" class="btn btn-success" [disabled]="backup.invalid">Guardar</button>
         </div>
       </form>
     </div>
@@ -144,8 +166,8 @@
           <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
           <!--td class="text-center">{{back.id_user}}</td-->
           <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-          <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-          <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+          <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+          <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
           <td class="Celdas-Tabla">{{back.created_in}}</td>
           <td class="Celdas-Tabla" >
             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar(back)">
@@ -176,8 +198,8 @@
         <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
         <!--td class="text-center">{{back.id_user}}</td-->
         <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-        <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-        <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+        <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+        <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
         <td class="Celdas-Tabla">{{back.created_in}}</td>
         <td class="Celdas-Tabla" >
           <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar(back)">

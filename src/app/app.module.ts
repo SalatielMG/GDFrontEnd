@@ -17,6 +17,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from 'ng2-charts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 /*Componentes*/
 import { AppComponent } from './app.component';
@@ -56,6 +57,9 @@ import { QueryCompleteModule } from './Components/query-complete/query-complete.
 
   ],
   imports: [
+    BrowserAnimationsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     LoadingSpinnerModule,
     InfiniteScrollModule,
     NgbModule,
@@ -79,7 +83,7 @@ import { QueryCompleteModule } from './Components/query-complete/query-complete.
     UsuarioService,
     UserService,
     BackupService,
-    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: LOCALE_ID, useValue: 'es-MX' }
   ],
   bootstrap: [AppComponent]
 })

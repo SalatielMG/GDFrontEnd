@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-/*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+
 .addButton {
   /*border: 0px;*/
   position: fixed !important;
@@ -248,3 +250,14 @@ app-gastos-entradas {
 .table-fixed-bu thead tr {
   width: calc(100% - 17px);
 }
+.cdk-overlay-container {
+  position: fixed !important;
+  z-index: 1051 !important;
+}
+.color-blue {
+  color: #007bff;
+}
+.color-red {
+  color: #dc3545;
+}
+

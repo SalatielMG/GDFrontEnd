@@ -13,10 +13,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./backups.component.css']
 })
 export class BackupsComponent implements OnInit {
-  private msj;
+
   private pagina = 0;
   private filtrosSearch = new FiltrosSearchBackupsUser();
   private backupsFiltro: Backup[];
+  private isCreated = false;
+  private isDownload = false;
   //private backupSelected: Backup;
   private backup: FormGroup;
 
@@ -39,7 +41,7 @@ export class BackupsComponent implements OnInit {
   private buscar() {
     this.util.loadingMain = true;
     if (this.pagina == 0) {
-      this.msj = "Buscando Backups del usuario: " + this.userService.User.email;
+      this.util.msjLoading = "Buscando Backups del usuario: " + this.userService.User.email;
       this.util.crearLoading().then(() => {
         this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
           this.resultado(result);
@@ -58,7 +60,7 @@ export class BackupsComponent implements OnInit {
   private resultado(result, bnd = true) {
     if (bnd) {
       this.util.detenerLoading();
-      this.msj = result.msj;
+      this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
@@ -108,19 +110,81 @@ export class BackupsComponent implements OnInit {
   private abrirModalActualizar(back: Backup) {
     // this.backupSelected = back;
     console.log("backup seleccionado", back);
-    this.construirFormulario(back.id_backup, back.automatic, back.date_creation, back.date_download, back.created_in);
+    this.isCreated = back.date_creation != "0000-00-00 00:00:00";
+    this.isDownload = back.date_download != "0000-00-00 00:00:00";
+    this.construirFormulario(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation): null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
+
+    /*let newDateTime = back.date_creation;
+    if (this.isCreated) {
+      let dateTimeSplit = back.date_creation.split(" ");
+      let dateSplit = dateTimeSplit[0].split("-");
+      dateSplit = dateSplit.reverse();
+      let newDate = "";
+      let newTime = dateTimeSplit[1];
+      dateSplit.forEach((date)=> {
+        newDate = newDate + date + "/"
+      });
+      console.log("newDate", newDate);
+
+      newDate = newDate.substring(0, newDate.length - 1);
+      newDateTime = newDate + " " + newTime;
+
+
+      console.log("dateTimeSplit", dateTimeSplit);
+      console.log("newDate", newDate);
+    }
+    console.log("newDateTime", newDateTime);
+    let dateToday = new Date(back.date_creation);
+    console.log("dateToday", dateToday);*/
+    //this.construirFormulario();
   }
-  private construirFormulario(id_backup = 0, automatic = 0, date_creation = "", date_download = "", created_in = "") {
+  private construirFormulario(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
     this.backup = this.formBuilder.group({
       id_backup: [id_backup, Validators.required],
       automatic: [automatic, Validators.required],
-      date_creation: [date_creation, Validators.required],
-      date_download: [date_download, Validators.required],
+      date_creation: [date_creation, (date_creation != null) ?  Validators.required : Validators.nullValidator],
+      date_download: [date_download, (date_download != null) ?  Validators.required : Validators.nullValidator],
       created_in: [created_in, Validators.required]
     });
   }
-  private actualizarBackup(){
-    console.log(this.backup.value);
+  private formatDateTimeSQL(key) {
+    let dateTime = "";
+    if (this.backup.value[key] != null) {
+      this.backup.value.date_creation.toLocaleDateString().split("/").reverse().forEach((d) => {
+        dateTime = dateTime + d + "-";
+      });
+      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + this.backup.value.date_creation.toLocaleTimeString();
+    } else {
+      dateTime = "0000-00-00 00:00:00";
+    }
+    return dateTime;
+  }
+
+  public actualizarBackup(){
+    /*console.log("Valor backup", this.backup.value);*/
+    let dateTime_date_creation = this.formatDateTimeSQL("date_creation");
+    let dateTime_date_download = this.formatDateTimeSQL("date_download");
+    /*console.log("dateTime_date_creation", dateTime_date_creation);
+    console.log("dateTime_date_download", dateTime_date_download);*/
+    let newBackup = {
+      id_backup : this.backup.value.id_backup,
+      automatic : this.backup.value.automatic,
+      date_creation : dateTime_date_creation,
+      date_download : dateTime_date_download,
+      created_in : this.backup.value.created_in,
+    };
+    this.util.msjLoading = "Actualizando backup : " + this.backup.value.id_backup;
+    this.util.crearLoading().then(() => {
+      this.backService.actualizarBackup(newBackup).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) {
+          this.util.cerrarModal("#exampleModalCenter");
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
   }
 
   ngOnInit() {

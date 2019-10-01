@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Backup } from '../../Modelos/Backup/backup';
 import {UserBackupsMnt} from "../../Modelos/User/userBackupsMnt";
@@ -19,6 +19,13 @@ export class BackupService {
   public resetearBaackups() {
     this.backups = [];
     this.paginaB = 0;
+  }
+
+  public actualizarBackup(backup): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('backup', JSON.stringify(backup));
+    //return this.http.post(URL + "actualizarBackup", {params: {backup: JSON.stringify(backup)}});
+    return this.http.post(URL + "actualizarBackup", parametro);
   }
   public eliminarBackup(id): Observable<any> {
     /*const  parametro = new HttpParams()
