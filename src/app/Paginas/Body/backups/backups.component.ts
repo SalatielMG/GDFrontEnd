@@ -45,36 +45,32 @@ export class BackupsComponent implements OnInit {
     if (this.pagina == 0) {
       this.util.msjLoading = "Buscando Backups del usuario: " + this.userService.User.email;
       this.util.crearLoading().then(() => {
-        this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
+        this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "asc").subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "desc").subscribe(result => {
-        this.resultado(result, false);
+      this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "asc").subscribe(result => {
+        this.resultado(result);
       }, error => {
         this.util.msjErrorInterno(error, false);
       });
     }
   }
-  private resultado(result, bnd = true) {
-    if (bnd) {
+  private resultado(result) {
+    if (this.pagina == 0) {
       this.util.detenerLoading();
       this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.util.QueryComplete.isComplete = false;
       this.pagina += 1;
       this.backService.backups = this.backService.backups.concat(result.backups);
+      this.util.QueryComplete.isComplete = false;
     } else {
-      if (this.pagina == 0) {
-        this.util.QueryComplete.isComplete = false;
-      } else {
-        this.util.QueryComplete.isComplete = true;
-      }
+      this.util.QueryComplete.isComplete = this.pagina != 0;
     }
     this.util.loadingMain = false;
   }
@@ -239,7 +235,7 @@ export class BackupsComponent implements OnInit {
                 break;
               }
             } else {
-              if (!back[k].toString().includes(this.filtrosSearch[k].value)){
+              if (!back[k].toString().includes(this.filtrosSearch[k].value)) {
                 bnd = false;
                 break;
               }

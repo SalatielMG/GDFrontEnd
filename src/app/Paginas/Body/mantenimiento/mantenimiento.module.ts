@@ -6,14 +6,13 @@ import { MantenimientoComponent } from './mantenimiento.component';
 import {FormsModule} from '@angular/forms';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ScrollingModule } from '@angular/cdk/scrolling'
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {LoadingSpinnerModule} from '../../../Components/loading-spinner/loading-spinner/loading-spinner.module';
 import {QueryCompleteModule} from '../../../Components/query-complete/query-complete.module';
 
 @NgModule({
   declarations: [MantenimientoComponent, BackupsComponent],
-  imports: [NgxSpinnerModule, FontAwesomeModule, ScrollingModule, InfiniteScrollModule,LoadingSpinnerModule,
+  imports: [NgxSpinnerModule, FontAwesomeModule, InfiniteScrollModule,LoadingSpinnerModule,
     FormsModule,
     CommonModule,
     MantenimientoRoutingModule,

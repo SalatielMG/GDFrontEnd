@@ -5,6 +5,9 @@ import { BackupRoutingModule } from './backup-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {QueryCompleteModule} from "../../../Components/query-complete/query-complete.module";
+import {FormsModule} from "@angular/forms";
+import {LoadingSpinnerModule} from "../../../Components/loading-spinner/loading-spinner/loading-spinner.module";
 
 /*Componentes*/
 import { AccountsComponent } from './accounts/accounts.component';
@@ -32,6 +35,9 @@ import { PreferencesService } from '../../../Servicios/preferences/preferences.s
 @NgModule({
   declarations: [BackupComponent, AccountsComponent, AutomaticsComponent, BudgetsComponent, CardviewsComponent, CategoriesComponent, CurrenciesComponent, ExtrasComponent, MovementsComponent, PreferencesComponent],
   imports: [
+    QueryCompleteModule,
+    FormsModule,
+    LoadingSpinnerModule,
     FontAwesomeModule,
     InfiniteScrollModule,
     NgxSpinnerModule,

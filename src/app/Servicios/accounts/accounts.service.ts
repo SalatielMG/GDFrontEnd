@@ -13,9 +13,9 @@ export class AccountsService {
 
   constructor(private http: HttpClient) { }
 
-  public buscarAccountsBackup(idBackup): Observable<any> {
-    this.Accounts = [];
-    return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: idBackup}});
+  public buscarAccountsBackup(idBackup, pagina): Observable<any> {
+    // this.Accounts = [];
+    return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: idBackup, pagina: pagina}});
   }
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {

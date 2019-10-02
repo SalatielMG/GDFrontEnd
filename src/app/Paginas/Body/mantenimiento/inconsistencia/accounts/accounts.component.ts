@@ -75,11 +75,8 @@ export class AccountsComponent implements OnInit {
     if (!result.error) {
       this.pagina += 1;
       this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
-
     }
     this.util.loadingMain = false;
-
   }
-
 
 }
