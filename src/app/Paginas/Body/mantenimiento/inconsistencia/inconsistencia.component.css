@@ -29,8 +29,14 @@
 }
 
 .gralBackups {
-  width: 21.66% !important;
+  width: 18% !important;
 }
 .noGralBackups {
-  width: 32.5% !important;
+  width: 27% !important;
+}
+.width-10 {
+  width: 10% !important;
+}
+.width-6 {
+  width: 6% !important;
 }

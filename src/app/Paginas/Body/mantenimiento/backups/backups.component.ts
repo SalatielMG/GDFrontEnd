@@ -88,10 +88,17 @@ export class BackupsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
+      this.util.QueryComplete.isComplete = false;
       this.pagina += 1;
       this.backupService.userBackupsMnt = this.backupService.userBackupsMnt.concat(result.backups);
       //let nuevoBack = this.backupService.userBackupsMnt.concat(result.backups);
       console.log("this.backupService.userBackupsMnt", this.backupService.userBackupsMnt);
+    } else {
+      if (this.pagina == 0) {
+        this.util.QueryComplete.isComplete = false;
+      } else {
+        this.util.QueryComplete.isComplete = true;
+      }
     }
     this.util.loadingMain = false;
     // console.log(result);

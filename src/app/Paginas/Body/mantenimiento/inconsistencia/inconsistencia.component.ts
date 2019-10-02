@@ -103,11 +103,17 @@ export class InconsistenciaComponent implements OnInit {
             this.errorValidacionUserBackup = result.error;
 
             if (!result.error) {
+              this.util.QueryComplete.isComplete = false;
               this.backupService.paginaB += 1;
               this.backupService.backups = this.backupService.backups.concat(result.backups);
               this.util.userMntInconsistencia.id = result.id_user;
             } else {
-              this.util.msjToast(result.msj, result.titulo, result.error);
+              if (this.backupService.paginaB == 0) {
+                this.util.QueryComplete.isComplete = false;
+                this.util.msjToast(result.msj, result.titulo, result.error);
+              } else {
+                this.util.QueryComplete.isComplete = true;
+              }
             }
           }, error => {
             this.util.msjErrorInterno(error, true, true);
@@ -122,10 +128,16 @@ export class InconsistenciaComponent implements OnInit {
           this.util.msjModal = result.msj;
 
           if (!result.error) {
+            this.util.QueryComplete.isComplete = false;
             this.backupService.paginaB += 1;
             this.backupService.backups = this.backupService.backups.concat(result.backups);
           } else {
-            this.util.msjToast(result.msj, result.titulo, result.error);
+            if (this.backupService.paginaB == 0) {
+              this.util.QueryComplete.isComplete = false;
+              this.util.msjToast(result.msj, result.titulo, result.error);
+            } else {
+              this.util.QueryComplete.isComplete = true;
+            }
           }
         }, error => {
           this.util.msjErrorInterno(error, false, false);

@@ -211,6 +211,7 @@
     (scrolled)="onScroll()">
   </div>
   <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+  <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
 
 </div>
 <div class="container" *ngIf="backupService.userBackupsMnt.length == 0">

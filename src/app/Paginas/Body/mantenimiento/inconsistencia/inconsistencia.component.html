@@ -24,9 +24,9 @@
             <table class="table table-hover" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'table-fixed-bu' : 'table-fixed'">
               <thead class="thead-dark">
               <tr class="text-center">
-                <th scope="col" class="vertical-align-middle" style="width: 6% !important;">#</th>
+                <th scope="col" class="vertical-align-middle width-6">#</th>
                 <!--th scope="col" class="vertical-align-middle">Pos</th-->
-                <th scope="col" class="vertical-align-middle" style="width: 7% !important;">
+                <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Id_backup
                     <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
@@ -35,7 +35,7 @@
                     </button>
                   </div>
                 </th>
-                <th scope="col"  *ngIf="util.userMntInconsistencia.email == 'Generales'" class="vertical-align-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">
+                <th scope="col" *ngIf="util.userMntInconsistencia.email == 'Generales'" class="vertical-align-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">
                   <div class="row inline-grid">
                     Email
                     <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
@@ -44,7 +44,7 @@
                     </button>
                   </div>
                  </th>
-                <th scope="col" class="vertical-align-middle" style="width: 7% !important;">
+                <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Automatic
                     <select class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
@@ -75,7 +75,7 @@
                     </button>
                   </div>
                 </th>
-                <th scope="col" class="vertical-align-middle" style="width: 7% !important;">
+                <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Created_in
                     <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
@@ -84,7 +84,7 @@
                     </button>
                   </div>
                 </th>
-                <th scope="col" class="vertical-align-middle" style="display: block !important; width: 8% !important;">
+                <th scope="col" class="vertical-align-middle width-10" style="display: block !important;">
                   Seleccionar
                   <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input " id="todo" [checked]="todo"  (change)="todosBackups($event)">
@@ -96,15 +96,15 @@
               <tbody *ngIf="!todo && !isFilter()">
                 <ng-container *ngFor="let back of backupService.backups; let i = index">
                   <tr  class="font-weight-normal text-center" *ngIf="back.id_backup != 0" style="height: 70px;" (click)="checkBackup(i)">
-                    <td class="v-a-middle font-weight-bold"  scope="row">{{(i)}}</td>
+                    <td class="v-a-middle font-weight-bold width-6"  scope="row">{{(i)}}</td>
                     <!--td *ngIf="back.id_backup != 0">{{back.pos}}</td-->
-                    <td class="v-a-middle">{{back.id_backup}}</td>
-                    <td class="v-a-middle" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
-                    <td class="v-a-middle">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                    <td class="v-a-middle">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-                    <td class="v-a-middle">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
-                    <td class="v-a-middle">{{back.created_in}}</td>
-                    <td class="v-a-middle">
+                    <td class="v-a-middle width-10">{{back.id_backup}}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
+                    <td class="v-a-middle width-10">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                    <td class="v-a-middle width-10">{{back.created_in}}</td>
+                    <td class="v-a-middle width-10">
                       <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
                         <label class="custom-control-label" [attr.for]="i"></label>
@@ -125,15 +125,15 @@
               <tbody *ngIf="!todo && isFilter()">
               <ng-container *ngFor="let back of backupsFiltro; let i = index">
                 <tr class="font-weight-normal text-center" *ngIf="back.id_backup != 0" style="height: 70px;" (click)="checkBackup(back.pos)">
-                  <td class="v-a-middle font-weight-bold"  scope="row" >{{(i + 1)}}</td>
+                  <td class="v-a-middle font-weight-bold width-6"  scope="row" >{{(i + 1)}}</td>
                   <!--td>{{back.pos}}</td-->
-                  <td class="v-a-middle">{{back.id_backup}}</td>
-                  <td class="v-a-middle" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
-                  <td class="v-a-middle">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                  <td class="v-a-middle">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-                  <td class="v-a-middle">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
-                  <td class="v-a-middle">{{back.created_in}}</td>
-                  <td class="v-a-middle">
+                  <td class="v-a-middle width-10">{{back.id_backup}}</td>
+                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
+                  <td class="v-a-middle width-10">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle width-10">{{back.created_in}}</td>
+                  <td class="v-a-middle width-10">
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" class="custom-control-input" [id]="i" disabled [checked]="back.checked">
                       <label class="custom-control-label" [attr.for]="i"></label>
@@ -144,6 +144,8 @@
               </tbody>
             </table>
             <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
+            <query-complete *ngIf="util.QueryComplete.isComplete && !isFilter()" [msj]="util.QueryComplete.msj"></query-complete>
+
         </div>
         <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups.length == 0">
           <h4 class="font-weight-light">{{util.msjModal}}</h4>

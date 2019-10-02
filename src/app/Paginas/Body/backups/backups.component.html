@@ -170,12 +170,12 @@
           <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
           <td class="Celdas-Tabla">{{back.created_in}}</td>
           <td class="Celdas-Tabla" >
-            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar(back)">
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar([i, back.pos, false], back)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
             </button>
-            <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([i, back.pos], back)">
+            <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([i, back.pos, false], back)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -202,12 +202,12 @@
         <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
         <td class="Celdas-Tabla">{{back.created_in}}</td>
         <td class="Celdas-Tabla" >
-          <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar(back)">
+          <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar([back.pos, i, true], back)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([back.pos, i], back, true)">
+          <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([back.pos, i, true], back)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -225,6 +225,6 @@
   </table>
 
   <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-  <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+  <query-complete *ngIf="util.QueryComplete.isComplete && !isFilter()" [msj]="util.QueryComplete.msj"></query-complete>
 
 </div>

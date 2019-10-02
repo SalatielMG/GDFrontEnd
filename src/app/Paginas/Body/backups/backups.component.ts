@@ -21,6 +21,8 @@ export class BackupsComponent implements OnInit {
   private isDownload = false;
   //private backupSelected: Backup;
   private backup: FormGroup;
+  private dataBackupSelected = [];
+  private indexBackupSelected: number = 0;
 
   constructor(private userService: UserService, private backService: BackupService, private util: Utilerias, private route: ActivatedRoute,
               private router: Router, private formBuilder: FormBuilder) {
@@ -76,13 +78,14 @@ export class BackupsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  public eliminar(indiceBackup, back, isFilter = false) {
-    let index = indiceBackup[0];
+  public eliminar(dataBackup, back) {
+    this.dataBackupSelected = dataBackup;
+    this.indexBackupSelected = this.dataBackupSelected[0];
     //let bnd = this.isFilter();
-    if (isFilter) {
-      index = <number>this.backService.backups.indexOf(back);
+    if (this.dataBackupSelected[2]) {
+      this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
     }
-    let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (index + 1) + ", Id_Backup: " + back.id_backup + " ?");
+    let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
     if (opcion) {
       // On Delete On Cascada.
       this.util.crearLoading().then(()=> {
@@ -91,11 +94,11 @@ export class BackupsComponent implements OnInit {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);
             if (!result.error) {
-              if (isFilter) {
-                if (index != -1) this.backService.backups.splice((index),1);
-                this.backupsFiltro.splice(indiceBackup[1], 1);
+              if (this.dataBackupSelected[2]) {
+                if (this.indexBackupSelected != -1) this.backService.backups.splice((this.indexBackupSelected),1);
+                this.backupsFiltro.splice(this.dataBackupSelected[1], 1);
               } else {
-                this.backService.backups.splice(index,1);
+                this.backService.backups.splice(this.indexBackupSelected,1);
               }
             }
             console.log(result);
@@ -107,36 +110,19 @@ export class BackupsComponent implements OnInit {
     }
     console.log('Opcion Elegida', opcion);
   }
-  private abrirModalActualizar(back: Backup) {
+  private abrirModalActualizar(dataBackup, back: Backup) {
     // this.backupSelected = back;
+    this.dataBackupSelected = dataBackup;
+    this.indexBackupSelected = this.dataBackupSelected[0];
+    //let bnd = this.isFilter();
+    if (this.dataBackupSelected[2]) {
+      this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
+    }
     console.log("backup seleccionado", back);
     this.isCreated = back.date_creation != "0000-00-00 00:00:00";
     this.isDownload = back.date_download != "0000-00-00 00:00:00";
     this.construirFormulario(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation): null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
 
-    /*let newDateTime = back.date_creation;
-    if (this.isCreated) {
-      let dateTimeSplit = back.date_creation.split(" ");
-      let dateSplit = dateTimeSplit[0].split("-");
-      dateSplit = dateSplit.reverse();
-      let newDate = "";
-      let newTime = dateTimeSplit[1];
-      dateSplit.forEach((date)=> {
-        newDate = newDate + date + "/"
-      });
-      console.log("newDate", newDate);
-
-      newDate = newDate.substring(0, newDate.length - 1);
-      newDateTime = newDate + " " + newTime;
-
-
-      console.log("dateTimeSplit", dateTimeSplit);
-      console.log("newDate", newDate);
-    }
-    console.log("newDateTime", newDateTime);
-    let dateToday = new Date(back.date_creation);
-    console.log("dateToday", dateToday);*/
-    //this.construirFormulario();
   }
   private construirFormulario(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
     this.backup = this.formBuilder.group({
@@ -150,10 +136,10 @@ export class BackupsComponent implements OnInit {
   private formatDateTimeSQL(key) {
     let dateTime = "";
     if (this.backup.value[key] != null) {
-      this.backup.value.date_creation.toLocaleDateString().split("/").reverse().forEach((d) => {
+      this.backup.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
         dateTime = dateTime + d + "-";
       });
-      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + this.backup.value.date_creation.toLocaleTimeString();
+      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + this.backup.value[key].toLocaleTimeString();
     } else {
       dateTime = "0000-00-00 00:00:00";
     }
@@ -180,6 +166,16 @@ export class BackupsComponent implements OnInit {
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
           this.util.cerrarModal("#exampleModalCenter");
+          if (!result.backup.error) {
+            if (this.dataBackupSelected[2]) {
+              if (this.indexBackupSelected != -1) this.backService.backups[this.indexBackupSelected] = result.backup.update;
+              this.backupsFiltro[this.dataBackupSelected[1]] = result.backup.update;
+            } else {
+              this.backService.backups[this.indexBackupSelected] = result.backup.update;
+            }
+          } else {
+            this.util.msjToast(result.backup.msj, "", result.backup.error);
+          }
         }
       }, error => {
         this.util.msjErrorInterno(error);
