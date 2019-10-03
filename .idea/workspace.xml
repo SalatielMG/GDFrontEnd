@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f938a38-3622-4d0d-8f2a-c68e5c889a80" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Modelos/accounts/accounts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Modelos/accounts/accounts.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/Utilerias/Util.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Utilerias/Util.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/dist/" />
@@ -21,31 +24,48 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="728">
+                    <caret line="64" column="41" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="41" />
+                    <folding>
+                      <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                      <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="3250">
+                    <caret line="125" column="23" lean-forward="true" selection-start-line="125" selection-start-column="23" selection-end-line="125" selection-end-column="23" />
+                    <folding>
+                      <element signature="e#0#50#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts">
+        <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="89" column="121" lean-forward="true" selection-start-line="89" selection-start-column="109" selection-end-line="89" selection-end-column="121" />
-              <folding>
-                <element signature="e#0#50#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="130">
+              <caret line="11" column="31" lean-forward="true" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -53,22 +73,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="149" column="4" lean-forward="true" selection-start-line="149" selection-start-column="4" selection-end-line="149" selection-end-column="25" />
+            <state relative-caret-position="258">
+              <caret line="168" column="10" selection-start-line="168" selection-start-column="6" selection-end-line="168" selection-end-column="10" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="180" column="19" lean-forward="true" selection-start-line="180" selection-start-column="19" selection-end-line="180" selection-end-column="19" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -77,8 +85,59 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/Utilerias/Util.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="212" column="6" selection-start-line="212" selection-start-column="6" selection-end-line="220" selection-end-column="14" />
+            <state relative-caret-position="227">
+              <caret line="206" column="13" lean-forward="true" selection-start-line="206" selection-start-column="13" selection-end-line="206" selection-end-column="13" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/Modelos/Backup/backup.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="17" selection-start-column="17" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/angular.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="832">
+              <caret line="32" column="34" lean-forward="true" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/Modelos/accounts/accounts.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1118">
+              <caret line="43" column="18" lean-forward="true" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.module.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="520">
+              <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -107,11 +166,27 @@
       <find>userMntInconsistencia</find>
       <find>limpiar</find>
       <find>exampleModalCenter</find>
+      <find>string</find>
+      <find>,</find>
+      <find>string;</find>
+      <find>:</find>
+      <find>backup</find>
+      <find>;</find>
+      <find>cerra</find>
     </findStrings>
     <replaceStrings>
       <replace>{{i}}</replace>
       <replace>modalAccount</replace>
       <replace>modalBackup</replace>
+      <replace>0</replace>
+      <replace>''</replace>
+      <replace>;</replace>
+      <replace>&quot;&quot;</replace>
+      <replace>=</replace>
+      <replace>account</replace>
+      <replace>: [account.</replace>
+      <replace>,</replace>
+      <replace>],</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -120,10 +195,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/automatics/automatics.component.ts" />
-        <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/budgets/budgets.component.ts" />
-        <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/cardviews/cardviews.component.ts" />
-        <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/categories/categories.component.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/currencies/currencies.component.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/extras/extras.component.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/movements/movements.component.ts" />
@@ -145,7 +216,6 @@
         <option value="$PROJECT_DIR$/src/app/app.module.ts" />
         <option value="$PROJECT_DIR$/src/app/Modelos/Backup/filtros-search-backups.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/accounts/accounts.component.ts" />
-        <option value="$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/encode-mx/encode-mx.component.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/encode-mx/encode-mx.component.html" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/encode-mx/encode-mx.component.css" />
@@ -165,12 +235,17 @@
         <option value="$PROJECT_DIR$/src/Mockups/Notas.txt" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/styles.css" />
-        <option value="$PROJECT_DIR$/src/app/Utilerias/Util.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.component.html" />
-        <option value="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts" />
-        <option value="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html" />
+        <option value="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.css" />
+        <option value="$PROJECT_DIR$/angular.json" />
+        <option value="$PROJECT_DIR$/src/app/Utilerias/Util.ts" />
+        <option value="$PROJECT_DIR$/src/app/Modelos/accounts/accounts.ts" />
+        <option value="$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts" />
         <option value="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html" />
+        <option value="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html" />
+        <option value="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.module.ts" />
       </list>
     </option>
   </component>
@@ -226,6 +301,15 @@
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="Paginas" type="462c0819:PsiDirectoryNode" />
               <item name="Body" type="462c0819:PsiDirectoryNode" />
+              <item name="backup" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GDFrontEnd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GDFrontEnd" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Paginas" type="462c0819:PsiDirectoryNode" />
+              <item name="Body" type="462c0819:PsiDirectoryNode" />
               <item name="backups" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -234,6 +318,12 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="Utilerias" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="GDFrontEnd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="GDFrontEnd" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Mockups" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -254,7 +344,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
-    <property name="ts.external.directory.path" value="C:\angular project\GDFrontEnd\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Documentos\Estadia Salatiel\Front\GDFrontEnd\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -358,23 +448,24 @@
       <workItem from="1569883382337" duration="12808000" />
       <workItem from="1569968939041" duration="12809000" />
       <workItem from="1570054441299" duration="12434000" />
+      <workItem from="1570115685637" duration="20292000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="475872000" />
+    <option name="totallyTimeSpent" value="496164000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="32" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="32" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4976852" visible="true" weight="0.15848215" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4976852" visible="true" weight="0.13645943" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" sideWeight="0.5023148" side_tool="true" weight="0.106398806" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49925596" weight="0.32991454" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30427352" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.09364548" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -383,7 +474,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49925596" weight="0.32991454" />
       <window_info anchor="bottom" id="TypeScript" order="9" sideWeight="0.4985119" weight="0.18290599" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.1875" side_tool="true" weight="0.22905983" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.8125" visible="true" weight="0.3811966" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.8125" weight="0.38015607" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -393,44 +484,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/mantenimiento/inconsistencia/currencies/currencies.component.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="11" column="13" lean-forward="true" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Servicios/currencies/currencies.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="19" column="54" selection-start-line="19" selection-start-column="54" selection-end-line="19" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Utilerias/URL.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/angular.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-806">
-          <caret line="8" column="17" lean-forward="true" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Utilerias/validacionCampoNumerico.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/simplescrollup/simplescrollup.js" />
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -489,9 +542,6 @@
           <caret line="57" column="32" lean-forward="true" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Modelos/Backup/backup.ts">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Modelos/Backup/filtros-search-backups.ts">
       <provider selected="true" editor-type-id="text-editor">
@@ -585,16 +635,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="78">
           <caret line="3" column="12" lean-forward="true" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="15" column="58" lean-forward="true" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#43#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -694,20 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mockups/Notas.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="32" column="17" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="19" column="4" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Modelos/accounts/filters-search-accounts.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
@@ -722,16 +748,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="180" column="19" lean-forward="true" selection-start-line="180" selection-start-column="19" selection-end-line="180" selection-end-column="19" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.component.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -739,45 +755,126 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Utilerias/Util.ts">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="212" column="6" selection-start-line="212" selection-start-column="6" selection-end-line="220" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-184">
+          <caret line="18" column="6" lean-forward="true" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts">
+    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="149" column="4" lean-forward="true" selection-start-line="149" selection-start-column="4" selection-end-line="149" selection-end-column="25" />
+        <state relative-caret-position="104">
+          <caret line="4" column="16" lean-forward="true" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mockups/Notas.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="25" selection-start-line="25" selection-end-line="26" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/@angular/core/core.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="4397" column="25" selection-start-line="4397" selection-start-column="25" selection-end-line="4397" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/protractor/built/element.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="825" selection-start-line="825" selection-end-line="825" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Modelos/Backup/backup.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="17" selection-start-column="17" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/angular.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="832">
+          <caret line="32" column="34" lean-forward="true" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Servicios/accounts/accounts.service.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="11" column="33" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
           <folding>
-            <element signature="e#0#50#0" expanded="true" />
+            <element signature="e#0#43#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="89" column="121" lean-forward="true" selection-start-line="89" selection-start-column="109" selection-end-line="89" selection-end-column="121" />
+        <state relative-caret-position="3250">
+          <caret line="125" column="23" lean-forward="true" selection-start-line="125" selection-start-column="23" selection-end-line="125" selection-end-column="23" />
           <folding>
             <element signature="e#0#50#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Utilerias/Util.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="206" column="13" lean-forward="true" selection-start-line="206" selection-start-column="13" selection-end-line="206" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+        <state relative-caret-position="728">
+          <caret line="64" column="41" selection-start-line="64" selection-start-column="41" selection-end-line="64" selection-end-column="41" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Modelos/accounts/accounts.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1118">
+          <caret line="43" column="18" lean-forward="true" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="168" column="10" selection-start-line="168" selection-start-column="6" selection-end-line="168" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="11" column="31" lean-forward="true" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.module.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
