@@ -5,11 +5,7 @@
     <h4 class="text-light"><a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h4>
   </div>
 </div>
-<button type="button" class="btn btn-success rounded-circle addButton">
-          <span>
-            <fa-icon [icon]="util.faPlus"></fa-icon>
-          </span>
-</button>
+
 <ul class="nav nav-tabs nav-color">
   <li class="nav-item tam-tab">
     <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['accounts']">Accounts</a>

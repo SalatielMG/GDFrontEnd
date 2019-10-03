@@ -14,6 +14,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class BackupsComponent implements OnInit {
 
+  private option: string = "";
   private pagina = 0;
   private filtrosSearch = new FiltrosSearchBackupsUser();
   private backupsFiltro: Backup[];
@@ -74,18 +75,22 @@ export class BackupsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  public eliminar(dataBackup, back) {
+  public accionBackup(option, dataBackup, back: Backup) {
+    this.option = option;
     this.dataBackupSelected = dataBackup;
     this.indexBackupSelected = this.dataBackupSelected[0];
-    //let bnd = this.isFilter();
-    if (this.dataBackupSelected[2]) {
-      this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
-    }
-    let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
-    if (opcion) {
-      // On Delete On Cascada.
+    if (this.dataBackupSelected[2]) this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
+    this.isCreated = back.date_creation != "0000-00-00 00:00:00";
+    this.isDownload = back.date_download != "0000-00-00 00:00:00";
+    this.construirFormulario(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation): null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
+  }
+
+  private eliminarBackup() {
+
+    //let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
+
       this.util.crearLoading().then(()=> {
-        this.backService.eliminarBackup(back.id_backup).subscribe(
+        this.backService.eliminarBackup(this.backup.value.id_backup).subscribe(
           result => {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);
@@ -103,22 +108,6 @@ export class BackupsComponent implements OnInit {
           this.util.msjErrorInterno(error);
         });
       });
-    }
-    console.log('Opcion Elegida', opcion);
-  }
-  private abrirModalActualizar(dataBackup, back: Backup) {
-    // this.backupSelected = back;
-    this.dataBackupSelected = dataBackup;
-    this.indexBackupSelected = this.dataBackupSelected[0];
-    //let bnd = this.isFilter();
-    if (this.dataBackupSelected[2]) {
-      this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
-    }
-    console.log("backup seleccionado", back);
-    this.isCreated = back.date_creation != "0000-00-00 00:00:00";
-    this.isDownload = back.date_download != "0000-00-00 00:00:00";
-    this.construirFormulario(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation): null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
-
   }
   private construirFormulario(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
     this.backup = this.formBuilder.group({
@@ -142,7 +131,7 @@ export class BackupsComponent implements OnInit {
     return dateTime;
   }
 
-  public actualizarBackup(){
+  private actualizarBackup(){
     /*console.log("Valor backup", this.backup.value);*/
     let dateTime_date_creation = this.formatDateTimeSQL("date_creation");
     let dateTime_date_download = this.formatDateTimeSQL("date_download");

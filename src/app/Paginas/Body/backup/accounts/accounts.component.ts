@@ -12,7 +12,7 @@ import {FiltersSearchAccounts} from "../../../../Modelos/accounts/filters-search
 })
 export class AccountsComponent implements OnInit {
 
-  public msj;
+  private option: string = "";
   private pagina: number = 0;
   private id_backup;
   private filtersSearch = new FiltersSearchAccounts();
@@ -146,4 +146,7 @@ export class AccountsComponent implements OnInit {
   }
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
 
+  public accionAccount(option) {
+    this.option = option;
+  }
 }

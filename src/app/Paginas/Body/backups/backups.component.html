@@ -7,24 +7,24 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+<div class="modal fade" id="modalBackup" tabindex="-1" role="dialog" aria-labelledby="modalBackupTitle" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="exampleModalCenterTitle">Actualizar Backup {{backup.value.id_backup}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrarModal()">
+        <h5 class="modal-title centerTitleModal" id="modalBackupTitle">{{option}} Backup {{backup.value.id_backup}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form [formGroup]="backup" (ngSubmit)="actualizarBackup()">
         <div class="modal-body">
-          <!--div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
-            <h3 class="text-center" style="font-weight: 500;">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h3>
-          </div-->
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Respaldo num: {{(indexBackupSelected + 1)}}, Id_Backup: {{backup.value.id_backup}} ?</h5>
+          </div>
         <div class="container">
           <div class="form-group">
             <label for="automatic">Automatic: </label>
-            <select class="form-control" id="automatic" formControlName="automatic">
+            <select class="form-control" id="automatic" formControlName="automatic" [disabled]="option == util.ELIMINAR">
               <option value="0">NO</option>
               <option value="1">SI</option>
             </select>
@@ -34,10 +34,10 @@
               <label for="date_creation">Date_creation</label>
               <div class="row">
                 <div class="col-11">
-                  <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación">
+                  <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación"  [readonly]="option == util.ELIMINAR">
                 </div>
                 <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
-                  <span [owlDateTimeTrigger]="dc" style="cursor: pointer">
+                  <span [owlDateTimeTrigger]="dc" style="cursor: pointer" [disabled]="option == util.ELIMINAR">
                     <fa-icon [icon]="util.faCalendar" [ngClass]="(isCreated) ? 'color-blue' : 'color-red'"></fa-icon>
                   </span>
                   <owl-date-time #dc ></owl-date-time>
@@ -48,10 +48,10 @@
               <label for="date_download">Date_download</label>
               <div class="row">
                 <div class="col-11">
-                  <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga">
+                  <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga" [readOnly]="option == util.ELIMINAR">
                 </div>
                 <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
-                  <span [owlDateTimeTrigger]="dd" style="cursor: pointer">
+                  <span [owlDateTimeTrigger]="dd" style="cursor: pointer" [disabled]="option == util.ELIMINAR">
                     <fa-icon [icon]="util.faCalendar" [ngClass]="(isDownload) ? 'color-blue' : 'color-red'"></fa-icon>
                   </span>
                   <owl-date-time #dd ></owl-date-time>
@@ -62,15 +62,14 @@
 
           <div class="form-group">
             <label for="created_in">Versión: </label>
-            <input type="text" class="form-control" id="created_in" formControlName="created_in">
+            <input type="text" class="form-control" id="created_in" formControlName="created_in" [readOnly]="option == util.ELIMINAR">
           </div>
-
 
         </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cerrar</button>
-          <button type="submit" class="btn btn-success" [disabled]="backup.invalid">Guardar</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" >Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="backup.invalid">{{option}}</button>
         </div>
       </form>
     </div>
@@ -170,12 +169,12 @@
           <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
           <td class="Celdas-Tabla">{{back.created_in}}</td>
           <td class="Celdas-Tabla" >
-            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 90px; margin-right: 10px; font-size: 18px" (click)="abrirModalActualizar([i, back.pos, false], back)">
+            <button type="submit" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ACTUALIZAR, [i, back.pos, false], back)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
             </button>
-            <button type="submit" class="btn btn-danger" style="width: 90px; margin-left: 10px; font-size: 18px" (click)="eliminar([i, back.pos, false], back)">
+            <button type="submit" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ELIMINAR, [i, back.pos, false], back)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -202,12 +201,12 @@
         <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
         <td class="Celdas-Tabla">{{back.created_in}}</td>
         <td class="Celdas-Tabla" >
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#exampleModalCenter" (click)="abrirModalActualizar([back.pos, i, true], back)">
+          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ACTUALIZAR, [back.pos, i, true], back)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="eliminar([back.pos, i, true], back)">
+          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ELIMINAR, [back.pos, i, true], back)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>

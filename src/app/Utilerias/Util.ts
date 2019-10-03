@@ -9,9 +9,12 @@ declare var $: any;
 
 export class Utilerias {
 
-  public CatTransfer = "Trasnferencias";
-  public CataAccount_all = "Todas las cuentas";
-  public CatCategory_all = "Todas las categorias";
+  public AGREGAR: string = "Agregar";
+  public ACTUALIZAR: string = "Actualizar";
+  public ELIMINAR: string = "Eliminar";
+  public CatTransfer: string = "Trasnferencias";
+  public CataAccount_all: string = "Todas las cuentas";
+  public CatCategory_all: string = "Todas las categorias";
   public QueryComplete = {
     isComplete:  false,
     msj: "Consulta Completa"
@@ -203,4 +206,21 @@ export class Utilerias {
   public cerrarModal(modal) {
     $(modal).modal('hide');
   }
+
+  public classModal(option): string {
+    let classModal = "btn";
+    switch (option) {
+      case this.AGREGAR:
+        classModal += " btn-success";
+        break;
+      case this.ACTUALIZAR:
+        classModal += " btn-primary";
+        break;
+      case this.ELIMINAR:
+        classModal += " btn-danger";
+        break;
+    }
+    return classModal;
+  }
+
 }
