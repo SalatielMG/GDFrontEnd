@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2f938a38-3622-4d0d-8f2a-c68e5c889a80" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/accounts/accounts.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backup/backup.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Utilerias/Util.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Utilerias/Util.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles.css" afterDir="false" />
-    </list>
+    <list default="true" id="2f938a38-3622-4d0d-8f2a-c68e5c889a80" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -39,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="134">
-              <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+              <caret line="25" column="51" lean-forward="true" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -357,12 +348,12 @@
       <workItem from="1569795839133" duration="12019000" />
       <workItem from="1569883382337" duration="12808000" />
       <workItem from="1569968939041" duration="12809000" />
-      <workItem from="1570054441299" duration="12434000" />
+      <workItem from="1570054441299" duration="12737000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="475872000" />
+    <option name="totallyTimeSpent" value="476175000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="32" width="1382" height="744" extended-state="6" />
@@ -772,7 +763,7 @@
     <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="134">
-          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+          <caret line="25" column="51" lean-forward="true" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
