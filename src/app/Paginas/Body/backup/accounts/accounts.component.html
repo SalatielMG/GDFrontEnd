@@ -22,6 +22,41 @@
             <label for="name">Name: </label>
             <input type="text" class="form-control" id="name" formControlName="name">
           </div>
+          <div class="form-group">
+            <label for="detail">Detail: </label>
+            <textarea  type="text" class="form-control" id="detail" formControlName="detail"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-2">
+                <label for="sign">Sign: </label>
+                <select class="form-control" id="sign" formControlName="sign">
+                  <option value="-">-</option>
+                  <option value="+">+</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="income">Income: </label>
+                <input type="number" class="form-control" id="income" formControlName="income">
+              </div>
+              <div class="col">
+                <label for="expense">Expense: </label>
+                <input type="number" class="form-control" id="expense" formControlName="expense">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_balance">Initial_balance: </label>
+                <input type="number" class="form-control" id="initial_balance" formControlName="initial_balance">
+              </div>
+              <div class="col">
+                <label for="final_balance">Final_balance: </label>
+                <input type="number" class="form-control" id="final_balance" formControlName="final_balance">
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="2f938a38-3622-4d0d-8f2a-c68e5c889a80" name="Default Changelist" comment="" />
+=======
     <list default="true" id="2f938a38-3622-4d0d-8f2a-c68e5c889a80" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
+>>>>>>> 34898c09ec83fe9ca8ba89bf4bb8d87e4390fe46
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -40,8 +44,18 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/Utilerias/Util.ts">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="5252">
               <caret line="206" column="13" selection-start-line="206" selection-start-column="13" selection-end-line="206" selection-end-column="13" />
+=======
+<<<<<<< HEAD
+            <state relative-caret-position="134">
+              <caret line="25" column="51" lean-forward="true" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+=======
+            <state relative-caret-position="227">
+              <caret line="206" column="13" lean-forward="true" selection-start-line="206" selection-start-column="13" selection-end-line="206" selection-end-column="13" />
+>>>>>>> 34898c09ec83fe9ca8ba89bf4bb8d87e4390fe46
+>>>>>>> fd3cbbd31aaeb0a2ef41642b559b990847598841
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -390,14 +404,30 @@
       <workItem from="1569795839133" duration="12019000" />
       <workItem from="1569883382337" duration="12808000" />
       <workItem from="1569968939041" duration="12809000" />
+<<<<<<< HEAD
+      <workItem from="1570054441299" duration="12737000" />
+=======
       <workItem from="1570054441299" duration="12434000" />
+<<<<<<< HEAD
       <workItem from="1570115685637" duration="20888000" />
       <workItem from="1570201868482" duration="353000" />
+=======
+      <workItem from="1570115685637" duration="20292000" />
+>>>>>>> 34898c09ec83fe9ca8ba89bf4bb8d87e4390fe46
+>>>>>>> fd3cbbd31aaeb0a2ef41642b559b990847598841
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="497113000" />
+=======
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="476175000" />
+=======
+    <option name="totallyTimeSpent" value="496164000" />
+>>>>>>> 34898c09ec83fe9ca8ba89bf4bb8d87e4390fe46
+>>>>>>> fd3cbbd31aaeb0a2ef41642b559b990847598841
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="32" width="1936" height="1056" extended-state="6" />
@@ -807,8 +837,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Paginas/Body/backups/backups.component.ts">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="3068">
           <caret line="125" column="23" lean-forward="true" selection-start-line="125" selection-start-column="23" selection-end-line="125" selection-end-column="23" />
+=======
+<<<<<<< HEAD
+        <state relative-caret-position="134">
+          <caret line="25" column="51" lean-forward="true" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+=======
+        <state relative-caret-position="520">
+          <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+>>>>>>> 34898c09ec83fe9ca8ba89bf4bb8d87e4390fe46
+>>>>>>> fd3cbbd31aaeb0a2ef41642b559b990847598841
           <folding>
             <element signature="e#0#50#0" expanded="true" />
           </folding>
