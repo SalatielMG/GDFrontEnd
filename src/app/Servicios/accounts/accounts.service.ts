@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AccountsService {
 
-  public Accounts: Accounts[];
+  public Accounts: Accounts[] = [];
 
   constructor(private http: HttpClient) { }
 

@@ -7,22 +7,62 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div class="modal fade" id="modalAccount" tabindex="-1" role="dialog" aria-labelledby="modalAccountTitle" aria-hidden="true" >
+<div class="modal fade" id="modalAccount" tabindex="-1" role="dialog" aria-labelledby="modalAccountTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="option != ''">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="modalAccountTitle">{{option}} Account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+        <h5 class="modal-title centerTitleModal" id="modalAccountTitle">{{option}} Account {{account.value.id_account}}</h5>
+        <button type="button" class="close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" >Cerrar</button>
-        <button type="submit" [ngClass]="util.classModal(option)" >{{option}}</button>
-      </div>
+      <form [formGroup]="account" (ngSubmit)="operacion()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Name: </label>
+            <input type="text" class="form-control" id="name" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label for="detail">Detail: </label>
+            <textarea  type="text" class="form-control" id="detail" formControlName="detail"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-2">
+                <label for="sign">Sign: </label>
+                <select class="form-control" id="sign" formControlName="sign">
+                  <option value="-">-</option>
+                  <option value="+">+</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="income">Income: </label>
+                <input type="number" class="form-control" id="income" formControlName="income">
+              </div>
+              <div class="col">
+                <label for="expense">Expense: </label>
+                <input type="number" class="form-control" id="expense" formControlName="expense">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_balance">Initial_balance: </label>
+                <input type="number" class="form-control" id="initial_balance" formControlName="initial_balance">
+              </div>
+              <div class="col">
+                <label for="final_balance">Final_balance: </label>
+                <input type="number" class="form-control" id="final_balance" formControlName="final_balance">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="account.invalid">{{option}}</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -122,12 +162,12 @@
         <td class="Celdas-Tabla width-4">{{account.rate}}</td>
         <td class="Celdas-Tabla width-4">{{account.icon_name}}</td>
         <td class="Celdas-Tabla width-4">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ACTUALIZAR)">
+          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ACTUALIZAR, account, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ELIMINAR)">
+          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ELIMINAR, account, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -169,12 +209,12 @@
         <td class="Celdas-Tabla width-4">{{account.rate}}</td>
         <td class="Celdas-Tabla width-4">{{account.icon_name}}</td>
         <td class="Celdas-Tabla width-4">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ACTUALIZAR)">
+          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ACTUALIZAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ELIMINAR)">
+          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ELIMINAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>

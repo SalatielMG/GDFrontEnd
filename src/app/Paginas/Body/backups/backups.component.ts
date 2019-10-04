@@ -5,7 +5,7 @@ import { BackupService } from '../../../Servicios/backup/backup.service';
 import { UserService } from '../../../Servicios/user/user.service';
 import {Backup} from "../../../Modelos/Backup/backup";
 import {FiltrosSearchBackupsUser} from "../../../Modelos/Backup/filtros-search-backups-user"
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-backups',
@@ -30,7 +30,7 @@ export class BackupsComponent implements OnInit {
 
     //Consutar los bakups del usuario encontrado.
     // this.backupSelected.id_backup = 0;
-    this.construirFormulario();
+    // this.buildForm();
     this.resetearVariables();
     this.buscar();
   }
@@ -82,19 +82,67 @@ export class BackupsComponent implements OnInit {
     if (this.dataBackupSelected[2]) this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
     this.isCreated = back.date_creation != "0000-00-00 00:00:00";
     this.isDownload = back.date_download != "0000-00-00 00:00:00";
-    this.construirFormulario(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation): null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
+    this.buildForm(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation) : null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
+  }
+  private buildForm(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
+    this.backup = this.formBuilder.group({
+      id_backup: [id_backup, Validators.required],
+      automatic: [automatic, Validators.required],
+      date_creation: [date_creation, (date_creation != null) ?  Validators.required : Validators.nullValidator],
+      date_download: [date_download, (date_download != null) ?  Validators.required : Validators.nullValidator],
+      created_in: [created_in, Validators.required]
+    });
+    if (this.isDelete()) this.disable(); else this.enable();
+  }
+  private disable() {
+    for (let key in this.backup.getRawValue()) {
+      this.backup.get(key).disable();
+    }
+    this.backup.disable();
+  }
+  private enable() {
+    for (let key in this.backup.getRawValue()) {
+      this.backup.get(key).enable();
+    }
+    this.backup.enable();
+  }
+  private isDelete(): boolean {
+    return this.option == this.util.ELIMINAR;
+  }
+  private operacion() {
+    // console.log(this.option, this.backup.value);
+    switch (this.option) {
+      case this.util.ACTUALIZAR:
+        this.actualizarBackup();
+        break;
+      case this.util.ELIMINAR:
+        this.eliminarBackup();
+        break;
+    }
+  }
+  private cerrarModal() {
+    console.log("cerrando Modal :v");
+    this.util.cerrarModal("#modalBackup").then(() => {
+      this.option = "";
+      this.backup = null;
+    });
+  }
+  prueba() {
+    console.log("clik modal :v");
   }
 
+
+  // $(".modal-backdrop").onClick(functi);
   private eliminarBackup() {
-
     //let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
-
       this.util.crearLoading().then(()=> {
         this.backService.eliminarBackup(this.backup.value.id_backup).subscribe(
           result => {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);
             if (!result.error) {
+              this.cerrarModal();
+              //this.util.cerrarModal("#modalBackup");
               if (this.dataBackupSelected[2]) {
                 if (this.indexBackupSelected != -1) this.backService.backups.splice((this.indexBackupSelected),1);
                 this.backupsFiltro.splice(this.dataBackupSelected[1], 1);
@@ -109,15 +157,6 @@ export class BackupsComponent implements OnInit {
         });
       });
   }
-  private construirFormulario(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
-    this.backup = this.formBuilder.group({
-      id_backup: [id_backup, Validators.required],
-      automatic: [automatic, Validators.required],
-      date_creation: [date_creation, (date_creation != null) ?  Validators.required : Validators.nullValidator],
-      date_download: [date_download, (date_download != null) ?  Validators.required : Validators.nullValidator],
-      created_in: [created_in, Validators.required]
-    });
-  }
   private formatDateTimeSQL(key) {
     let dateTime = "";
     if (this.backup.value[key] != null) {
@@ -130,7 +169,6 @@ export class BackupsComponent implements OnInit {
     }
     return dateTime;
   }
-
   private actualizarBackup(){
     /*console.log("Valor backup", this.backup.value);*/
     let dateTime_date_creation = this.formatDateTimeSQL("date_creation");
@@ -150,7 +188,8 @@ export class BackupsComponent implements OnInit {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
-          this.util.cerrarModal("#exampleModalCenter");
+          this.cerrarModal();
+          // this.util.cerrarModal("#modalBackup");
           if (!result.backup.error) {
             if (this.dataBackupSelected[2]) {
               if (this.indexBackupSelected != -1) this.backService.backups[this.indexBackupSelected] = result.backup.update;

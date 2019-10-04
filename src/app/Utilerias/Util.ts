@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {reject} from 'q';
 
 declare var $: any;
 
@@ -204,7 +205,10 @@ export class Utilerias {
   }
 
   public cerrarModal(modal) {
-    $(modal).modal('hide');
+    return new Promise((reject) => {
+      $(modal).modal('hide');
+      reject();
+    });
   }
 
   public classModal(option): string {

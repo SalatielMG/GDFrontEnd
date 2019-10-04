@@ -7,74 +7,77 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div class="modal fade" id="modalBackup" tabindex="-1" role="dialog" aria-labelledby="modalBackupTitle" aria-hidden="true" >
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="modalBackupTitle">{{option}} Backup {{backup.value.id_backup}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form [formGroup]="backup" (ngSubmit)="actualizarBackup()">
-        <div class="modal-body">
-          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
-            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Respaldo num: {{(indexBackupSelected + 1)}}, Id_Backup: {{backup.value.id_backup}} ?</h5>
-          </div>
-        <div class="container">
-          <div class="form-group">
-            <label for="automatic">Automatic: </label>
-            <select class="form-control" id="automatic" formControlName="automatic" [disabled]="option == util.ELIMINAR">
-              <option value="0">NO</option>
-              <option value="1">SI</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="date_creation">Date_creation</label>
-              <div class="row">
-                <div class="col-11">
-                  <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación"  [readonly]="option == util.ELIMINAR">
-                </div>
-                <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
-                  <span [owlDateTimeTrigger]="dc" style="cursor: pointer" [disabled]="option == util.ELIMINAR">
+<!--div class="backdropPlus" *ngIf="option != ''" (click)="cerrarModal()"-->
+  <div class="modal fade" id="modalBackup" tabindex="-1" role="dialog" aria-labelledby="modalBackupTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="option != ''">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title centerTitleModal" id="modalBackupTitle">{{option}} Backup {{backup.value.id_backup}}</h5>
+          <button type="button" class="close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form [formGroup]="backup" (ngSubmit)="operacion()">
+          <div class="modal-body">
+            <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+              <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Respaldo num: {{(indexBackupSelected + 1)}}, Id_Backup: {{backup.value.id_backup}} ?</h5>
+            </div>
+            <div class="container">
+              <div class="form-group">
+                <label for="automatic">Automatic: </label>
+                <select class="form-control" id="automatic" formControlName="automatic">
+                  <option value="0">NO</option>
+                  <option value="1">SI</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="date_creation">Date_creation</label>
+                  <div class="row">
+                    <div class="col-11">
+                      <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación">
+                    </div>
+                    <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
+                  <span [owlDateTimeTrigger]="dc" style="cursor: pointer">
                     <fa-icon [icon]="util.faCalendar" [ngClass]="(isCreated) ? 'color-blue' : 'color-red'"></fa-icon>
                   </span>
-                  <owl-date-time #dc ></owl-date-time>
+                      <owl-date-time #dc [disabled]="option == util.ELIMINAR"></owl-date-time>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="date_download">Date_download</label>
-              <div class="row">
-                <div class="col-11">
-                  <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga" [readOnly]="option == util.ELIMINAR">
-                </div>
-                <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
-                  <span [owlDateTimeTrigger]="dd" style="cursor: pointer" [disabled]="option == util.ELIMINAR">
+                <div class="form-group col-md-6">
+                  <label for="date_download">Date_download</label>
+                  <div class="row">
+                    <div class="col-11">
+                      <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga">
+                    </div>
+                    <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
+                  <span [owlDateTimeTrigger]="dd" style="cursor: pointer">
                     <fa-icon [icon]="util.faCalendar" [ngClass]="(isDownload) ? 'color-blue' : 'color-red'"></fa-icon>
                   </span>
-                  <owl-date-time #dd ></owl-date-time>
+                      <owl-date-time #dd [disabled]="option == util.ELIMINAR"></owl-date-time>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              <div class="form-group">
+                <label for="created_in">Created_in: </label>
+                <input type="text" class="form-control" id="created_in" formControlName="created_in">
+              </div>
+
             </div>
           </div>
-
-          <div class="form-group">
-            <label for="created_in">Versión: </label>
-            <input type="text" class="form-control" id="created_in" formControlName="created_in" [readOnly]="option == util.ELIMINAR">
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" (click)="cerrarModal()">Cerrar</button>
+            <button type="submit" [ngClass]="util.classModal(option)" [disabled]="backup.invalid">{{option}}</button>
           </div>
-
-        </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" >Cerrar</button>
-          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="backup.invalid">{{option}}</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+
+<!--/div-->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado">
@@ -187,6 +190,8 @@
         [infiniteScrollDistance]="2"
         (scrolled)="onScroll()">
       </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete && !isFilter()" [msj]="util.QueryComplete.msj"></query-complete>
     </tbody>
     <!-- ------------------------------------------------------------------------------------------------------ -->
     <tbody *ngIf="isFilter()">
@@ -217,8 +222,4 @@
     </tbody>
     <!-- ------------------------------------------------------------------------------------------------------ -->
   </table>
-
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-  <query-complete *ngIf="util.QueryComplete.isComplete && !isFilter()" [msj]="util.QueryComplete.msj"></query-complete>
-
 </div>

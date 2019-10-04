@@ -6,7 +6,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {QueryCompleteModule} from "../../../Components/query-complete/query-complete.module";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LoadingSpinnerModule} from "../../../Components/loading-spinner/loading-spinner/loading-spinner.module";
 
 /*Componentes*/
@@ -37,6 +37,7 @@ import { PreferencesService } from '../../../Servicios/preferences/preferences.s
   imports: [
     QueryCompleteModule,
     FormsModule,
+    ReactiveFormsModule,
     LoadingSpinnerModule,
     FontAwesomeModule,
     InfiniteScrollModule,
