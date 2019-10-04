@@ -170,11 +170,11 @@ export class BackupsComponent implements OnInit {
     return dateTime;
   }
   private actualizarBackup(){
-    /*console.log("Valor backup", this.backup.value);*/
+    console.log("Valor backup", this.backup.value);
     let dateTime_date_creation = this.formatDateTimeSQL("date_creation");
     let dateTime_date_download = this.formatDateTimeSQL("date_download");
-    /*console.log("dateTime_date_creation", dateTime_date_creation);
-    console.log("dateTime_date_download", dateTime_date_download);*/
+    console.log("dateTime_date_creation", dateTime_date_creation);
+    console.log("dateTime_date_download", dateTime_date_download);
     let newBackup = {
       id_backup : this.backup.value.id_backup,
       automatic : this.backup.value.automatic,

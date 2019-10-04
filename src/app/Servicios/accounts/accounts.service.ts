@@ -13,6 +13,10 @@ export class AccountsService {
 
   constructor(private http: HttpClient) { }
 
+  public obtNewId_account(idBackup):Observable<any> {
+    return this.http.get(URL + 'obtNewId_account', {params: {idBack: idBackup}});
+  }
+
   public buscarAccountsBackup(idBackup, pagina): Observable<any> {
     // this.Accounts = [];
     return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: idBackup, pagina: pagina}});

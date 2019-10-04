@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
-import {reject} from 'q';
 
 declare var $: any;
 
@@ -18,7 +17,7 @@ export class Utilerias {
   public CatCategory_all: string = "Todas las categorias";
   public QueryComplete = {
     isComplete:  false,
-    msj: "Consulta Completa"
+    msj: "Fin de resultados"
   };
 
   public userMntInconsistencia = {
@@ -29,6 +28,7 @@ export class Utilerias {
   public emailUserMntBackup = "Generales";
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
+  public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,6})";
 
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;
@@ -50,9 +50,13 @@ export class Utilerias {
   public msjModal: string = "";
   public msjLoading: string = "";
   public msj: string = "";
+  public stepDecimal: string = "0.000001";
 
+  constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
+  }
+  public zeroFile(dato) {
+    console.log(dato);
 
-  constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService){
   }
   public asignarNombre(id, nombre){
     let name = "";
@@ -207,6 +211,13 @@ export class Utilerias {
   public cerrarModal(modal) {
     return new Promise((reject) => {
       $(modal).modal('hide');
+      reject();
+    });
+  }
+
+  public abrirModal(modal) {
+    return new Promise((reject) => {
+      $(modal).modal('show');
       reject();
     });
   }

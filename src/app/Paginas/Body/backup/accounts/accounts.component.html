@@ -16,15 +16,17 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form [formGroup]="account" (ngSubmit)="operacion()">
+      <form [formGroup]="account" (ngSubmit)="operacion()" class="was-validated">
         <div class="modal-body">
           <div class="form-group">
             <label for="name">Name: </label>
             <input type="text" class="form-control" id="name" formControlName="name">
+            <div class="invalid-feedback">{{ getError('name')}}</div>
           </div>
           <div class="form-group">
             <label for="detail">Detail: </label>
             <textarea  type="text" class="form-control" id="detail" formControlName="detail"></textarea>
+            <div class="invalid-feedback">{{ getError('detail')}}</div>
           </div>
           <div class="form-group">
             <div class="form-row">
@@ -34,14 +36,17 @@
                   <option value="-">-</option>
                   <option value="+">+</option>
                 </select>
+                <div class="invalid-feedback">{{ getError('sign')}}</div>
               </div>
               <div class="col">
                 <label for="income">Income: </label>
-                <input type="number" class="form-control" id="income" formControlName="income">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="income" formControlName="income">
+                <div class="invalid-feedback">{{ getError('income')}}</div>
               </div>
               <div class="col">
                 <label for="expense">Expense: </label>
-                <input type="number" class="form-control" id="expense" formControlName="expense">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="expense" formControlName="expense">
+                <div class="invalid-feedback">{{ getError('expense')}}</div>
               </div>
             </div>
           </div>
@@ -49,11 +54,110 @@
             <div class="form-row">
               <div class="col">
                 <label for="initial_balance">Initial_balance: </label>
-                <input type="number" class="form-control" id="initial_balance" formControlName="initial_balance">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="initial_balance" formControlName="initial_balance">
+                <div class="invalid-feedback">{{ getError('initial_balance')}}</div>
               </div>
               <div class="col">
                 <label for="final_balance">Final_balance: </label>
-                <input type="number" class="form-control" id="final_balance" formControlName="final_balance">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="final_balance" formControlName="final_balance">
+                <div class="invalid-feedback">{{ getError('final_balance')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="month">Month: </label>
+                <select class="form-control" id="month" formControlName="month">
+                  <option value="0">Selecciona un mes</option>
+                  <option value="1">Enero</option>
+                  <option value="2">Febrero</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Abril</option>
+                  <option value="5">Mayo</option>
+                  <option value="6">Junio</option>
+                  <option value="7">Julio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Septiembre</option>
+                  <option value="10">Octubre</option>
+                  <option value="11">Noviembre</option>
+                  <option value="12">Diciembre</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('month')}}</div>
+              </div>
+              <div class="col">
+                <label for="year">Year: </label>
+                <input type="number" class="form-control" id="year" formControlName="year">
+                <div class="invalid-feedback">{{ getError('year')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="positive_limit">Positive_limit: </label>
+                <input type="number" class="form-control" id="positive_limit" formControlName="positive_limit">
+                <div class="invalid-feedback">{{ getError('positive_limit')}}</div>
+              </div>
+              <div class="col">
+                <label for="negative_limit">Negative_limit: </label>
+                <input type="number" class="form-control" id="negative_limit" formControlName="negative_limit">
+                <div class="invalid-feedback">{{ getError('negative_limit')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="positive_max">Positive_max: </label>
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="positive_max" formControlName="positive_max">
+                <div class="invalid-feedback">{{ getError('positive_max')}}</div>
+              </div>
+              <div class="col">
+                <label for="negative_max">Negative_max: </label>
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="negative_max" formControlName="negative_max">
+                <div class="invalid-feedback">{{ getError('negative_max')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="iso_code">Iso_code: </label>
+                <input type="text" class="form-control" id="iso_code" formControlName="iso_code">
+                <div class="invalid-feedback">{{ getError('iso_code')}}</div>
+              </div>
+              <div class="col">
+                <label for="selected">Selected: </label>
+                <select class="form-control" id="selected" formControlName="selected">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('selected')}}</div>
+              </div>
+              <div class="col">
+                <label for="value_type">Value_type: </label>
+                <input type="number" class="form-control" id="value_type" formControlName="value_type">
+                <div class="invalid-feedback">{{ getError('value_type')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="include_total">Include_total: </label>
+                <input type="number" class="form-control" id="include_total" formControlName="include_total">
+                <div class="invalid-feedback">{{ getError('include_total')}}</div>
+              </div>
+              <div class="col">
+                <label for="rate">Rate: </label>
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="rate" formControlName="rate">
+                <div class="invalid-feedback">{{ getError('rate')}}</div>
+              </div>
+              <div class="col">
+                <label for="icon_name">Icon_name: </label>
+                <input type="text" class="form-control" id="icon_name" formControlName="icon_name">
+                <div class="invalid-feedback">{{ getError('icon_name')}}</div>
               </div>
             </div>
           </div>
@@ -226,8 +330,8 @@
 
 </div>
 
-<button type="button" class="btn btn-success rounded-circle addButton" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.AGREGAR)">
-          <span>
-            <fa-icon [icon]="util.faPlus"></fa-icon>
-          </span>
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionAccount(util.AGREGAR)">
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
 </button>

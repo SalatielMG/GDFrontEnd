@@ -5,6 +5,7 @@ import { Utilerias } from '../../../../Utilerias/Util';
 import {Accounts} from "../../../../Modelos/accounts/accounts";
 import {FiltersSearchAccounts} from "../../../../Modelos/accounts/filters-search-accounts";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {reject} from 'q';
 
 @Component({
   selector: 'app-accounts',
@@ -152,52 +153,87 @@ export class AccountsComponent implements OnInit {
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
 
   public accionAccount(option, account = new Accounts(), i = null) {
+    console.log("Cuenta seleccionada", account);
     this.option = option;
-    if (this.option != this.util.AGREGAR) {
-      this.indexAccountSelected = i;
-      if (this.isFilter()) {
-        this.indexAccountSelected = <number>this.accountService.Accounts.indexOf(account);
-        this.indexAccountFilterSelected = i;
+    this.buildForm(account).then(() => {
+      if (this.option != this.util.AGREGAR) {
+        this.indexAccountSelected = i;
+        if (this.isFilter()) {
+          this.indexAccountSelected = <number>this.accountService.Accounts.indexOf(account);
+          this.indexAccountFilterSelected = i;
+        }
+      } else {
+        console.log("account before method getNewId_Account()", this.account);
+        this.getNewId_Account();
       }
-    }
-    this.buildForm(account);
+    });
+  }
+  private getNewId_Account() {
+    console.log("account value:", this.account);
+      this.util.msjLoading = "Calculando el nuevo id_account para la cuenta a agregar";
+      this.util.crearLoading().then(() => {
+        this.accountService.obtNewId_account(this.id_backup).subscribe(result => {
+          this.util.detenerLoading();
+          if (!result.error) {
+            console.log("account value:", this.account);
+            this.account.patchValue({id_account: result.newId_account});
+            this.util.abrirModal("#modalAccount");
+          } else {
+            this.util.msjToast(result.msj, result.titulo, result.error);
+          }
+        }, error => {
+          this.util.msjErrorInterno(error);
+        });
+      });
   }
   private buildForm(account) {
-    this.account = this.formBuilder.group({
-      id_backup : [account.id_backup, Validators.required],
-      id_account : [account.id_account, Validators.required],
-      name : [account.name, Validators.required],
-      detail : [account.detail, Validators.required],
-      sign : [account.sign, Validators.required],
-      income : [account.income, Validators.required],
-      expense : [account.expense, Validators.required],
-      initial_balance : [account.initial_balance, Validators.required],
-      final_balance : [account.final_balance, Validators.required],
-      month : [{value: account.month, readonly: true}, Validators.required],
-      year : [{value: account.year, readonly: true}, Validators.required],
-      positive_limit : [account.positive_limit, Validators.required],
-      negative_limit : [account.negative_limit, Validators.required],
-      positive_max : [account.positive_max, Validators.required],
-      negative_max : [account.negative_max, Validators.required],
-      iso_code : [account.iso_code, Validators.required],
-      selected : [account.selected, Validators.required],
-      value_type : [account.value_type, Validators.required],
-      include_total : [account.include_total, Validators.required],
-      rate : [account.rate, Validators.required],
-      icon_name : [account.icon_name, Validators.required],
+    return new Promise(reject => {
+      this.account = this.formBuilder.group({
+        id_backup : [account.id_backup, Validators.required],
+        id_account : [account.id_account, Validators.required],
+        name : [account.name, Validators.required],
+        detail : [account.detail, Validators.required],
+        sign : [account.sign, Validators.required],
+        income : [account.income, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        expense : [account.expense, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        initial_balance : [account.initial_balance, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        final_balance : [account.final_balance, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        month : [account.month],
+        year : [account.year, Validators.required],
+        positive_limit : [account.positive_limit, Validators.required],
+        negative_limit : [account.negative_limit, Validators.required],
+        positive_max : [account.positive_max, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        negative_max : [account.negative_max, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        iso_code : [account.iso_code, Validators.required],
+        selected : [account.selected, Validators.required],
+        value_type : [account.value_type, Validators.required],
+        include_total : [account.include_total, Validators.required],
+        rate : [account.rate, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        icon_name : [account.icon_name, Validators.required],
+      });
+      if (this.isDelete()) this.disable();
+      console.log("account after method buildForm()", this.account);
+      reject();
     });
-    if (this.isDelete()) this.disable(); else this.enable();
+  }
+  private getError(controlName: string): string {
+    let error = '';
+    const control = this.account.get(controlName);
+    if (control.touched && control.errors != null) {
+      error = JSON.stringify(control.errors);
+    }
+    if (error != '')
+    console.error("Error CONTROL: = " + controlName, error);
+    return error;
   }
   private disable() {
     for (let key in this.account.getRawValue()) {
-      if (key != "month" && key != "year")
         this.account.get(key).disable();
     }
     this.account.disable();
   }
   private enable() {
     for (let key in this.account.getRawValue()) {
-      if (key != "month" && key != "year")
         this.account.get(key).enable();
     }
     this.account.enable();
@@ -206,8 +242,8 @@ export class AccountsComponent implements OnInit {
     return this.option == this.util.ELIMINAR;
   }
   private closeModal() {
-    console.log("cerrando Modal :v");
     this.util.cerrarModal("#modalAccount").then(() => {
+      console.log("Modal cerrado :v");
       this.option = "";
       this.account = null;
     });

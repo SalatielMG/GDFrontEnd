@@ -1,6 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-pick-datetime/assets/style/picker.min.css";
 
+.invalid-feedback {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 0.25rem !important;
+  font-size: 80% !important;
+  color: #dc3545 !important;
+}
 
 .addButton {
   /*border: 0px;*/
