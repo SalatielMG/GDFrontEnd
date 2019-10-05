@@ -16,23 +16,23 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form [formGroup]="account" (ngSubmit)="operacion()" class="was-validated">
+      <form [formGroup]="account" (ngSubmit)="operacion()">
         <div class="modal-body">
           <div class="form-group">
             <label for="name">Name: </label>
-            <input type="text" class="form-control" id="name" formControlName="name">
+            <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="(getError('name') == '') ? 'valid-control' : 'invalid-control'">
             <div class="invalid-feedback">{{ getError('name')}}</div>
           </div>
           <div class="form-group">
             <label for="detail">Detail: </label>
-            <textarea  type="text" class="form-control" id="detail" formControlName="detail"></textarea>
+            <textarea  type="text" class="form-control" id="detail" formControlName="detail" [ngClass]="(getError('detail') == '') ? 'valid-control' : 'invalid-control'"></textarea>
             <div class="invalid-feedback">{{ getError('detail')}}</div>
           </div>
           <div class="form-group">
             <div class="form-row">
               <div class="col-2">
                 <label for="sign">Sign: </label>
-                <select class="form-control" id="sign" formControlName="sign">
+                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
                   <option value="-">-</option>
                   <option value="+">+</option>
                 </select>
@@ -40,12 +40,12 @@
               </div>
               <div class="col">
                 <label for="income">Income: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="income" formControlName="income">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="income" formControlName="income" [ngClass]="(getError('income') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('income')}}</div>
               </div>
               <div class="col">
                 <label for="expense">Expense: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="expense" formControlName="expense">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="expense" formControlName="expense" [ngClass]="(getError('expense') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('expense')}}</div>
               </div>
             </div>
@@ -54,12 +54,12 @@
             <div class="form-row">
               <div class="col">
                 <label for="initial_balance">Initial_balance: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="initial_balance" formControlName="initial_balance">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="initial_balance" formControlName="initial_balance" [ngClass]="(getError('initial_balance') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('initial_balance')}}</div>
               </div>
               <div class="col">
                 <label for="final_balance">Final_balance: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="final_balance" formControlName="final_balance">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="final_balance" formControlName="final_balance" [ngClass]="(getError('final_balance') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('final_balance')}}</div>
               </div>
             </div>
@@ -68,7 +68,7 @@
             <div class="form-row">
               <div class="col">
                 <label for="month">Month: </label>
-                <select class="form-control" id="month" formControlName="month">
+                <select class="form-control" id="month" formControlName="month" [ngClass]="(getError('month') == '') ? 'valid-control' : 'invalid-control'">
                   <option value="0">Selecciona un mes</option>
                   <option value="1">Enero</option>
                   <option value="2">Febrero</option>
@@ -87,7 +87,7 @@
               </div>
               <div class="col">
                 <label for="year">Year: </label>
-                <input type="number" class="form-control" id="year" formControlName="year">
+                <input type="number" class="form-control" id="year" formControlName="year" [ngClass]="(getError('year') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('year')}}</div>
               </div>
             </div>
@@ -96,12 +96,12 @@
             <div class="form-row">
               <div class="col">
                 <label for="positive_limit">Positive_limit: </label>
-                <input type="number" class="form-control" id="positive_limit" formControlName="positive_limit">
+                <input type="number" class="form-control" id="positive_limit" formControlName="positive_limit" [ngClass]="(getError('positive_limit') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('positive_limit')}}</div>
               </div>
               <div class="col">
                 <label for="negative_limit">Negative_limit: </label>
-                <input type="number" class="form-control" id="negative_limit" formControlName="negative_limit">
+                <input type="number" class="form-control" id="negative_limit" formControlName="negative_limit" [ngClass]="(getError('negative_limit') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('negative_limit')}}</div>
               </div>
             </div>
@@ -110,12 +110,12 @@
             <div class="form-row">
               <div class="col">
                 <label for="positive_max">Positive_max: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="positive_max" formControlName="positive_max">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="positive_max" formControlName="positive_max" [ngClass]="(getError('positive_max') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('positive_max')}}</div>
               </div>
               <div class="col">
                 <label for="negative_max">Negative_max: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="negative_max" formControlName="negative_max">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="negative_max" formControlName="negative_max" [ngClass]="(getError('negative_max') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('negative_max')}}</div>
               </div>
             </div>
@@ -124,12 +124,12 @@
             <div class="form-row">
               <div class="col">
                 <label for="iso_code">Iso_code: </label>
-                <input type="text" class="form-control" id="iso_code" formControlName="iso_code">
+                <input type="text" class="form-control" id="iso_code" formControlName="iso_code" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('iso_code')}}</div>
               </div>
               <div class="col">
                 <label for="selected">Selected: </label>
-                <select class="form-control" id="selected" formControlName="selected">
+                <select class="form-control" id="selected" formControlName="selected" [ngClass]="(getError('selected') == '') ? 'valid-control' : 'invalid-control'">
                   <option value="0">0</option>
                   <option value="1">1</option>
                 </select>
@@ -137,7 +137,7 @@
               </div>
               <div class="col">
                 <label for="value_type">Value_type: </label>
-                <input type="number" class="form-control" id="value_type" formControlName="value_type">
+                <input type="number" class="form-control" id="value_type" formControlName="value_type" [ngClass]="(getError('value_type') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('value_type')}}</div>
               </div>
             </div>
@@ -146,17 +146,17 @@
             <div class="form-row">
               <div class="col">
                 <label for="include_total">Include_total: </label>
-                <input type="number" class="form-control" id="include_total" formControlName="include_total">
+                <input type="number" class="form-control" id="include_total" formControlName="include_total" [ngClass]="(getError('include_total') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('include_total')}}</div>
               </div>
               <div class="col">
                 <label for="rate">Rate: </label>
-                <input type="number" class="form-control" [step]="util.stepDecimal" id="rate" formControlName="rate">
+                <input type="number" class="form-control" [step]="util.stepDecimal" id="rate" formControlName="rate" [ngClass]="(getError('rate') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('rate')}}</div>
               </div>
               <div class="col">
                 <label for="icon_name">Icon_name: </label>
-                <input type="text" class="form-control" id="icon_name" formControlName="icon_name">
+                <input type="text" class="form-control" id="icon_name" formControlName="icon_name"  [ngClass]="(getError('icon_name') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('icon_name')}}</div>
               </div>
             </div>

@@ -28,7 +28,9 @@ export class Utilerias {
   public emailUserMntBackup = "Generales";
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
-  public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,6})";
+  public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,4})";
+  public exprRegular_1D = "([0-9]{1,1})";
+  public exprRegular_Decimal = "(([0-9]{1,5})(.[0-9]{1,6})?)";//(.[0-9]{1,6})?
 
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;

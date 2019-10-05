@@ -191,25 +191,26 @@ export class AccountsComponent implements OnInit {
       this.account = this.formBuilder.group({
         id_backup : [account.id_backup, Validators.required],
         id_account : [account.id_account, Validators.required],
-        name : [account.name, Validators.required],
-        detail : [account.detail, Validators.required],
-        sign : [account.sign, Validators.required],
+        name : [account.name, [Validators.required, Validators.maxLength(50)]],
+        detail : [account.detail, [Validators.required, Validators.maxLength(100)]],
+        sign : [account.sign, [Validators.required, Validators.maxLength(1)]],
         income : [account.income, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
         expense : [account.expense, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
         initial_balance : [account.initial_balance, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
         final_balance : [account.final_balance, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        month : [account.month],
-        year : [account.year, Validators.required],
-        positive_limit : [account.positive_limit, Validators.required],
-        negative_limit : [account.negative_limit, Validators.required],
-        positive_max : [account.positive_max, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        month : [account.month, [Validators.required, Validators.maxLength(2)]],
+        year : [account.year, [Validators.required, Validators.maxLength(4)]],
+        positive_limit : [account.positive_limit, [Validators.required, Validators.maxLength(1)]],
+        negative_limit : [account.negative_limit, [Validators.required, Validators.maxLength(1)]],
+        positive_max : [account.positive_max, Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
+
         negative_max : [account.negative_max, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        iso_code : [account.iso_code, Validators.required],
-        selected : [account.selected, Validators.required],
-        value_type : [account.value_type, Validators.required],
-        include_total : [account.include_total, Validators.required],
+        iso_code : [account.iso_code, [Validators.required, Validators.maxLength(3)]],
+        selected : [account.selected,  [Validators.required, Validators.maxLength(1)]],
+        value_type : [account.value_type,  [Validators.required, Validators.maxLength(1)]],
+        include_total : [account.include_total,  Validators.compose([Validators.required, Validators.pattern(this.util.exprRegular_1D)])],
         rate : [account.rate, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        icon_name : [account.icon_name, Validators.required],
+        icon_name : [account.icon_name,  [Validators.required, Validators.maxLength(20)]],
       });
       if (this.isDelete()) this.disable();
       console.log("account after method buildForm()", this.account);
@@ -219,7 +220,7 @@ export class AccountsComponent implements OnInit {
   private getError(controlName: string): string {
     let error = '';
     const control = this.account.get(controlName);
-    if (control.touched && control.errors != null) {
+    if (control.touched && control.errors != null && control.invalid) {
       error = JSON.stringify(control.errors);
     }
     if (error != '')
