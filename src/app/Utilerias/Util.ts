@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {stringify} from 'querystring';
 
 declare var $: any;
 
@@ -26,10 +27,10 @@ export class Utilerias {
   };
 
   public emailUserMntBackup = "Generales";
+  public errorRefreshListTable = "RECARGA LA PÁGINA";
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
-  public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,4})";
-  public exprRegular_1D = "([0-9]{1,1})";
+  public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,6})";
   public exprRegular_Decimal = "(([0-9]{1,5})(.[0-9]{1,6})?)";//(.[0-9]{1,6})?
 
   public faCalendar = faCalendar;
@@ -56,9 +57,33 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
   }
-  public zeroFile(dato) {
-    console.log(dato);
-
+  public signValue(sign) {
+    return (sign == "+") ? "1" : "0" ;
+  }
+  public reegex_MaxLengthNumber(lenght) {
+    return "([0-9]{1," + lenght + "})";
+  }
+  public zeroFile(dato: string) {
+    let dataString: string = "" + dato;
+    console.log("dataString in zeroFile()", dataString);
+    if (dataString.includes(".")) {
+      let decimalFalt:number = 6 - (dataString.split(".")[1].length);
+      for (let i = 0; i < decimalFalt; i++) {
+        dataString += "0";
+      }
+    } else {
+      dataString += ".000000";
+    }
+    return dataString;
+  }
+  public unZeroFile(dato: string) {
+    let dataString: string = "" + dato;
+    let dataSplit = dataString.split(".");
+    if (dataSplit[1] == "000000") {
+      return dataSplit[0];
+    } else {
+      return dato;
+    }
   }
   public asignarNombre(id, nombre){
     let name = "";

@@ -158,3 +158,14 @@ https://dba.stackovernet.com/es/q/43256
 https://es.stackoverflow.com/questions/60315/problema-al-crear-tablas-mysql-con-phpmyadmin
 
 let deseleccionar = this.backupIndexTemp.filter(el => !this.backupTemp.includes(el));
+
+
+
+
+Activiades a realizar.
+Header - Table Fixed TOP:
+Scroll Infinite Table
+Consulta BD ->
+Filtro busqueda.
+
+BTN Agregar, Actualizar, ELiminar (Funcionabilidad)

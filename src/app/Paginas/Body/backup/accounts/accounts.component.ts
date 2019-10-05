@@ -5,7 +5,6 @@ import { Utilerias } from '../../../../Utilerias/Util';
 import {Accounts} from "../../../../Modelos/accounts/accounts";
 import {FiltersSearchAccounts} from "../../../../Modelos/accounts/filters-search-accounts";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {reject} from 'q';
 
 @Component({
   selector: 'app-accounts',
@@ -192,24 +191,23 @@ export class AccountsComponent implements OnInit {
         id_backup : [account.id_backup, Validators.required],
         id_account : [account.id_account, Validators.required],
         name : [account.name, [Validators.required, Validators.maxLength(50)]],
-        detail : [account.detail, [Validators.required, Validators.maxLength(100)]],
+        detail : [account.detail, [Validators.maxLength(100)]],
         sign : [account.sign, [Validators.required, Validators.maxLength(1)]],
-        income : [account.income, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        expense : [account.expense, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        initial_balance : [account.initial_balance, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        final_balance : [account.final_balance, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-        month : [account.month, [Validators.required, Validators.maxLength(2)]],
-        year : [account.year, [Validators.required, Validators.maxLength(4)]],
-        positive_limit : [account.positive_limit, [Validators.required, Validators.maxLength(1)]],
-        negative_limit : [account.negative_limit, [Validators.required, Validators.maxLength(1)]],
-        positive_max : [account.positive_max, Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
-
-        negative_max : [account.negative_max, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        income : [(this.option == this.util.AGREGAR) ? account.income : this.util.unZeroFile(account.income), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+        expense : [(this.option == this.util.AGREGAR) ? account.expense : this.util.unZeroFile(account.expense), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+        initial_balance : [(this.option == this.util.AGREGAR) ? account.initial_balance : this.util.unZeroFile(account.initial_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+        final_balance : [(this.option == this.util.AGREGAR) ? account.final_balance : this.util.unZeroFile(account.final_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+        month : [account.month, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2"))]],
+        year : [account.year, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
+        positive_limit : [account.positive_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
+        negative_limit : [account.negative_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
+        positive_max : [(this.option == this.util.AGREGAR) ? account.positive_max : this.util.unZeroFile(account.positive_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
+        negative_max : (this.option == this.util.AGREGAR) ? account.negative_max : [this.util.unZeroFile(account.negative_max), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
         iso_code : [account.iso_code, [Validators.required, Validators.maxLength(3)]],
-        selected : [account.selected,  [Validators.required, Validators.maxLength(1)]],
-        value_type : [account.value_type,  [Validators.required, Validators.maxLength(1)]],
-        include_total : [account.include_total,  Validators.compose([Validators.required, Validators.pattern(this.util.exprRegular_1D)])],
-        rate : [account.rate, [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+        selected : [account.selected,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
+        value_type : [account.value_type,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
+        include_total : [account.include_total,  Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))])],
+        rate : [(this.option == this.util.AGREGAR) ? account.rate : this.util.unZeroFile(account.rate), [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
         icon_name : [account.icon_name,  [Validators.required, Validators.maxLength(20)]],
       });
       if (this.isDelete()) this.disable();
@@ -221,10 +219,32 @@ export class AccountsComponent implements OnInit {
     let error = '';
     const control = this.account.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      error = JSON.stringify(control.errors);
+      console.log("Error Control:=[" + controlName + "]", control.errors);
+      // error = JSON.stringify(control.errors);
+      if (control.hasError("required")) {
+        error += "El campo es requerido.\n"
+      }
+      if (control.hasError("maxlength")) {
+        error += "Longitud máxima permitida de " + control.getError("maxlength").requiredLength + " caracteres.\n"
+      }
+      if (control.hasError("min")) {
+        error += "Valor númerico mínimo " + control.getError("min").min + ".\n"
+      }
+      if (control.hasError("pattern")) {
+        error += this.errorRegexPatern(control.getError("pattern").requiredPattern) + ".\n"
+      }
+
     }
-    if (error != '')
-    console.error("Error CONTROL: = " + controlName, error);
+    return error;
+  }
+  private errorRegexPatern(pattern) {
+    let error = "";
+    if (pattern == "^([0-9]+.?[0-9]{0,6})$") {
+      error = "Campo númerico de no más de 6 decimales.";
+    } else {
+      let p = pattern.split(",");
+      error = "Longitud máxima permitida de " + p[1][0] + " caracteres";
+    }
     return error;
   }
   private disable() {
@@ -264,12 +284,90 @@ export class AccountsComponent implements OnInit {
     console.log("value in Account FormGroup:=", this.account.value);
   }
   private agregarAccount() {
+    this.account.patchValue({id_backup: this.id_backup});
+    this.addZeroDecimalValue();
+    this.util.msjLoading = "Agregando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.id_backup;
+    this.util.crearLoading().then(()=> {
+      this.accountService.agregarAccount(this.account.value).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) { // Success insert new account
+          /*
+          * El nuevo account se agrega al arreglo original si esta completa la consulta y se filtran la busqueda nuevamente si esta activada.
+          * */
+          if (this.util.QueryComplete.isComplete) {
+            if (!result.account.error) { // Se recibio correctamente la consulta de la nueva cuenta creada.
+              this.accountService.Accounts.push(result.account.new);
+              if (this.isFilter()) {
+                // Volver a realizar el filtro de las busquedas
+                this.proccessFilter();
+              }
+            } else {
+              this.util.msjToast(result.account.msj, this.util.errorRefreshListTable, result.account.error);
+            }
+          }
+          this.closeModal();
 
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
   }
   private actualizarAccount() {
-
+    this.addZeroDecimalValue();
+    this.util.msjLoading = "Actualizando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.id_backup;
+    this.util.crearLoading().then(() => {
+      this.accountService.actualizarAccount(this.account.value).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) {
+          if (!result.account.error) {
+            if (this.isFilter()) {
+              if (this.indexAccountSelected != -1) this.accountService.Accounts[this.indexAccountSelected] = result.account.update;
+              this.accountsFilter[this.indexAccountFilterSelected] = result.account.update;
+            } else {
+              this.accountService.Accounts[this.indexAccountSelected] = result.account.update;
+            }
+          } else {
+            this.util.msjToast(result.account.msj, this.util.errorRefreshListTable, result.account.error);
+          }
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
   }
   private eliminarAccount() {
-
+    this.util.msjLoading = "Eliminando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.id_backup;
+    this.util.crearLoading().then(() => {
+      this.accountService.eliminarAccount(this.id_backup, this.account.value.id_account).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) { // splice in the original array account and filterAccount if isFilter()
+          if (this.isFilter()) {
+            if (this.indexAccountSelected != -1) this.accountService.Accounts.splice(this.indexAccountSelected, 1);
+            this.accountsFilter.splice(this.indexAccountFilterSelected, 1);
+          } else {
+            this.accountService.Accounts.splice(this.indexAccountSelected, 1);
+          }
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
+  }
+  private addZeroDecimalValue() {
+     this.account.patchValue({income: this.util.zeroFile(this.account.value.income)});
+     this.account.patchValue({expense: this.util.zeroFile(this.account.value.expense)});
+     this.account.patchValue({initial_balance: this.util.zeroFile(this.account.value.initial_balance)});
+     this.account.patchValue({final_balance: this.util.zeroFile(this.account.value.final_balance)});
+     this.account.patchValue({positive_max: this.util.zeroFile(this.account.value.positive_max)});
+     this.account.patchValue({negative_max: this.util.zeroFile(this.account.value.negative_max)});
+     this.account.patchValue({rate: this.util.zeroFile(this.account.value.rate)});
+     this.account.patchValue({sign: this.util.signValue(this.account.value.sign)});
+     console.log("Value this.accout after addZeroFile:=", this.account.value);
   }
 }

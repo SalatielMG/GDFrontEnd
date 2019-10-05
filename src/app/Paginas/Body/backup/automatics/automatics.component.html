@@ -15,20 +15,21 @@
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Id operacion</th>
-      <th scope="col" class="Encabezado-Tabla">Id cuenta</th>
-      <th scope="col" class="Encabezado-Tabla">Categoria</th>
-      <th scope="col" class="Encabezado-Tabla">Periodo</th>
-      <th scope="col" class="Encabezado-Tabla">repeat_number</th>
-      <th scope="col" class="Encabezado-Tabla">each_number</th>
-      <th scope="col" class="Encabezado-Tabla">Habilitado</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad</th>
-      <th scope="col" class="Encabezado-Tabla">Signo</th>
-      <th scope="col" class="Encabezado-Tabla">Detalles</th>
-      <th scope="col" class="Encabezado-Tabla">Fecha inicio</th>
-      <th scope="col" class="Encabezado-Tabla">Fecha siguiente</th>
-      <th scope="col" class="Encabezado-Tabla">rate</th>
-      <th scope="col" class="Encabezado-Tabla">counter</th>
+      <th scope="col" class="Encabezado-Tabla">Id_operation</th>
+      <th scope="col" class="Encabezado-Tabla">Id_account</th>
+      <th scope="col" class="Encabezado-Tabla">Id_category</th>
+      <th scope="col" class="Encabezado-Tabla">Period</th>
+      <th scope="col" class="Encabezado-Tabla">Repeat_number</th>
+      <th scope="col" class="Encabezado-Tabla">Each_number</th>
+      <th scope="col" class="Encabezado-Tabla">Enabled</th>
+      <th scope="col" class="Encabezado-Tabla">Amount</th>
+      <th scope="col" class="Encabezado-Tabla">Sign</th>
+      <th scope="col" class="Encabezado-Tabla">Detail</th>
+      <th scope="col" class="Encabezado-Tabla">Initial_date</th>
+      <th scope="col" class="Encabezado-Tabla">Next_date</th>
+      <th scope="col" class="Encabezado-Tabla">Operation_code:</th>
+      <th scope="col" class="Encabezado-Tabla">Rate</th>
+      <th scope="col" class="Encabezado-Tabla">Counter</th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </tr>
     </thead>
@@ -48,6 +49,7 @@
       <td class="Celdas-Tabla">{{automatic.detail}}</td>
       <td class="Celdas-Tabla">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla">{{automatic.operation_code}}</td>
       <td class="Celdas-Tabla">{{automatic.rate}}</td>
       <td class="Celdas-Tabla">{{automatic.counter}}</td>
       <td class="Celdas-Tabla">
