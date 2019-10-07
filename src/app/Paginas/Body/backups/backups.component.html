@@ -37,7 +37,7 @@
                     <div class="col-11">
                       <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación">
                     </div>
-                    <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
+                    <div class="col-1 icon-Calendar-full">
                   <span [owlDateTimeTrigger]="dc" style="cursor: pointer">
                     <fa-icon [icon]="util.faCalendar" [ngClass]="(isCreated) ? 'color-blue' : 'color-red'"></fa-icon>
                   </span>
@@ -51,7 +51,7 @@
                     <div class="col-11">
                       <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga" >
                     </div>
-                    <div class="col-1" style="padding: 0px; margin-left: -10px; font-size: 25px;">
+                    <div class="col-1 icon-Calendar-full">
                   <span [owlDateTimeTrigger]="dd" style="cursor: pointer">
                     <fa-icon [icon]="util.faCalendar" [ngClass]="(isDownload) ? 'color-blue' : 'color-red'"></fa-icon>
                   </span>

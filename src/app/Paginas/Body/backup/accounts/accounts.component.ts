@@ -202,7 +202,7 @@ export class AccountsComponent implements OnInit {
         positive_limit : [account.positive_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
         negative_limit : [account.negative_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
         positive_max : [(this.option == this.util.AGREGAR) ? account.positive_max : this.util.unZeroFile(account.positive_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
-        negative_max : (this.option == this.util.AGREGAR) ? account.negative_max : [this.util.unZeroFile(account.negative_max), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+        negative_max : [(this.option == this.util.AGREGAR) ? account.negative_max : this.util.unZeroFile(account.negative_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
         iso_code : [account.iso_code, [Validators.required, Validators.maxLength(3)]],
         selected : [account.selected,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
         value_type : [account.value_type,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
@@ -220,33 +220,11 @@ export class AccountsComponent implements OnInit {
     const control = this.account.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
       console.log("Error Control:=[" + controlName + "]", control.errors);
-      // error = JSON.stringify(control.errors);
-      if (control.hasError("required")) {
-        error += "El campo es requerido.\n"
-      }
-      if (control.hasError("maxlength")) {
-        error += "Longitud máxima permitida de " + control.getError("maxlength").requiredLength + " caracteres.\n"
-      }
-      if (control.hasError("min")) {
-        error += "Valor númerico mínimo " + control.getError("min").min + ".\n"
-      }
-      if (control.hasError("pattern")) {
-        error += this.errorRegexPatern(control.getError("pattern").requiredPattern) + ".\n"
-      }
+      error = this.util.hasError(control);
+    }
+    return error;
+  }
 
-    }
-    return error;
-  }
-  private errorRegexPatern(pattern) {
-    let error = "";
-    if (pattern == "^([0-9]+.?[0-9]{0,6})$") {
-      error = "Campo númerico de no más de 6 decimales.";
-    } else {
-      let p = pattern.split(",");
-      error = "Longitud máxima permitida de " + p[1][0] + " caracteres";
-    }
-    return error;
-  }
   private disable() {
     for (let key in this.account.getRawValue()) {
         this.account.get(key).disable();

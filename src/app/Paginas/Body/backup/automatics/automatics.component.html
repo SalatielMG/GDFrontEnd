@@ -4,9 +4,154 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
-
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalAutomatic" tabindex="-1" role="dialog" aria-labelledby="modalAutomaticTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="option != ''">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalAutomaticTitle">{{option}} Automatic</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="automatic" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la configuración automática num: {{(automaticService.indexAutomaticSelected + 1)}}, Id_operation: {{automatic.value.id_operation}}, Id_account: {{automatic.value.id_account}}, Id_category: {{automatic.value.id_category}} del Respaldo Id_backup: {{id_backup}} ?</h5>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form-col">
+                <label for="id_operation">Id_operation: </label>
+                <input type="number" readonly="true" class="form-control" id="id_operation" formControlName="name" [ngClass]="(getError('id_operation') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('id_operation')}}</div>
+              </div>
+              <div class="form-col">
+                <label for="id_account">Id_account: </label>
+                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'">
+                  <option *ngFor="let account of AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <label for="id_category">Id_category: </label>
+                <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
+                  <option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form-col">
+                <label for="period">Period</label>
+                <input type="number" class="form-control" id="period" formControlName="period" [ngClass]="(getError('period') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('period')}}</div>
+              </div>
+              <div class="form-col">
+                <label for="repeat_number">Repeat_number</label>
+                <input type="number" class="form-control" id="repeat_number" formControlName="repeat_number" [ngClass]="(getError('repeat_number') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('repeat_number')}}</div>
+              </div>
+              <div class="form-col">
+                <label for="each_number">Each_number</label>
+                <input type="number" class="form-control" id="each_number" formControlName="each_number" [ngClass]="(getError('each_number') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('each_number')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="enabled">Enabled</label>
+                <select class="form-control" id="enabled" formControlName="enabled" [ngClass]="(getError('enabled') == '') ? 'valid-control' : 'invalid-control'">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('enabled')}}</div>
+              </div>
+              <div class="form col">
+                <label for="amount">Amount</label>
+                <input type="number" class="form-control" id="amount" formControlName="amount" [ngClass]="(getError('amount') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('amount')}}</div>
+              </div>
+              <div class="form col">
+                <label for="sign">Sign</label>
+                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('sign')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="detail">Detail: </label>
+            <textarea  type="text" class="form-control" id="detail" formControlName="detail" [ngClass]="(getError('detail') == '') ? 'valid-control' : 'invalid-control'"></textarea>
+            <div class="invalid-feedback">{{ getError('detail')}}</div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_date">Initial_date</label>
+                <div class="row">
+                  <div class="col-11">
+                    <input type="text" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date">
+                  </div>
+                  <div class="col-1 icon-Calendar-full" >
+                  <span [owlDateTimeTrigger]="id" style="cursor: pointer">
+                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
+                  </span>
+                    <owl-date-time #id [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <label for="next_date">Next_date</label>
+                <div class="row">
+                  <div class="col-11">
+                    <input type="text" [owlDateTime]="nd" class="form-control" id="next_date" formControlName="next_date" placeholder="next_date">
+                  </div>
+                  <div class="col-1 icon-Calendar-full">
+                  <span [owlDateTimeTrigger]="nd" style="cursor: pointer">
+                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
+                  </span>
+                    <owl-date-time #nd  [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form-col">
+                <label for="operation_code">Operation_code: </label>
+                <input type="text" class="form-control" id="operation_code" formControlName="operation_code" [ngClass]="(getError('operation_code') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('operation_code')}}</div>
+              </div>
+              <div class="form-col">
+                <label for="rate">Rate: </label>
+                <input type="number" class="form-control" id="rate" formControlName="rate" [ngClass]="(getError('rate') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('rate')}}</div>
+              </div>
+              <div class="form-col">
+                <label for="counter">Counter: </label>
+                <input type="number" class="form-control" id="counter" formControlName="counter" [ngClass]="(getError('counter') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('counter')}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="automatic.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="container text-center" *ngIf="automaticService.Automatics.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">util.msj</h2>
 </div>
@@ -16,14 +161,52 @@
     <tr>
       <th scope="col" class="Encabezado-Tabla width-5">#</th>
       <th scope="col" class="Encabezado-Tabla font-italic width-5">Repeated</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Id_operation</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Id_account</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Id_category</th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
+          Id_operation
+          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_operation.value" name="id_operation" (keyup)="automaticService.actionFilterEvent($event, 'id_operation', true)">
+          <button type="button" [ngClass]="(automaticService.filtersSearch.id_operation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('id_operation')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
+          Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.nameAccount.value" name="nameAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'nameAccount')">
+            <option value="0">Todas</option>
+            <option *ngFor="let account of AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(automaticService.filtersSearch.nameAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('nameAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
+          Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.nameCategory.value" name="nameCategory" (ngModelChange)="automaticService.actionFilterEvent($event, 'nameCategory')">
+            <option value="0">Todas</option>
+            <option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(automaticService.filtersSearch.nameCategory.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('nameCategory')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
       <th scope="col" class="Encabezado-Tabla width-5">Period</th>
       <th scope="col" class="Encabezado-Tabla width-5">Repeat_number</th>
       <th scope="col" class="Encabezado-Tabla width-5">Each_number</th>
       <th scope="col" class="Encabezado-Tabla width-5">Enabled</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Amount</th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
+          Amount
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.amount.value" name="amount" (keyup)="automaticService.actionFilterEvent($event, 'amount', true)">
+          <button type="button" [ngClass]="(automaticService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('amount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
       <th scope="col" class="Encabezado-Tabla width-5">Sign</th>
       <th scope="col" class="Encabezado-Tabla width-5">Detail</th>
       <th scope="col" class="Encabezado-Tabla width-5">Initial_date</th>
@@ -54,12 +237,12 @@
         <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
         <td class="Celdas-Tabla width-5">
-          <button type="button" class="btn btn-primary btn-update">
+          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAutomatic" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete">
+          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAutomatic" (click)="accionAutomatic(util.ELIMINAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -77,7 +260,7 @@
       <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
     </tbody>
     <tbody *ngIf="automaticService.isFilter()">
-      <tr *ngFor="let automatic of automaticService.Automatics; let i = index" >
+      <tr *ngFor="let automatic of automaticService.automaticsFilter; let i = index" >
         <td scope="row" class="Celdas-Tabla width-5">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
@@ -113,7 +296,7 @@
   </table>
 </div>
 
-<button type="button" class="btn btn-success rounded-circle addButton" >
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionAutomatic(util.AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

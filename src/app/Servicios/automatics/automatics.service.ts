@@ -25,8 +25,8 @@ export class AutomaticsService {
   }
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
   public actionFilterEvent(event, value, isKeyUp = false) {
-    if (value == "selected") {
-      if (this.filtersSearch[value].value == "-1") {
+    if (value == "nameAccount" || value == "nameCategory") {
+      if (this.filtersSearch[value].value == "0") {
         this.filtersSearch[value].isFilter = false;
         this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
         this.proccessFilter();
@@ -46,7 +46,7 @@ export class AutomaticsService {
     this.filtersSearch[key].value =  "";
     this.filtersSearch[key].valueAnt =  "";
     this.filtersSearch[key].isFilter =  false;
-    if (key == "selected") this.filtersSearch[key].value = "-1";
+    if (key == "nameAccount" || key == "nameCategory") this.filtersSearch[key].value = "0";
 
     if (!this.isFilter()) {
       this.automaticsFilter = [];
@@ -67,7 +67,7 @@ export class AutomaticsService {
       let bnd = true;
       for (let k in this.filtersSearch) {
         if (this.filtersSearch[k].isFilter) {
-          if (k == "selected" && this.filtersSearch[k].value != "-1") {
+          if ((k == "nameAccount" && this.filtersSearch[k].value != "0") || (k == "nameCategory" && this.filtersSearch[k].value != "0")) {
             if (account[k].toString() != this.filtersSearch[k].value) {
               bnd = false;
               break;
@@ -97,6 +97,9 @@ export class AutomaticsService {
   }
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
 
+  public obtNewId_OperationAccountsCategories(idBackup): Observable<any> {
+    return this.http.get(URL + "obtNewId_OperationAccountsCategories", {params: {idBack: idBackup}});
+  }
 
   public buscarAutomaticsBackup(idBackup): Observable<any> {
     this.Automatics = [];

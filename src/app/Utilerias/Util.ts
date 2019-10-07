@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
-import {stringify} from 'querystring';
-
 declare var $: any;
 
 @Injectable()
@@ -57,13 +55,42 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
   }
+  public isDelete(option): boolean {
+    return option == this.ELIMINAR;
+  }
+  public hasError(control) {
+    let error = '';
+    if (control.hasError("required")) {
+      error += "El campo es requerido.\n"
+    }
+    if (control.hasError("maxlength")) {
+      error += "Longitud máxima permitida de " + control.getError("maxlength").requiredLength + " caracteres.\n"
+    }
+    if (control.hasError("min")) {
+      error += "Valor númerico mínimo " + control.getError("min").min + ".\n"
+    }
+    if (control.hasError("pattern")) {
+      error += this.errorRegexPatern(control.getError("pattern").requiredPattern) + ".\n"
+    }
+    return error;
+  }
+  private errorRegexPatern(pattern) {
+    let error = "";
+    if (pattern == "^([0-9]+.?[0-9]{0,6})$") {
+      error = "Campo númerico de no más de 6 decimales.";
+    } else {
+      let p = pattern.split(",");
+      error = "Longitud máxima permitida de " + p[1][0] + " caracteres";
+    }
+    return error;
+  }
   public signValue(sign) {
     return (sign == "+") ? "1" : "0" ;
   }
   public reegex_MaxLengthNumber(lenght) {
     return "([0-9]{1," + lenght + "})";
   }
-  public zeroFile(dato: string) {
+  public zeroFile(dato) {
     let dataString: string = "" + dato;
     console.log("dataString in zeroFile()", dataString);
     if (dataString.includes(".")) {
@@ -76,7 +103,7 @@ export class Utilerias {
     }
     return dataString;
   }
-  public unZeroFile(dato: string) {
+  public unZeroFile(dato) {
     let dataString: string = "" + dato;
     let dataSplit = dataString.split(".");
     if (dataSplit[1] == "000000") {

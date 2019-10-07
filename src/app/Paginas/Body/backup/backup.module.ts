@@ -30,11 +30,14 @@ import { CurrenciesService } from '../../../Servicios/currencies/currencies.serv
 import { ExtrasService } from '../../../Servicios/extras/extras.service';
 import { MovementsService } from '../../../Servicios/movements/movements.service';
 import { PreferencesService } from '../../../Servicios/preferences/preferences.service';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 
 
 @NgModule({
   declarations: [BackupComponent, AccountsComponent, AutomaticsComponent, BudgetsComponent, CardviewsComponent, CategoriesComponent, CurrenciesComponent, ExtrasComponent, MovementsComponent, PreferencesComponent],
   imports: [
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     QueryCompleteModule,
     FormsModule,
     ReactiveFormsModule,

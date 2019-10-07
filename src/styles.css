@@ -350,13 +350,16 @@ app-gastos-entradas {
 .color-red {
   color: #dc3545;
 }
-.btn-update{
+.btn-update {
   width: 90px;
   margin-right: 10px;
   font-size: 18px;
 }
-.btn-delete{
+.btn-delete {
   width: 90px;
   margin-left: 10px;
   font-size: 18px;
+}
+.icon-Calendar-full {
+  padding: 0px !important; margin-left: -10px !important; font-size: 25px !important;
 }
