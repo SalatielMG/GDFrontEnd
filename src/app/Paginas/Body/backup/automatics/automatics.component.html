@@ -7,57 +7,114 @@
   <p style="font-size: 20px; color: white">{{msj}}</p>
 </ngx-spinner>
 
-<div class="container text-center" *ngIf="aumtomaticService.Automatics.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">El Backup no tiene automatics relacionados</h2>
+<div class="container text-center" *ngIf="automaticService.Automatics.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">util.msj</h2>
 </div>
-<div *ngIf="aumtomaticService.Automatics.length > 0">
-  <table class="table table-hover">
+<div *ngIf="automaticService.Automatics.length > 0"  class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Id_operation</th>
-      <th scope="col" class="Encabezado-Tabla">Id_account</th>
-      <th scope="col" class="Encabezado-Tabla">Id_category</th>
-      <th scope="col" class="Encabezado-Tabla">Period</th>
-      <th scope="col" class="Encabezado-Tabla">Repeat_number</th>
-      <th scope="col" class="Encabezado-Tabla">Each_number</th>
-      <th scope="col" class="Encabezado-Tabla">Enabled</th>
-      <th scope="col" class="Encabezado-Tabla">Amount</th>
-      <th scope="col" class="Encabezado-Tabla">Sign</th>
-      <th scope="col" class="Encabezado-Tabla">Detail</th>
-      <th scope="col" class="Encabezado-Tabla">Initial_date</th>
-      <th scope="col" class="Encabezado-Tabla">Next_date</th>
-      <th scope="col" class="Encabezado-Tabla">Operation_code:</th>
-      <th scope="col" class="Encabezado-Tabla">Rate</th>
-      <th scope="col" class="Encabezado-Tabla">Counter</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <th scope="col" class="Encabezado-Tabla width-5">#</th>
+      <th scope="col" class="Encabezado-Tabla font-italic width-5">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Id_operation</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Id_account</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Id_category</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Period</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Repeat_number</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Each_number</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Enabled</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Amount</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Sign</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Detail</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Initial_date</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Next_date</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Operation_code:</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Rate</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Counter</th>
+      <th scope="col" class="Encabezado-Tabla width-5">Operación</th>
     </tr>
     </thead>
-    <tbody>
-    <tr *ngFor="let automatic of aumtomaticService.Automatics; let i = index" >
-
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{automatic.id_operation}}</td>
-      <td class="Celdas-Tabla">{{automatic.id_account}}</td>
-      <td class="Celdas-Tabla">{{util.asignarNombre(automatic.id_category, automatic.category)}}</td>
-      <td class="Celdas-Tabla">{{automatic.period}}</td>
-      <td class="Celdas-Tabla">{{automatic.repeat_number}}</td>
-      <td class="Celdas-Tabla">{{automatic.each_number}}</td>
-      <td class="Celdas-Tabla">{{(automatic.enabled == "0") ? "No": "Si"}}</td>
-      <td class="Celdas-Tabla">{{automatic.amount | currency: automatic.symbol}}</td>
-      <td class="Celdas-Tabla">{{automatic.sign}}</td>
-      <td class="Celdas-Tabla">{{automatic.detail}}</td>
-      <td class="Celdas-Tabla">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla">{{automatic.operation_code}}</td>
-      <td class="Celdas-Tabla">{{automatic.rate}}</td>
-      <td class="Celdas-Tabla">{{automatic.counter}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
-      </td>
-    </tr>
-
+    <tbody *ngIf="!automaticService.isFilter()">
+      <tr *ngFor="let automatic of automaticService.Automatics; let i = index" >
+        <td scope="row" class="Celdas-Tabla width-5">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
+        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.period}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.repeat_number}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.each_number}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.enabled}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.amount | currency: automatic.symbol}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.sign}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.detail}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.operation_code}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
+        <td class="Celdas-Tabla width-5">
+          <button type="button" class="btn btn-primary btn-update">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
+      <div
+        [fromRoot]="true"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
+        (scrolled)="onScroll()">
+      </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
     </tbody>
+    <tbody *ngIf="automaticService.isFilter()">
+      <tr *ngFor="let automatic of automaticService.Automatics; let i = index" >
+        <td scope="row" class="Celdas-Tabla width-5">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
+        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.period}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.repeat_number}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.each_number}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.enabled}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.amount | currency: automatic.symbol}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.sign}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.detail}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.operation_code}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
+        <td class="Celdas-Tabla width-5">
+          <button type="button" class="btn btn-primary btn-update">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+
   </table>
 </div>
+
+<button type="button" class="btn btn-success rounded-circle addButton" >
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
+</button>

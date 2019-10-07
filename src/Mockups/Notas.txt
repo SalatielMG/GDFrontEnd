@@ -21,8 +21,6 @@ npm install @angular/cdk@7.0.0
 ng add @angular/cdk@7.0.0
 
 SELECT * FROM backup_movements bm, backups b WHERE b.id_backup = bm.id_backup AND b.id_user=31 AND bm.sign="-" GROUP BY bm.id_category
-
-
 SET sql_mode = '';
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
