@@ -4,8 +4,6 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { Utilerias} from '../../../../Utilerias/Util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Automatics} from '../../../../Modelos/automatics/automatics';
-import {Categories} from '../../../../Modelos/categories/categories';
-import {Accounts} from '../../../../Modelos/accounts/accounts';
 
 @Component({
   selector: 'app-automatics',
@@ -16,14 +14,11 @@ export class AutomaticsComponent implements OnInit {
 
   private option: string = "";
   private automatic: FormGroup;
-  private id_backup;
-  private AccountsBackup: Accounts[] = [];
-  private CategoriesBackup: Categories[] = [];
 
   constructor( private route: ActivatedRoute,
                private router: Router, private automaticService: AutomaticsService, private util: Utilerias, private formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
-      this.id_backup = params.get("idBack");
+      this.automaticService.id_backup = params.get("idBack");
       this.automaticService.resetearVarables();
       this.buscarAutomatics();
     });
@@ -39,16 +34,16 @@ export class AutomaticsComponent implements OnInit {
   private buscarAutomatics() {
     this.util.loadingMain = true;
     if (this.automaticService.pagina == 0) {
-      this.util.msjLoading = "Buscando registros en la tabla Automatics del backup : " + this.id_backup;
+      this.util.msjLoading = "Buscando registros en la tabla Automatics del backup : " + this.automaticService.id_backup;
       this.util.crearLoading().then(() => {
-        this.automaticService.buscarAutomaticsBackup(this.id_backup).subscribe(result => {
+        this.automaticService.buscarAutomaticsBackup().subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.automaticService.buscarAutomaticsBackup(this.id_backup).subscribe(result => {
+      this.automaticService.buscarAutomaticsBackup().subscribe(result => {
         this.resultado(result);
       }, error => {
         this.util.msjErrorInterno(error, false);
@@ -85,7 +80,7 @@ export class AutomaticsComponent implements OnInit {
         this.automaticService.indexAutomaticFilterSelected = i;
       }
     } else {
-      //console.log("account before method getNewId_Account()", this.automatic);
+      console.log("account before method getNewId_Account()", this.automatic);
       this.getNewId_OperationAccountsCategories();
     }
   }
@@ -100,13 +95,13 @@ export class AutomaticsComponent implements OnInit {
       repeat_number : [automatic.repeat_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       each_number : [automatic.each_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       enabled : [automatic.enabled, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
-      amount : [(this.option == this.util.AGREGAR) ? automatic.amount: this.util.unZeroFile(automatic.amount), [Validators.required, Validators.min(0)], Validators.pattern(this.util.exprRegular_6Decimal)],
+      amount : [(this.option == this.util.AGREGAR) ? automatic.amount: this.util.unZeroFile(automatic.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       sign : [automatic.sign, [Validators.required, Validators.maxLength(1)]],
       detail : [automatic.detail, [Validators.maxLength(100)]],
-      initial_date : [automatic.initial_date, [Validators.required]],
-      next_date : [automatic.next_date, [Validators.required]],
+      initial_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.initial_date), [Validators.required]],
+      next_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.next_date), [Validators.required]],
       operation_code : [automatic.operation_code, [Validators.required, Validators.maxLength(15)]],
-      rate : [(this.option == this.util.AGREGAR) ? automatic.rate: this.util.unZeroFile(automatic.rate), [Validators.required, Validators.min(0)], Validators.pattern(this.util.exprRegular_6Decimal)],
+      rate : [(this.option == this.util.AGREGAR) ? automatic.rate: this.util.unZeroFile(automatic.rate), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       counter : [automatic.counter, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
     });
     if (this.util.isDelete(this.option)) this.disableForm();
@@ -136,7 +131,7 @@ export class AutomaticsComponent implements OnInit {
   private getNewId_OperationAccountsCategories() {
     this.util.msjLoading = "Calculando el nuevo id_operation para el configuración automatica a agregar.";
     this.util.crearLoading().then(() => {
-      this.automaticService.obtNewId_OperationAccountsCategories(this.id_backup).subscribe(result => {
+      this.automaticService.obtNewId_OperationAccountsCategories().subscribe(result => {
         this.util.detenerLoading();
         if (!result.error) {
           this.automatic.patchValue({id_operation: result.newId_Operation});
@@ -150,15 +145,16 @@ export class AutomaticsComponent implements OnInit {
   }
   private AccountsAndCategoriesBackup(result) {
     if (!result.accountsBackup.error) {
-      this.AccountsBackup = result.accountsBackup.accounts;
+      this.automaticService.AccountsBackup = result.accountsBackup.accounts;
+      console.log("this.automaticService.AccountsBackup", this.automaticService.AccountsBackup);
     } else {
       this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
     }
-    if (!result.categoriesBackup.error) {
+    /*if (!result.categoriesBackup.error) {
       this.CategoriesBackup = result.categoriesBackup.categories;
     } else {
       this.util.msjToast(result.categoriesBackup.msj, "", result.categoriesBackup.error);
-    }
+    }*/
   }
   private operation() {
     switch (this.option) {
@@ -174,22 +170,22 @@ export class AutomaticsComponent implements OnInit {
     }
   }
   private agregarAutomatic() {
-    this.automatic.patchValue({id_backup: this.id_backup});
+    this.automatic.patchValue({id_backup: this.automaticService.id_backup});
     this.addZeroDecimalValue();
-    this.util.msjLoading = "Agregando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.id_backup;
+    this.util.msjLoading = "Agregando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
 
     });
   }
   private actualizarAutomatic() {
     this.addZeroDecimalValue();
-    this.util.msjLoading = "Actualizando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.id_backup;
+    this.util.msjLoading = "Actualizando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
 
     });
   }
   private eliminarAutomatic() {
-    this.util.msjLoading = "Eliminando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.id_backup;
+    this.util.msjLoading = "Eliminando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
 
     });

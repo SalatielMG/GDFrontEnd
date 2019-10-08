@@ -1,3 +1,5 @@
+import {Categories} from '../categories/categories';
+
 export class Accounts {
   id_backup: number;
   id_account: number;
@@ -20,6 +22,8 @@ export class Accounts {
   include_total: number;
   rate: number;
   icon_name: string;
+  categoriesAccount: Categories[];
+
   constructor (
     id_backup = 0,
     id_account = 0,
@@ -41,7 +45,8 @@ export class Accounts {
     value_type = 1,
     include_total = 1,
     rate = 1.000000,
-    icon_name = ''
+    icon_name = '',
+    categories = []
   )
   {
     this.id_backup = id_backup;
@@ -65,5 +70,7 @@ export class Accounts {
     this.include_total = include_total;
     this.rate = rate;
     this.icon_name = icon_name;
+    this.categoriesAccount = categories
+
   }
 }

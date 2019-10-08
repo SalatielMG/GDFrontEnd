@@ -1,3 +1,5 @@
+import {Categories} from '../categories/categories';
+
 export class Automatics {
   id_backup: number;
   id_operation: number;
@@ -15,6 +17,7 @@ export class Automatics {
   operation_code: string;
   rate: number;
   counter: number;
+
   constructor(
     id_backup = 0,
     id_operation = 0,

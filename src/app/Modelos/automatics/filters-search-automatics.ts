@@ -4,12 +4,12 @@ export class FiltersSearchAutomatics {
     valueAnt: "",
     isFilter: false
   };
-  nameAccount = {
-    value: "0",
+  indexAccount = {
+    value: "-1",
     valueAnt: "",
     isFilter: false
   };
-  nameCategory = {
+  id_category = {
     value: "0",
     valueAnt: "",
     isFilter: false
@@ -25,12 +25,12 @@ export class FiltersSearchAutomatics {
       valueAnt: "",
       isFilter: false
     };
-    this.nameAccount = {
-      value: "0",
+    this.indexAccount = {
+      value: "-1",
       valueAnt: "",
       isFilter: false
     };
-    this.nameCategory = {
+    this.id_category = {
       value: "0",
       valueAnt: "",
       isFilter: false

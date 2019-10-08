@@ -55,6 +55,9 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
   }
+  public numberFormat(data){
+    return parseInt(data);
+  }
   public isDelete(option): boolean {
     return option == this.ELIMINAR;
   }

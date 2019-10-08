@@ -19,42 +19,42 @@
       <form [formGroup]="automatic" (ngSubmit)="operation()">
         <div class="modal-body">
           <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
-            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la configuración automática num: {{(automaticService.indexAutomaticSelected + 1)}}, Id_operation: {{automatic.value.id_operation}}, Id_account: {{automatic.value.id_account}}, Id_category: {{automatic.value.id_category}} del Respaldo Id_backup: {{id_backup}} ?</h5>
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la configuración automática num: {{(automaticService.indexAutomaticSelected + 1)}}, Id_operation: {{automatic.value.id_operation}}, Id_account: {{automatic.value.id_account}}, Id_category: {{automatic.value.id_category}} del Respaldo Id_backup: {{automaticService.id_backup}} ?</h5>
           </div>
           <div class="form-group">
             <div class="form-row">
-              <div class="form-col">
+              <div class="form col">
                 <label for="id_operation">Id_operation: </label>
-                <input type="number" readonly="true" class="form-control" id="id_operation" formControlName="name" [ngClass]="(getError('id_operation') == '') ? 'valid-control' : 'invalid-control'">
+                <input type="number" readonly="true" class="form-control" id="id_operation" formControlName="id_operation" [ngClass]="(getError('id_operation') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('id_operation')}}</div>
               </div>
-              <div class="form-col">
+              <div class="form col">
                 <label for="id_account">Id_account: </label>
                 <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'">
                   <option *ngFor="let account of AccountsBackup" [value]="account.id_account">{{account.name}}</option>
                 </select>
               </div>
-              <div class="form-col">
+              <div class="form col">
                 <label for="id_category">Id_category: </label>
                 <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
-                  <option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option>
+                  <!--option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option-->
                 </select>
               </div>
             </div>
           </div>
           <div class="form-group">
             <div class="form-row">
-              <div class="form-col">
+              <div class="form col">
                 <label for="period">Period</label>
                 <input type="number" class="form-control" id="period" formControlName="period" [ngClass]="(getError('period') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('period')}}</div>
               </div>
-              <div class="form-col">
+              <div class="form col">
                 <label for="repeat_number">Repeat_number</label>
                 <input type="number" class="form-control" id="repeat_number" formControlName="repeat_number" [ngClass]="(getError('repeat_number') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('repeat_number')}}</div>
               </div>
-              <div class="form-col">
+              <div class="form col">
                 <label for="each_number">Each_number</label>
                 <input type="number" class="form-control" id="each_number" formControlName="each_number" [ngClass]="(getError('each_number') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('each_number')}}</div>
@@ -97,7 +97,8 @@
                 <label for="initial_date">Initial_date</label>
                 <div class="row">
                   <div class="col-11">
-                    <input type="text" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date">
+                    <input type="text" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date" [ngClass]="(getError('initial_date') == '') ? 'valid-control' : 'invalid-control'">
+                    <div class="invalid-feedback">{{ getError('initial_date')}}</div>
                   </div>
                   <div class="col-1 icon-Calendar-full" >
                   <span [owlDateTimeTrigger]="id" style="cursor: pointer">
@@ -111,7 +112,8 @@
                 <label for="next_date">Next_date</label>
                 <div class="row">
                   <div class="col-11">
-                    <input type="text" [owlDateTime]="nd" class="form-control" id="next_date" formControlName="next_date" placeholder="next_date">
+                    <input type="text" [owlDateTime]="nd" class="form-control" id="next_date" formControlName="next_date" placeholder="next_date" [ngClass]="(getError('next_date') == '') ? 'valid-control' : 'invalid-control'">
+                    <div class="invalid-feedback">{{ getError('next_date')}}</div>
                   </div>
                   <div class="col-1 icon-Calendar-full">
                   <span [owlDateTimeTrigger]="nd" style="cursor: pointer">
@@ -125,17 +127,17 @@
           </div>
           <div class="form-group">
             <div class="form-row">
-              <div class="form-col">
+              <div class="form col">
                 <label for="operation_code">Operation_code: </label>
                 <input type="text" class="form-control" id="operation_code" formControlName="operation_code" [ngClass]="(getError('operation_code') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('operation_code')}}</div>
               </div>
-              <div class="form-col">
+              <div class="form col">
                 <label for="rate">Rate: </label>
                 <input type="number" class="form-control" id="rate" formControlName="rate" [ngClass]="(getError('rate') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('rate')}}</div>
               </div>
-              <div class="form-col">
+              <div class="form col">
                 <label for="counter">Counter: </label>
                 <input type="number" class="form-control" id="counter" formControlName="counter" [ngClass]="(getError('counter') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('counter')}}</div>
@@ -173,11 +175,11 @@
       <th scope="col" class="Encabezado-Tabla width-5">
         <div class="row inline-grid">
           Account
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.nameAccount.value" name="nameAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'nameAccount')">
-            <option value="0">Todas</option>
-            <option *ngFor="let account of AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="automaticService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of automaticService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
           </select>
-          <button type="button" [ngClass]="(automaticService.filtersSearch.nameAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('nameAccount')">
+          <button type="button" [ngClass]="(automaticService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('indexAccount')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -185,11 +187,21 @@
       <th scope="col" class="Encabezado-Tabla width-5">
         <div class="row inline-grid">
           Category
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.nameCategory.value" name="nameCategory" (ngModelChange)="automaticService.actionFilterEvent($event, 'nameCategory')">
-            <option value="0">Todas</option>
-            <option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option>
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(automaticService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of automaticService.AccountsBackup">
+                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(automaticService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <option *ngFor="let category of automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.name}}</option>
+            </ng-container>
+            <!--option value="0">Todas</option-->
+            <!--option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option-->
           </select>
-          <button type="button" [ngClass]="(automaticService.filtersSearch.nameCategory.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('nameCategory')">
+          <button type="button" [ngClass]="(automaticService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('id_category')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
