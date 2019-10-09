@@ -157,7 +157,7 @@ export class BackupsComponent implements OnInit {
         });
       });
   }
-  private formatDateTimeSQL(key) {
+  /*private formatDateTimeSQL(key) {
     let dateTime = "";
     if (this.backup.value[key] != null) {
       this.backup.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
@@ -168,11 +168,11 @@ export class BackupsComponent implements OnInit {
       dateTime = "0000-00-00 00:00:00";
     }
     return dateTime;
-  }
+  }*/
   private actualizarBackup(){
     console.log("Valor backup", this.backup.value);
-    let dateTime_date_creation = this.formatDateTimeSQL("date_creation");
-    let dateTime_date_download = this.formatDateTimeSQL("date_download");
+    let dateTime_date_creation = this.util.formatDateTimeSQL( this.backup,"date_creation");
+    let dateTime_date_download = this.util.formatDateTimeSQL( this.backup,"date_download");
     console.log("dateTime_date_creation", dateTime_date_creation);
     console.log("dateTime_date_download", dateTime_date_download);
     let newBackup = {

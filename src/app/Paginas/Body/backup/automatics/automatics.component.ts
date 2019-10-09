@@ -60,13 +60,15 @@ export class AutomaticsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.automaticService.pagina += 1;
+
       this.automaticService.Automatics = this.automaticService.Automatics.concat(result.automatics);
       this.util.QueryComplete.isComplete = false;
       this.AccountsAndCategoriesBackup(result);
       if (this.automaticService.pagina == 0) {
         this.util.QueryComplete.isComplete = result.automatics.length < this.util.limit;
+        console.log("this.util.QueryComplete", this.util.QueryComplete);
       }
+      this.automaticService.pagina += 1;
       // console.log("Accounts", this.accountService.Accounts);
     } else {
       this.util.QueryComplete.isComplete = this.automaticService.pagina != 0;
@@ -79,6 +81,7 @@ export class AutomaticsComponent implements OnInit {
     this.option = option;
     this.buildForm(automatic);
     if (this.option != this.util.AGREGAR) {
+      this.indeUniqueSelectedAutomatic["id_backup"] = automatic.id_backup;
       this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
       this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
       this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
@@ -107,9 +110,9 @@ export class AutomaticsComponent implements OnInit {
       amount : [(this.option == this.util.AGREGAR) ? automatic.amount: this.util.unZeroFile(automatic.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       sign : [automatic.sign, [Validators.required, Validators.maxLength(1)]],
       detail : [automatic.detail, [Validators.maxLength(100)]],
-      initial_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.initial_date), [Validators.required]],
-      next_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.next_date), [Validators.required]],
-      operation_code : [automatic.operation_code, [Validators.required, Validators.maxLength(15)]],
+      initial_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.initial_date + " 00:00:00:00"), [Validators.required]],
+      next_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.next_date + " 00:00:00:00"), [Validators.required]],
+      operation_code : [(this.option == this.util.AGREGAR) ? this.util.randomOperation_Code() : automatic.operation_code, [Validators.required, Validators.minLength(15), Validators.maxLength(15), Validators.pattern(this.util.exprOperation_Code)]],
       rate : [(this.option == this.util.AGREGAR) ? automatic.rate: this.util.unZeroFile(automatic.rate), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       counter : [automatic.counter, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
     });
@@ -136,6 +139,7 @@ export class AutomaticsComponent implements OnInit {
       this.option = "";
       this.automatic = null;
     });
+    //console.log("Value Form := ", this.automatic.value.next_date.toLocaleDateString());
   }
   private getNewId_OperationAccountsCategories() {
     this.util.msjLoading = "Calculando el nuevo id_operation para el operación automatica a agregar.";
@@ -165,6 +169,7 @@ export class AutomaticsComponent implements OnInit {
       this.util.msjToast(result.categoriesBackup.msj, "", result.categoriesBackup.error);
     }*/
   }
+
   private operation() {
     switch (this.option) {
       case this.util.AGREGAR:
@@ -180,6 +185,8 @@ export class AutomaticsComponent implements OnInit {
   }
   private agregarAutomatic() {
     this.automatic.patchValue({id_backup: this.automaticService.id_backup});
+    this.automatic.patchValue({initial_date: this.util.formatDateTimeSQL( this.automatic,"initial_date")});
+    this.automatic.patchValue({next_date: this.util.formatDateTimeSQL( this.automatic,"next_date")});
     this.addZeroDecimalValue();
     this.util.msjLoading = "Agregando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
@@ -203,6 +210,8 @@ export class AutomaticsComponent implements OnInit {
     });
   }
   private actualizarAutomatic() {
+    this.automatic.patchValue({initial_date: this.util.formatDateTimeSQL( this.automatic,"initial_date")});
+    this.automatic.patchValue({next_date: this.util.formatDateTimeSQL( this.automatic,"next_date")});
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {

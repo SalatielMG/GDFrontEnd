@@ -29,7 +29,8 @@ export class Utilerias {
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
   public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,6})";
-  public exprRegular_Decimal = "(([0-9]{1,5})(.[0-9]{1,6})?)";//(.[0-9]{1,6})?
+  public exprOperation_Code = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
+  public characterAllowInOperationCode = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;
@@ -56,6 +57,29 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
   }
+
+  public formatDateTimeSQL(dataForm, key) {
+    let dateTime = "";
+    if (dataForm.value[key] != null) {
+      dataForm.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
+        dateTime = dateTime + d + "-";
+      });
+      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + dataForm.value[key].toLocaleTimeString();
+    } else {
+      dateTime = "0000-00-00 00:00:00";
+    }
+    return dateTime;
+  }
+
+  public randomOperation_Code() {
+    let operation_code: string = '';
+    let lengthOC: number = this.characterAllowInOperationCode.length;
+    for ( let i: number = 0; i < 15; i++ ) {
+      operation_code += this.characterAllowInOperationCode.charAt(Math.floor(Math.random() * lengthOC));
+    }
+    return operation_code;
+  }
+
   public numberFormat(data){
     return parseInt(data);
   }
@@ -66,6 +90,9 @@ export class Utilerias {
     let error = '';
     if (control.hasError("required")) {
       error += "El campo es requerido.\n"
+    }
+    if (control.hasError("minLength")) {
+      error += "Longitud mínima permitida de " + control.getError("minlength").requiredLength + " caracteres.\n"
     }
     if (control.hasError("maxlength")) {
       error += "Longitud máxima permitida de " + control.getError("maxlength").requiredLength + " caracteres.\n"
@@ -80,7 +107,9 @@ export class Utilerias {
   }
   private errorRegexPatern(pattern) {
     let error = "";
-    if (pattern == "^([0-9]+.?[0-9]{0,6})$") {
+    if (pattern == "^([0-9A-Za-z]{15,15})$") {
+      error = "Campo estricto con cualquier Digito númerico y letra del alfabeto [0-9A-Za-z] de 15 caracteres.";
+    } else if (pattern == "^([0-9]+.?[0-9]{0,6})$") {
       error = "Campo númerico de no más de 6 decimales.";
     } else {
       let p = pattern.split(",");
