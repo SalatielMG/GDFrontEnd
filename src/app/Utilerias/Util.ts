@@ -52,6 +52,7 @@ export class Utilerias {
   public msjLoading: string = "";
   public msj: string = "";
   public stepDecimal: string = "0.000001";
+  public limit: number= 50;
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
   }

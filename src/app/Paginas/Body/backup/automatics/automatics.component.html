@@ -29,15 +29,17 @@
                 <div class="invalid-feedback">{{ getError('id_operation')}}</div>
               </div>
               <div class="form col">
-                <label for="id_account">Id_account: </label>
-                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'">
-                  <option *ngFor="let account of AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+                <label for="id_account">Account: </label>
+                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'" (change)="accountSelectedModal($event)">
+                  <option *ngIf="automaticService.AccountsBackup.length > 0" value="">Seleccione una cuenta</option>
+                  <option *ngFor="let account of automaticService.AccountsBackup" [value]="account.id_account">{{account.name}}</option>
                 </select>
               </div>
               <div class="form col">
-                <label for="id_category">Id_category: </label>
+                <label for="id_category">Category: </label>
                 <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
-                  <!--option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option-->
+                  <option *ngIf="automaticService.AccountsBackup[indexSelectAutomaticModal].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
+                  <option *ngFor="let categories of automaticService.AccountsBackup[indexSelectAutomaticModal].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
                 </select>
               </div>
             </div>
@@ -79,8 +81,8 @@
               <div class="form col">
                 <label for="sign">Sign</label>
                 <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
-                  <option value="0">0</option>
-                  <option value="1">1</option>
+                  <option value="-">-</option>
+                  <option value="+">+</option>
                 </select>
                 <div class="invalid-feedback">{{ getError('sign')}}</div>
               </div>

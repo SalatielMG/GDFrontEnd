@@ -14,6 +14,8 @@ export class AutomaticsComponent implements OnInit {
 
   private option: string = "";
   private automatic: FormGroup;
+  private indeUniqueSelectedAutomatic = {};
+  private indexSelectAutomaticModal: number = 0;
 
   constructor( private route: ActivatedRoute,
                private router: Router, private automaticService: AutomaticsService, private util: Utilerias, private formBuilder: FormBuilder) {
@@ -62,6 +64,9 @@ export class AutomaticsComponent implements OnInit {
       this.automaticService.Automatics = this.automaticService.Automatics.concat(result.automatics);
       this.util.QueryComplete.isComplete = false;
       this.AccountsAndCategoriesBackup(result);
+      if (this.automaticService.pagina == 0) {
+        this.util.QueryComplete.isComplete = result.automatics.length < this.util.limit;
+      }
       // console.log("Accounts", this.accountService.Accounts);
     } else {
       this.util.QueryComplete.isComplete = this.automaticService.pagina != 0;
@@ -74,11 +79,15 @@ export class AutomaticsComponent implements OnInit {
     this.option = option;
     this.buildForm(automatic);
     if (this.option != this.util.AGREGAR) {
+      this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
+      this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
+      this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
       this.automaticService.indexAutomaticSelected = i;
       if (this.automaticService.isFilter()) {
         this.automaticService.indexAutomaticSelected = <number>this.automaticService.Automatics.indexOf(automatic);
         this.automaticService.indexAutomaticFilterSelected = i;
       }
+      this.automaticService.obtAccountsBackup();
     } else {
       console.log("account before method getNewId_Account()", this.automatic);
       this.getNewId_OperationAccountsCategories();
@@ -89,8 +98,8 @@ export class AutomaticsComponent implements OnInit {
     this.automatic = this.formBuilder.group({
       id_backup : [automatic.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_operation : [automatic.id_operation, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
-      id_account : [automatic.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
-      id_category : [automatic.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_account : [(this.option == this.util.AGREGAR) ? "": automatic.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_category : [(this.option == this.util.AGREGAR) ? "": automatic.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
       period : [automatic.period, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("2"))]],
       repeat_number : [automatic.repeat_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       each_number : [automatic.each_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
@@ -129,7 +138,7 @@ export class AutomaticsComponent implements OnInit {
     });
   }
   private getNewId_OperationAccountsCategories() {
-    this.util.msjLoading = "Calculando el nuevo id_operation para el configuración automatica a agregar.";
+    this.util.msjLoading = "Calculando el nuevo id_operation para el operación automatica a agregar.";
     this.util.crearLoading().then(() => {
       this.automaticService.obtNewId_OperationAccountsCategories().subscribe(result => {
         this.util.detenerLoading();
@@ -172,28 +181,83 @@ export class AutomaticsComponent implements OnInit {
   private agregarAutomatic() {
     this.automatic.patchValue({id_backup: this.automaticService.id_backup});
     this.addZeroDecimalValue();
-    this.util.msjLoading = "Agregando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
+    this.util.msjLoading = "Agregando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-
+      this.automaticService.agregarAutomatic(this.automatic.value).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) {
+          if (this.util.QueryComplete.isComplete) {
+            if (!result.automatic.error) {
+              this.automaticService.Automatics.push(result.automatic.new);
+              if (this.automaticService.isFilter()) this.automaticService.proccessFilter();
+            } else {
+              this.util.msjToast(result.automatic.msj, this.util.errorRefreshListTable, result.automatic.error);
+            }
+          }
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
     });
   }
   private actualizarAutomatic() {
     this.addZeroDecimalValue();
-    this.util.msjLoading = "Actualizando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
+    this.util.msjLoading = "Actualizando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-
+      this.automaticService.actualizarAutomatic(this.automatic.value, this.indeUniqueSelectedAutomatic).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) {
+          if (!result.automatic.error) {
+            if (this.automaticService.isFilter()) {
+              if (this.automaticService.indexAutomaticSelected != -1) this.automaticService.Automatics[this.automaticService.indexAutomaticSelected] = result.automatic.update;
+              this.automaticService[this.automaticService.indexAutomaticFilterSelected] = result.automatic.update;
+            } else {
+              this.automaticService.Automatics[this.automaticService.indexAutomaticSelected] = result.automatic.update;
+            }
+          } else {
+            this.util.msjToast(result.automatic.msj, this.util.errorRefreshListTable, result.automatic.error);
+          }
+          this.closeModal();
+        }
+        }, error => {
+        this.util.msjErrorInterno(error);
+      });
     });
   }
   private eliminarAutomatic() {
-    this.util.msjLoading = "Eliminando configuración automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
+    this.util.msjLoading = "Eliminando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-
+      this.automaticService.eliminarAutomatic(this.indeUniqueSelectedAutomatic).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error) {
+          if (this.automaticService.isFilter()) {
+            if (this.automaticService.indexAutomaticSelected != -1) this.automaticService.Automatics.splice(this.automaticService.indexAutomaticSelected, 1);
+            this.automaticService.automaticsFilter.splice(this.automaticService.indexAutomaticFilterSelected, 1);
+          } else {
+            this.automaticService.Automatics.splice(this.automaticService.indexAutomaticSelected, 1);
+          }
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
     });
   }
   private addZeroDecimalValue() {
     this.automatic.patchValue({amount: this.util.zeroFile(this.automatic.value.amount)});
     this.automatic.patchValue({rate: this.util.zeroFile(this.automatic.value.rate)});
     this.automatic.patchValue({sign: this.util.signValue(this.automatic.value.sign)});
+  }
+  private accountSelectedModal(event) {
+    console.log("event:=", event.target.selectedIndex);
+    console.log("event:=", this.automatic.value.id_account);
+    this.indexSelectAutomaticModal = event.target.selectedIndex;
+    this.automaticService.obtCategoriesAccountBackup(""+this.indexSelectAutomaticModal);
+    this.automatic.patchValue({id_category: ''});
   }
 
 }

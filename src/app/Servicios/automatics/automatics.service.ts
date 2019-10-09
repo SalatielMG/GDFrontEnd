@@ -27,24 +27,28 @@ export class AutomaticsService {
     this.pagina = 0;
   }
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
-  private obtCategoriesAccountBackup() {
-    this.http.get(URL + "obtCategoriesAccountBackup", {params: {id_backup: this.id_backup, id_account: this.AccountsBackup[parseInt(this.filtersSearch["indexAccount"].value)].id_account.toString()}}).subscribe(result => {
+  public obtCategoriesAccountBackup(index) {
+    index = parseInt(index);
+    this.http.get(URL + "obtCategoriesAccountBackup", {params: {id_backup: this.id_backup, id_account: this.AccountsBackup[index].id_account.toString()}}).subscribe(result => {
       if (!result["error"]) {
-        this.AccountsBackup[parseInt(this.filtersSearch["indexAccount"].value)].categoriesAccount = result["categories"];
-        console.log("new Categories query:= ", this.AccountsBackup[parseInt(this.filtersSearch["indexAccount"].value)].categoriesAccount);
+        this.AccountsBackup[index].categoriesAccount = result["categories"];
+        console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
       }
     }, error => {
       console.log(error);
     });
   }
-  private obtAccountsBackup() {
-    this.http.get(URL + "obtAccountsBackup", {params: {id_backup: this.id_backup}}).subscribe(result => {
-      if (!result["error"]){
-        this.AccountsBackup = result["accounts"];
-        console.log("new Accounts query := ", this.AccountsBackup);
-      }
-    }, error => {
-      console.log("error:=", error);
+  public obtAccountsBackup() {
+    return new Promise((resolve, reject) => {
+      this.http.get(URL + "obtAccountsBackup", {params: {id_backup: this.id_backup}}).subscribe(result => {
+        if (!result["error"]){
+          this.AccountsBackup = result["accounts"];
+          console.log("new Accounts query := ", this.AccountsBackup);
+        }
+      }, error => {
+        console.log("error:=", error);
+      });
+      resolve();
     });
   }
   public actionFilterEvent(event, value, isKeyUp = false) {
@@ -88,7 +92,7 @@ export class AutomaticsService {
     if (key == "id_category") {
       this.filtersSearch[key].value = "0";
       if (this.filtersSearch["indexAccount"].value != "-1")
-        this.obtCategoriesAccountBackup();
+        this.obtCategoriesAccountBackup(this.filtersSearch["indexAccount"].value);
     }
 
     if (!this.isFilter()) {
@@ -142,7 +146,7 @@ export class AutomaticsService {
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
 
   public obtNewId_OperationAccountsCategories(): Observable<any> {
-    return this.http.get(URL + "obtNewId_OperationAccountsCategories", {params: {idBack: this.id_backup}});
+    return this.http.get(URL + "obtNewId_OperationAccountsCategories", {params: {id_backup: this.id_backup}});
   }
 
   public buscarAutomaticsBackup(): Observable<any> {
@@ -152,6 +156,23 @@ export class AutomaticsService {
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosAutomatics', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  }
+
+  public agregarAutomatic(automatic): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('automatic', JSON.stringify(automatic));
+    return this.http.post(URL + 'agregarAutomatic', parametro);
+  }
+
+  public actualizarAutomatic(automatic, indexUnique): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('automatic', JSON.stringify(automatic))
+      .append("indexUnique", JSON.stringify(indexUnique));
+    return this.http.post(URL + 'actualizarAutomatic', parametro);
+  }
+
+  public eliminarAutomatic(indexUnique): Observable<any> {
+    return this.http.delete(URL + 'eliminarAutomatic', {params : {indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

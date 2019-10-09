@@ -1,5 +1,3 @@
-import {Categories} from '../categories/categories';
-
 export class Automatics {
   id_backup: number;
   id_operation: number;
@@ -28,7 +26,7 @@ export class Automatics {
     each_number = 0,
     enabled = 0,
     amount = 0.000000,
-    sign = "-",
+    sign = '-',
     detail = "",
     initial_date = "0000-00-00",
     next_date = "0000-00-00",
