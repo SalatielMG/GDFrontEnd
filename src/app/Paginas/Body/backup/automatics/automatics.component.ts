@@ -60,16 +60,13 @@ export class AutomaticsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-
       this.automaticService.Automatics = this.automaticService.Automatics.concat(result.automatics);
       this.util.QueryComplete.isComplete = false;
       this.AccountsAndCategoriesBackup(result);
       if (this.automaticService.pagina == 0) {
         this.util.QueryComplete.isComplete = result.automatics.length < this.util.limit;
-        console.log("this.util.QueryComplete", this.util.QueryComplete);
       }
       this.automaticService.pagina += 1;
-      // console.log("Accounts", this.accountService.Accounts);
     } else {
       this.util.QueryComplete.isComplete = this.automaticService.pagina != 0;
     }
@@ -77,7 +74,6 @@ export class AutomaticsComponent implements OnInit {
   }
 
   public accionAutomatic(option, automatic = new Automatics(), i = null) {
-    console.log("Automatic seleccionada", automatic);
     this.option = option;
     this.buildForm(automatic);
     if (this.option != this.util.AGREGAR) {
@@ -92,7 +88,6 @@ export class AutomaticsComponent implements OnInit {
       }
       this.automaticService.obtAccountsBackup();
     } else {
-      console.log("account before method getNewId_Account()", this.automatic);
       this.getNewId_OperationAccountsCategories();
     }
   }
@@ -163,11 +158,6 @@ export class AutomaticsComponent implements OnInit {
     } else {
       this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
     }
-    /*if (!result.categoriesBackup.error) {
-      this.CategoriesBackup = result.categoriesBackup.categories;
-    } else {
-      this.util.msjToast(result.categoriesBackup.msj, "", result.categoriesBackup.error);
-    }*/
   }
 
   private operation() {

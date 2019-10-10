@@ -11,9 +11,9 @@ import {Accounts} from '../../Modelos/accounts/accounts';
 })
 export class AutomaticsService {
 
-  public id_backup;
   public Automatics: Automatics[] = [];
   public pagina;
+  public id_backup;
   public filtersSearch = new FiltersSearchAutomatics();
   public automaticsFilter: Automatics[] = [];
   public indexAutomaticSelected: number = 0;
@@ -151,7 +151,7 @@ export class AutomaticsService {
 
   public buscarAutomaticsBackup(): Observable<any> {
     this.Automatics = [];
-    return this.http.get(URL + 'buscarAutomaticsBackup', {params:{idBack: this.id_backup, pagina: this.pagina}});
+    return this.http.get(URL + 'buscarAutomaticsBackup', {params: {idBack: this.id_backup, pagina: this.pagina}});
   }
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {

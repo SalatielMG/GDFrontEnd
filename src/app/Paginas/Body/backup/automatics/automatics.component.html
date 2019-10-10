@@ -75,7 +75,7 @@
               </div>
               <div class="form col">
                 <label for="amount">Amount</label>
-                <input type="number" class="form-control" id="amount" formControlName="amount" [ngClass]="(getError('amount') == '') ? 'valid-control' : 'invalid-control'">
+                <input type="number" class="form-control" id="amount" formControlName="amount" [step]="util.stepDecimal" [ngClass]="(getError('amount') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('amount')}}</div>
               </div>
               <div class="form col">
@@ -136,7 +136,7 @@
               </div>
               <div class="form col">
                 <label for="rate">Rate: </label>
-                <input type="number" class="form-control" id="rate" formControlName="rate" [ngClass]="(getError('rate') == '') ? 'valid-control' : 'invalid-control'">
+                <input type="number" class="form-control" id="rate" formControlName="rate" [step]="util.stepDecimal" [ngClass]="(getError('rate') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('rate')}}</div>
               </div>
               <div class="form col">
@@ -200,8 +200,6 @@
               <option value="0" *ngIf="automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
               <option *ngFor="let category of automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.name}}</option>
             </ng-container>
-            <!--option value="0">Todas</option-->
-            <!--option *ngFor="let categories of CategoriesBackup" [value]="categories.id_category">{{categories.name}}</option-->
           </select>
           <button type="button" [ngClass]="(automaticService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('id_category')">
             <span aria-hidden="true">&times;</span>
@@ -233,7 +231,7 @@
     </thead>
     <tbody *ngIf="!automaticService.isFilter()">
       <tr *ngFor="let automatic of automaticService.Automatics; let i = index" >
-        <td scope="row" class="Celdas-Tabla width-5">{{(i+1)}}</td>
+        <td scope="row" class="Celdas-Tabla font-weight-bold width-5">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
         <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
@@ -245,8 +243,8 @@
         <td class="Celdas-Tabla width-5">{{automatic.amount | currency: automatic.symbol}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.sign}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.detail}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla width-5">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla width-5">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.operation_code}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>

@@ -18,8 +18,8 @@
       </div>
       <form [formGroup]="account" (ngSubmit)="operacion()">
         <div class="modal-body">
-          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="isDelete()">
-            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la cuenta num: {{(indexAccountSelected + 1)}}, Id_account: {{account.value.id_account}} del Respaldo Id_backup: {{id_backup}}?</h5>
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la cuenta num: {{(accountService.indexAccountSelected + 1)}}, Id_account: {{account.value.id_account}} del Respaldo Id_backup: {{accountService.id_backup}}?</h5>
           </div>
           <div class="form-group">
             <label for="name">Name: </label>
@@ -187,8 +187,8 @@
       <th scope="col" class="Encabezado-Tabla width-4">
         <div class="row inline-grid">
           Id_account
-          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtersSearch.id_account.value" name="id_account" (keyup)="actionFilterEvent($event, 'id_account', true)">
-          <button type="button" [ngClass]="(filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('id_account')">
+          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (keyup)="accountService.actionFilterEvent($event, 'id_account', true)">
+          <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -196,8 +196,8 @@
       <th scope="col" class="Encabezado-Tabla width-4">
         <div class="row inline-grid">
           Name
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtersSearch.name.value" name="name" (keyup)="actionFilterEvent($event, 'name', true)">
-          <button type="button" [ngClass]="(filtersSearch.name.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('name')">
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.name.value" name="name" (keyup)="accountService.actionFilterEvent($event, 'name', true)">
+          <button type="button" [ngClass]="(accountService.filtersSearch.name.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('name')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -217,8 +217,8 @@
       <th scope="col" class="Encabezado-Tabla width-4">
         <div class="row inline-grid">
           Iso_code
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtersSearch.iso_code.value" name="iso_code" (keyup)="actionFilterEvent($event, 'iso_code', true)">
-          <button type="button" [ngClass]="(filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('iso_code')">
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.iso_code.value" name="iso_code" (keyup)="accountService.actionFilterEvent($event, 'iso_code', true)">
+          <button type="button" [ngClass]="(accountService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('iso_code')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -226,12 +226,12 @@
       <th scope="col" class="Encabezado-Tabla width-4">
         <div class="row inline-grid">
           Selected
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtersSearch.selected.value" name="selected" (ngModelChange)="actionFilterEvent($event, 'selected')">
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.selected.value" name="selected" (ngModelChange)="accountService.actionFilterEvent($event, 'selected')">
             <option value="-1">Ambos</option>
             <option value="0">No</option>
             <option value="1">Sí</option>
           </select>
-          <button type="button" [ngClass]="(filtersSearch.selected.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('selected')">
+          <button type="button" [ngClass]="(accountService.filtersSearch.selected.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('selected')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -244,7 +244,7 @@
     </tr>
 
     </thead>
-    <tbody *ngIf="!isFilter()">
+    <tbody *ngIf="!accountService.isFilter()">
       <tr *ngFor="let account of accountService.Accounts; let i = index" >
         <td scope="row" class="Celdas-Tabla font-weight-bold width-4">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic width-4">{{account.cantidadRepetida}}</td>
@@ -291,8 +291,8 @@
       <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
       <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
     </tbody>
-    <tbody *ngIf="isFilter()">
-      <tr *ngFor="let account of accountsFilter; let i = index" >
+    <tbody *ngIf="accountService.isFilter()">
+      <tr *ngFor="let account of accountService.accountsFilter; let i = index" >
         <td scope="row" class="Celdas-Tabla font-weight-bold width-4">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic width-4">{{account.cantidadRepetida}}</td>
         <td class="Celdas-Tabla width-4">{{account.id_account}}</td>
