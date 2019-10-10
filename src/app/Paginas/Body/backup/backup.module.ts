@@ -31,6 +31,7 @@ import { ExtrasService } from '../../../Servicios/extras/extras.service';
 import { MovementsService } from '../../../Servicios/movements/movements.service';
 import { PreferencesService } from '../../../Servicios/preferences/preferences.service';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import {AccountscategoriesService} from '../../../Servicios/accounts/accountscategories.service';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
     BackupRoutingModule
   ],
   providers: [
+    AccountscategoriesService,
     AccountsService,
     AutomaticsService,
     BudgetsService,

@@ -58,15 +58,18 @@ export class Utilerias {
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
   }
 
-  public formatDateTimeSQL(dataForm, key) {
+  public formatComponentDateCalendar(date) {
+    return (date != "0000-00-00") ? new Date(date + " 00:00:00") : "";
+  }
+  public formatDateTimeSQL(dataForm, key, isTime = true) {
     let dateTime = "";
-    if (dataForm.value[key] != null) {
+    if (dataForm.value[key] != null && dataForm.value[key] != "") {
       dataForm.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
         dateTime = dateTime + d + "-";
       });
-      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + dataForm.value[key].toLocaleTimeString();
+      dateTime = (dateTime.substring(0, dateTime.length - 1)) + ((isTime) ? " " + dataForm.value[key].toLocaleTimeString() : "");
     } else {
-      dateTime = "0000-00-00 00:00:00";
+      dateTime = "0000-00-00" + ((isTime) ? " 00:00:00" : "");
     }
     return dateTime;
   }
@@ -296,17 +299,14 @@ export class Utilerias {
   }
 
   public cerrarModal(modal) {
-    return new Promise((reject) => {
+    return new Promise((resolve) => {
       $(modal).modal('hide');
-      reject();
+      resolve();
     });
   }
 
   public abrirModal(modal) {
-    return new Promise((reject) => {
       $(modal).modal('show');
-      reject();
-    });
   }
 
   public classModal(option): string {

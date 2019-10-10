@@ -6,7 +6,122 @@
 >
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
-
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalBudget" tabindex="-1" role="dialog" aria-labelledby="modalBudgetTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="option != ''">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalBudgetTitle">{{option}} Budget</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="budget" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el presupuesto num: {{(budgetService.indexBudgetSelected + 1)}}, Id_account: {{budget.value.id_account}}, Id_category: {{budget.value.id_category}} del Respaldo Id_backup: {{budgetService.id_backup}} ?</h5>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_account">Account: </label>
+                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'" (change)="accountSelectedModal($event)">
+                  <option *ngIf="budgetService.AccountsBackup.length > 0" value="">Seleccione una cuenta</option>
+                  <option *ngFor="let account of budgetService.AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+                  <option *ngIf="budgetService.AccountsBackup.length > 0" value="10001">Todas las cuentas</option>
+                </select>
+              </div>
+              <div class="form col">
+                <label for="id_category">Category: </label>
+                <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
+                  <ng-container *ngIf="budget.value.id_account != '10001'">
+                    <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
+                    <option *ngFor="let categories of budgetService.AccountsBackup[indexBudgetSelectModal].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
+                    <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal].categoriesAccount.length > 0" value="10002">Todas las categorias</option>
+                  </ng-container>
+                  <ng-container *ngIf="budget.value.id_account == '10001'">
+                    <option value="">Seleccione una categoria</option>
+                    <ng-container *ngFor="let account of budgetService.AccountsBackup">
+                      <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                    </ng-container>
+                    <option value="10002">Todas las categorias</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="amount">Amount</label>
+                <input type="number" class="form-control" id="amount" formControlName="amount" [step]="util.stepDecimal" [ngClass]="(getError('amount') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('amount')}}</div>
+              </div>
+              <div class="form col">
+                <label for="budget">Amount</label>
+                <input type="number" class="form-control" id="budget" formControlName="budget" [step]="util.stepDecimal" [ngClass]="(getError('budget') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('budget')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_date">Initial_date</label>
+                <div class="row">
+                  <div class="col-11">
+                    <input type="text" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date" [ngClass]="(getError('initial_date') == '') ? 'valid-control' : 'invalid-control'">
+                    <div class="invalid-feedback">{{ getError('initial_date')}}</div>
+                  </div>
+                  <div class="col-1 icon-Calendar-full" >
+                  <span [owlDateTimeTrigger]="id" style="cursor: pointer">
+                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
+                  </span>
+                    <owl-date-time #id [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <label for="final_date">Final_date</label>
+                <div class="row">
+                  <div class="col-11">
+                    <input type="text" [owlDateTime]="nd" class="form-control" id="final_date" formControlName="final_date" placeholder="final_date" [ngClass]="(getError('final_date') == '') ? 'valid-control' : 'invalid-control'">
+                    <div class="invalid-feedback">{{ getError('final_date')}}</div>
+                  </div>
+                  <div class="col-1 icon-Calendar-full">
+                  <span [owlDateTimeTrigger]="nd" style="cursor: pointer">
+                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
+                  </span>
+                    <owl-date-time #nd  [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="period">Period</label>
+                <input type="number" class="form-control" id="period" formControlName="period" [ngClass]="(getError('period') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('period')}}</div>
+              </div>
+              <div class="form col">
+                <label for="number">Number</label>
+                <input type="number" class="form-control" id="number" formControlName="number" [ngClass]="(getError('number') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('number')}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="budget.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="container text-center" *ngIf="budgetService.Budgets.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">util.msj</h2>
 </div>
@@ -86,12 +201,12 @@
         <td class="Celdas-Tabla width-9">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla width-9">{{budget.number}}</td>
         <td class="Celdas-Tabla width-9">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAutomatic" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAutomatic" (click)="accionBudget(util.ELIMINAR, budget, i)">
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionBudget(util.ELIMINAR, budget, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -121,12 +236,12 @@
         <td class="Celdas-Tabla width-9">{{budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla width-9">{{budget.number}}</td>
         <td class="Celdas-Tabla width-9">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAutomatic" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAutomatic" (click)="accionBudget(util.ELIMINAR, budget, i)">
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionBudget(util.ELIMINAR, budget, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>

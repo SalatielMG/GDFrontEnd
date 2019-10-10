@@ -5,6 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {FiltersSearchAutomatics} from '../../Modelos/automatics/filters-search-automatics';
 import {Accounts} from '../../Modelos/accounts/accounts';
+import {AccountscategoriesService} from '../accounts/accountscategories.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class AutomaticsService {
   public indexAutomaticFilterSelected: number = 0;
   public AccountsBackup: Accounts[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountsCategoriesServices: AccountscategoriesService) { }
 
   public resetearVarables() {
     this.Automatics = [];
@@ -29,9 +30,9 @@ export class AutomaticsService {
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
   public obtCategoriesAccountBackup(index) {
     index = parseInt(index);
-    this.http.get(URL + "obtCategoriesAccountBackup", {params: {id_backup: this.id_backup, id_account: this.AccountsBackup[index].id_account.toString()}}).subscribe(result => {
-      if (!result["error"]) {
-        this.AccountsBackup[index].categoriesAccount = result["categories"];
+    this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString()).subscribe(result => {
+      if (!result.error) {
+        this.AccountsBackup[index].categoriesAccount = result.categories;
         console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
       }
     }, error => {
@@ -40,15 +41,16 @@ export class AutomaticsService {
   }
   public obtAccountsBackup() {
     return new Promise((resolve, reject) => {
-      this.http.get(URL + "obtAccountsBackup", {params: {id_backup: this.id_backup}}).subscribe(result => {
-        if (!result["error"]){
-          this.AccountsBackup = result["accounts"];
+      this.accountsCategoriesServices.obtAccountsBackup(this.id_backup).subscribe(result => {
+        if (!result.error){
+          this.AccountsBackup = result.accounts;
           console.log("new Accounts query := ", this.AccountsBackup);
         }
+        resolve(result.error);
       }, error => {
         console.log("error:=", error);
+        resolve(true);
       });
-      resolve();
     });
   }
   public actionFilterEvent(event, value, isKeyUp = false) {

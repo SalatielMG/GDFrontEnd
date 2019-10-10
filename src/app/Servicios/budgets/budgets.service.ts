@@ -3,9 +3,9 @@ import { Budgets } from '../../Modelos/budgets/budgets';
 import { URL } from '../../Utilerias/URL';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Automatics} from '../../Modelos/automatics/automatics';
 import {Accounts} from '../../Modelos/accounts/accounts';
 import {FiltersSearchBudgets} from '../../Modelos/budgets/filters-search-budgets';
+import {AccountscategoriesService} from '../accounts/accountscategories.service';
 
 
 @Injectable({
@@ -22,7 +22,7 @@ export class BudgetsService {
   public indexBudgetFilterSelected: number = 0;
   public AccountsBackup: Accounts[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountsCategoriesServices: AccountscategoriesService) { }
 
   public resetVariables() {
     this.Budgets = [];
@@ -32,9 +32,9 @@ export class BudgetsService {
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
   public obtCategoriesAccountBackup(index) {
     index = parseInt(index);
-    this.http.get(URL + "obtCategoriesAccountBackup", {params: {id_backup: this.id_backup, id_account: this.AccountsBackup[index].id_account.toString()}}).subscribe(result => {
-      if (!result["error"]) {
-        this.AccountsBackup[index].categoriesAccount = result["categories"];
+    this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString()).subscribe(result => {
+      if (!result.error) {
+        this.AccountsBackup[index].categoriesAccount = result.categories;
         console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
       }
     }, error => {
@@ -43,15 +43,16 @@ export class BudgetsService {
   }
   public obtAccountsBackup() {
     return new Promise((resolve, reject) => {
-      this.http.get(URL + "obtAccountsBackup", {params: {id_backup: this.id_backup}}).subscribe(result => {
-        if (!result["error"]){
-          this.AccountsBackup = result["accounts"];
+      this.accountsCategoriesServices.obtAccountsBackup(this.id_backup).subscribe(result => {
+        if (!result.error){
+          this.AccountsBackup = result.accounts;
           console.log("new Accounts query := ", this.AccountsBackup);
         }
+        resolve(result.error);
       }, error => {
         console.log("error:=", error);
+        resolve(true);
       });
-      resolve();
     });
   }
   public actionFilterEvent(event, value, isKeyUp = false) {
@@ -156,6 +157,23 @@ export class BudgetsService {
 
   public inconsistenciaDatos(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosBudgets', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  }
+
+  public agregarBudget(budget): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('budget', JSON.stringify(budget));
+    return this.http.post(URL + 'agregarBudget', parametro);
+  }
+
+  public actualizarBudget(budget, indexUnique): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('budget', JSON.stringify(budget))
+      .append("indexUnique", JSON.stringify(indexUnique));
+    return this.http.post(URL + 'actualizarBudget', parametro);
+  }
+
+  public eliminarBudget(indexUnique): Observable<any> {
+    return this.http.delete(URL + 'eliminarBudget', {params: {indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

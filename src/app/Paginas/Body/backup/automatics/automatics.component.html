@@ -249,12 +249,12 @@
         <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
         <td class="Celdas-Tabla width-5">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAutomatic" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAutomatic" (click)="accionAutomatic(util.ELIMINAR, automatic, i)">
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionAutomatic(util.ELIMINAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -291,12 +291,12 @@
         <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
         <td class="Celdas-Tabla width-5">
-          <button type="button" class="btn btn-primary btn-update">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete">
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionAutomatic(util.ELIMINAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
