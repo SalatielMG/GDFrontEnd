@@ -13,7 +13,7 @@ import {Budgets} from '../../../../Modelos/budgets/budgets';
 export class BudgetsComponent implements OnInit {
 
   private option: string = "";
-  private budget: FormGroup;
+  private budget: FormGroup = null;
   private indexUniqueBudgetSelected = {};
   private indexBudgetSelectModal: number = 0;
 
@@ -56,6 +56,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   private resultado(result) {
+    this.util.msj = result.msj;
     if (this.budgetService.pagina == 0) {
       this.util.detenerLoading();
       this.util.msj = result.msj;
@@ -85,28 +86,42 @@ export class BudgetsComponent implements OnInit {
   }
 
   private accionBudget(option, budget = new Budgets(), i = null) {
-    this.option = option;
-    this.buildForm(budget);
-    this.budgetService.obtAccountsBackup().then(error => {
-      if (!error && error != 400) {
-        console.log("Open this modal :)", error);
+    this.util.msjLoading = "Cargando cuentas y categorias del backup: " + this.budgetService.id_backup;
+    this.util.crearLoading().then(() => {
+      this.budgetService.obtAccountsBackup().then(error => {
+        if (!error && error != 400) {
+          console.log("Open this modal :)", error);
+          this.option = option;
+          this.buildForm(budget);
+          if (this.option != this.util.AGREGAR) {
+            this.indexUniqueBudgetSelected["id_backup"] = budget.id_backup;
+            this.indexUniqueBudgetSelected["id_account"] = budget.id_account;
+            this.indexUniqueBudgetSelected["id_category"] = budget.id_category;
+            this.budgetService.indexBudgetSelected = i;
+            if (this.budgetService.isFilter()) {
+              this.budgetService.indexBudgetSelected = <number>this.budgetService.Budgets.indexOf(budget);
+              this.budgetService.indexBudgetFilterSelected = i;
+            }
+            this.budgetService.AccountsBackup.forEach((a, index) => {
+              if (a.id_account.toString() == budget.id_account.toString()) {
+                this.indexBudgetSelectModal = index + 1;
+              }
+            });
+          } else {
 
-        if (this.option != this.util.AGREGAR) {
-          this.indexUniqueBudgetSelected["id_backup"] = budget.id_backup;
-          this.indexUniqueBudgetSelected["id_account"] = budget.id_account;
-          this.indexUniqueBudgetSelected["id_category"] = budget.id_category;
-          this.budgetService.indexBudgetSelected = i;
-          if (this.budgetService.isFilter()) {
-            this.budgetService.indexBudgetSelected = <number>this.budgetService.Budgets.indexOf(budget);
-            this.budgetService.indexBudgetFilterSelected = i;
           }
-        }
-        this.util.abrirModal("#modalBudget");
+          setTimeout(()=> {
+            this.util.detenerLoading();
+            this.util.abrirModal("#modalBudget");
 
-      } else {
-        this.util.msjToast((error == 400) ? "Ocurrio un error interno del servidor": "No se encontraron registros de cuentas y categorias asociadas con el id_backup: " + this.budgetService.id_backup, "¡ -- ERROR -- !", (error == 400) ? "warning": true);
-        console.log("No open this modal :(", error)
-      }
+          }, 1000);
+
+        } else {
+          this.util.detenerLoading();
+          this.util.msjToast((error == 400) ? "Ocurrio un error interno del servidor": "No se encontraron registros de cuentas y categorias asociadas con el id_backup: " + this.budgetService.id_backup, "¡ -- ERROR -- !", (error == 400) ? "warning": true);
+          console.log("No open this modal :(", error)
+        }
+      });
     });
   }
 
@@ -171,8 +186,9 @@ export class BudgetsComponent implements OnInit {
       this.budgetService.agregarBudget(this.budget.value).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete) {
+          if (this.util.QueryComplete.isComplete || this.budgetService.Budgets.length == 0) {
             if (!result.budget.error) {
               this.budgetService.Budgets.push(result.budget.new);
               if (this.budgetService.isFilter()) this.budgetService.proccessFilter();
@@ -198,6 +214,7 @@ export class BudgetsComponent implements OnInit {
     this.budgetService.actualizarBudget(this.budget.value, this.indexUniqueBudgetSelected). subscribe(result => {
       this.util.detenerLoading();
       this.util.msjToast(result.msj, result.titulo, result.error);
+      this.util.msj = result.msj;
       if (!result.error) {
         if (!result.budget.error) {
           if (this.budgetService.isFilter()) {
@@ -223,6 +240,7 @@ export class BudgetsComponent implements OnInit {
     this.budgetService.eliminarBudget(this.indexUniqueBudgetSelected).subscribe(result => {
       this.util.detenerLoading();
       this.util.msjToast(result.msj, result.titulo, result.error);
+      this.util.msj = result.msj;
       if (!result.error) {
         if (this.budgetService.isFilter()) {
           if (this.budgetService.indexBudgetSelected != -1) this.budgetService.Budgets.splice(this.budgetService.indexBudgetSelected, 1);
@@ -241,10 +259,12 @@ export class BudgetsComponent implements OnInit {
     this.budget.patchValue({budget: this.util.zeroFile(this.budget.value.budget)});
   }
   private accountSelectedModal(event) {
+    this.indexBudgetSelectModal = event.target.selectedIndex;
+    this.budget.patchValue({id_category: ''});
     console.log("event:=", event.target.selectedIndex);
     console.log("event:=", this.budget.value.id_account);
-    this.indexBudgetSelectModal = event.target.selectedIndex;
+    if (this.budget.value.id_account == "" || this.budget.value.id_account == "10001") return;
+
     this.budgetService.obtCategoriesAccountBackup(this.indexBudgetSelectModal.toString());
-    this.budget.patchValue({id_category: ''});
   }
 }

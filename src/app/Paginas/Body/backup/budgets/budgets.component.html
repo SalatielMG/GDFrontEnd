@@ -7,7 +7,7 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div class="modal fade" id="modalBudget" tabindex="-1" role="dialog" aria-labelledby="modalBudgetTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="option != ''">
+<div class="modal fade" id="modalBudget" tabindex="-1" role="dialog" aria-labelledby="modalBudgetTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="budget != null">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -34,12 +34,12 @@
               <div class="form col">
                 <label for="id_category">Category: </label>
                 <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
-                  <ng-container *ngIf="budget.value.id_account != '10001'">
-                    <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
-                    <option *ngFor="let categories of budgetService.AccountsBackup[indexBudgetSelectModal].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
-                    <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal].categoriesAccount.length > 0" value="10002">Todas las categorias</option>
+                  <ng-container *ngIf="budget.value.id_account != '10001' && budget.value.id_account != ''">
+                    <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
+                    <option *ngFor="let categories of budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
+                    <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount.length > 0" value="10002">Todas las categorias</option>
                   </ng-container>
-                  <ng-container *ngIf="budget.value.id_account == '10001'">
+                  <ng-container *ngIf="budget.value.id_account == '10001' || budget.value.id_account == ''">
                     <option value="">Seleccione una categoria</option>
                     <ng-container *ngFor="let account of budgetService.AccountsBackup">
                       <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
@@ -123,7 +123,7 @@
 </div>
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="container text-center" *ngIf="budgetService.Budgets.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">util.msj</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
 <div *ngIf="budgetService.Budgets.length > 0" class="overflow-x-scroll">
   <table class="table table-hover table-fixed-xl">
