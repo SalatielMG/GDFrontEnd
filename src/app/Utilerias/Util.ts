@@ -24,13 +24,14 @@ export class Utilerias {
     id : "0",
   };
 
-  public emailUserMntBackup = "Generales";
-  public errorRefreshListTable = "RECARGA LA PÁGINA";
+  public timeOutMilliseconds: number = 1000;
+  public emailUserMntBackup: string = "Generales";
+  public errorRefreshListTable: string = "RECARGA LA PÁGINA";
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
-  public exprRegular_6Decimal = "([0-9]+\.?[0-9]{0,6})";
-  public exprOperation_Code = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
-  public characterAllowInOperationCode = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  public exprRegular_6Decimal: string = "([0-9]+\.?[0-9]{0,6})";
+  public exprOperation_Code: string = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
+  public characterAllowInOperationCode: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;

@@ -7,7 +7,7 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div class="modal fade" id="modalAccount" tabindex="-1" role="dialog" aria-labelledby="modalAccountTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="option != ''">
+<div class="modal fade" id="modalAccount" tabindex="-1" role="dialog" aria-labelledby="modalAccountTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="account != null">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -127,7 +127,10 @@
             <div class="form-row">
               <div class="col">
                 <label for="iso_code">Iso_code: </label>
-                <input type="text" class="form-control" id="iso_code" formControlName="iso_code" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
+                <select class="form-control" id="iso_code" formControlName="iso_code" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
+                  <option value="" *ngIf="accountService.CurrenciesAccountBackup.length > 0">Seleccione una moneda</option>
+                  <option *ngFor="let currency of accountService.CurrenciesAccountBackup" [value]="currency.iso_code">{{currency.iso_code}}</option>
+                </select>
                 <div class="invalid-feedback">{{ getError('iso_code')}}</div>
               </div>
               <div class="col">
@@ -269,12 +272,12 @@
         <td class="Celdas-Tabla width-4">{{account.rate}}</td>
         <td class="Celdas-Tabla width-4">{{account.icon_name}}</td>
         <td class="Celdas-Tabla width-4">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ACTUALIZAR, account, i)">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionAccount(util.ACTUALIZAR, account, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ELIMINAR, account, i)">
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionAccount(util.ELIMINAR, account, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -316,12 +319,12 @@
         <td class="Celdas-Tabla width-4">{{account.rate}}</td>
         <td class="Celdas-Tabla width-4">{{account.icon_name}}</td>
         <td class="Celdas-Tabla width-4">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ACTUALIZAR, account, i)">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionAccount(util.ACTUALIZAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalAccount" (click)="accionAccount(util.ELIMINAR, account, i)">
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionAccount(util.ELIMINAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>

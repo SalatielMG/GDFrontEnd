@@ -13,7 +13,7 @@ import {Automatics} from '../../../../Modelos/automatics/automatics';
 export class AutomaticsComponent implements OnInit {
 
   private option: string = "";
-  private automatic: FormGroup;
+  private automatic: FormGroup = null;
   private indeUniqueSelectedAutomatic = {};
   private indexSelectAutomaticModal: number = 0;
 
@@ -54,9 +54,9 @@ export class AutomaticsComponent implements OnInit {
   }
 
   private resultado(result) {
+    this.util.msj = result.msj;
     if (this.automaticService.pagina == 0) { // Primera Busqueda
       this.util.detenerLoading();
-      this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
@@ -74,30 +74,63 @@ export class AutomaticsComponent implements OnInit {
   }
 
   public accionAutomatic(option, automatic = new Automatics(), i = null) {
-    this.option = option;
-    this.buildForm(automatic);
-    if (this.option != this.util.AGREGAR) {
-      this.automaticService.obtAccountsBackup().then((error => {
-        if (!error && error != 400) {
-          this.indeUniqueSelectedAutomatic["id_backup"] = automatic.id_backup;
-          this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
-          this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
-          this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
-          this.automaticService.indexAutomaticSelected = i;
-          if (this.automaticService.isFilter()) {
-            this.automaticService.indexAutomaticSelected = <number>this.automaticService.Automatics.indexOf(automatic);
-            this.automaticService.indexAutomaticFilterSelected = i;
-          }
-          console.log("Open this modal :)");
-          this.util.abrirModal("#modalAutomatic");
-        } else {
-          this.util.msjToast((error == 400) ? "Ocurrio un error interno del servidor": "No se encontraron registros de cuentas y categorias asociadas con el id_backup: " + this.automaticService.id_backup, "¡ -- ERROR -- !", (error == 400) ? "warning": true);
-          console.log("No open this modal :(", error)
-        }
-      }));
-    } else {
-      this.getNewId_OperationAccountsCategories();
-    }
+      this.option = option;
+
+      if (this.option != this.util.AGREGAR) {
+        this.util.msjLoading = "Cargando cuentas y categorias del backup: " + this.automaticService.id_backup;
+        this.util.crearLoading().then(() => {
+          this.automaticService.obtAccountsBackup().then((error => {
+            //this.util.detenerLoading();
+            if (!error && error != 400) {
+              console.log("Open this modal :)", error);
+              this.buildForm(automatic);
+              this.automaticService.AccountsBackup.forEach((a, index) => {
+                if (a.id_account.toString() == automatic.id_account.toString()) {
+                  this.indexSelectAutomaticModal = index +1; return;
+                }
+              });
+              this.indeUniqueSelectedAutomatic["id_backup"] = automatic.id_backup;
+              this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
+              this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
+              this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
+              this.automaticService.indexAutomaticSelected = i;
+              if (this.automaticService.isFilter()) {
+                this.automaticService.indexAutomaticSelected = <number>this.automaticService.Automatics.indexOf(automatic);
+                this.automaticService.indexAutomaticFilterSelected = i;
+              }
+              setTimeout(()=> {
+                this.util.detenerLoading();
+                console.log("Open this modal :)");
+                this.util.abrirModal("#modalAutomatic");
+              }, this.util.timeOutMilliseconds);
+            } else {
+              this.util.msjToast((error == 400) ? "Ocurrio un error interno del servidor": "No se encontraron registros de cuentas y categorias asociadas con el id_backup: " + this.automaticService.id_backup, "¡ -- ERROR -- !", (error == 400) ? "warning": true);
+              console.log("No open this modal :(", error)
+            }
+          }));
+        });
+      } else {
+        this.util.msjLoading = "Calculando el nuevo id_operation para el operación automatica a agregar.";
+        this.util.crearLoading().then(() => {
+          this.automaticService.obtNewId_OperationAccountsCategories().subscribe(result => {
+            if (!result.error) {
+              this.option = option;
+              this.buildForm(automatic);
+
+              this.automatic.patchValue({id_operation: result.newId_Operation});
+              this.AccountsAndCategoriesBackup(result);
+              setTimeout(()=> {
+                this.util.detenerLoading();
+                console.log("Open this modal :)");
+                this.util.abrirModal("#modalAutomatic");
+              }, this.util.timeOutMilliseconds);
+            } else this.util.detenerLoading();
+          }, error => {
+            this.util.msjErrorInterno(error);
+          });
+        });
+      }
+
   }
 
   private buildForm(automatic: Automatics) {
@@ -144,21 +177,6 @@ export class AutomaticsComponent implements OnInit {
     });
     //console.log("Value Form := ", this.automatic.value.next_date.toLocaleDateString());
   }
-  private getNewId_OperationAccountsCategories() {
-    this.util.msjLoading = "Calculando el nuevo id_operation para el operación automatica a agregar.";
-    this.util.crearLoading().then(() => {
-      this.automaticService.obtNewId_OperationAccountsCategories().subscribe(result => {
-        this.util.detenerLoading();
-        if (!result.error) {
-          this.automatic.patchValue({id_operation: result.newId_Operation});
-          this.AccountsAndCategoriesBackup(result);
-          this.util.abrirModal("#modalAutomatic");
-        }
-      }, error => {
-        this.util.msjErrorInterno(error);
-      });
-    });
-  }
 
   private operation() {
     switch (this.option) {
@@ -181,8 +199,9 @@ export class AutomaticsComponent implements OnInit {
       this.automaticService.agregarAutomatic(this.automatic.value).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete) {
+          if (this.util.QueryComplete.isComplete || this.automaticService.Automatics.length == 0) {
             if (!result.automatic.error) {
               this.automaticService.Automatics.push(result.automatic.new);
               if (this.automaticService.isFilter()) this.automaticService.proccessFilter();
@@ -192,8 +211,7 @@ export class AutomaticsComponent implements OnInit {
           }
           this.closeModal();
         } else {
-          this.automatic.patchValue({initial_date: this.util.formatComponentDateCalendar( this.automatic.value.initial_date)});
-          this.automatic.patchValue({next_date: this.util.formatComponentDateCalendar( this.automatic.value.next_date)});
+          this.patchValueAfterError();
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -208,6 +226,7 @@ export class AutomaticsComponent implements OnInit {
       this.automaticService.actualizarAutomatic(this.automatic.value, this.indeUniqueSelectedAutomatic).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) {
           if (!result.automatic.error) {
             if (this.automaticService.isFilter()) {
@@ -221,8 +240,7 @@ export class AutomaticsComponent implements OnInit {
           }
           this.closeModal();
         } else {
-          this.automatic.patchValue({initial_date: this.util.formatComponentDateCalendar( this.automatic)});
-          this.automatic.patchValue({next_date: this.util.formatComponentDateCalendar( this.automatic)});
+          this.patchValueAfterError();
         }
         }, error => {
         this.util.msjErrorInterno(error);
@@ -235,6 +253,7 @@ export class AutomaticsComponent implements OnInit {
       this.automaticService.eliminarAutomatic(this.indeUniqueSelectedAutomatic).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) {
           if (this.automaticService.isFilter()) {
             if (this.automaticService.indexAutomaticSelected != -1) this.automaticService.Automatics.splice(this.automaticService.indexAutomaticSelected, 1);
@@ -255,11 +274,13 @@ export class AutomaticsComponent implements OnInit {
     this.automatic.patchValue({sign: this.util.signValue(this.automatic.value.sign)});
   }
   private accountSelectedModal(event) {
+    this.indexSelectAutomaticModal = event.target.selectedIndex;
+    this.automatic.patchValue({id_category: ''});
     console.log("event:=", event.target.selectedIndex);
     console.log("event:=", this.automatic.value.id_account);
-    this.indexSelectAutomaticModal = event.target.selectedIndex;
-    this.automaticService.obtCategoriesAccountBackup(""+this.indexSelectAutomaticModal);
-    this.automatic.patchValue({id_category: ''});
+
+    if (this.automatic.value.id_account == "") return;
+    this.automaticService.obtCategoriesAccountBackup(this.indexSelectAutomaticModal.toString());
   }
   private AccountsAndCategoriesBackup(result) {
     if (!result.accountsBackup.error) {
@@ -269,11 +290,14 @@ export class AutomaticsComponent implements OnInit {
       this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
     }
   }
-
   private patchValueFormDataDate() {
     this.automatic.patchValue({id_backup: this.automaticService.id_backup});
     this.automatic.patchValue({initial_date: this.util.formatDateTimeSQL( this.automatic,"initial_date", false)});
     this.automatic.patchValue({next_date: this.util.formatDateTimeSQL( this.automatic,"next_date", false)});
+  }
+  private patchValueAfterError() {
+    this.automatic.patchValue({initial_date: this.util.formatComponentDateCalendar( this.automatic.value.initial_date)});
+    this.automatic.patchValue({next_date: this.util.formatComponentDateCalendar( this.automatic.value.next_date)});
   }
 
 }

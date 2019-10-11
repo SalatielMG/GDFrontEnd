@@ -13,7 +13,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class AccountsComponent implements OnInit {
 
   private option: string = "";
-  private account: FormGroup;
+  private account: FormGroup = null;
+  private indexUniqueAccountSelected = {};
 
   constructor( private route: ActivatedRoute,
                private router: Router, private accountService: AccountsService, private util: Utilerias, private formBuilder: FormBuilder) {
@@ -47,9 +48,9 @@ export class AccountsComponent implements OnInit {
     }
   }
   private resultado(result) {
+    this.util.msj = result.msj;
     if (this.accountService.pagina == 0) { // Primera Busqueda
       this.util.detenerLoading();
-      this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
@@ -70,21 +71,43 @@ export class AccountsComponent implements OnInit {
 
 
   public accionAccount(option, account = new Accounts(), i = null) {
-    this.option = option;
-    this.buildForm(account);
-    if (this.option != this.util.AGREGAR) {
-      this.accountService.indexAccountSelected = i;
-      if (this.accountService.isFilter()) {
-        this.accountService.indexAccountSelected = <number>this.accountService.Accounts.indexOf(account);
-        this.accountService.indexAccountFilterSelected = i;
-      }
-    } else {
-      this.getNewId_Account();
-    }
+    this.util.msjLoading = "Cargando currencies del backup: " + this.accountService.id_backup;
+    this.util.crearLoading().then(() => {
+      this.accountService.buscarCurrenciesAccountBackup().subscribe(result => {
+        if (!result.error) {
+          this.accountService.CurrenciesAccountBackup = result.currencies;
+          this.option = option;
+          this.buildForm(account);
+          if (this.option != this.util.AGREGAR) {
+            this.indexUniqueAccountSelected["id_backup"] = account.id_backup;
+            this.indexUniqueAccountSelected["id_account"] = account.id_account;
+            this.indexUniqueAccountSelected["name"] = account.name;
+            this.accountService.indexAccountSelected = i;
+            if (this.accountService.isFilter()) {
+              this.accountService.indexAccountSelected = <number>this.accountService.Accounts.indexOf(account);
+              this.accountService.indexAccountFilterSelected = i;
+            }
+            setTimeout(()=> {
+              this.util.detenerLoading();
+              this.util.abrirModal("#modalAccount");
+            }, this.util.timeOutMilliseconds);
+          } else {
+            this.util.detenerLoading();
+            this.getNewId_Account();
+          }
+        } else {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
+
   }
   private getNewId_Account() {
     console.log("account value:", this.account);
-      this.util.msjLoading = "Calculando el nuevo id_account para la cuenta a agregar";
+      this.util.msjLoading = "Calculando el id_account para la nueva cuenta a agregar";
       this.util.crearLoading().then(() => {
         this.accountService.obtNewId_account().subscribe(result => {
           this.util.detenerLoading();
@@ -172,11 +195,12 @@ export class AccountsComponent implements OnInit {
       this.accountService.agregarAccount(this.account.value).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) { // Success insert new account
           /*
           * El nuevo account se agrega al arreglo original si esta completa la consulta y se filtran la busqueda nuevamente si esta activada.
           * */
-          if (this.util.QueryComplete.isComplete) {
+          if (this.util.QueryComplete.isComplete || this.accountService.Accounts.length == 0) {
             if (!result.account.error) { // Se recibio correctamente la consulta de la nueva cuenta creada.
               this.accountService.Accounts.push(result.account.new);
               if (this.accountService.isFilter()) {
@@ -198,9 +222,10 @@ export class AccountsComponent implements OnInit {
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
-      this.accountService.actualizarAccount(this.account.value).subscribe(result => {
+      this.accountService.actualizarAccount(this.account.value, this.indexUniqueAccountSelected).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) {
           if (!result.account.error) {
             if (this.accountService.isFilter()) {
@@ -222,9 +247,10 @@ export class AccountsComponent implements OnInit {
   private eliminarAccount() {
     this.util.msjLoading = "Eliminando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
-      this.accountService.eliminarAccount(this.account.value.id_account).subscribe(result => {
+      this.accountService.eliminarAccount(this.indexUniqueAccountSelected).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) { // splice in the original array account and filterAccount if isFilter()
           if (this.accountService.isFilter()) {
             if (this.accountService.indexAccountSelected != -1) this.accountService.Accounts.splice(this.accountService.indexAccountSelected, 1);

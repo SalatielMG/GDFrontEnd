@@ -38,8 +38,18 @@
               <div class="form col">
                 <label for="id_category">Category: </label>
                 <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
-                  <option *ngIf="automaticService.AccountsBackup[indexSelectAutomaticModal].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
-                  <option *ngFor="let categories of automaticService.AccountsBackup[indexSelectAutomaticModal].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
+                  <ng-container *ngIf="automatic.value.id_account != ''">
+                    <option *ngIf="automaticService.AccountsBackup[indexSelectAutomaticModal - 1].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
+                    <option *ngFor="let categories of automaticService.AccountsBackup[indexSelectAutomaticModal - 1].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
+                  </ng-container>
+
+                  <ng-container *ngIf="automatic.value.id_account == ''">
+                    <option value="">Seleccione una categoria</option>
+                    <ng-container *ngFor="let account of automaticService.AccountsBackup">
+                      <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                    </ng-container>
+                  </ng-container>
+
                 </select>
               </div>
             </div>

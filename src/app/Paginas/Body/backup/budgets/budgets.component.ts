@@ -59,7 +59,6 @@ export class BudgetsComponent implements OnInit {
     this.util.msj = result.msj;
     if (this.budgetService.pagina == 0) {
       this.util.detenerLoading();
-      this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
@@ -107,14 +106,11 @@ export class BudgetsComponent implements OnInit {
                 this.indexBudgetSelectModal = index + 1;
               }
             });
-          } else {
-
           }
           setTimeout(()=> {
             this.util.detenerLoading();
             this.util.abrirModal("#modalBudget");
-
-          }, 1000);
+          }, this.util.timeOutMilliseconds);
 
         } else {
           this.util.detenerLoading();
@@ -177,9 +173,7 @@ export class BudgetsComponent implements OnInit {
     }
   }
   private agregarBudget() {
-    this.budget.patchValue({id_backup: this.budgetService.id_backup});
-    this.budget.patchValue({initial_date: this.util.formatDateTimeSQL( this.budget,"initial_date", false)});
-    this.budget.patchValue({final_date: this.util.formatDateTimeSQL( this.budget,"final_date", false)});
+    this.patchValueFormDate();
     this.addZeroDecimalValue();
     this.util.msjLoading = "Agregando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
@@ -198,8 +192,7 @@ export class BudgetsComponent implements OnInit {
           }
           this.closeModal();
         } else {
-          this.budget.patchValue({initial_date: this.util.formatComponentDateCalendar( this.budget.value.initial_date)});
-          this.budget.patchValue({final_date: this.util.formatComponentDateCalendar( this.budget.value.final_date)});
+          this.patchValueAfterError();
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -207,8 +200,7 @@ export class BudgetsComponent implements OnInit {
     });
   }
   private actualizarBudget() {
-    this.budget.patchValue({initial_date: this.util.formatDateTimeSQL( this.budget,"initial_date", false)});
-    this.budget.patchValue({final_date: this.util.formatDateTimeSQL( this.budget,"final_date", false)});
+    this.patchValueFormDate();
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.budgetService.actualizarBudget(this.budget.value, this.indexUniqueBudgetSelected). subscribe(result => {
@@ -228,8 +220,7 @@ export class BudgetsComponent implements OnInit {
         }
         this.closeModal();
       } else {
-        this.budget.patchValue({initial_date: this.util.formatComponentDateCalendar( this.budget.value.initial_date)});
-        this.budget.patchValue({final_date: this.util.formatComponentDateCalendar( this.budget.value.final_date)});
+        this.patchValueAfterError();
       }
     }, error => {
       this.util.msjErrorInterno(error);
@@ -266,5 +257,14 @@ export class BudgetsComponent implements OnInit {
     if (this.budget.value.id_account == "" || this.budget.value.id_account == "10001") return;
 
     this.budgetService.obtCategoriesAccountBackup(this.indexBudgetSelectModal.toString());
+  }
+  private patchValueFormDate() {
+    this.budget.patchValue({id_backup: this.budgetService.id_backup});
+    this.budget.patchValue({initial_date: this.util.formatDateTimeSQL( this.budget,"initial_date", false)});
+    this.budget.patchValue({final_date: this.util.formatDateTimeSQL( this.budget,"final_date", false)});
+  }
+  private patchValueAfterError() {
+    this.budget.patchValue({initial_date: this.util.formatComponentDateCalendar( this.budget.value.initial_date)});
+    this.budget.patchValue({final_date: this.util.formatComponentDateCalendar( this.budget.value.final_date)});
   }
 }

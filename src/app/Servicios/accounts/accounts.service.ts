@@ -4,12 +4,14 @@ import { URL } from '../../Utilerias/URL';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {FiltersSearchAccounts} from '../../Modelos/accounts/filters-search-accounts';
+import {Currencies} from '../../Modelos/currencies/currencies';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountsService {
 
+  public CurrenciesAccountBackup: Currencies[] = [];
   public Accounts: Accounts[] = [];
   public pagina: number = 0;
   public id_backup;
@@ -109,18 +111,22 @@ export class AccountsService {
       .append('account', JSON.stringify(account));
     return this.http.post(URL + 'agregarAccount', parametro);
   }
-  public actualizarAccount(account): Observable<any> {
+  public actualizarAccount(account, indexUnique): Observable<any> {
     const  parametro = new HttpParams()
-      .append('account', JSON.stringify(account));
+      .append('account', JSON.stringify(account))
+      .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + 'actualizarAccount', parametro);
   }
-  public eliminarAccount (id_account): Observable<any> {
-    return this.http.delete(URL + 'eliminarAccount', {params: {id_backup: this.id_backup.toString(), id_account: id_account}});
+  public eliminarAccount (indexUnique): Observable<any> {
+    return this.http.delete(URL + 'eliminarAccount', {params: {indexUnique: JSON.stringify(indexUnique)}});
   }
 
   public buscarAccountsBackup(): Observable<any> {
-    // this.Accounts = [];
     return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: this.id_backup, pagina: this.pagina.toString()}});
+  }
+
+  public buscarCurrenciesAccountBackup(): Observable<any> {
+    return this.http.get(URL + 'buscarCurrenciesBackup', {params: {id_backup: this.id_backup, isCurrenciesAccount: "1"}});
   }
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {
