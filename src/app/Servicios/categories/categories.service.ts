@@ -67,8 +67,7 @@ export class CategoriesService {
         //this.obtCategoriesAccountBackup();
         this.resetValuefiltroSearch("id_category");
       }
-    }
-    if (value == "id_category") {
+    } else if (value == "id_category") {
       if (this.filtersSearch[value].value == "0") {
         this.filtersSearch[value].isFilter = false;
         this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
@@ -98,6 +97,7 @@ export class CategoriesService {
       if (this.filtersSearch["indexAccount"].value != "-1")
         this.obtCategoriesAccountBackup(this.filtersSearch["indexAccount"].value);
     }
+    if (key == "sign") this.filtersSearch[key].value = "-1";
 
     if (!this.isFilter()) {
       this.categoriesFilter = [];

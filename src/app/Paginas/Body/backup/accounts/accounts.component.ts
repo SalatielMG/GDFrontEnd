@@ -54,12 +54,17 @@ export class AccountsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
       this.util.QueryComplete.isComplete = false;
       if (this.accountService.pagina == 0) {
         this.util.QueryComplete.isComplete = result.accounts.length < this.util.limit;
+        if (!result.accountsBackup.error) {
+          this.accountService.AccountsBackup = result.accountsBackup.accounts;
+        } else {
+          this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
+        }
       }
       this.accountService.pagina += 1;
+      this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
     } else {
       this.util.QueryComplete.isComplete = this.accountService.pagina != 0;
     }
@@ -145,7 +150,7 @@ export class AccountsComponent implements OnInit {
       value_type : [account.value_type,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       include_total : [account.include_total,  Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))])],
       rate : [(this.option == this.util.AGREGAR) ? account.rate : this.util.unZeroFile(account.rate), [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
-      icon_name : [account.icon_name,  [Validators.required, Validators.maxLength(20)]],
+      icon_name : [account.icon_name,  [Validators.maxLength(20)]],
     });
     if (this.util.isDelete(this.option)) this.disable();
     console.log("account after method buildForm()", this.account);

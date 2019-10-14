@@ -1,11 +1,6 @@
 export class FiltersSearchAccounts {
   id_account = {
-    value: "",
-    valueAnt: "",
-    isFilter: false
-  };
-  name = {
-    value: "",
+    value: "0",
     valueAnt: "",
     isFilter: false
   };
@@ -19,14 +14,15 @@ export class FiltersSearchAccounts {
     valueAnt: "",
     isFilter: false
   };
+  sign = {
+    value: "-1",
+    valueAnt: "",
+    isFilter: false
+  };
+
   constructor() {
     this.id_account = {
-      value: "",
-      valueAnt: "",
-      isFilter: false
-    };
-    this.name = {
-      value: "",
+      value: "0",
       valueAnt: "",
       isFilter: false
     };
@@ -36,6 +32,11 @@ export class FiltersSearchAccounts {
       isFilter: false
     };
     this.selected = {
+      value: "-1",
+      valueAnt: "",
+      isFilter: false
+    };
+    this.sign = {
       value: "-1",
       valueAnt: "",
       isFilter: false

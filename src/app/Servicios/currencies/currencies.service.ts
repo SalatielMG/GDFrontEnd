@@ -22,4 +22,8 @@ export class CurrenciesService {
     return this.http.get(URL + 'buscarInconsistenciaDatosCurrencies', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
+  public insertCurrencies(): Observable<any> {
+    return this.http.get(URL + 'insertCurrencies');
+  }
+
 }
