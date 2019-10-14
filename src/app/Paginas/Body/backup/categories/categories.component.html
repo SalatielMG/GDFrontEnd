@@ -8,35 +8,145 @@
 </ngx-spinner>
 
 <div class="container text-center" *ngIf="categoriesService.Categories.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">El Backup no tiene categories relacionados</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="categoriesService.Categories.length > 0">
-  <table class="table table-hover">
+<div *ngIf="categoriesService.Categories.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla">#</th>
-
-      <th scope="col" class="Encabezado-Tabla">id_category</th>
-      <th scope="col" class="Encabezado-Tabla">id_account</th>
-      <th scope="col" class="Encabezado-Tabla">Nombre</th>
-      <th scope="col" class="Encabezado-Tabla">Tipo</th>
-      <th scope="col" class="Encabezado-Tabla">Numero</th>
-      <th scope="col" class="Encabezado-Tabla">Operación</th>
+      <th scope="col" class="Encabezado-Tabla width-11">#</th>
+      <th scope="col" class="Encabezado-Tabla width-11">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla width-11">
+        <div class="row inline-grid">
+          Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="categoriesService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="categoriesService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of categoriesService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(categoriesService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="categoriesService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-11">
+        <div class="row inline-grid">
+          Id_Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="categoriesService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(categoriesService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of categoriesService.AccountsBackup">
+                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.id_category}}</option>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(categoriesService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <option *ngFor="let category of categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(categoriesService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="categoriesService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-11">
+        <div class="row inline-grid">
+          Name
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="categoriesService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(categoriesService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of categoriesService.AccountsBackup">
+                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(categoriesService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <option *ngFor="let category of categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.name}}</option>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(categoriesService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="categoriesService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-11">
+        <div class="row inline-grid">
+          Sign
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.sign.value" name="sign" (ngModelChange)="categoriesService.actionFilterEvent($event, 'sign')">
+            <option value="-1">Ambos</option>
+            <option value="-">-</option>
+            <option value="+">+</option>
+          </select>
+          <button type="button" [ngClass]="(categoriesService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="categoriesService.resetValuefiltroSearch('sign')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-11">Icon_Name</th>
+      <th scope="col" class="Encabezado-Tabla width-11">Number</th>
+      <th scope="col" class="Encabezado-Tabla width-11">Operación</th>
     </thead>
-    <tbody>
-    <tr *ngFor="let category of categoriesService.Categories; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-
-      <td class="Celdas-Tabla">{{category.id_category}}</td>
-      <td class="Celdas-Tabla">{{category.account}}</td>
-      <td class="Celdas-Tabla">{{category.name}}</td>
-      <td class="Celdas-Tabla">{{(category.sign == '-') ? 'Gastos': 'Ingresos'}}</td>
-      <td class="Celdas-Tabla">{{category.number}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
-      </td>
-    </tr>
+    <tbody *ngIf="!categoriesService.isFilter()">
+      <tr *ngFor="let category of categoriesService.Categories; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold width-11">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{category.repeated}}</td>
+        <td class="Celdas-Tabla width-11">{{util.asignarNombre(category.id_category, category.nameAccount)}}</td>
+        <td class="Celdas-Tabla width-11">{{category.id_category}}</td>
+        <td class="Celdas-Tabla width-11">{{category.name}}</td>
+        <td class="Celdas-Tabla width-11">{{category.sign}}</td>
+        <td class="Celdas-Tabla width-11">{{category.icon_name}}</td>
+        <td class="Celdas-Tabla width-11">{{category.number}}</td>
+        <td class="Celdas-Tabla width-11">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionCategory(util.ACTUALIZAR, category, i)">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionCategory(util.ELIMINAR, category, i)">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
+      <div
+        [fromRoot]="true"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
+        (scrolled)="onScroll()">
+      </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="categoriesService.isFilter()">
+      <tr *ngFor="let category of categoriesService.categoriesFilter; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold width-11">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{category.repeated}}</td>
+        <td class="Celdas-Tabla width-11">{{util.asignarNombre(category.id_category, category.nameAccount)}}</td>
+        <td class="Celdas-Tabla width-11">{{category.id_category}}</td>
+        <td class="Celdas-Tabla width-11">{{category.name}}</td>
+        <td class="Celdas-Tabla width-11">{{category.sign}}</td>
+        <td class="Celdas-Tabla width-11">{{category.icon_name}}</td>
+        <td class="Celdas-Tabla width-11">{{category.number}}</td>
+        <td class="Celdas-Tabla width-11">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionCategory(util.ACTUALIZAR, category, i)">
+              <span>
+                <fa-icon [icon]="util.faPen"></fa-icon>
+              </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionCategory(util.ELIMINAR, category, i)">
+              <span>
+                <fa-icon [icon]="util.faTrash"></fa-icon>
+              </span>
+          </button>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
+
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionCategory(util.AGREGAR)">
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
+</button>

@@ -1,4 +1,4 @@
-export class FiltersSearchBudgets{
+export class FiltersSearchBudgets {
   indexAccount = {
     value: "-1",
     valueAnt: "",
