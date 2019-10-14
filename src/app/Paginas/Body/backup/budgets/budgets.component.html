@@ -58,7 +58,7 @@
                 <div class="invalid-feedback">{{ getError('amount')}}</div>
               </div>
               <div class="form col">
-                <label for="budget">Amount</label>
+                <label for="budget">Budget</label>
                 <input type="number" class="form-control" id="budget" formControlName="budget" [step]="util.stepDecimal" [ngClass]="(getError('budget') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('budget')}}</div>
               </div>

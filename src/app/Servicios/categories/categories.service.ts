@@ -21,147 +21,13 @@ export class CategoriesService {
   public indexCategoryFilterSelected: number = 0;
   public AccountsBackup: Accounts[] = [];
 
-  constructor(private http: HttpClient, private accountsCategoriesServices: AccountscategoriesService) { }
+
+  constructor(private http: HttpClient, public accountsCategoriesServices: AccountscategoriesService) { }
 
   public resetVariables() {
     this.Categories = [];
     this.pagina = 0;
-    this.filtersSearch = new FiltersSearchCategories();
-    this.categoriesFilter = [];
   }
-  /*
-  // -------------------------------------------------- Filter Seacrh --------------------------------------------------
-  public obtCategoriesAccountBackup(index) {
-    index = parseInt(index);
-    this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString()).subscribe(result => {
-      if (!result.error) {
-        this.AccountsBackup[index].categoriesAccount = result.categories;
-        console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
-      }
-    }, error => {
-      console.log(error);
-    });
-  }
-  public obtAccountsBackup() {
-    return new Promise((resolve, reject) => {
-      this.accountsCategoriesServices.obtAccountsBackup(this.id_backup).subscribe(result => {
-        if (!result.error){
-          this.AccountsBackup = result.accounts;
-          console.log("new Accounts query := ", this.AccountsBackup);
-        }
-        resolve(result.error);
-      }, error => {
-        console.log("error:=", error);
-        resolve(true);
-      });
-    });
-  }
-  public actionFilterEvent(event, value, isKeyUp = false) {
-    if (value == "indexAccount") {
-      if (this.filtersSearch[value].value == "-1") {
-        this.obtAccountsBackup();
-        this.filtersSearch[value].isFilter = false;
-        this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
-        this.proccessFilter();
-        return;
-      } else {
-        //this.obtCategoriesAccountBackup();
-        this.resetValuefiltroSearch("id_category");
-      }
-    }
-    if (value == "id_category" || value == "name") {
-      if (this.filtersSearch[value].value == "0") {
-        this.filtersSearch["id_category"].isFilter = false;
-        this.filtersSearch["name"].isFilter = false;
-        this.filtersSearch["id_category"].valueAnt = this.filtersSearch["id_category"].value;
-        this.filtersSearch["name"].valueAnt = this.filtersSearch["name"].value;
-        this.proccessFilter();
-        return;
-      } else  {
-        if (this.filtersSearch[value].value == this.filtersSearch[value].valueAnt) return;
-        if (value == "id_category") {
-          this.filtersSearch["name"].isFilter = true;
-          this.filtersSearch["name"].valueAnt = this.filtersSearch["name"].value;
-        } else if (value == "name") {
-          this.filtersSearch["id_category"].isFilter = true;
-          this.filtersSearch["id_category"].valueAnt = this.filtersSearch["id_category"].value;
-        }
-      }
-    } else {
-      if (isKeyUp && event.key != "Enter") return;
-      if (this.filtersSearch[value].value == "") return;
-    }
-    if (this.filtersSearch[value].value == this.filtersSearch[value].valueAnt) return;
-    // this.resetFilterisNotActive();
-    this.filtersSearch[value].isFilter = true;
-    this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
-    this.proccessFilter();
-  }
-  public resetValuefiltroSearch(key) {
-    this.filtersSearch[key].value =  "";
-    this.filtersSearch[key].valueAnt =  "";
-    this.filtersSearch[key].isFilter =  false;
-    if (key == "indexAccount") {
-      this.filtersSearch[key].value = "-1";
-      this.obtAccountsBackup();
-    }
-    if (key == "id_category" || key == "name") {
-      this.filtersSearch["id_category"].value = "0";
-      this.filtersSearch["name"].value = "0";
-      if (this.filtersSearch["indexAccount"].value != "-1")
-        this.obtCategoriesAccountBackup(this.filtersSearch["indexAccount"].value);
-    }
-
-    if (!this.isFilter()) {
-      this.categoriesFilter = [];
-      return;
-    }
-    this.proccessFilter();
-  }
-  public resetFilterisNotActive() {
-    if (!this.isFilter()) { // Search No Active
-      this.categoriesFilter = [];
-      this.categoriesFilter =  this.categoriesFilter.concat(this.Categories);
-    }
-  }
-  public proccessFilter() {
-    let temp = [];
-    this.Categories.forEach((budgets) => {
-
-      let bnd = true;
-      for (let k in this.filtersSearch) {
-        if (this.filtersSearch[k].isFilter) {
-          if ((k == "indexAccount" && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
-            let kk = (k == "indexAccount") ? "id_account": k;
-            if (budgets[kk].toString() != ((k == "indexAccount") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account : this.filtersSearch[kk].value)) {
-              bnd = false;
-              break;
-            }
-          } else {
-            if (!budgets[k].toString().includes(this.filtersSearch[k].value)) {
-              bnd = false;
-              break;
-            }
-          }
-        }
-      }
-
-      if (bnd) {
-        temp.push(budgets);
-      }
-
-    });
-    this.budgetsFilter = [];
-    this.budgetsFilter = this.budgetsFilter.concat(temp);
-    temp = null;
-  }
-  public isFilter(): boolean {
-    for (let key in this.filtersSearch)
-      if (this.filtersSearch[key].isFilter) return true;
-    return false
-  }
-  // -------------------------------------------------- Filter Seacrh --------------------------------------------------
-  */
 
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
   public obtCategoriesAccountBackup(index) {
@@ -247,19 +113,19 @@ export class CategoriesService {
   }
   public proccessFilter() {
     let temp = [];
-    this.Categories.forEach((budgets) => {
+    this.Categories.forEach((category) => {
 
       let bnd = true;
       for (let k in this.filtersSearch) {
         if (this.filtersSearch[k].isFilter) {
           if ((k == "indexAccount" && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
             let kk = (k == "indexAccount") ? "id_account": k;
-            if (budgets[kk].toString() != ((k == "indexAccount") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account : this.filtersSearch[kk].value)) {
+            if (category[kk].toString() != ((k == "indexAccount") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account : this.filtersSearch[kk].value)) {
               bnd = false;
               break;
             }
           } else {
-            if (!budgets[k].toString().includes(this.filtersSearch[k].value)) {
+            if (!category[k].toString().includes(this.filtersSearch[k].value)) {
               bnd = false;
               break;
             }
@@ -268,7 +134,7 @@ export class CategoriesService {
       }
 
       if (bnd) {
-        temp.push(budgets);
+        temp.push(category);
       }
 
     });
@@ -283,12 +149,32 @@ export class CategoriesService {
   }
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
 
+  public obtNewId_Category(): Observable<any> {
+    return this.http.get(URL + 'obtNewId_Category', {params: {id_backup: this.id_backup}});
+  }
   public buscarCategoriesBackup(): Observable<any> {
-    return this.http.get(URL + 'buscarCategoriesBackup', {params:{id_backup: this.id_backup}});
+    return this.http.get(URL + 'buscarCategoriesBackup', {params: {id_backup: this.id_backup, pagina: this.pagina}});
   }
 
   public inconsistenciaDato(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosCategories', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  }
+
+  public agregarCategory(category): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('category', JSON.stringify(category));
+    return this.http.post(URL + 'agregarCategoria', parametro);
+  }
+
+  public actualizarCategory(category, indexUnique): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('category', JSON.stringify(category))
+      .append("indexUnique", JSON.stringify(indexUnique));
+    return this.http.post(URL + 'actualizarCategoria', parametro);
+  }
+  public eliminarCategory(indexUnique): Observable<any> {
+    return this.http.delete(URL + "eliminarCategoria", {params: {indexUnique: JSON.stringify(indexUnique)}});
+
   }
 
 }

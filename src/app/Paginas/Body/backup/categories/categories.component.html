@@ -4,19 +4,94 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
 <div class="container text-center" *ngIf="categoriesService.Categories.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
+<<<<<<< HEAD
+=======
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalCategory" tabindex="-1" role="dialog" aria-labelledby="modalCategoryTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="category != null">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalCategoryTitle">{{option}} Category {{category.value.id_category}}</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="category" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar categoria num: {{(categoriesService.indexCategorySelected + 1)}} del Respaldo Id_backup: {{categoriesService.id_backup}} ?</h5>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_account">Account: </label>
+                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'">
+                  <option *ngIf="categoriesService.AccountsBackup.length > 0" value="">Seleccione una cuenta</option>
+                  <option *ngFor="let account of categoriesService.AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="sign">Sign: </label>
+                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <option value="-">-</option>
+                  <option value="+">+</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('sign')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_category">Id_Category</label>
+                <input type="number" class="form-control" id="id_category" formControlName="id_category" readonly="true" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('id_category')}}</div>
+              </div>
+              <div class="form col">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="(getError('name') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('name')}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="icon_name">Icon_Name</label>
+                <input type="text" class="form-control" id="icon_name" formControlName="icon_name" [ngClass]="(getError('icon_name') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('icon_name')}}</div>
+              </div>
+              <div class="form col">
+                <label for="number">Number</label>
+                <input type="number" class="form-control" id="number" formControlName="number" [ngClass]="(getError('number') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('number')}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="category.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
 <div *ngIf="categoriesService.Categories.length > 0" class="overflow-x-scroll">
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla width-11">#</th>
-      <th scope="col" class="Encabezado-Tabla width-11">Repeated</th>
-      <th scope="col" class="Encabezado-Tabla width-11">
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="categoriesService.actionFilterEvent($event, 'indexAccount')">
@@ -28,7 +103,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-11">
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Category
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="categoriesService.actionFilterEvent($event, 'id_category')">
@@ -48,7 +123,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-11">
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Name
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="categoriesService.actionFilterEvent($event, 'id_category')">
@@ -68,7 +143,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-11">
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Sign
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.sign.value" name="sign" (ngModelChange)="categoriesService.actionFilterEvent($event, 'sign')">
@@ -81,21 +156,21 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-11">Icon_Name</th>
-      <th scope="col" class="Encabezado-Tabla width-11">Number</th>
-      <th scope="col" class="Encabezado-Tabla width-11">Operación</th>
+      <th scope="col" class="Encabezado-Tabla">Icon_Name</th>
+      <th scope="col" class="Encabezado-Tabla">Number</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
     <tbody *ngIf="!categoriesService.isFilter()">
       <tr *ngFor="let category of categoriesService.Categories; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-11">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic">{{category.repeated}}</td>
-        <td class="Celdas-Tabla width-11">{{util.asignarNombre(category.id_category, category.nameAccount)}}</td>
-        <td class="Celdas-Tabla width-11">{{category.id_category}}</td>
-        <td class="Celdas-Tabla width-11">{{category.name}}</td>
-        <td class="Celdas-Tabla width-11">{{category.sign}}</td>
-        <td class="Celdas-Tabla width-11">{{category.icon_name}}</td>
-        <td class="Celdas-Tabla width-11">{{category.number}}</td>
-        <td class="Celdas-Tabla width-11">
+        <td scope="row" class="Celdas-Tabla">{{(i+1)}}</td>
+        <td class="Celdas-Tabla">{{category.repeated}}</td>
+        <td class="Celdas-Tabla">{{category.nameAccount}}</td>
+        <td class="Celdas-Tabla">{{category.id_category}}</td>
+        <td class="Celdas-Tabla">{{category.name}}</td>
+        <td class="Celdas-Tabla">{{category.sign}}</td>
+        <td class="Celdas-Tabla">{{category.icon_name}}</td>
+        <td class="Celdas-Tabla">{{category.number}}</td>
+        <td class="Celdas-Tabla">
           <button type="button" class="btn btn-primary btn-update" (click)="accionCategory(util.ACTUALIZAR, category, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
@@ -120,15 +195,15 @@
     </tbody>
     <tbody *ngIf="categoriesService.isFilter()">
       <tr *ngFor="let category of categoriesService.categoriesFilter; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-11">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic">{{category.repeated}}</td>
-        <td class="Celdas-Tabla width-11">{{util.asignarNombre(category.id_category, category.nameAccount)}}</td>
-        <td class="Celdas-Tabla width-11">{{category.id_category}}</td>
-        <td class="Celdas-Tabla width-11">{{category.name}}</td>
-        <td class="Celdas-Tabla width-11">{{category.sign}}</td>
-        <td class="Celdas-Tabla width-11">{{category.icon_name}}</td>
-        <td class="Celdas-Tabla width-11">{{category.number}}</td>
-        <td class="Celdas-Tabla width-11">
+        <td scope="row" class="Celdas-Tabla">{{(i+1)}}</td>
+        <td class="Celdas-Tabla">{{category.repeated}}</td>
+        <td class="Celdas-Tabla">{{category.nameAccount}}</td>
+        <td class="Celdas-Tabla">{{category.id_category}}</td>
+        <td class="Celdas-Tabla">{{category.name}}</td>
+        <td class="Celdas-Tabla">{{category.sign}}</td>
+        <td class="Celdas-Tabla">{{category.icon_name}}</td>
+        <td class="Celdas-Tabla">{{category.number}}</td>
+        <td class="Celdas-Tabla">
           <button type="button" class="btn btn-primary btn-update" (click)="accionCategory(util.ACTUALIZAR, category, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>

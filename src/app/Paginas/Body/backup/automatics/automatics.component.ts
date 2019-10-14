@@ -60,13 +60,13 @@ export class AutomaticsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.automaticService.Automatics = this.automaticService.Automatics.concat(result.automatics);
       this.util.QueryComplete.isComplete = false;
-      this.AccountsAndCategoriesBackup(result);
       if (this.automaticService.pagina == 0) {
         this.util.QueryComplete.isComplete = result.automatics.length < this.util.limit;
+        this.AccountsAndCategoriesBackup(result);
       }
       this.automaticService.pagina += 1;
+      this.automaticService.Automatics = this.automaticService.Automatics.concat(result.automatics);
     } else {
       this.util.QueryComplete.isComplete = this.automaticService.pagina != 0;
     }
