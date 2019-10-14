@@ -62,14 +62,14 @@ export class BudgetsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.budgetService.Budgets = this.budgetService.Budgets.concat(result.budgets);
       this.util.QueryComplete.isComplete = false;
       // Accounts ***
-      this.AccountsAndCategoriesBackup(result);
       if (this.budgetService.pagina == 0) {
         this.util.QueryComplete.isComplete = result.budgets.length < this.util.limit;
+        this.AccountsAndCategoriesBackup(result);
       }
       this.budgetService.pagina += 1;
+      this.budgetService.Budgets = this.budgetService.Budgets.concat(result.budgets);
     } else {
       this.util.QueryComplete.isComplete = this.budgetService.pagina != 0;
     }
@@ -175,7 +175,7 @@ export class BudgetsComponent implements OnInit {
   private agregarBudget() {
     this.patchValueFormDate();
     this.addZeroDecimalValue();
-    this.util.msjLoading = "Agregando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
+    this.util.msjLoading = "Agregando nuevo presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
       this.budgetService.agregarBudget(this.budget.value).subscribe(result => {
         this.util.detenerLoading();
@@ -203,46 +203,50 @@ export class BudgetsComponent implements OnInit {
     this.patchValueFormDate();
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
-    this.budgetService.actualizarBudget(this.budget.value, this.indexUniqueBudgetSelected). subscribe(result => {
-      this.util.detenerLoading();
-      this.util.msjToast(result.msj, result.titulo, result.error);
-      this.util.msj = result.msj;
-      if (!result.error) {
-        if (!result.budget.error) {
-          if (this.budgetService.isFilter()) {
-            if (this.budgetService.indexBudgetSelected != -1) this.budgetService.Budgets[this.budgetService.indexBudgetSelected] = result.budget.update;
-            this.budgetService[this.budgetService.indexBudgetFilterSelected] = result.budget.update;
+    this.util.crearLoading().then(() => {
+      this.budgetService.actualizarBudget(this.budget.value, this.indexUniqueBudgetSelected). subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
+        if (!result.error) {
+          if (!result.budget.error) {
+            if (this.budgetService.isFilter()) {
+              if (this.budgetService.indexBudgetSelected != -1) this.budgetService.Budgets[this.budgetService.indexBudgetSelected] = result.budget.update;
+              this.budgetService.budgetsFilter[this.budgetService.indexBudgetFilterSelected] = result.budget.update;
+            } else {
+              this.budgetService.Budgets[this.budgetService.indexBudgetSelected] = result.budget.update;
+            }
           } else {
-            this.budgetService.Budgets[this.budgetService.indexBudgetSelected] = result.budget.update;
+            this.util.msjToast(result.budget.msj, this.util.errorRefreshListTable, result.budget.error);
           }
+          this.closeModal();
         } else {
-          this.util.msjToast(result.budget.msj, this.util.errorRefreshListTable, result.budget.error);
+          this.patchValueAfterError();
         }
-        this.closeModal();
-      } else {
-        this.patchValueAfterError();
-      }
-    }, error => {
-      this.util.msjErrorInterno(error);
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
     });
   }
   private eliminarBudget() {
     this.util.msjLoading = "Eliminando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
-    this.budgetService.eliminarBudget(this.indexUniqueBudgetSelected).subscribe(result => {
-      this.util.detenerLoading();
-      this.util.msjToast(result.msj, result.titulo, result.error);
-      this.util.msj = result.msj;
-      if (!result.error) {
-        if (this.budgetService.isFilter()) {
-          if (this.budgetService.indexBudgetSelected != -1) this.budgetService.Budgets.splice(this.budgetService.indexBudgetSelected, 1);
-          this.budgetService.budgetsFilter.splice(this.budgetService.indexBudgetFilterSelected, 1);
-        } else {
-          this.budgetService.Budgets.splice(this.budgetService.indexBudgetSelected, 1);
+    this.util.crearLoading().then(() => {
+      this.budgetService.eliminarBudget(this.indexUniqueBudgetSelected).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
+        if (!result.error) {
+          if (this.budgetService.isFilter()) {
+            if (this.budgetService.indexBudgetSelected != -1) this.budgetService.Budgets.splice(this.budgetService.indexBudgetSelected, 1);
+            this.budgetService.budgetsFilter.splice(this.budgetService.indexBudgetFilterSelected, 1);
+          } else {
+            this.budgetService.Budgets.splice(this.budgetService.indexBudgetSelected, 1);
+          }
+          this.closeModal();
         }
-        this.closeModal();
-      }
-    }, error => {
-      this.util.msjErrorInterno(error);
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
     });
   }
   private addZeroDecimalValue() {
