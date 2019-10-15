@@ -36,13 +36,13 @@
                 <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
                   <ng-container *ngIf="budget.value.id_account != '10001' && budget.value.id_account != ''">
                     <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
-                    <option *ngFor="let categories of budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
+                    <option *ngFor="let category of budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
                     <option *ngIf="budgetService.AccountsBackup[indexBudgetSelectModal - 1].categoriesAccount.length > 0" value="10002">Todas las categorias</option>
                   </ng-container>
                   <ng-container *ngIf="budget.value.id_account == '10001' || budget.value.id_account == ''">
                     <option value="">Seleccione una categoria</option>
                     <ng-container *ngFor="let account of budgetService.AccountsBackup">
-                      <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                      <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
                     </ng-container>
                     <option value="10002">Todas las categorias</option>
                   </ng-container>
@@ -150,12 +150,16 @@
             <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) == -1">
               <option value="0">Todas</option>
               <ng-container *ngFor="let account of budgetService.AccountsBackup">
-                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                <ng-container *ngFor="let category of account.categoriesAccount">
+                  <option [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                </ng-container>
               </ng-container>
             </ng-container>
             <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) != -1">
               <option value="0" *ngIf="budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-              <option *ngFor="let category of budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.name}}</option>
+              <ng-container *ngFor="let category of budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                <option [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+              </ng-container>
             </ng-container>
           </select>
           <button type="button" [ngClass]="(budgetService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('id_category')">

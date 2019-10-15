@@ -15,6 +15,7 @@ export class AccountsComponent implements OnInit {
   private option: string = "";
   private account: FormGroup = null;
   private indexUniqueAccountSelected = {};
+  private currencySelected = "";
 
   constructor( private route: ActivatedRoute,
                private router: Router, private accountService: AccountsService, private util: Utilerias, private formBuilder: FormBuilder) {
@@ -54,6 +55,8 @@ export class AccountsComponent implements OnInit {
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
+      this.accountService.CurrenciesSelected = result.currenciesSelected;
+      this.accountService.CurrenciesGralBackup = result.currencies;
       this.util.QueryComplete.isComplete = false;
       if (this.accountService.pagina == 0) {
         this.util.QueryComplete.isComplete = result.accounts.length < this.util.limit;
@@ -80,7 +83,8 @@ export class AccountsComponent implements OnInit {
     this.util.crearLoading().then(() => {
       this.accountService.buscarCurrenciesAccountBackup().subscribe(result => {
         if (!result.error) {
-          this.accountService.CurrenciesAccountBackup = result.currencies;
+          this.accountService.CurrenciesSelected = result.currenciesSelected;
+          this.accountService.CurrenciesGralBackup = result.currencies;
           this.option = option;
           this.buildForm(account);
           if (this.option != this.util.AGREGAR) {
@@ -145,7 +149,7 @@ export class AccountsComponent implements OnInit {
       negative_limit : [account.negative_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       positive_max : [(this.option == this.util.AGREGAR) ? account.positive_max : this.util.unZeroFile(account.positive_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
       negative_max : [(this.option == this.util.AGREGAR) ? account.negative_max : this.util.unZeroFile(account.negative_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
-      iso_code : [account.iso_code, [Validators.required, Validators.maxLength(3)]],
+      iso_code : [(this.option == this.util.AGREGAR)? ((this.accountService.CurrenciesSelected.length > 0) ? this.accountService.CurrenciesSelected[0].iso_code : ""): account.iso_code, [Validators.required, Validators.maxLength(3)]],
       selected : [account.selected,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       value_type : [account.value_type,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       include_total : [account.include_total,  Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))])],
@@ -217,6 +221,8 @@ export class AccountsComponent implements OnInit {
             }
           }
           this.closeModal();
+        } else {
+          this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -243,6 +249,8 @@ export class AccountsComponent implements OnInit {
             this.util.msjToast(result.account.msj, this.util.errorRefreshListTable, result.account.error);
           }
           this.closeModal();
+        } else {
+          this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});
         }
       }, error => {
         this.util.msjErrorInterno(error);

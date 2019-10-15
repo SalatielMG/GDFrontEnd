@@ -12,7 +12,8 @@ import {AccountscategoriesService} from './accountscategories.service';
 })
 export class AccountsService {
 
-  public CurrenciesAccountBackup: Currencies[] = [];
+  public CurrenciesSelected: Currencies[] = [];
+  public CurrenciesGralBackup: Currencies[] = [];
   public Accounts: Accounts[] = [];
   public pagina: number = 0;
   public id_backup;
@@ -143,12 +144,12 @@ export class AccountsService {
     return this.http.delete(URL + 'eliminarAccount', {params: {indexUnique: JSON.stringify(indexUnique)}});
   }
 
-  public buscarAccountsBackup(): Observable<any> {
-    return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: this.id_backup, pagina: this.pagina.toString()}});
+  public buscarAccountsBackup(symbolName = "1"): Observable<any> {
+    return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: this.id_backup, pagina: this.pagina.toString(), symbolName: symbolName}});
   }
 
-  public buscarCurrenciesAccountBackup(): Observable<any> {
-    return this.http.get(URL + 'buscarCurrenciesBackup', {params: {id_backup: this.id_backup, isCurrenciesAccount: "1"}});
+  public buscarCurrenciesAccountBackup(isCurrenciesAccount = "1"): Observable<any> {
+    return this.http.get(URL + 'buscarCurrenciesBackup', {params: {id_backup: this.id_backup, isCurrenciesAccount: isCurrenciesAccount }});
   }
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {

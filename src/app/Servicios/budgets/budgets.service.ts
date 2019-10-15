@@ -32,7 +32,7 @@ export class BudgetsService {
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
   public obtCategoriesAccountBackup(index) {
     index = parseInt(index);
-    this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString()).subscribe(result => {
+    this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString(), "0").subscribe(result => {
       if (!result.error) {
         this.AccountsBackup[index].categoriesAccount = result.categories;
         console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
@@ -43,7 +43,7 @@ export class BudgetsService {
   }
   public obtAccountsBackup() {
     return new Promise((resolve, reject) => {
-      this.accountsCategoriesServices.obtAccountsBackup(this.id_backup).subscribe(result => {
+      this.accountsCategoriesServices.obtAccountsBackup(this.id_backup, '1', "0").subscribe(result => {
         if (!result.error){
           this.AccountsBackup = result.accounts;
           console.log("new Accounts query := ", this.AccountsBackup);

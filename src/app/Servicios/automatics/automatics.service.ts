@@ -54,7 +54,7 @@ export class AutomaticsService {
     });
   }
   public actionFilterEvent(event, value, isKeyUp = false) {
-    if (value == "indexAccount") {
+    if (value == "indexAccount" || value == "sign") {
       if (this.filtersSearch[value].value == "-1") {
         this.obtAccountsBackup();
         this.filtersSearch[value].isFilter = false;
@@ -96,7 +96,7 @@ export class AutomaticsService {
       if (this.filtersSearch["indexAccount"].value != "-1")
         this.obtCategoriesAccountBackup(this.filtersSearch["indexAccount"].value);
     }
-
+    if (key == "sign") this.filtersSearch[key].value = "-1";
     if (!this.isFilter()) {
       this.automaticsFilter = [];
       return;
@@ -116,9 +116,10 @@ export class AutomaticsService {
       let bnd = true;
       for (let k in this.filtersSearch) {
         if (this.filtersSearch[k].isFilter) {
-          if ((k == "indexAccount" && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
-            let kk = (k == "indexAccount") ? "id_account": k;
-            if (automatic[kk].toString() != ((k == "indexAccount") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account : this.filtersSearch[kk].value)) {
+          if (((k == "indexAccount" || k == "sign") && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
+            let key = (k == "indexAccount") ? "id_account": k;
+            let value = (key == "id_account") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account.toString() : this.filtersSearch[key].value.toString();
+            if (automatic[key].toString() != value) {
               bnd = false;
               break;
             }
@@ -152,7 +153,6 @@ export class AutomaticsService {
   }
 
   public buscarAutomaticsBackup(): Observable<any> {
-    this.Automatics = [];
     return this.http.get(URL + 'buscarAutomaticsBackup', {params: {idBack: this.id_backup, pagina: this.pagina}});
   }
 

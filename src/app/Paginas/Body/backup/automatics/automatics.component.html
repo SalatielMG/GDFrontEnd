@@ -38,15 +38,20 @@
               <div class="form col">
                 <label for="id_category">Category: </label>
                 <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
-                  <ng-container *ngIf="automatic.value.id_account != ''">
+
+                  <ng-container *ngIf="automatic.value.id_account != ''"><!-- Listar todas las categorias de la cuenta seleccionada-->
                     <option *ngIf="automaticService.AccountsBackup[indexSelectAutomaticModal - 1].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
-                    <option *ngFor="let categories of automaticService.AccountsBackup[indexSelectAutomaticModal - 1].categoriesAccount" [value]="categories.id_category">{{categories.name}}</option>
+                    <ng-container *ngFor="let category of automaticService.AccountsBackup[indexSelectAutomaticModal - 1].categoriesAccount">
+                      <option *ngIf="category.sign == automatic.value.sign" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                    </ng-container>
                   </ng-container>
 
-                  <ng-container *ngIf="automatic.value.id_account == ''">
+                  <ng-container *ngIf="automatic.value.id_account == ''"><!-- Listar todas las categorias de todas la cuentas-->
                     <option value="">Seleccione una categoria</option>
                     <ng-container *ngFor="let account of automaticService.AccountsBackup">
-                      <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                      <ng-container *ngFor="let category of account.categoriesAccount">
+                        <option *ngIf="category.sign == automatic.value.sign" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                      </ng-container>
                     </ng-container>
                   </ng-container>
 
@@ -90,7 +95,7 @@
               </div>
               <div class="form col">
                 <label for="sign">Sign</label>
-                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'" (change)="automatic.patchValue({id_category: ''})">
                   <option value="-">-</option>
                   <option value="+">+</option>
                 </select>
@@ -186,6 +191,18 @@
       </th>
       <th scope="col" class="Encabezado-Tabla width-5">
         <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="automaticService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of automaticService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
+          </select>
+          <button type="button" [ngClass]="(automaticService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
           Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'indexAccount')">
             <option value="-1" *ngIf="automaticService.AccountsBackup.length > 0">Todas</option>
@@ -198,17 +215,60 @@
       </th>
       <th scope="col" class="Encabezado-Tabla width-5">
         <div class="row inline-grid">
+          Id_Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticService.actionFilterEvent($event, 'id_category')">
+
+            <ng-container *ngIf="util.numberFormat(automaticService.filtersSearch.indexAccount.value) == -1"><!-- Listar todas categorias de todas la cuentas -->
+              <ng-container *ngIf="automaticService.filtersSearch.sign.value == '-1' || automaticService.filtersSearch.id_category.value != '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of automaticService.AccountsBackup">
+                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="automaticService.filtersSearch.sign.value != '-1' && automaticService.filtersSearch.id_category.value == '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of automaticService.AccountsBackup">
+                  <ng-container *ngFor="let category of account.categoriesAccount">
+                    <option *ngIf="category.sign == automaticService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="util.numberFormat(automaticService.filtersSearch.indexAccount.value) != -1"><!-- Listar todas categorias de la cuenta seleccionada -->
+              <ng-container *ngIf="automaticService.filtersSearch.sign.value == '-1' || automaticService.filtersSearch.id_category.value != '0'">
+                <option value="0" *ngIf="automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <option *ngFor="let category of automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
+              </ng-container>
+
+              <ng-container *ngIf="automaticService.filtersSearch.sign.value != '-1' && automaticService.filtersSearch.id_category.value == '0'">
+                <option value="0" *ngIf="automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <ng-container *ngFor="let category of automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                  <option *ngIf="category.sign == automaticService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </select>
+          <button type="button" [ngClass]="(automaticService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
           Category
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticService.actionFilterEvent($event, 'id_category')">
             <ng-container *ngIf="util.numberFormat(automaticService.filtersSearch.indexAccount.value) == -1">
               <option value="0">Todas</option>
               <ng-container *ngFor="let account of automaticService.AccountsBackup">
-                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
               </ng-container>
             </ng-container>
             <ng-container *ngIf="util.numberFormat(automaticService.filtersSearch.indexAccount.value) != -1">
               <option value="0" *ngIf="automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-              <option *ngFor="let category of automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.name}}</option>
+              <option *ngFor="let category of automaticService.AccountsBackup[util.numberFormat(automaticService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
             </ng-container>
           </select>
           <button type="button" [ngClass]="(automaticService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('id_category')">
@@ -229,7 +289,19 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">Sign</th>
+      <th scope="col" class="Encabezado-Tabla width-5">
+        <div class="row inline-grid">
+          Sign
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.sign.value" name="sign" (ngModelChange)="automaticService.actionFilterEvent($event, 'sign')">
+            <option value="-1">Ambos</option>
+            <option value="-">-</option>
+            <option value="+">+</option>
+          </select>
+          <button type="button" [ngClass]="(automaticService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticService.resetValuefiltroSearch('sign')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
       <th scope="col" class="Encabezado-Tabla width-5">Detail</th>
       <th scope="col" class="Encabezado-Tabla width-5">Initial_date</th>
       <th scope="col" class="Encabezado-Tabla width-5">Next_date</th>
@@ -244,7 +316,9 @@
         <td scope="row" class="Celdas-Tabla font-weight-bold width-5">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.id_account}}</td>
         <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.id_category}}</td>
         <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.period}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.repeat_number}}</td>
@@ -286,7 +360,9 @@
         <td scope="row" class="Celdas-Tabla width-5">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.id_account}}</td>
         <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla width-5">{{automatic.id_category}}</td>
         <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.period}}</td>
         <td class="Celdas-Tabla width-5">{{automatic.repeat_number}}</td>

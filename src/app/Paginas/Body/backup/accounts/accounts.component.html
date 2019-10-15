@@ -128,8 +128,8 @@
               <div class="col">
                 <label for="iso_code">Iso_code: </label>
                 <select class="form-control" id="iso_code" formControlName="iso_code" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
-                  <option value="" *ngIf="accountService.CurrenciesAccountBackup.length > 0">Seleccione una moneda</option>
-                  <option *ngFor="let currency of accountService.CurrenciesAccountBackup" [value]="currency.iso_code">{{currency.iso_code}}</option>
+                  <option value="" *ngIf="accountService.CurrenciesGralBackup.length > 0">Seleccione una moneda</option>
+                  <option *ngFor="let currency of accountService.CurrenciesGralBackup" [value]="currency.iso_code">{{currency.iso_code}} ({{currency.symbol}})</option>
                 </select>
                 <div class="invalid-feedback">{{ getError('iso_code')}}</div>
               </div>
@@ -191,16 +191,19 @@
         <div class="row inline-grid">
           Id_Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
+
             <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
               <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
               <option *ngFor="let account of accountService.AccountsBackup" [value]="account.id_account">{{account.id_account}}</option>
             </ng-container>
+
             <ng-container *ngIf="accountService.filtersSearch.sign.value != '-1' && accountService.filtersSearch.id_account.value == '0'">
               <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
               <ng-container  *ngFor="let account of accountService.AccountsBackup">
                 <option *ngIf="account.sign == accountService.filtersSearch.sign.value" [value]="account.id_account">{{account.id_account}}</option>
               </ng-container>
             </ng-container>
+
             </select>
           <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
             <span aria-hidden="true">&times;</span>

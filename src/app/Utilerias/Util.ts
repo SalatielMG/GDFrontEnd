@@ -124,6 +124,9 @@ export class Utilerias {
   public signValue(sign) {
     return (sign == "+") ? "1" : "0" ;
   }
+  public signUnvalue(sign) {
+    return (sign == "1" ? "+": "-");
+  }
   public reegex_MaxLengthNumber(lenght) {
     return "([0-9]{1," + lenght + "})";
   }

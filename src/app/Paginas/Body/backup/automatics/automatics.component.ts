@@ -93,6 +93,7 @@ export class AutomaticsComponent implements OnInit {
               this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
               this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
               this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
+              this.indeUniqueSelectedAutomatic["sign"] = this.util.signValue(automatic.sign);
               this.automaticService.indexAutomaticSelected = i;
               if (this.automaticService.isFilter()) {
                 this.automaticService.indexAutomaticSelected = <number>this.automaticService.Automatics.indexOf(automatic);
@@ -298,6 +299,7 @@ export class AutomaticsComponent implements OnInit {
   private patchValueAfterError() {
     this.automatic.patchValue({initial_date: this.util.formatComponentDateCalendar( this.automatic.value.initial_date)});
     this.automatic.patchValue({next_date: this.util.formatComponentDateCalendar( this.automatic.value.next_date)});
+    this.automatic.patchValue({sign: this.util.signUnvalue(this.automatic.value.sign)});
   }
 
 }

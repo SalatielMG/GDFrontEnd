@@ -19,6 +19,11 @@ export class FiltersSearchAutomatics {
     valueAnt: "",
     isFilter: false
   };
+  sign = {
+    value: "-1",
+    valueAnt: "",
+    isFilter: false
+  };
   constructor() {
     this.id_operation = {
       value: "",
@@ -37,6 +42,11 @@ export class FiltersSearchAutomatics {
     };
     this.amount = {
       value: "",
+      valueAnt: "",
+      isFilter: false
+    };
+    this.sign = {
+      value: "-1",
       valueAnt: "",
       isFilter: false
     };
