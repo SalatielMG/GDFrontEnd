@@ -296,7 +296,7 @@ app-gastos-entradas {
 }
 .table-fixed-xl thead tr th,
 .table-fixed-xl tbody tr td {
-  width: 12.5%;
+  width: auto;
   display: flex;
   justify-content: center;
   align-items: center;

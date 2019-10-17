@@ -86,14 +86,20 @@ export class AutomaticsComponent implements OnInit {
               this.buildForm(automatic);
               this.automaticService.AccountsBackup.forEach((a, index) => {
                 if (a.id_account.toString() == automatic.id_account.toString()) {
-                  this.indexSelectAutomaticModal = index +1; return;
+                  this.indexSelectAutomaticModal = index + 1; return;
                 }
               });
               this.indeUniqueSelectedAutomatic["id_backup"] = automatic.id_backup;
               this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
               this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
               this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
+              this.indeUniqueSelectedAutomatic["period"] = automatic.period;
+              this.indeUniqueSelectedAutomatic["repeat_number"] = automatic.repeat_number;
+              this.indeUniqueSelectedAutomatic["each_number"] = automatic.each_number;
+              this.indeUniqueSelectedAutomatic["amount"] = automatic.amount;
               this.indeUniqueSelectedAutomatic["sign"] = this.util.signValue(automatic.sign);
+              this.indeUniqueSelectedAutomatic["detail"] = automatic.detail;
+              this.indeUniqueSelectedAutomatic["initial_date"] = automatic.initial_date;
               this.automaticService.indexAutomaticSelected = i;
               if (this.automaticService.isFilter()) {
                 this.automaticService.indexAutomaticSelected = <number>this.automaticService.Automatics.indexOf(automatic);

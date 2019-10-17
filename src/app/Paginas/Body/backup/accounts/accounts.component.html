@@ -185,9 +185,9 @@
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla width-4">#</th>
-      <th scope="col" class="Encabezado-Tabla font-italic width-4">Repeated</th>
-      <th scope="col" class="Encabezado-Tabla width-4">
+      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
@@ -210,7 +210,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-4">
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Name
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
@@ -230,8 +230,8 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-4">Detail</th>
-      <th scope="col" class="Encabezado-Tabla width-4">
+      <th scope="col" class="Encabezado-Tabla">Detail</th>
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Sign
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.sign.value" name="sign" (ngModelChange)="accountService.actionFilterEvent($event, 'sign')">
@@ -244,17 +244,17 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-4">Income</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Expense</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Initial_balance</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Final_balance</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Month</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Year</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Positive_limit</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Negative_limit</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Positive_max</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Negative_max</th>
-      <th scope="col" class="Encabezado-Tabla width-4">
+      <th scope="col" class="Encabezado-Tabla">Income</th>
+      <th scope="col" class="Encabezado-Tabla">Expense</th>
+      <th scope="col" class="Encabezado-Tabla">Initial_balance</th>
+      <th scope="col" class="Encabezado-Tabla">Final_balance</th>
+      <th scope="col" class="Encabezado-Tabla">Month</th>
+      <th scope="col" class="Encabezado-Tabla">Year</th>
+      <th scope="col" class="Encabezado-Tabla">Positive_limit</th>
+      <th scope="col" class="Encabezado-Tabla">Negative_limit</th>
+      <th scope="col" class="Encabezado-Tabla">Positive_max</th>
+      <th scope="col" class="Encabezado-Tabla">Negative_max</th>
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Iso_code
           <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.iso_code.value" name="iso_code" (keyup)="accountService.actionFilterEvent($event, 'iso_code', true)">
@@ -263,7 +263,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-4">
+      <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Selected
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.selected.value" name="selected" (ngModelChange)="accountService.actionFilterEvent($event, 'selected')">
@@ -276,39 +276,39 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-4">Value_type</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Include_total</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Rate</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Icon_name</th>
-      <th scope="col" class="Encabezado-Tabla width-4">Operación</th>
+      <th scope="col" class="Encabezado-Tabla">Value_type</th>
+      <th scope="col" class="Encabezado-Tabla">Include_total</th>
+      <th scope="col" class="Encabezado-Tabla">Rate</th>
+      <th scope="col" class="Encabezado-Tabla">Icon_name</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </tr>
 
     </thead>
     <tbody *ngIf="!accountService.isFilter()">
       <tr *ngFor="let account of accountService.Accounts; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-4">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic width-4">{{account.cantidadRepetida}}</td>
-        <td class="Celdas-Tabla width-4">{{account.id_account}}</td>
-        <td class="Celdas-Tabla width-4">{{account.name}}</td>
-        <td class="Celdas-Tabla width-4">{{account.detail}}</td>
-        <td class="Celdas-Tabla width-4">{{account.sign}}</td>
-        <td class="Celdas-Tabla width-4">{{account.income | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.expense | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.initial_balance | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.final_balance | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.month}}</td>
-        <td class="Celdas-Tabla width-4">{{account.year}}</td>
-        <td class="Celdas-Tabla width-4">{{account.positive_limit}}</td>
-        <td class="Celdas-Tabla width-4">{{account.negative_limit}}</td>
-        <td class="Celdas-Tabla width-4">{{account.positive_max}}</td>
-        <td class="Celdas-Tabla width-4">{{account.negative_max}}</td>
-        <td class="Celdas-Tabla width-4">{{account.iso_code}}</td>
-        <td class="Celdas-Tabla width-4">{{account.selected}}</td>
-        <td class="Celdas-Tabla width-4">{{account.value_type}}</td>
-        <td class="Celdas-Tabla width-4">{{account.include_total}}</td>
-        <td class="Celdas-Tabla width-4">{{account.rate}}</td>
-        <td class="Celdas-Tabla width-4">{{account.icon_name}}</td>
-        <td class="Celdas-Tabla width-4">
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{account.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla">{{account.id_account}}</td>
+        <td class="Celdas-Tabla">{{account.name}}</td>
+        <td class="Celdas-Tabla">{{account.detail}}</td>
+        <td class="Celdas-Tabla">{{account.sign}}</td>
+        <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.month}}</td>
+        <td class="Celdas-Tabla">{{account.year}}</td>
+        <td class="Celdas-Tabla">{{account.positive_limit}}</td>
+        <td class="Celdas-Tabla">{{account.negative_limit}}</td>
+        <td class="Celdas-Tabla">{{account.positive_max}}</td>
+        <td class="Celdas-Tabla">{{account.negative_max}}</td>
+        <td class="Celdas-Tabla">{{account.iso_code}}</td>
+        <td class="Celdas-Tabla">{{account.selected}}</td>
+        <td class="Celdas-Tabla">{{account.value_type}}</td>
+        <td class="Celdas-Tabla">{{account.include_total}}</td>
+        <td class="Celdas-Tabla">{{account.rate}}</td>
+        <td class="Celdas-Tabla">{{account.icon_name}}</td>
+        <td class="Celdas-Tabla">
           <button type="button" class="btn btn-primary btn-update" (click)="accionAccount(util.ACTUALIZAR, account, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
@@ -333,29 +333,29 @@
     </tbody>
     <tbody *ngIf="accountService.isFilter()">
       <tr *ngFor="let account of accountService.accountsFilter; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-4">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic width-4">{{account.cantidadRepetida}}</td>
-        <td class="Celdas-Tabla width-4">{{account.id_account}}</td>
-        <td class="Celdas-Tabla width-4">{{account.name}}</td>
-        <td class="Celdas-Tabla width-4">{{account.detail}}</td>
-        <td class="Celdas-Tabla width-4">{{account.sign}}</td>
-        <td class="Celdas-Tabla width-4">{{account.income | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.expense | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.initial_balance | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.final_balance | currency: "" + account.symbol + ""}}</td>
-        <td class="Celdas-Tabla width-4">{{account.month}}</td>
-        <td class="Celdas-Tabla width-4">{{account.year}}</td>
-        <td class="Celdas-Tabla width-4">{{account.positive_limit}}</td>
-        <td class="Celdas-Tabla width-4">{{account.negative_limit}}</td>
-        <td class="Celdas-Tabla width-4">{{account.positive_max}}</td>
-        <td class="Celdas-Tabla width-4">{{account.negative_max}}</td>
-        <td class="Celdas-Tabla width-4">{{account.iso_code}}</td>
-        <td class="Celdas-Tabla width-4">{{account.selected}}</td>
-        <td class="Celdas-Tabla width-4">{{account.value_type}}</td>
-        <td class="Celdas-Tabla width-4">{{account.include_total}}</td>
-        <td class="Celdas-Tabla width-4">{{account.rate}}</td>
-        <td class="Celdas-Tabla width-4">{{account.icon_name}}</td>
-        <td class="Celdas-Tabla width-4">
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{account.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla">{{account.id_account}}</td>
+        <td class="Celdas-Tabla">{{account.name}}</td>
+        <td class="Celdas-Tabla">{{account.detail}}</td>
+        <td class="Celdas-Tabla">{{account.sign}}</td>
+        <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{account.month}}</td>
+        <td class="Celdas-Tabla">{{account.year}}</td>
+        <td class="Celdas-Tabla">{{account.positive_limit}}</td>
+        <td class="Celdas-Tabla">{{account.negative_limit}}</td>
+        <td class="Celdas-Tabla">{{account.positive_max}}</td>
+        <td class="Celdas-Tabla">{{account.negative_max}}</td>
+        <td class="Celdas-Tabla">{{account.iso_code}}</td>
+        <td class="Celdas-Tabla">{{account.selected}}</td>
+        <td class="Celdas-Tabla">{{account.value_type}}</td>
+        <td class="Celdas-Tabla">{{account.include_total}}</td>
+        <td class="Celdas-Tabla">{{account.rate}}</td>
+        <td class="Celdas-Tabla">{{account.icon_name}}</td>
+        <td class="Celdas-Tabla">
           <button type="button" class="btn btn-primary btn-update" (click)="accionAccount(util.ACTUALIZAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>

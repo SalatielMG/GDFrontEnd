@@ -178,9 +178,9 @@
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla width-5">#</th>
-      <th scope="col" class="Encabezado-Tabla font-italic width-5">Repeated</th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">#</th>
+      <th scope="col" class="Encabezado-Tabla font-italic ">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_operation
           <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_operation.value" name="id_operation" (keyup)="automaticService.actionFilterEvent($event, 'id_operation', true)">
@@ -189,7 +189,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'indexAccount')">
@@ -201,7 +201,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticService.actionFilterEvent($event, 'indexAccount')">
@@ -213,7 +213,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_Category
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticService.actionFilterEvent($event, 'id_category')">
@@ -256,7 +256,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Category
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticService.actionFilterEvent($event, 'id_category')">
@@ -276,11 +276,11 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">Period</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Repeat_number</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Each_number</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Enabled</th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">Period</th>
+      <th scope="col" class="Encabezado-Tabla ">Repeat_number</th>
+      <th scope="col" class="Encabezado-Tabla ">Each_number</th>
+      <th scope="col" class="Encabezado-Tabla ">Enabled</th>
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Amount
           <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.amount.value" name="amount" (keyup)="automaticService.actionFilterEvent($event, 'amount', true)">
@@ -289,7 +289,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Sign
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticService.filtersSearch.sign.value" name="sign" (ngModelChange)="automaticService.actionFilterEvent($event, 'sign')">
@@ -302,37 +302,37 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-5">Detail</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Initial_date</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Next_date</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Operation_code:</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Rate</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Counter</th>
-      <th scope="col" class="Encabezado-Tabla width-5">Operación</th>
+      <th scope="col" class="Encabezado-Tabla ">Detail</th>
+      <th scope="col" class="Encabezado-Tabla ">Initial_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Next_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Operation_code:</th>
+      <th scope="col" class="Encabezado-Tabla ">Rate</th>
+      <th scope="col" class="Encabezado-Tabla ">Counter</th>
+      <th scope="col" class="Encabezado-Tabla ">Operación</th>
     </tr>
     </thead>
     <tbody *ngIf="!automaticService.isFilter()">
       <tr *ngFor="let automatic of automaticService.Automatics; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-5">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.id_account}}</td>
-        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.id_category}}</td>
-        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.period}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.repeat_number}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.each_number}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.enabled}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.amount | currency: automatic.symbol}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.sign}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.detail}}</td>
-        <td class="Celdas-Tabla width-5">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-5">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.operation_code}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
-        <td class="Celdas-Tabla width-5">
+        <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic ">{{automatic.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
+        <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.period}}</td>
+        <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
+        <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
+        <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
+        <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.sign}}</td>
+        <td class="Celdas-Tabla ">{{automatic.detail}}</td>
+        <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
+        <td class="Celdas-Tabla ">{{automatic.rate}}</td>
+        <td class="Celdas-Tabla ">{{automatic.counter}}</td>
+        <td class="Celdas-Tabla ">
           <button type="button" class="btn btn-primary btn-update" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
@@ -357,26 +357,26 @@
     </tbody>
     <tbody *ngIf="automaticService.isFilter()">
       <tr *ngFor="let automatic of automaticService.automaticsFilter; let i = index" >
-        <td scope="row" class="Celdas-Tabla width-5">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic width-5">{{automatic.cantidadRepetida}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.id_operation}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.id_account}}</td>
-        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.id_category}}</td>
-        <td class="Celdas-Tabla width-5">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.period}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.repeat_number}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.each_number}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.enabled}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.amount | currency: automatic.symbol}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.sign}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.detail}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.operation_code}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.rate}}</td>
-        <td class="Celdas-Tabla width-5">{{automatic.counter}}</td>
-        <td class="Celdas-Tabla width-5">
+        <td scope="row" class="Celdas-Tabla ">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic ">{{automatic.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
+        <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.period}}</td>
+        <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
+        <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
+        <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
+        <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.sign}}</td>
+        <td class="Celdas-Tabla ">{{automatic.detail}}</td>
+        <td class="Celdas-Tabla ">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
+        <td class="Celdas-Tabla ">{{automatic.rate}}</td>
+        <td class="Celdas-Tabla ">{{automatic.counter}}</td>
+        <td class="Celdas-Tabla ">
           <button type="button" class="btn btn-primary btn-update" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
