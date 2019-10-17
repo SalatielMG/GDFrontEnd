@@ -96,6 +96,9 @@ export class BudgetsComponent implements OnInit {
             this.indexUniqueBudgetSelected["id_backup"] = budget.id_backup;
             this.indexUniqueBudgetSelected["id_account"] = budget.id_account;
             this.indexUniqueBudgetSelected["id_category"] = budget.id_category;
+            this.indexUniqueBudgetSelected["period"] = budget.period;
+            this.indexUniqueBudgetSelected["amount"] = budget.amount;
+            this.indexUniqueBudgetSelected["budget"] = budget.budget;
             this.budgetService.indexBudgetSelected = i;
             if (this.budgetService.isFilter()) {
               this.budgetService.indexBudgetSelected = <number>this.budgetService.Budgets.indexOf(budget);

@@ -1,7 +1,15 @@
-.width-9{
-  width: 9.09% !important;
+
+@media screen and (max-width: 1920px) and (max-height: 1080px) {
+  .table-fixed-xl {
+    width: 150% !important;
+  }
 }
-.table-fixed-xl {
-  /*overflow-x: scroll;*/
-  width: 150% !important;
+@media screen and (max-width: 1366px) and (max-height: 768px) {
+  .table-fixed-xl {
+    width: 250% !important;
+  }
+}
+.table-fixed-xl thead tr th,
+.table-fixed-xl tbody tr td {
+  width: 7.692% !important;
 }

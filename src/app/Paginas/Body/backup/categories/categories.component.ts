@@ -86,6 +86,7 @@ export class CategoriesComponent implements OnInit {
           this.indexUniqueCategorySelected["id_account"]= category.id_account;
           this.indexUniqueCategorySelected["id_category"]= category.id_category;
           this.indexUniqueCategorySelected["name"]= category.name;
+          this.indexUniqueCategorySelected["sign"]= this.util.signValue(category.sign);
           this.categoriesService.indexCategorySelected = i;
           if (this.option != this.util.AGREGAR) {
             if (this.categoriesService.isFilter()) {
@@ -194,6 +195,8 @@ export class CategoriesComponent implements OnInit {
             }
           }
           this.closeModal();
+        } else {
+          this.category.patchValue({sign: this.util.signUnvalue(this.category.value.sign)});
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -220,6 +223,8 @@ export class CategoriesComponent implements OnInit {
             this.util.msjToast(result.category.msj, this.util.errorRefreshListTable, result.category.error);
           }
           this.closeModal();
+        } else {
+          this.category.patchValue({sign: this.util.signUnvalue(this.category.value.sign)});
         }
       }, error => {
         this.util.msjErrorInterno(error);

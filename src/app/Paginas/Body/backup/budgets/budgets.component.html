@@ -129,9 +129,21 @@
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla width-9">#</th>
-      <th scope="col" class="Encabezado-Tabla width-9">Repeated</th>
-      <th scope="col" class="Encabezado-Tabla width-9">
+      <th scope="col" class="Encabezado-Tabla ">#</th>
+      <th scope="col" class="Encabezado-Tabla ">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="budgetService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of budgetService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
+          </select>
+          <button type="button" [ngClass]="(budgetService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Account
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
@@ -143,7 +155,31 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-9">
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of budgetService.AccountsBackup">
+                <ng-container *ngFor="let category of account.categoriesAccount">
+                  <option [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <ng-container *ngFor="let category of budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                <option [value]="category.id_category">{{category.id_category}}</option>
+              </ng-container>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(budgetService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Category
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
@@ -167,8 +203,8 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-9">Period</th>
-      <th scope="col" class="Encabezado-Tabla width-9">
+      <th scope="col" class="Encabezado-Tabla ">Period</th>
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Amount
           <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.amount.value" name="amount" (keyup)="budgetService.actionFilterEvent($event, 'amount', true)">
@@ -177,7 +213,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-9">
+      <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Budget
           <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.budget.value" name="budget" (keyup)="budgetService.actionFilterEvent($event, 'budget', true)">
@@ -186,25 +222,27 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla width-9">Initial_date</th>
-      <th scope="col" class="Encabezado-Tabla width-9">Final_date</th>
-      <th scope="col" class="Encabezado-Tabla width-9">Number</th>
-      <th scope="col" class="Encabezado-Tabla width-9">Operación</th>
+      <th scope="col" class="Encabezado-Tabla ">Initial_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Final_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Number</th>
+      <th scope="col" class="Encabezado-Tabla ">Operación</th>
     </tr>
     </thead>
     <tbody *ngIf="!budgetService.isFilter()">
       <tr *ngFor="let budget of budgetService.Budgets; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-9">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic width-9">{{budget.repeated}}</td>
-        <td class="Celdas-Tabla width-9">{{util.asignarNombre(budget.id_account, budget.nameAccount)}}</td>
-        <td class="Celdas-Tabla width-9">{{util.asignarNombre(budget.id_category, budget.nameCategory)}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.period}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.amount | currency: budget.symbol}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.budget | currency: budget.symbol}}</td>
-        <td class="Celdas-Tabla width-9">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-9">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.number}}</td>
-        <td class="Celdas-Tabla width-9">
+        <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
+        <td class="Celdas-Tabla ">{{budget.id_account}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_account, budget.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{budget.id_category}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_category, budget.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{budget.period}}</td>
+        <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{budget.number}}</td>
+        <td class="Celdas-Tabla ">
           <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
@@ -229,17 +267,19 @@
     </tbody>
     <tbody *ngIf="budgetService.isFilter()">
       <tr *ngFor="let budget of budgetService.budgetsFilter; let i = index" >
-        <td scope="row" class="Celdas-Tabla font-weight-bold width-9">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic width-9">{{budget.repeated}}</td>
-        <td class="Celdas-Tabla width-9">{{util.asignarNombre(budget.id_account, budget.nameAccount)}}</td>
-        <td class="Celdas-Tabla width-9">{{util.asignarNombre(budget.id_category, budget.nameCategory)}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.period}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.amount | currency: budget.symbol}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.budget | currency: budget.symbol}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla width-9">{{budget.number}}</td>
-        <td class="Celdas-Tabla width-9">
+        <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
+        <td class="Celdas-Tabla ">{{budget.id_account}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_account, budget.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{budget.id_category}}</td>
+        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_category, budget.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{budget.period}}</td>
+        <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{budget.number}}</td>
+        <td class="Celdas-Tabla ">
           <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>

@@ -150,7 +150,6 @@ export class BudgetsService {
   // -------------------------------------------------- Filter Seacrh --------------------------------------------------
 
   public buscarBudgetsBackup(): Observable<any> {
-    this.Budgets = [];
     return this.http.get(URL + 'buscarBudgetsBackup', {params: {idBack: this.id_backup, pagina: this.pagina}});
   }
 

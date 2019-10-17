@@ -88,7 +88,19 @@
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="categoriesService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="categoriesService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="categoriesService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of categoriesService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
+          </select>
+          <button type="button" [ngClass]="(categoriesService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="categoriesService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Account
@@ -128,12 +140,12 @@
             <ng-container *ngIf="util.numberFormat(categoriesService.filtersSearch.indexAccount.value) == -1">
               <option value="0">Todas</option>
               <ng-container *ngFor="let account of categoriesService.AccountsBackup">
-                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.name}}</option>
+                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
               </ng-container>
             </ng-container>
             <ng-container *ngIf="util.numberFormat(categoriesService.filtersSearch.indexAccount.value) != -1">
               <option value="0" *ngIf="categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-              <option *ngFor="let category of categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.name}}</option>
+              <option *ngFor="let category of categoriesService.AccountsBackup[util.numberFormat(categoriesService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
             </ng-container>
           </select>
           <button type="button" [ngClass]="(categoriesService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="categoriesService.resetValuefiltroSearch('id_category')">
@@ -160,8 +172,9 @@
     </thead>
     <tbody *ngIf="!categoriesService.isFilter()">
       <tr *ngFor="let category of categoriesService.Categories; let i = index" >
-        <td scope="row" class="Celdas-Tabla">{{(i+1)}}</td>
-        <td class="Celdas-Tabla">{{category.repeated}}</td>
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{category.repeated}}</td>
+        <td class="Celdas-Tabla">{{category.id_account}}</td>
         <td class="Celdas-Tabla">{{category.nameAccount}}</td>
         <td class="Celdas-Tabla">{{category.id_category}}</td>
         <td class="Celdas-Tabla">{{category.name}}</td>
@@ -193,8 +206,9 @@
     </tbody>
     <tbody *ngIf="categoriesService.isFilter()">
       <tr *ngFor="let category of categoriesService.categoriesFilter; let i = index" >
-        <td scope="row" class="Celdas-Tabla">{{(i+1)}}</td>
-        <td class="Celdas-Tabla">{{category.repeated}}</td>
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{category.repeated}}</td>
+        <td class="Celdas-Tabla">{{category.id_account}}</td>
         <td class="Celdas-Tabla">{{category.nameAccount}}</td>
         <td class="Celdas-Tabla">{{category.id_category}}</td>
         <td class="Celdas-Tabla">{{category.name}}</td>
