@@ -4,50 +4,85 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
 <div class="container text-center" *ngIf="movementsService.Movements.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">El Backup no tiene Movements relacionados</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="movementsService.Movements.length > 0">
-  <table class="table table-hover">
+<div *ngIf="movementsService.Movements.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">id_account</th>
-      <th scope="col" class="Encabezado-Tabla">Cuenta</th>
-      <th scope="col" class="Encabezado-Tabla">id_category</th>
-      <th scope="col" class="Encabezado-Tabla">Categoria</th>
-      <th scope="col" class="Encabezado-Tabla">amount</th>
-      <th scope="col" class="Encabezado-Tabla">sign</th>
-      <th scope="col" class="Encabezado-Tabla">detail</th>
-      <th scope="col" class="Encabezado-Tabla">date_record</th>
-      <th scope="col" class="Encabezado-Tabla">time_record</th>
-      <th scope="col" class="Encabezado-Tabla">confirmed</th>
-      <th scope="col" class="Encabezado-Tabla">iso_code</th>
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+
+      <th scope="col" class="Encabezado-Tabla">Id_Account</th>
+      <th scope="col" class="Encabezado-Tabla">Account</th>
+      <th scope="col" class="Encabezado-Tabla">Id_Category</th>
+      <th scope="col" class="Encabezado-Tabla">Category</th>
+      <th scope="col" class="Encabezado-Tabla">Amount</th>
+      <th scope="col" class="Encabezado-Tabla">Sign</th>
+      <th scope="col" class="Encabezado-Tabla">Detail</th>
+      <th scope="col" class="Encabezado-Tabla">Date_record</th>
+      <th scope="col" class="Encabezado-Tabla">Time_record</th>
+      <th scope="col" class="Encabezado-Tabla">Confirmed</th>
+      <th scope="col" class="Encabezado-Tabla">Transfer</th>
+      <th scope="col" class="Encabezado-Tabla">Date_idx</th>
+      <th scope="col" class="Encabezado-Tabla">Day</th>
+      <th scope="col" class="Encabezado-Tabla">Week</th>
+      <th scope="col" class="Encabezado-Tabla">Fortnight</th>
+      <th scope="col" class="Encabezado-Tabla">Month</th>
+      <th scope="col" class="Encabezado-Tabla">Year</th>
+      <th scope="col" class="Encabezado-Tabla">Operation_code</th>
+      <th scope="col" class="Encabezado-Tabla">Picture</th>
+      <th scope="col" class="Encabezado-Tabla">Iso_code</th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
     <tbody>
     <tr *ngFor="let movement of movementsService.Movements; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{movement.repeated}}</td>
       <td class="Celdas-Tabla">{{movement.id_account}}</td>
-      <td class="Celdas-Tabla">{{movement.account}}</td>
+      <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_account, movement.nameAccount)}}</td>
       <td class="Celdas-Tabla">{{movement.id_category}}</td>
-      <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_category, movement.category)}}</td>
-      <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol}}</td>
-      <td class="Celdas-Tabla">{{(movement.sign == "-") ? "Gastos": "Ingresos"}}</td>
+      <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_category, movement.nameCategory)}}</td>
+      <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol':'1.0-6'}}</td>
+      <td class="Celdas-Tabla">{{movement.sign}}</td>
       <td class="Celdas-Tabla">{{movement.detail}}</td>
       <td class="Celdas-Tabla">{{movement.date_record | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla">{{movement.time_record}}</td>
       <td class="Celdas-Tabla">{{movement.confirmed}}</td>
+      <td class="Celdas-Tabla">{{movement.transfer}}</td>
+      <td class="Celdas-Tabla">{{movement.date_idx}}</td>
+      <td class="Celdas-Tabla">{{movement.day}}</td>
+      <td class="Celdas-Tabla">{{movement.week}}</td>
+      <td class="Celdas-Tabla">{{movement.fortnight}}</td>
+      <td class="Celdas-Tabla">{{movement.month}}</td>
+      <td class="Celdas-Tabla">{{movement.year}}</td>
+      <td class="Celdas-Tabla">{{movement.operation_code}}</td>
+      <td class="Celdas-Tabla">{{movement.picture}}</td>
       <td class="Celdas-Tabla">{{movement.iso_code}}</td>
       <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
+        <button type="button" class="btn btn-primary btn-update" >
+          <span>
+            <fa-icon [icon]="util.faPen"></fa-icon>
+          </span>
+        </button>
+        <button type="button" class="btn btn-danger btn-delete" >
+          <span>
+            <fa-icon [icon]="util.faTrash"></fa-icon>
+          </span>
+        </button>
       </td>
     </tr>
 
     </tbody>
   </table>
 </div>
+
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionAccount(util.AGREGAR)">
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
+</button>
