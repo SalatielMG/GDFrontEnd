@@ -3,18 +3,152 @@ import { Movements } from '../../Modelos/movements/movements';
 import { URL } from '../../Utilerias/URL';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {FiltersSearchMovements} from '../../Modelos/movements/filters-search-movements';
+import {Accounts} from '../../Modelos/accounts/accounts';
+import {AccountscategoriesService} from '../accounts/accountscategories.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovementsService {
 
-  public Movements: Movements[];
+  public Movements: Movements[] = [];
+  public pagina;
+  public id_backup;
+  public filtersSearch = new FiltersSearchMovements();
+  public movementsFilter: Movements[] = [];
+  public indexMovementSelected: number = 0;
+  public indexMovementFilterSelected: number = 0;
+  public AccountsBackup: Accounts[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountsCategoriesServices: AccountscategoriesService) { }
+
+  public resetVariables() {
+    this.Movements = [];
+    this.pagina = 0;
+  }
+
+  // -------------------------------------------------- Filter Seacrh --------------------------------------------------
+  public obtCategoriesAccountBackup(index) {
+    index = parseInt(index);
+    this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString()).subscribe(result => {
+      if (!result.error) {
+        this.AccountsBackup[index].categoriesAccount = result.categories;
+        console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+  public obtAccountsBackup() {
+    return new Promise((resolve, reject) => {
+      this.accountsCategoriesServices.obtAccountsBackup(this.id_backup).subscribe(result => {
+        if (!result.error){
+          this.AccountsBackup = result.accounts;
+          console.log("new Accounts query := ", this.AccountsBackup);
+        }
+        resolve(result.error);
+      }, error => {
+        console.log("error:=", error);
+        resolve(true);
+      });
+    });
+  }
+  public actionFilterEvent(event, value, isKeyUp = false) {
+    if (value == "indexAccount") {
+      if (this.filtersSearch[value].value == "-1") {
+        this.obtAccountsBackup();
+        this.filtersSearch[value].isFilter = false;
+        this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
+        this.proccessFilter();
+        return;
+      } else {
+        //this.obtCategoriesAccountBackup();
+        this.resetValuefiltroSearch("id_category");
+      }
+    } else if (value == "id_category") {
+      if (this.filtersSearch[value].value == "0") {
+        this.filtersSearch[value].isFilter = false;
+        this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
+        this.proccessFilter();
+        return;
+      }
+    } else {
+      if (isKeyUp && event.key != "Enter") return;
+      if (this.filtersSearch[value].value == "") return;
+    }
+    if (this.filtersSearch[value].value == this.filtersSearch[value].valueAnt) return;
+    this.resetFilterisActive();
+    this.filtersSearch[value].isFilter = true;
+    this.filtersSearch[value].valueAnt = this.filtersSearch[value].value;
+    this.proccessFilter();
+  }
+  public resetValuefiltroSearch(key) {
+    this.filtersSearch[key].value =  "";
+    this.filtersSearch[key].valueAnt =  "";
+    this.filtersSearch[key].isFilter =  false;
+    if (key == "indexAccount") {
+      this.filtersSearch[key].value = "-1";
+      this.obtAccountsBackup();
+    }
+    if (key == "id_category") {
+      this.filtersSearch[key].value = "0";
+      if (this.filtersSearch["indexAccount"].value != "-1")
+        this.obtCategoriesAccountBackup(this.filtersSearch["indexAccount"].value);
+    }
+    if (key == "sign") this.filtersSearch[key].value = "-1";
+
+    if (!this.isFilter()) {
+      this.movementsFilter = [];
+      return;
+    }
+    this.proccessFilter();
+  }
+  public resetFilterisActive() {
+    if (!this.isFilter()) {
+      this.movementsFilter = [];
+      this.movementsFilter =  this.movementsFilter.concat(this.Movements);
+    }
+  }
+  public proccessFilter() {
+    let temp = [];
+    this.Movements.forEach((movement) => {
+
+      let bnd = true;
+      for (let k in this.filtersSearch) {
+        if (this.filtersSearch[k].isFilter) {
+          if (((k == "indexAccount" || k == "sign") && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
+            let kk = (k == "indexAccount") ? "id_account": k;
+            if (movement[kk].toString() != ((k == "indexAccount") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account : this.filtersSearch[kk].value)) {
+              bnd = false;
+              break;
+            }
+          } else {
+            if (!movement[k].toString().includes(this.filtersSearch[k].value)) {
+              bnd = false;
+              break;
+            }
+          }
+        }
+      }
+
+      if (bnd) {
+        temp.push(movement);
+      }
+
+    });
+    this.movementsFilter = [];
+    this.movementsFilter = this.movementsFilter.concat(temp);
+    temp = null;
+  }
+  public isFilter(): boolean {
+    for (let key in this.filtersSearch)
+      if (this.filtersSearch[key].isFilter) return true;
+    return false
+  }
+  // -
 
   public buscarMovementsBackup(idBackup): Observable<any> {
-    this.Movements = [];
     return this.http.get(URL + 'buscarMovementsBackup', {params:{idBack: idBackup}});
   }
   public inconsistenciaDatos(data, pagina, backups): Observable<any> {

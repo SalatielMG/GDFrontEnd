@@ -118,7 +118,7 @@ export class CategoriesService {
       let bnd = true;
       for (let k in this.filtersSearch) {
         if (this.filtersSearch[k].isFilter) {
-          if ((k == "indexAccount" && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
+          if (((k == "indexAccount" || k == "sign") && this.filtersSearch[k].value != "-1") || (k == "id_category" && this.filtersSearch[k].value != "0")) {
             let kk = (k == "indexAccount") ? "id_account": k;
             if (category[kk].toString() != ((k == "indexAccount") ? this.AccountsBackup[parseInt(this.filtersSearch[k].value)].id_account : this.filtersSearch[kk].value)) {
               bnd = false;
