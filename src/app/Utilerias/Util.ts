@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 declare var $: any;
 
 @Injectable()
@@ -32,7 +32,47 @@ export class Utilerias {
   public exprRegular_6Decimal: string = "([0-9]+\.?[0-9]{0,6})";
   public exprOperation_Code: string = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
   public characterAllowInOperationCode: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  public nameMonth = [
+    {
+      value: 1,
+      name: 'Enero'
+    },{
+      value: 2,
+      name: 'Febrero'
+    },{
+      value: 3,
+      name: 'Marzo'
+    },{
+      value: 4,
+      name: 'Abril'
+    },{
+      value: 5,
+      name: 'Mayo'
+    },{
+      value: 6,
+      name: 'Junio'
+    },{
+      value: 7,
+      name: 'Julio'
+    },{
+      value: 8,
+      name: 'Agosto'
+    },{
+      value: 9,
+      name: 'Septiembre'
+    },{
+      value: 10,
+      name: 'Octubre'
+    },{
+      value: 11,
+      name: 'Noviembre'
+    },{
+      value: 12,
+      name: 'Diciembre'
+    },
+  ];
 
+  public faTimes = faTimes;
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;
   public faArrowUp = faArrowUp;
@@ -57,6 +97,32 @@ export class Utilerias {
   public limit: number= 50;
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
+  }
+  public getWeekNumber = function (now: Date) {
+    let i=0,f,sem=(new Date(now.getFullYear(), 0,1).getDay()>0)?1:0;
+    while( (f=new Date(now.getFullYear(), 0, ++i)) < now ){
+      if(!f.getDay()){
+        sem++;
+      }
+    }
+    return sem;
+  };
+  public getBiweekNumber(date): number{
+    let biweek: number = 0;
+    let day: number = date[2];
+    let month: number = date[1];
+    if (day > 0 && month > 0) {
+      month = month - 1;
+      biweek = (day >= 1 && day <= 15) ? 1 : 2;
+      biweek = biweek + (month * 2);
+    }
+    return biweek;
+  }
+  public valueChecked(data: number): boolean {
+    return (data != 0);
+  }
+  public unValueCheced(data: boolean): number {
+    return ((data) ? 1 : 0);
   }
 
   public formatComponentDateCalendar(date) {

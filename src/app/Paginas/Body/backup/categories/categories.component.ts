@@ -29,7 +29,7 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
   }
   private onScroll() {
-    if (!this.categoriesService.isFilter()) this.searchCategories();
+    if (!this.categoriesService.isFilter() && !this.util.loadingMain) this.searchCategories();
   }
   private searchCategories() {
     this.util.loadingMain = true;

@@ -32,7 +32,7 @@ export class BudgetsComponent implements OnInit {
   }
 
   private onScroll() {
-    if (!this.budgetService.isFilter()) this.searchBudgets();
+    if (!this.budgetService.isFilter() && !this.util.loadingMain) this.searchBudgets();
   }
 
   private searchBudgets() {

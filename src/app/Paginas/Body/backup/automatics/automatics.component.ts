@@ -30,7 +30,7 @@ export class AutomaticsComponent implements OnInit {
   }
 
   private onScroll() {
-    if (!this.automaticService.isFilter()) this.buscarAutomatics();
+    if (!this.automaticService.isFilter() && !this.util.loadingMain) this.buscarAutomatics();
   }
 
   private buscarAutomatics() {
