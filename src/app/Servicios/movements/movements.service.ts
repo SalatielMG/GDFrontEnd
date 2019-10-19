@@ -13,15 +13,15 @@ import {AccountscategoriesService} from '../accounts/accountscategories.service'
 export class MovementsService {
 
   public Movements: Movements[] = [];
-  public pagina;
-  public id_backup;
+  public pagina = 0;
+  public id_backup = 0;
   public filtersSearch = new FiltersSearchMovements();
   public movementsFilter: Movements[] = [];
   public indexMovementSelected: number = 0;
   public indexMovementFilterSelected: number = 0;
   public AccountsBackup: Accounts[] = [];
 
-  constructor(private http: HttpClient, private accountsCategoriesServices: AccountscategoriesService) { }
+  constructor(private http: HttpClient, public accountsCategoriesServices: AccountscategoriesService) { }
 
   public resetVariables() {
     this.Movements = [];
@@ -148,8 +148,8 @@ export class MovementsService {
   }
   // -
 
-  public buscarMovementsBackup(idBackup): Observable<any> {
-    return this.http.get(URL + 'buscarMovementsBackup', {params:{idBack: idBackup}});
+  public buscarMovementsBackup(): Observable<any> {
+    return this.http.get(URL + 'buscarMovementsBackup', {params:{id_backup: this.id_backup.toString(), pagina: this.pagina.toString()}});
   }
   public inconsistenciaDatos(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosMovements', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});

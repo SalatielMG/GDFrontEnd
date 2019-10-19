@@ -45,4 +45,13 @@ export class NavEncodeComponent implements OnInit {
     });
   }
 
+  private generatePass(){
+    this.userService.pass().subscribe(result => {
+      console.log("resultado", result);
+
+    }, error =>{
+      console.log("error", error);
+    });
+  }
+
 }

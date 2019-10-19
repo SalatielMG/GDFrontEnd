@@ -20,7 +20,7 @@ export class AccountsComponent implements OnInit {
   constructor( private route: ActivatedRoute,
                private router: Router, private accountService: AccountsService, private util: Utilerias, private formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
-      this.accountService.id_backup = params.get("idBack");
+      this.accountService.id_backup = parseInt(params.get("idBack"));
       this.accountService.resetearVariables();
       this.buscarAccounts();
     });

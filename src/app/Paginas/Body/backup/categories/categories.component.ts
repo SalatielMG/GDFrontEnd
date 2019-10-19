@@ -82,13 +82,13 @@ export class CategoriesComponent implements OnInit {
         if (!result.error) {
           this.option = option;
           this.buildForm(category);
-          this.indexUniqueCategorySelected["id_backup"]= category.id_backup;
-          this.indexUniqueCategorySelected["id_account"]= category.id_account;
-          this.indexUniqueCategorySelected["id_category"]= category.id_category;
-          this.indexUniqueCategorySelected["name"]= category.name;
-          this.indexUniqueCategorySelected["sign"]= this.util.signValue(category.sign);
-          this.categoriesService.indexCategorySelected = i;
           if (this.option != this.util.AGREGAR) {
+            this.indexUniqueCategorySelected["id_backup"]= category.id_backup;
+            this.indexUniqueCategorySelected["id_account"]= category.id_account;
+            this.indexUniqueCategorySelected["id_category"]= category.id_category;
+            this.indexUniqueCategorySelected["name"]= category.name;
+            this.indexUniqueCategorySelected["sign"]= this.util.signValue(category.sign);
+            this.categoriesService.indexCategorySelected = i;
             if (this.categoriesService.isFilter()) {
               this.categoriesService.indexCategorySelected = <number>this.categoriesService.Categories.indexOf(category);
               this.categoriesService.indexCategoryFilterSelected = i;

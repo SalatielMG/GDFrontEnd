@@ -16,7 +16,7 @@ export class AccountsService {
   public CurrenciesGralBackup: Currencies[] = [];
   public Accounts: Accounts[] = [];
   public pagina: number = 0;
-  public id_backup;
+  public id_backup: number = 0;
   public filtersSearch = new FiltersSearchAccounts();
   public accountsFilter: Accounts[] = [];
   public indexAccountSelected: number = 0;
@@ -145,11 +145,11 @@ export class AccountsService {
   }
 
   public buscarAccountsBackup(symbolName = "1"): Observable<any> {
-    return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: this.id_backup, pagina: this.pagina.toString(), symbolName: symbolName}});
+    return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: this.id_backup.toString(), pagina: this.pagina.toString(), symbolName: symbolName}});
   }
 
   public buscarCurrenciesAccountBackup(isCurrenciesAccount = "1"): Observable<any> {
-    return this.http.get(URL + 'buscarCurrenciesBackup', {params: {id_backup: this.id_backup, isCurrenciesAccount: isCurrenciesAccount }});
+    return this.http.get(URL + 'buscarCurrenciesBackup', {params: {id_backup: this.id_backup.toString(), isCurrenciesAccount: isCurrenciesAccount }});
   }
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {

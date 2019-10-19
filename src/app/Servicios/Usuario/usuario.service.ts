@@ -61,8 +61,8 @@ export class UsuarioService implements CanActivate{
     // you can save redirect url so after authing we can move them back to the page they requested
     return false;
   }
-  public pass(){
-    this.http.get(URL + "contraseña");
+  public pass(): Observable<any> {
+    return this.http.get(URL + "contraseña");
   }
 
 }
