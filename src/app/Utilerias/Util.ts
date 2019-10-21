@@ -32,43 +32,56 @@ export class Utilerias {
   public exprRegular_6Decimal: string = "([0-9]+\.?[0-9]{0,6})";
   public exprOperation_Code: string = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
   public characterAllowInOperationCode: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  public idCardView = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}];
   public nameMonth = [
     {
       value: 1,
-      name: 'Enero'
+      name: 'Enero',
+      nameSorth: 'ENE'
     },{
       value: 2,
-      name: 'Febrero'
+      name: 'Febrero',
+      nameSorth: 'FEB'
     },{
       value: 3,
-      name: 'Marzo'
+      name: 'Marzo',
+      nameSorth: 'MAR'
     },{
       value: 4,
-      name: 'Abril'
+      name: 'Abril',
+      nameSorth: 'ABR'
     },{
       value: 5,
-      name: 'Mayo'
+      name: 'Mayo',
+      nameSorth: 'MAY'
     },{
       value: 6,
-      name: 'Junio'
+      name: 'Junio',
+      nameSorth: 'JUN'
     },{
       value: 7,
-      name: 'Julio'
+      name: 'Julio',
+      nameSorth: 'JUL'
     },{
       value: 8,
-      name: 'Agosto'
+      name: 'Agosto',
+      nameSorth: 'AGO'
     },{
       value: 9,
-      name: 'Septiembre'
+      name: 'Septiembre',
+      nameSorth: 'SEP'
     },{
       value: 10,
-      name: 'Octubre'
+      name: 'Octubre',
+      nameSorth: 'OCT'
     },{
       value: 11,
-      name: 'Noviembre'
+      name: 'Noviembre',
+      nameSorth: 'NOV'
     },{
       value: 12,
-      name: 'Diciembre'
+      name: 'Diciembre',
+      nameSorth: 'DIC'
     },
   ];
 
@@ -119,20 +132,33 @@ export class Utilerias {
     return biweek;
   }
   public valueChecked(data: number): boolean {
+    console.log(data != 0);
     return (data != 0);
   }
-  public unValueCheced(data: boolean): number {
+  public unValueChecked(data: boolean): number {
     return ((data) ? 1 : 0);
   }
+  public formatTimeSQL(timer){
+    console.log(timer);
+    let time = timer.split(":");
+    time.forEach((value, index) => {
+      time[index] = (value.length == 1) ? "0" + value : value;
+    });
+    console.log(time);
 
+    return time.toString().replace(/,/g,":");
+  }
   public formatComponentDateCalendar(date) {
     return (date != "0000-00-00") ? new Date(date + " 00:00:00") : "";
+  }
+  public formatComponentTime(date, Time) {
+    return new Date(date + " " + Time);
   }
   public formatDateTimeSQL(dataForm, key, isTime = true) {
     let dateTime = "";
     if (dataForm.value[key] != null && dataForm.value[key] != "") {
       dataForm.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
-        dateTime = dateTime + d + "-";
+        dateTime = dateTime + ((d.length == 1) ? "0" + d : d) + "-";
       });
       dateTime = (dateTime.substring(0, dateTime.length - 1)) + ((isTime) ? " " + dataForm.value[key].toLocaleTimeString() : "");
     } else {

@@ -363,3 +363,10 @@ app-gastos-entradas {
 .icon-Calendar-full {
   padding: 0px !important; margin-left: -10px !important; font-size: 25px !important;
 }
+.checkRadioCenter {
+  display: inline-flex;
+  justify-content: center;
+}
+.flex-row-reverse {
+  display: flex; flex-direction: row-reverse;
+}

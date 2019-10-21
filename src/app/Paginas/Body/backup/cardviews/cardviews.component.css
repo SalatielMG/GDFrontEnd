@@ -1,0 +1,4 @@
+.table-fixed-xl thead tr th,
+.table-fixed-xl tbody tr td {
+  width: 11.1111% !important;
+}

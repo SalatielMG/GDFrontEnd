@@ -110,14 +110,14 @@
                 <div class="row">
                   <div class="col">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="confirmed" formControlName="confirmed" [ngClass]="(getError('confirmed') == '') ? 'valid-control' : 'invalid-control'" (change)="changeEvent($event)" >
+                      <input type="checkbox" class="custom-control-input" id="confirmed" formControlName="confirmed" [ngClass]="(getError('confirmed') == '') ? 'valid-control' : 'invalid-control'" >
                       <label class="custom-control-label" for="confirmed">Confirmed</label>
                       <div class="invalid-feedback">{{ getError('confirmed')}}</div>
                     </div>
                   </div>
                   <div class="col">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="transfer" formControlName="transfer" [ngClass]="(getError('transfer') == '') ? 'valid-control' : 'invalid-control'" (change)="changeEvent($event)" >
+                      <input type="checkbox" class="custom-control-input" id="transfer" formControlName="transfer" [ngClass]="(getError('transfer') == '') ? 'valid-control' : 'invalid-control'">
                       <label class="custom-control-label" for="transfer">Transfer</label>
                       <div class="invalid-feedback">{{ getError('transfer')}}</div>
                     </div>
@@ -157,9 +157,9 @@
                   </div>
                   <div class="col">
                     <label for="month">Month</label>
-                    <select class="form-control disabled" id="month" formControlName="month" [ngClass]="(getError('month') == '') ? 'valid-control' : 'invalid-control'">
+                    <select disabled class="form-control disabled" id="month" formControlName="month" [ngClass]="(getError('month') == '') ? 'valid-control' : 'invalid-control'">
                       <option value="">Seleccione un mes</option>
-                      <option *ngFor="let month of util.nameMonth" [value]="month.value">{{month.name}}</option>
+                      <option *ngFor="let month of util.nameMonth" [value]="(month.value < 10) ? '0' + month.value : month.value">{{month.nameSorth}}</option>
                     </select>
                     <div class="invalid-feedback">{{ getError('month')}}</div>
                   </div>
@@ -182,7 +182,7 @@
               </div>
               <div class="col">
                 <label for="iso_code">Iso_Code</label>
-                <input type="text" class="form-control" id="iso_code" formControlName="iso_code" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
+                <input type="text" class="form-control" id="iso_code" formControlName="iso_code" [readOnly]="true" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('iso_code')}}</div>
               </div>
             </div>
@@ -250,6 +250,7 @@
                 <ng-container *ngFor="let account of movementsService.AccountsBackup">
                   <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.id_category}}</option>
                 </ng-container>
+                <option value="10000">10000</option>
               </ng-container>
 
               <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
@@ -259,6 +260,7 @@
                     <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
                   </ng-container>
                 </ng-container>
+                <option value="10000">10000</option>
               </ng-container>
             </ng-container>
 
@@ -266,6 +268,7 @@
               <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
                 <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
                 <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
+                <option value="10000">10000</option>
               </ng-container>
 
               <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
@@ -273,6 +276,7 @@
                 <ng-container *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;">
                   <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
                 </ng-container>
+                <option value="10000">10000</option>
               </ng-container>
             </ng-container>
 
@@ -291,8 +295,9 @@
               <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
                 <option value="0">Todas</option>
                 <ng-container *ngFor="let account of movementsService.AccountsBackup">
-                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.name}}] {{category.name}}</option>
+                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
                 </ng-container>
+                <option value="10000">TRANSFERENCIAS</option>
               </ng-container>
 
               <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
@@ -302,20 +307,23 @@
                     <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
                   </ng-container>
                 </ng-container>
+                <option value="10000">TRANSFERENCIAS</option>
               </ng-container>
             </ng-container>
 
             <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) != -1"><!-- Listar todas categorias de la cuenta seleccionada -->
               <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
                 <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-                <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
+                <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                <option value="10000">TRANSFERENCIAS</option>
               </ng-container>
 
               <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
                 <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
                 <ng-container *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;">
-                  <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                  <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
                 </ng-container>
+                <option value="10000">TRANSFERENCIAS</option>
               </ng-container>
             </ng-container>
 
@@ -351,7 +359,7 @@
         <div class="row inline-grid">
           Detail
           <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.detail.value" name="detail" (keyup)="movementsService.actionFilterEvent($event, 'detail', true)">
-          <button type="button" [ngClass]="(movementsService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('detail')">
+          <button type="button" [ngClass]="(movementsService.filtersSearch.detail.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('detail')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -359,8 +367,8 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Date_record
-          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="actionFilterEvent($event, 'date_record')">
-          <button type="button" [ngClass]="(movementsService.filtersSearch.date_record.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_record')">
+          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')">
+          <button type="button" [ngClass]="(movementsService.filtersSearch.date_record.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('date_record')">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

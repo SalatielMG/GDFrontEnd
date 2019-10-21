@@ -72,7 +72,6 @@ export class CategoriesComponent implements OnInit {
       this.util.QueryComplete.isComplete = this.categoriesService.pagina != 0;
     }
     this.util.loadingMain = false;
-
   }
 
   private accionCategory(option, category = new Categories(), i = null) {

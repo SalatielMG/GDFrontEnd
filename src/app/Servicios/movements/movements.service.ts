@@ -154,5 +154,18 @@ export class MovementsService {
   public inconsistenciaDatos(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosMovements', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
-
+  public agregarMovement (movement): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('movement', JSON.stringify(movement));
+    return this.http.post(URL + "agregarMovement", parametro);
+  }
+  public actualizarMovement (movement, indexUnique): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('movement', JSON.stringify(movement))
+      .append("indexUnique", JSON.stringify(indexUnique));
+    return this.http.post(URL + "actualizarMovement", parametro);
+  }
+  public eliminarMovement (indexUnique): Observable<any> {
+    return this.http.delete(URL + "eliminarMovement", {params : {indexUnique: JSON.stringify(indexUnique)}});
+  }
 }

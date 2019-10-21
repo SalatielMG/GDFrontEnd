@@ -4,39 +4,209 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">El Backup no tiene cardViews relacionados</h2>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalCardview" tabindex="-1" role="dialog" aria-labelledby="modalCardviewTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="cardview != null">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalCardviewTitle">{{option}} CardView</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="cardview" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la CardView núm: {{(cardviewService.indexCardviewSelected + 1)}} del Respaldo Id_backup: {{cardviewService.id_backup}} ?</h5>
+          </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="show_card" formControlName="show_card" [ngClass]="(getError('show_card') == '') ? 'valid-control' : 'invalid-control'">
+              <label class="custom-control-label" for="show_card">Show Card</label>
+              <div class="invalid-feedback">{{ getError('show_card')}}</div>
+            </div>
+          </div>
+
+          <fieldset class="form-group" >
+            <div class="form-row">
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
+                </div>
+              </div>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <label class="custom-control-label" for="customControlValidation3">Gastos</label>
+                </div>
+              </div>
+              <div class="invalid-feedback">{{ getError('sign')}}</div>
+            </div>
+          </fieldset>
+          
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_card">Id_Card: </label>
+                <select class="form-control" id="id_card" formControlName="id_card" [ngClass]="(getError('id_card') == '') ? 'valid-control' : 'invalid-control'">
+                  <option value="-1">Seleccione un id_card</option>
+                  <option *ngFor="let id_card of util.idCardView" [value]="id_card.id">{{id_card.id}}</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('id_card')}}</div>
+              </div>
+              <div class="form col">
+                <label for="name">Name: </label>
+                <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="(getError('name') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('name')}}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="period">Period</label>
+                <input type="text" class="form-control" id="period" formControlName="period" [ngClass]="(getError('period') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('period')}}</div>
+              </div>
+              <div class="form col">
+                <label for="number">Number</label>
+                <input type="number" class="form-control" id="number" formControlName="number" [ngClass]="(getError('number') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('number')}}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="cardview.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<div *ngIf="cardviewService.Cardviews.length > 0">
-  <table class="table table-hover">
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+
+<div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">util.msj</h2>
+</div>
+<div *ngIf="cardviewService.Cardviews.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">id_card</th>
-      <th scope="col" class="Encabezado-Tabla">name</th>
-      <th scope="col" class="Encabezado-Tabla">period</th>
-      <th scope="col" class="Encabezado-Tabla">sign</th>
-      <th scope="col" class="Encabezado-Tabla">show_card</th>
-      <th scope="col" class="Encabezado-Tabla">number</th>
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Card
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.id_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'id_card')">
+            <option value="-1" *ngIf="cardviewService.CadViewsGralBackup.length > 0">Todas</option>
+            <option *ngFor="let cardview of cardviewService.CadViewsGralBackup" [value]="cardview.id_card">{{cardview.id_card}}</option>
+          </select>
+          <button type="button" [ngClass]="(cardviewService.filtersSearch.id_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('id_card')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>        
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Name
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.id_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'id_card')">
+            <option value="-1" *ngIf="cardviewService.CadViewsGralBackup.length > 0">Todas</option>
+            <option *ngFor="let cardview of cardviewService.CadViewsGralBackup" [value]="cardview.id_card">{{cardview.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(cardviewService.filtersSearch.id_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('id_card')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Period</th>
+      <th scope="col" class="Encabezado-Tabla">Sign</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Show_Card
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.show_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'show_card')">
+            <option value="-1">Ambos</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+          <button type="button" [ngClass]="(cardviewService.filtersSearch.show_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('show_card')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Number</th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
-    <tr *ngFor="let cardView of cardviewService.Cardviews; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{cardView.id_card}}</td>
-      <td class="Celdas-Tabla">{{cardView.name}}</td>
-      <td class="Celdas-Tabla">{{cardView.period}}</td>
-      <td class="Celdas-Tabla">{{cardView.sign}}</td>
-      <td class="Celdas-Tabla">{{cardView.show_card}}</td>
-      <td class="Celdas-Tabla">{{cardView.number}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
-      </td>
-    </tr>
+    <tbody *ngIf="!cardviewService.isFilter()">
+      <tr *ngFor="let cardView of cardviewService.Cardviews; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{cardView.repeated}}</td>
+        <td class="Celdas-Tabla">{{cardView.id_card}}</td>
+        <td class="Celdas-Tabla">{{cardView.name}}</td>
+        <td class="Celdas-Tabla">{{cardView.period}}</td>
+        <td class="Celdas-Tabla">{{cardView.sign}}</td>
+        <td class="Celdas-Tabla">{{cardView.show_card}}</td>
+        <td class="Celdas-Tabla">{{cardView.number}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionCardview(util.ACTUALIZAR, cardView, i)">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionCardview(util.ELIMINAR, cardView, i)">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
+      <div
+        [fromRoot]="true"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
+        (scrolled)="onScroll()">
+      </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="cardviewService.isFilter()">
+      <tr *ngFor="let cardView of cardviewService.cardviewsFilter; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{cardView.repeated}}</td>
+        <td class="Celdas-Tabla">{{cardView.id_card}}</td>
+        <td class="Celdas-Tabla">{{cardView.name}}</td>
+        <td class="Celdas-Tabla">{{cardView.period}}</td>
+        <td class="Celdas-Tabla">{{cardView.sign}}</td>
+        <td class="Celdas-Tabla">{{cardView.show_card}}</td>
+        <td class="Celdas-Tabla">{{cardView.number}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionCardview(util.ACTUALIZAR, cardView, i)">
+              <span>
+                <fa-icon [icon]="util.faPen"></fa-icon>
+              </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionCardview(util.ELIMINAR, cardView, i)">
+              <span>
+                <fa-icon [icon]="util.faTrash"></fa-icon>
+              </span>
+          </button>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionCardview(util.AGREGAR)">
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
+</button>
+

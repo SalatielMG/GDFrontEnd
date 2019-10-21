@@ -14,7 +14,7 @@ export class AutomaticsComponent implements OnInit {
 
   private option: string = "";
   private automatic: FormGroup = null;
-  private indeUniqueSelectedAutomatic = {};
+  private indexUniqueSelectedAutomatic = {};
   private indexSelectAutomaticModal: number = 0;
 
   constructor( private route: ActivatedRoute,
@@ -89,17 +89,17 @@ export class AutomaticsComponent implements OnInit {
                   this.indexSelectAutomaticModal = index + 1; return;
                 }
               });
-              this.indeUniqueSelectedAutomatic["id_backup"] = automatic.id_backup;
-              this.indeUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
-              this.indeUniqueSelectedAutomatic["id_account"] = automatic.id_account;
-              this.indeUniqueSelectedAutomatic["id_category"] = automatic.id_category;
-              this.indeUniqueSelectedAutomatic["period"] = automatic.period;
-              this.indeUniqueSelectedAutomatic["repeat_number"] = automatic.repeat_number;
-              this.indeUniqueSelectedAutomatic["each_number"] = automatic.each_number;
-              this.indeUniqueSelectedAutomatic["amount"] = automatic.amount;
-              this.indeUniqueSelectedAutomatic["sign"] = this.util.signValue(automatic.sign);
-              this.indeUniqueSelectedAutomatic["detail"] = automatic.detail;
-              this.indeUniqueSelectedAutomatic["initial_date"] = automatic.initial_date;
+              this.indexUniqueSelectedAutomatic["id_backup"] = automatic.id_backup;
+              this.indexUniqueSelectedAutomatic["id_operation"] = automatic.id_operation;
+              this.indexUniqueSelectedAutomatic["id_account"] = automatic.id_account;
+              this.indexUniqueSelectedAutomatic["id_category"] = automatic.id_category;
+              this.indexUniqueSelectedAutomatic["period"] = automatic.period;
+              this.indexUniqueSelectedAutomatic["repeat_number"] = automatic.repeat_number;
+              this.indexUniqueSelectedAutomatic["each_number"] = automatic.each_number;
+              this.indexUniqueSelectedAutomatic["amount"] = automatic.amount;
+              this.indexUniqueSelectedAutomatic["sign"] = this.util.signValue(automatic.sign);
+              this.indexUniqueSelectedAutomatic["detail"] = automatic.detail;
+              this.indexUniqueSelectedAutomatic["initial_date"] = automatic.initial_date;
               this.automaticService.indexAutomaticSelected = i;
               if (this.automaticService.isFilter()) {
                 this.automaticService.indexAutomaticSelected = <number>this.automaticService.Automatics.indexOf(automatic);
@@ -230,7 +230,7 @@ export class AutomaticsComponent implements OnInit {
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-      this.automaticService.actualizarAutomatic(this.automatic.value, this.indeUniqueSelectedAutomatic).subscribe(result => {
+      this.automaticService.actualizarAutomatic(this.automatic.value, this.indexUniqueSelectedAutomatic).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -238,7 +238,7 @@ export class AutomaticsComponent implements OnInit {
           if (!result.automatic.error) {
             if (this.automaticService.isFilter()) {
               if (this.automaticService.indexAutomaticSelected != -1) this.automaticService.Automatics[this.automaticService.indexAutomaticSelected] = result.automatic.update;
-              this.automaticService[this.automaticService.indexAutomaticFilterSelected] = result.automatic.update;
+              this.automaticService.indexAutomaticFilterSelected[this.automaticService.indexAutomaticFilterSelected] = result.automatic.update;
             } else {
               this.automaticService.Automatics[this.automaticService.indexAutomaticSelected] = result.automatic.update;
             }
@@ -257,7 +257,7 @@ export class AutomaticsComponent implements OnInit {
   private eliminarAutomatic() {
     this.util.msjLoading = "Eliminando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-      this.automaticService.eliminarAutomatic(this.indeUniqueSelectedAutomatic).subscribe(result => {
+      this.automaticService.eliminarAutomatic(this.indexUniqueSelectedAutomatic).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
