@@ -4,39 +4,163 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<div class="container text-center" *ngIf="currenciesService.Currencies.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">El Backup no tiene currencies relacionados</h2>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalCurrency" tabindex="-1" role="dialog" aria-labelledby="modalCurrencyTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="currency != null">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalCurrencyTitle">{{option}} Currency</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="currency" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la Moneda núm: {{(currenciesService.indexCurrencySelected + 1)}} del Respaldo Id_backup: {{currenciesService.id_backup}} ?</h5>
+          </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="selected" formControlName="selected" [ngClass]="(getError('selected') == '') ? 'valid-control' : 'invalid-control'">
+              <label class="custom-control-label" for="selected">Selected</label>
+              <div class="invalid-feedback">{{ getError('selected')}}</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="iso_code">Iso_Code: </label>
+                <select class="form-control" id="iso_code" formControlName="iso_code" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'" (change)="currencySelectedModal($event)">
+                  <option value="" *ngIf="currenciesService.CurrenciesGralBackup.length > 0">Seleccione una iso_code</option>
+                  <option *ngFor="let currency of currenciesService.CurrenciesGralBackup" [value]="currency.iso_code">{{currency.iso_code}}</option>
+                </select>
+                <div class="invalid-feedback">{{ getError('iso_code')}}</div>
+              </div>
+              <div class="form col">
+                <label for="symbol">Symbol: </label>
+                <input type="text" class="form-control" id="symbol" formControlName="symbol" [ngClass]="(getError('symbol') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('symbol')}}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form">
+            <label for="icon_name">Icon_Name: </label>
+            <input type="text" class="form-control" id="icon_name" formControlName="icon_name" [ngClass]="(getError('icon_name') == '') ? 'valid-control' : 'invalid-control'">
+            <div class="invalid-feedback">{{ getError('icon_name')}}</div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="currency.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<div *ngIf="currenciesService.Currencies.length > 0">
-  <table class="table table-hover">
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+
+<div class="container text-center" *ngIf="currenciesService.Currencies.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
+</div>
+<div *ngIf="currenciesService.Currencies.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-
-      <th scope="col" class="Encabezado-Tabla">iso_code</th>
-      <th scope="col" class="Encabezado-Tabla">symbol</th>
-      <th scope="col" class="Encabezado-Tabla">icon_name</th>
-      <th scope="col" class="Encabezado-Tabla">selected</th>
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Iso_code
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
+            <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
+            <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.iso_code}}</option>
+          </select>
+          <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Symbol
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
+            <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
+            <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.symbol}}</option>
+          </select>
+          <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Icon_name</th>
+      <th scope="col" class="Encabezado-Tabla">Selected</th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
-    <tr *ngFor="let currencie of currenciesService.Currencies; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-
-      <td class="Celdas-Tabla">{{currencie.iso_code}}</td>
-      <td class="Celdas-Tabla">{{currencie.symbol}}</td>
-      <td class="Celdas-Tabla">{{currencie.icon_name}}</td>
-      <td class="Celdas-Tabla">{{currencie.selected}}</td>
-
-      <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
-      </td>
-    </tr>
-
+    <tbody *ngIf="!currenciesService.isFilter()">
+      <tr *ngFor="let currency of currenciesService.Currencies; let i = index" >
+        <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
+        <td class="Celdas-Tabla">{{currency.iso_code}}</td>
+        <td class="Celdas-Tabla">{{currency.symbol}}</td>
+        <td class="Celdas-Tabla">{{currency.icon_name}}</td>
+        <td class="Celdas-Tabla">{{currency.selected}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionCurrency(util.ACTUALIZAR, currency, i)">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionCurrency(util.ELIMINAR, currency, i)">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
+      <div
+        [fromRoot]="true"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
+        (scrolled)="onScroll()">
+      </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="currenciesService.isFilter()">
+      <tr *ngFor="let currency of currenciesService.currenciesFilter; let i = index">
+        <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
+        <td class="Celdas-Tabla">{{currency.iso_code}}</td>
+        <td class="Celdas-Tabla">{{currency.symbol}}</td>
+        <td class="Celdas-Tabla">{{currency.icon_name}}</td>
+        <td class="Celdas-Tabla">{{currency.selected}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionCurrency(util.ACTUALIZAR, currency, i)">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionCurrency(util.ELIMINAR, currency, i)">
+            <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionCurrency(util.AGREGAR)">
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
+</button>

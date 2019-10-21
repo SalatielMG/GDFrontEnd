@@ -187,7 +187,7 @@ export class Utilerias {
     if (control.hasError("required")) {
       error += "El campo es requerido.\n"
     }
-    if (control.hasError("minLength")) {
+    if (control.hasError("minlength")) {
       error += "Longitud mínima permitida de " + control.getError("minlength").requiredLength + " caracteres.\n"
     }
     if (control.hasError("maxlength")) {

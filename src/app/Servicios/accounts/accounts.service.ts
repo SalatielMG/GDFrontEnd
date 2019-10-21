@@ -148,8 +148,8 @@ export class AccountsService {
     return this.http.get(URL + 'buscarAccountsBackup', {params: {idBack: this.id_backup.toString(), pagina: this.pagina.toString(), symbolName: symbolName}});
   }
 
-  public buscarCurrenciesAccountBackup(isCurrenciesAccount = "1"): Observable<any> {
-    return this.http.get(URL + 'buscarCurrenciesBackup', {params: {id_backup: this.id_backup.toString(), isCurrenciesAccount: isCurrenciesAccount }});
+  public buscarCurrenciesAccountBackup(): Observable<any> {
+    return this.http.get(URL + 'obtCurrenciesGralBackup', {params: {id_backup: this.id_backup.toString()}});
   }
 
   public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {

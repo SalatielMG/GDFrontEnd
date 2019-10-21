@@ -85,7 +85,6 @@ export class CardviewsComponent implements OnInit {
     }
     setTimeout(() => {
       this.util.abrirModal("#modalCardview");
-
     }, 500);
   }
   private buildForm(cardview: Cardviews) {
@@ -138,7 +137,7 @@ export class CardviewsComponent implements OnInit {
   }
   public agregarCardview() {
     this.patchValueFormDataBeforeOperation();
-    this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.cardview.value.id_card + " del Rspaldo con id_backup: " + this.cardviewService.id_backup;
+    this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.cardview.value.id_card + " del Respaldo con id_backup: " + this.cardviewService.id_backup;
     this.util.crearLoading().then(() => {
       this.cardviewService.agregarCardview(this.cardview.value).subscribe(result => {
         this.util.detenerLoading();
@@ -170,7 +169,7 @@ export class CardviewsComponent implements OnInit {
   }
   public actualizarCardview() {
     this.patchValueFormDataBeforeOperation();
-    this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.cardview.value.id_card + " del Rspaldo con id_backup: " + this.cardviewService.id_backup;
+    this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.indexUniqueAutomaticSelected["id_card"] + " del Respaldo con id_backup: " + this.cardviewService.id_backup;
     this.util.crearLoading().then(() => {
       this.cardviewService.actualizarCardview(this.cardview.value, this.indexUniqueAutomaticSelected).subscribe(result => {
         this.util.detenerLoading();
@@ -185,7 +184,7 @@ export class CardviewsComponent implements OnInit {
               this.cardviewService.Cardviews[this.cardviewService.indexCardviewSelected] = result.cardview.update;
             }
           } else {
-            this.util.msjToast(result.cardview.msj, result.cardview.titulo, result.cardview.error);
+            this.util.msjToast(result.cardview.msj, this.util.errorRefreshListTable, result.cardview.error);
           }
           if (!result.cardviewsBackup.error) {
             this.cardviewService.CadViewsGralBackup = result.cardviewsBackup.cardviews;
@@ -203,7 +202,7 @@ export class CardviewsComponent implements OnInit {
     });
   }
   public eliminarCardview() {
-    this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.cardview.value.id_card + " del Rspaldo con id_backup: " + this.cardviewService.id_backup;
+    this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.indexUniqueAutomaticSelected["id_card"] + " del Rspaldo con id_backup: " + this.cardviewService.id_backup;
     this.util.crearLoading().then(() => {
       this.cardviewService.eliminarCardview(this.indexUniqueAutomaticSelected).subscribe(result => {
         this.util.detenerLoading();
@@ -222,8 +221,6 @@ export class CardviewsComponent implements OnInit {
             console.log(result.cardviewsBackup);
           }
           this.closeModal();
-        } else {
-          this.patchValueFormDataAfterOperationError();
         }
       }, error => {
         this.util.msjErrorInterno(error);

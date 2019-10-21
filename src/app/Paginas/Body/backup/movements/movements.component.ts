@@ -84,6 +84,7 @@ export class MovementsComponent implements OnInit {
     this.util.crearLoading().then(() => {
       this.movementsService.accountsCategoriesServices.obtAccountsBackup(this.movementsService.id_backup, "1").subscribe(result => {
         if (!result.error) {
+          this.movementsService.AccountsBackup = result.accounts;
           this.option = option;
           this.buildForm(movement);
           if (this.option != this.util.AGREGAR) {

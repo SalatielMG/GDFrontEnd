@@ -95,7 +95,7 @@
 
 
 <div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">util.msj</h2>
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
 <div *ngIf="cardviewService.Cardviews.length > 0" class="overflow-x-scroll">
   <table class="table table-hover table-fixed-xl">
@@ -209,4 +209,3 @@
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>
 </button>
-
