@@ -20,50 +20,40 @@
         <form [formGroup]="backup" (ngSubmit)="operacion()">
           <div class="modal-body">
             <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
-              <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Respaldo num: {{(indexBackupSelected + 1)}}, Id_Backup: {{backup.value.id_backup}} ?</h5>
+              <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Respaldo num: {{(indexBackupSelected + 1)}} con Id_Backup: {{backup.value.id_backup}} ?</h5>
             </div>
             <div class="container">
-              <div class="form-group">
-                <label for="automatic">Automatic: </label>
-                <select class="form-control" id="automatic" formControlName="automatic">
-                  <option value="0">NO</option>
-                  <option value="1">SI</option>
-                </select>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="date_creation">Date_creation</label>
-                  <div class="row">
-                    <div class="col-11">
-                      <input type="text" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="Fecha de creación">
-                    </div>
-                    <div class="col-1 icon-Calendar-full">
-                  <span [owlDateTimeTrigger]="dc" style="cursor: pointer">
-                    <fa-icon [icon]="util.faCalendar" [ngClass]="(isCreated) ? 'color-blue' : 'color-red'"></fa-icon>
-                  </span>
-                      <owl-date-time #dc [disabled]="option == util.ELIMINAR"></owl-date-time>
-                    </div>
-                  </div>
+              
+              <div class="flex-row-reverse">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="automatic" formControlName="automatic" [ngClass]="(getError('automatic') == '') ? 'valid-control' : 'invalid-control'">
+                  <label class="custom-control-label" for="automatic">Automatic</label>
+                  <div class="invalid-feedback">{{ getError('automatic')}}</div>
                 </div>
-                <div class="form-group col-md-6">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col">
+                  <label for="date_creation">Date_creation</label>
+                  <input type="text" [owlDateTimeTrigger]="dc" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="date_creation" [ngClass]="(getError('date_creation') == '') ? 'valid-control' : 'invalid-control'">
+                  <owl-date-time #dc [disabled]="option == util.ELIMINAR"></owl-date-time>
+                  <div class="invalid-feedback">{{ getError('date_creation')}}</div>
+
+                </div>
+                <div class="form-group col">
                   <label for="date_download">Date_download</label>
-                  <div class="row">
-                    <div class="col-11">
-                      <input type="text" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="Fecha de descarga" >
-                    </div>
-                    <div class="col-1 icon-Calendar-full">
-                  <span [owlDateTimeTrigger]="dd" style="cursor: pointer">
-                    <fa-icon [icon]="util.faCalendar" [ngClass]="(isDownload) ? 'color-blue' : 'color-red'"></fa-icon>
-                  </span>
-                      <owl-date-time #dd [disabled]="option == util.ELIMINAR"></owl-date-time>
-                    </div>
-                  </div>
+                  <input type="text" [owlDateTimeTrigger]="dd" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="date_download" [ngClass]="(getError('date_download') == '') ? 'valid-control' : 'invalid-control'">
+                  <owl-date-time #dd [disabled]="option == util.ELIMINAR"></owl-date-time>
+                  <div class="invalid-feedback">{{ getError('date_download')}}</div>
+
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="created_in">Created_in: </label>
-                <input type="text" class="form-control" id="created_in" formControlName="created_in">
+                <input type="text" class="form-control" id="created_in" formControlName="created_in" [ngClass]="(getError('created_in') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('created_in')}}</div>
+
               </div>
 
             </div>
@@ -110,7 +100,7 @@
       <th scope="col" class="Encabezado-Tabla" >
         <div class="row inline-grid">
           Id_backup
-          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
+          <input type="number" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
           <button type="button" [ngClass]="(filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('id_backup')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -121,8 +111,8 @@
           Automatic
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
             <option value="-1">Ambos</option>
-            <option value="0">No</option>
-            <option value="1">Si</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
           </select>
           <button type="button" [ngClass]="(filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('automatic')">
             <span aria-hidden="true">&times;</span>
@@ -166,10 +156,10 @@
           <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
           <!--td class="Celdas-Tabla">{{back.pos}}</td-->
           <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
-          <!--td class="text-center">{{back.id_user}}</td-->
-          <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-          <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-          <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+          <!--td class="text-center">{{back.indexUser}}</td-->
+          <td class="Celdas-Tabla">{{back.automatic}}</td>
+          <td class="Celdas-Tabla">{{(back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+          <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
           <td class="Celdas-Tabla">{{back.created_in}}</td>
           <td class="Celdas-Tabla" >
             <button type="submit" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ACTUALIZAR, [i, back.pos, false], back)">
@@ -200,10 +190,10 @@
         <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
         <!--td class="Celdas-Tabla">{{back.pos}}</td-->
         <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
-        <!--td class="text-center">{{back.id_user}}</td-->
-        <td class="Celdas-Tabla">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
+        <!--td class="text-center">{{back.indexUser}}</td-->
+        <td class="Celdas-Tabla">{{back.automatic}}</td>
         <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-        <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+        <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
         <td class="Celdas-Tabla">{{back.created_in}}</td>
         <td class="Celdas-Tabla" >
           <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ACTUALIZAR, [back.pos, i, true], back)">

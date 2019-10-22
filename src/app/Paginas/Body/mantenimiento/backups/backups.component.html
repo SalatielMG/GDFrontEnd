@@ -6,6 +6,99 @@
 >
   <p style="font-size: 20px; color: white">{{msj}}</p>
 </ngx-spinner>
+
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalBackupsUserMnt" tabindex="-1" role="dialog" aria-labelledby="modalBackupsUserMntTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalBackupsUserMntTitle">{{(option == util.ELIMINAR) ? option + " Backup" : option}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="!util.isDelete(option)">
+          <div *ngIf="option == util.LIMPIARBACKUPSUSERS">
+            <div class="row titulo-Modal">
+              <h5 class="text-center font-weight-500">¿ Esta seguro de limpiar los backups de los siguientes Usuarios ?</h5>
+            </div>
+          </div>
+          <div *ngIf="option == util.LIMPIARBACKUPSUSER">
+            <div class="row titulo-Modal">
+              <h5 class="text-center font-weight-500">¿ Esta seguro de limpiar los backup del siguiente Usuario ?</h5>
+            </div>
+          </div>
+
+          <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col" >#</th>
+              <th scope="col" >Id_User</th>
+              <th scope="col" >Email</th>
+              <th scope="col">Núm. Backups</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let u of users; let posU = index">
+              <td class="font-weight-500">{{posU + 1}}</td>
+              <td >{{u.id}}</td>
+              <td >{{u.email}}</td>
+              <td >{{u.cantidadBackups}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div *ngIf="util.isDelete(option)">
+          <div class="row titulo-Modal">
+            <h5 class="text-center font-weight-500">¿ Esta seguro de eliminar el Respaldo con Id_backup: {{backupService.userBackups[backupService.indexUser].id_BackupSelected}} del Usuario: {{backupService.userBackups[backupService.indexUser].email}} ?</h5>
+          </div>
+
+          <div class="container">
+
+            <div class="flex-row-reverse">
+              <div class="custom-control custom-switch">
+                <input disabled type="checkbox" class="custom-control-input" id="automatic" [value]="util.valueChecked(backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].automatic)">
+                <label class="custom-control-label" for="automatic">Automatic</label>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="date_creation">Date_creation</label>
+                <input disabled type="text" class="form-control" id="date_creation" placeholder="date_creation" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].date_creation">
+
+              </div>
+              <div class="form-group col">
+                <label for="date_download">Date_download</label>
+                <input disabled type="text" class="form-control" id="date_download" placeholder="date_download" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].date_download">
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="created_in">Created_in: </label>
+              <input disabled type="text" class="form-control" id="created_in" placeholder="created_in" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].created_in">
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" [ngClass]="util.classModal(option)" (click)="operation()">{{option}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado"  style="padding-top: 160px !important;">
     <nav class="navbar navbar-light bg-light" style = "padding-left: 40px; padding-right: 40px; background: transparent !important">
@@ -41,7 +134,7 @@
           <input type="number" value="10" class="form-control" pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups.value" name="rangoBackups" (keyup)="keyUpEvent($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="form-group col-4" style="padding-top: 68px;">
-          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.userBackupsMnt.length == 0" (click)="limpiarBackupsUser()">
+          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.userBackups.length == 0" (click)="accionLimpiarBackupsUser(util.LIMPIARBACKUPSUSERS)">
             <span>
               <fa-icon [icon]="util.faTools"></fa-icon>
             </span>
@@ -59,8 +152,8 @@
     </span>
 </button>
 
-<div id="accordion" style="padding-left: 50px;padding-right: 50px" *ngIf="backupService.userBackupsMnt.length > 0">
-  <div   class="card" *ngFor="let user of backupService.userBackupsMnt; let i = index">
+<div id="accordion" style="padding-left: 50px;padding-right: 50px" *ngIf="backupService.userBackups.length > 0">
+  <div   class="card" *ngFor="let user of backupService.userBackups; let i = index">
     <div class="card-header" [id] = "i" [ngClass]="(user.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
       <div class="float-left" style="width: 90% !important; padding: 10px" (click)="eventSelectCollapse(i)">
         <div class="row">
@@ -105,8 +198,8 @@
             <th scope="col" class="v-a-middle">
               <div class="row inline-grid">
                 Id_backup
-                <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent(i, $event, 'id_backup', true)">
-                <button type="button" [ngClass]="(user.filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch(i, 'id_backup')">
+                <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.id_backup.value" name="id_backup" (keyup)="backupService.actionFilterEvent($event, 'id_backup', true, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('id_backup', i)">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -114,12 +207,12 @@
             <th scope="col" class="v-a-middle">
               <div class="row inline-grid">
                 Automatic
-                <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent(i, $event, 'automatic')">
+                <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.automatic.value" name="automatic" (ngModelChange)="backupService.actionFilterEvent($event, 'automatic', false, i)">
                   <option value="-1">Ambos</option>
                   <option value="0">No</option>
                   <option value="1">Si</option>
                 </select>
-                <button type="button" [ngClass]="(user.filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch(i, 'automatic')">
+                <button type="button" [ngClass]="(user.filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('automatic', i)">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -127,8 +220,8 @@
             <th scope="col" class="v-a-middle">
               <div class="row inline-grid">
                 Date_creation
-                <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent(i, $event, 'date_creation')">
-                <button type="button" [ngClass]="(user.filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch(i, 'date_creation')">
+                <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backupService.actionFilterEvent($event, 'date_creation', false, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_creation', i)">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -136,8 +229,8 @@
             <th scope="col" class="v-a-middle">
               <div class="row inline-grid">
                 Date_download
-                <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent(i, $event, 'date_download')">
-                <button type="button" [ngClass]="(user.filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch(i, 'date_download')">
+                <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backupService.actionFilterEvent($event, 'date_download', false, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_download', i)">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -145,8 +238,8 @@
             <th scope="col" class="v-a-middle">
               <div class="row inline-grid">
                 Created_in
-                <input type="text" class="form-control mr-sm-2 form-control-md input-header"  [(ngModel)]="user.filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent(i, $event, 'created_in', true)">
-                <button type="button" [ngClass]="(user.filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch(i, 'created_in')">
+                <input type="text" class="form-control mr-sm-2 form-control-md input-header"  [(ngModel)]="user.filtrosSearch.created_in.value" name="created_in" (keyup)="backupService.actionFilterEvent($event, 'created_in', true, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('created_in', i)">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -154,7 +247,7 @@
             <th scope="col" class="v-a-middle" style="display: block;">
               Operacion
               <br>
-              <button class="btn btn-outline-success" (click)="limpiarBackupsUser(false, user, i)">
+              <button class="btn btn-outline-success" (click)="accionLimpiarBackupsUser(util.LIMPIARBACKUPSUSER, user, i)">
               <span>
                 <fa-icon [icon]="util.faTools"></fa-icon>
               </span>
@@ -163,16 +256,16 @@
             </th>
           </tr>
           </thead>
-          <tbody *ngIf="!isFilter(i)">
+          <tbody *ngIf="!backupService.isFilter(i)">
           <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
             <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
             <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
-            <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
-            <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
-            <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+            <td scope="row" class="v-a-middle">{{ back.automatic }}</td>
+            <td scope="row" class="v-a-middle">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle">
-              <button type="button" class="btn btn-danger" style="width: 90px; font-size: 16px" (click)="eliminar(i, [pos, back.pos], back)">
+              <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT" (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -180,16 +273,16 @@
             </td>
           </tr>
           </tbody>
-        <tbody *ngIf="isFilter(i)">
+        <tbody *ngIf="backupService.isFilter(i)">
         <tr class="text-center"  *ngFor="let back of user.backupsFiltro; let pos = index">
           <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
           <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
-          <td scope="row" class="v-a-middle">{{ (back.automatic == 1) ? 'Si': 'No' }}</td>
-          <td scope="row" class="v-a-middle">{{ back.date_creation | date:'dd MMMM yyyy' }}</td>
-          <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy' }}</td>
+          <td scope="row" class="v-a-middle">{{ back.automatic }}</td>
+          <td scope="row" class="v-a-middle">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+          <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
           <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
           <td scope="row" class="v-a-middle">
-            <button type="button" class="btn btn-danger" style="width: 90px; font-size: 16px" (click)="eliminar(i, [back.pos, pos], back, true)">
+            <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT"  (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -214,6 +307,6 @@
   <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
 
 </div>
-<div class="container" *ngIf="backupService.userBackupsMnt.length == 0">
+<div class="container" *ngIf="backupService.userBackups.length == 0">
   <h3 class="font-weight-lighter text-center">{{msj}}</h3>
 </div>

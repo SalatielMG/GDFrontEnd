@@ -150,7 +150,7 @@ export class AccountsComponent implements OnInit {
       positive_max : [(this.option == this.util.AGREGAR) ? account.positive_max : this.util.unZeroFile(account.positive_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
       negative_max : [(this.option == this.util.AGREGAR) ? account.negative_max : this.util.unZeroFile(account.negative_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
       iso_code : [(this.option == this.util.AGREGAR)? ((this.accountService.CurrenciesSelected.length > 0) ? this.accountService.CurrenciesSelected[0].iso_code : ""): account.iso_code, [Validators.required, Validators.maxLength(3)]],
-      selected : [account.selected,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
+      selected : [this.util.valueChecked(account.selected),  [Validators.required]],
       value_type : [account.value_type,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       include_total : [account.include_total,  Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))])],
       rate : [(this.option == this.util.AGREGAR) ? account.rate : this.util.unZeroFile(account.rate), [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
@@ -197,8 +197,7 @@ export class AccountsComponent implements OnInit {
     console.log("value in Account FormGroup:=", this.account.value);
   }
   private agregarAccount() {
-    this.account.patchValue({id_backup: this.accountService.id_backup});
-    this.addZeroDecimalValue();
+    this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(()=> {
       this.accountService.agregarAccount(this.account.value).subscribe(result => {
@@ -222,7 +221,7 @@ export class AccountsComponent implements OnInit {
           }
           this.closeModal();
         } else {
-          this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});
+          this.patchValueFormDataAfterOperationError();
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -230,7 +229,7 @@ export class AccountsComponent implements OnInit {
     });
   }
   private actualizarAccount() {
-    this.addZeroDecimalValue();
+    this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
       this.accountService.actualizarAccount(this.account.value, this.indexUniqueAccountSelected).subscribe(result => {
@@ -250,7 +249,7 @@ export class AccountsComponent implements OnInit {
           }
           this.closeModal();
         } else {
-          this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});
+          this.patchValueFormDataAfterOperationError();
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -278,15 +277,21 @@ export class AccountsComponent implements OnInit {
       });
     });
   }
-  private addZeroDecimalValue() {
-     this.account.patchValue({income: this.util.zeroFile(this.account.value.income)});
-     this.account.patchValue({expense: this.util.zeroFile(this.account.value.expense)});
-     this.account.patchValue({initial_balance: this.util.zeroFile(this.account.value.initial_balance)});
-     this.account.patchValue({final_balance: this.util.zeroFile(this.account.value.final_balance)});
-     this.account.patchValue({positive_max: this.util.zeroFile(this.account.value.positive_max)});
-     this.account.patchValue({negative_max: this.util.zeroFile(this.account.value.negative_max)});
-     this.account.patchValue({rate: this.util.zeroFile(this.account.value.rate)});
-     this.account.patchValue({sign: this.util.signValue(this.account.value.sign)});
-     console.log("Value this.accout after addZeroFile:=", this.account.value);
+  private patchValueFormDataBeforeOperation () {
+    this.account.patchValue({id_backup: this.accountService.id_backup});
+    this.account.patchValue({income: this.util.zeroFile(this.account.value.income)});
+    this.account.patchValue({expense: this.util.zeroFile(this.account.value.expense)});
+    this.account.patchValue({initial_balance: this.util.zeroFile(this.account.value.initial_balance)});
+    this.account.patchValue({final_balance: this.util.zeroFile(this.account.value.final_balance)});
+    this.account.patchValue({positive_max: this.util.zeroFile(this.account.value.positive_max)});
+    this.account.patchValue({negative_max: this.util.zeroFile(this.account.value.negative_max)});
+    this.account.patchValue({rate: this.util.zeroFile(this.account.value.rate)});
+    this.account.patchValue({sign: this.util.signValue(this.account.value.sign)});
+    this.account.patchValue({selected: this.util.unValueChecked(this.account.value.selected)});
+    console.log("Value this.accout after addZeroFile:=", this.account.value);
+  }
+  private patchValueFormDataAfterOperationError () {
+    this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});
+    this.account.patchValue({selected: this.util.valueChecked(this.account.value.selected)});
   }
 }

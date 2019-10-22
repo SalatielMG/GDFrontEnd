@@ -8,6 +8,8 @@ declare var $: any;
 
 export class Utilerias {
 
+  public LIMPIARBACKUPSUSERS: string = "Limpiar Backups Usuarios";
+  public LIMPIARBACKUPSUSER: string = "Limpiar Backups Usuario";
   public AGREGAR: string = "Agregar";
   public ACTUALIZAR: string = "Actualizar";
   public ELIMINAR: string = "Eliminar";
@@ -409,14 +411,14 @@ export class Utilerias {
   public classModal(option): string {
     let classModal = "btn";
     switch (option) {
-      case this.AGREGAR:
-        classModal += " btn-success";
-        break;
       case this.ACTUALIZAR:
         classModal += " btn-primary";
         break;
       case this.ELIMINAR:
         classModal += " btn-danger";
+        break;
+      default:
+        classModal += " btn-success";
         break;
     }
     return classModal;

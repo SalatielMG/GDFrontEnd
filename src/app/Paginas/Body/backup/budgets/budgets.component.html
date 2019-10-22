@@ -68,33 +68,17 @@
             <div class="form-row">
               <div class="col">
                 <label for="initial_date">Initial_date</label>
-                <div class="row">
-                  <div class="col-11">
-                    <input type="text" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date" [ngClass]="(getError('initial_date') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('initial_date')}}</div>
-                  </div>
-                  <div class="col-1 icon-Calendar-full" >
-                  <span [owlDateTimeTrigger]="id" style="cursor: pointer">
-                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
-                  </span>
-                    <owl-date-time #id [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
-                  </div>
-                </div>
+                <input type="text" [owlDateTimeTrigger]="id" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date" [ngClass]="(getError('initial_date') == '') ? 'valid-control' : 'invalid-control'">
+                <owl-date-time #id [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
+                <div class="invalid-feedback">{{ getError('initial_date')}}</div>
+
               </div>
               <div class="col">
                 <label for="final_date">Final_date</label>
-                <div class="row">
-                  <div class="col-11">
-                    <input type="text" [owlDateTime]="nd" class="form-control" id="final_date" formControlName="final_date" placeholder="final_date" [ngClass]="(getError('final_date') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('final_date')}}</div>
-                  </div>
-                  <div class="col-1 icon-Calendar-full">
-                  <span [owlDateTimeTrigger]="nd" style="cursor: pointer">
-                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
-                  </span>
-                    <owl-date-time #nd  [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
-                  </div>
-                </div>
+                <input type="text" [owlDateTimeTrigger]="nd" [owlDateTime]="nd" class="form-control" id="final_date" formControlName="final_date" placeholder="final_date" [ngClass]="(getError('final_date') == '') ? 'valid-control' : 'invalid-control'">
+                <owl-date-time #nd  [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
+                <div class="invalid-feedback">{{ getError('final_date')}}</div>
+
               </div>
             </div>
           </div>

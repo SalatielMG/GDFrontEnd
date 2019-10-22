@@ -7,17 +7,20 @@ export class UserBackupsMnt {
 
   // collapsed: number;
   collapsed: boolean;
-  backups: Backup[];
   cantRep: number;
   checked: boolean;
   msj: string;
 
 
   // --------------------------------------- Variables - Multifiltros
-  filtrosSearch = new FiltrosSearchBackupsUser();
+  backups: Backup[];
   backupsFiltro: Backup[];
+  filtrosSearch = new FiltrosSearchBackupsUser();
+  indexBackupSelected: number = 0;
+  indexBackupFilterSelected: number = 0;
+  id_BackupSelected: number =0;
   // --------------------------------------- Variables - Multifiltros
-  constructor(id_user = 0, email = "", collapsed = false, backups = [], cantRep = 0, checked = false, filtrosSearch = new FiltrosSearchBackupsUser(), backupsFiltro = [], msj = "") {
+  constructor(id_user = 0, email = "", collapsed = false, backups = [], cantRep = 0, checked = false, filtrosSearch = new FiltrosSearchBackupsUser(), backupsFiltro = [], msj = "", indexBackupSelected = 0, indexBackupFilterSelected = 0, id_BackupSelected = 0) {
     this.id_user = id_user;
     this.email = email;
     this.collapsed = collapsed;
@@ -27,5 +30,8 @@ export class UserBackupsMnt {
     this.msj = msj;
     this.filtrosSearch = filtrosSearch;
     this.backupsFiltro = backupsFiltro;
+    this.indexBackupSelected = indexBackupSelected;
+    this.indexBackupFilterSelected = indexBackupFilterSelected;
+    this.id_BackupSelected = id_BackupSelected;
   }
 }

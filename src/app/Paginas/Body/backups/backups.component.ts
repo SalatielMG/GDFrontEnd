@@ -87,12 +87,21 @@ export class BackupsComponent implements OnInit {
   private buildForm(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
     this.backup = this.formBuilder.group({
       id_backup: [id_backup, Validators.required],
-      automatic: [automatic, Validators.required],
+      automatic: [this.util.valueChecked(automatic), Validators.required],
       date_creation: [date_creation, (date_creation != null) ?  Validators.required : Validators.nullValidator],
       date_download: [date_download, (date_download != null) ?  Validators.required : Validators.nullValidator],
       created_in: [created_in, Validators.required]
     });
     if (this.isDelete()) this.disable(); else this.enable();
+  }
+  private getError(controlName: string): string {
+    let error = '';
+    const control = this.backup.get(controlName);
+    if (control.touched && control.errors != null && control.invalid) {
+      console.log("Error Control:=[" + controlName + "]", control.errors);
+      error = this.util.hasError(control);
+    }
+    return error;
   }
   private disable() {
     for (let key in this.backup.getRawValue()) {
@@ -131,44 +140,6 @@ export class BackupsComponent implements OnInit {
     console.log("clik modal :v");
   }
 
-
-  // $(".modal-backdrop").onClick(functi);
-  private eliminarBackup() {
-    //let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
-      this.util.crearLoading().then(()=> {
-        this.backService.eliminarBackup(this.backup.value.id_backup).subscribe(
-          result => {
-            this.util.detenerLoading();
-            this.util.msjToast(result.msj, result.titulo, result.error);
-            if (!result.error) {
-              this.cerrarModal();
-              //this.util.cerrarModal("#modalBackup");
-              if (this.dataBackupSelected[2]) {
-                if (this.indexBackupSelected != -1) this.backService.backups.splice((this.indexBackupSelected),1);
-                this.backupsFiltro.splice(this.dataBackupSelected[1], 1);
-              } else {
-                this.backService.backups.splice(this.indexBackupSelected,1);
-              }
-            }
-            console.log(result);
-          },
-            error => {
-          this.util.msjErrorInterno(error);
-        });
-      });
-  }
-  /*private formatDateTimeSQL(key) {
-    let dateTime = "";
-    if (this.backup.value[key] != null) {
-      this.backup.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
-        dateTime = dateTime + d + "-";
-      });
-      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + this.backup.value[key].toLocaleTimeString();
-    } else {
-      dateTime = "0000-00-00 00:00:00";
-    }
-    return dateTime;
-  }*/
   private actualizarBackup(){
     console.log("Valor backup", this.backup.value);
     let dateTime_date_creation = this.util.formatDateTimeSQL( this.backup,"date_creation");
@@ -177,7 +148,7 @@ export class BackupsComponent implements OnInit {
     console.log("dateTime_date_download", dateTime_date_download);
     let newBackup = {
       id_backup : this.backup.value.id_backup,
-      automatic : this.backup.value.automatic,
+      automatic : this.util.unValueChecked(this.backup.value.automatic),
       date_creation : dateTime_date_creation,
       date_download : dateTime_date_download,
       created_in : this.backup.value.created_in,
@@ -206,6 +177,45 @@ export class BackupsComponent implements OnInit {
       });
     });
   }
+
+  // $(".modal-backdrop").onClick(functi);
+  private eliminarBackup() {
+    //let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
+      this.util.crearLoading().then(()=> {
+        this.backService.eliminarBackup().subscribe(
+          result => {
+            this.util.detenerLoading();
+            this.util.msjToast(result.msj, result.titulo, result.error);
+            if (!result.error) {
+              this.cerrarModal();
+              //this.util.cerrarModal("#modalBackup");
+              if (this.dataBackupSelected[2]) {
+                if (this.indexBackupSelected != -1) this.backService.backups.splice((this.indexBackupSelected),1);
+                this.backupsFiltro.splice(this.dataBackupSelected[1], 1);
+              } else {
+                this.backService.backups.splice(this.indexBackupSelected,1);
+              }
+            }
+            console.log(result);
+          },
+            error => {
+          this.util.msjErrorInterno(error);
+        });
+      });
+  }
+
+  /*private formatDateTimeSQL(key) {
+    let dateTime = "";
+    if (this.backup.value[key] != null) {
+      this.backup.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
+        dateTime = dateTime + d + "-";
+      });
+      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + this.backup.value[key].toLocaleTimeString();
+    } else {
+      dateTime = "0000-00-00 00:00:00";
+    }
+    return dateTime;
+  }*/
 
   ngOnInit() {
     this.util.ready("left");
@@ -253,7 +263,6 @@ export class BackupsComponent implements OnInit {
     let temp = [];
     this.backService.backups.forEach((back) => {
       if (back.id_backup != 0) {
-
         let bnd = true;
         for (let k in this.filtrosSearch) {
           if (this.filtrosSearch[k].isFilter) {
@@ -270,7 +279,6 @@ export class BackupsComponent implements OnInit {
             }
           }
         }
-
         if (bnd) {
           temp.push(back);
         }

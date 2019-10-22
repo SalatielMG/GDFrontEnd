@@ -149,7 +149,7 @@ export class AutomaticsComponent implements OnInit {
       period : [automatic.period, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("2"))]],
       repeat_number : [automatic.repeat_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       each_number : [automatic.each_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
-      enabled : [automatic.enabled, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
+      enabled : [this.util.valueChecked(automatic.enabled), [Validators.required]],
       amount : [(this.option == this.util.AGREGAR) ? automatic.amount: this.util.unZeroFile(automatic.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       sign : [automatic.sign, [Validators.required, Validators.maxLength(1)]],
       detail : [automatic.detail, [Validators.maxLength(100)]],
@@ -200,7 +200,6 @@ export class AutomaticsComponent implements OnInit {
   }
   private agregarAutomatic() {
     this.patchValueFormDataDate();
-    this.addZeroDecimalValue();
     this.util.msjLoading = "Agregando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
       this.automaticService.agregarAutomatic(this.automatic.value).subscribe(result => {
@@ -227,7 +226,6 @@ export class AutomaticsComponent implements OnInit {
   }
   private actualizarAutomatic() {
     this.patchValueFormDataDate();
-    this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
       this.automaticService.actualizarAutomatic(this.automatic.value, this.indexUniqueSelectedAutomatic).subscribe(result => {
@@ -275,11 +273,7 @@ export class AutomaticsComponent implements OnInit {
       });
     });
   }
-  private addZeroDecimalValue() {
-    this.automatic.patchValue({amount: this.util.zeroFile(this.automatic.value.amount)});
-    this.automatic.patchValue({rate: this.util.zeroFile(this.automatic.value.rate)});
-    this.automatic.patchValue({sign: this.util.signValue(this.automatic.value.sign)});
-  }
+
   private accountSelectedModal(event) {
     this.indexSelectAutomaticModal = event.target.selectedIndex;
     this.automatic.patchValue({id_category: ''});
@@ -301,11 +295,15 @@ export class AutomaticsComponent implements OnInit {
     this.automatic.patchValue({id_backup: this.automaticService.id_backup});
     this.automatic.patchValue({initial_date: this.util.formatDateTimeSQL( this.automatic,"initial_date", false)});
     this.automatic.patchValue({next_date: this.util.formatDateTimeSQL( this.automatic,"next_date", false)});
+    this.automatic.patchValue({amount: this.util.zeroFile(this.automatic.value.amount)});
+    this.automatic.patchValue({rate: this.util.zeroFile(this.automatic.value.rate)});
+    this.automatic.patchValue({sign: this.util.signValue(this.automatic.value.sign)});
+    this.automatic.patchValue({enabled: this.util.unValueChecked(this.automatic.value.enabled)});
   }
   private patchValueAfterError() {
     this.automatic.patchValue({initial_date: this.util.formatComponentDateCalendar( this.automatic.value.initial_date)});
     this.automatic.patchValue({next_date: this.util.formatComponentDateCalendar( this.automatic.value.next_date)});
     this.automatic.patchValue({sign: this.util.signUnvalue(this.automatic.value.sign)});
+    this.automatic.patchValue({enabled: this.util.valueChecked(this.automatic.value.enabled)});
   }
-
 }

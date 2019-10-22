@@ -21,6 +21,33 @@
           <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
             <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la operación automática num: {{(automaticService.indexAutomaticSelected + 1)}}, Id_operation: {{automatic.value.id_operation}}, Id_account: {{automatic.value.id_account}}, Id_category: {{automatic.value.id_category}} del Respaldo Id_backup: {{automaticService.id_backup}} ?</h5>
           </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="enabled" formControlName="enabled" [ngClass]="(getError('enabled') == '') ? 'valid-control' : 'invalid-control'">
+              <label class="custom-control-label" for="enabled">Enabled</label>
+              <div class="invalid-feedback">{{ getError('enabled')}}</div>
+            </div>
+          </div>
+          
+          <fieldset class="form-group" >
+            <div class="form-row">
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'" (change)="automatic.patchValue({id_category: ''})">
+                  <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
+                </div>
+              </div>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'" (change)="automatic.patchValue({id_category: ''})">
+                  <label class="custom-control-label" for="customControlValidation3">Gastos</label>
+                </div>
+              </div>
+              <div class="invalid-feedback">{{ getError('sign')}}</div>
+            </div>
+          </fieldset>
+          
           <div class="form-group">
             <div class="form-row">
               <div class="form col">
@@ -70,37 +97,21 @@
                 <label for="repeat_number">Repeat_number</label>
                 <input type="number" class="form-control" id="repeat_number" formControlName="repeat_number" [ngClass]="(getError('repeat_number') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('repeat_number')}}</div>
-              </div>
-              <div class="form col">
-                <label for="each_number">Each_number</label>
-                <input type="number" class="form-control" id="each_number" formControlName="each_number" [ngClass]="(getError('each_number') == '') ? 'valid-control' : 'invalid-control'">
-                <div class="invalid-feedback">{{ getError('each_number')}}</div>
-              </div>
+              </div>              
             </div>
           </div>
           <div class="form-group">
             <div class="form-row">
               <div class="form col">
-                <label for="enabled">Enabled</label>
-                <select class="form-control" id="enabled" formControlName="enabled" [ngClass]="(getError('enabled') == '') ? 'valid-control' : 'invalid-control'">
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-                </select>
-                <div class="invalid-feedback">{{ getError('enabled')}}</div>
+                <label for="each_number">Each_number</label>
+                <input type="number" class="form-control" id="each_number" formControlName="each_number" [ngClass]="(getError('each_number') == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('each_number')}}</div>
               </div>
               <div class="form col">
                 <label for="amount">Amount</label>
                 <input type="number" class="form-control" id="amount" formControlName="amount" [step]="util.stepDecimal" [ngClass]="(getError('amount') == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('amount')}}</div>
-              </div>
-              <div class="form col">
-                <label for="sign">Sign</label>
-                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'" (change)="automatic.patchValue({id_category: ''})">
-                  <option value="-">-</option>
-                  <option value="+">+</option>
-                </select>
-                <div class="invalid-feedback">{{ getError('sign')}}</div>
-              </div>
+              </div>              
             </div>
           </div>
           <div class="form-group">
@@ -112,33 +123,15 @@
             <div class="form-row">
               <div class="col">
                 <label for="initial_date">Initial_date</label>
-                <div class="row">
-                  <div class="col-11">
-                    <input type="text" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date" [ngClass]="(getError('initial_date') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('initial_date')}}</div>
-                  </div>
-                  <div class="col-1 icon-Calendar-full" >
-                  <span [owlDateTimeTrigger]="id" style="cursor: pointer">
-                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
-                  </span>
-                    <owl-date-time #id [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
-                  </div>
-                </div>
+                <input type="text" [owlDateTimeTrigger]="id" [owlDateTime]="id" class="form-control" id="initial_date" formControlName="initial_date" placeholder="initial_date" [ngClass]="(getError('initial_date') == '') ? 'valid-control' : 'invalid-control'">
+                <owl-date-time #id [disabled]="util.isDelete(option)" [pickerType]="'calendar'"></owl-date-time>
+                <div class="invalid-feedback">{{ getError('initial_date')}}</div>
               </div>
               <div class="col">
                 <label for="next_date">Next_date</label>
-                <div class="row">
-                  <div class="col-11">
-                    <input type="text" [owlDateTime]="nd" class="form-control" id="next_date" formControlName="next_date" placeholder="next_date" [ngClass]="(getError('next_date') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('next_date')}}</div>
-                  </div>
-                  <div class="col-1 icon-Calendar-full">
-                  <span [owlDateTimeTrigger]="nd" style="cursor: pointer">
-                    <fa-icon [icon]="util.faCalendar" class="color-blue"></fa-icon>
-                  </span>
-                    <owl-date-time #nd  [disabled]="util.isDelete(option)" pickerType="calendar"></owl-date-time>
-                  </div>
-                </div>
+                <input type="text" [owlDateTimeTrigger]="nd" [owlDateTime]="nd" class="form-control" id="next_date" formControlName="next_date" placeholder="next_date" [ngClass]="(getError('next_date') == '') ? 'valid-control' : 'invalid-control'">
+                <owl-date-time #nd  [disabled]="util.isDelete(option)" [pickerType]="'calendar'"></owl-date-time>
+                <div class="invalid-feedback">{{ getError('next_date')}}</div>
               </div>
             </div>
           </div>

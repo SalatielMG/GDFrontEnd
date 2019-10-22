@@ -9,9 +9,11 @@ import {UserBackupsMnt} from "../../Modelos/User/userBackupsMnt";
   providedIn: 'root'
 })
 export class BackupService {
+
+  public indexUser: number = 0;
   public paginaB: number = 0;
   public backups: Backup[];
-  public userBackupsMnt: UserBackupsMnt[] = [];
+  public userBackups: UserBackupsMnt[] = [];
 
   constructor(public http: HttpClient) {
   }
@@ -21,16 +23,95 @@ export class BackupService {
     this.paginaB = 0;
   }
 
+
+  // -------------------------------- Filter Backups User --------------------------------
+  public actionFilterEvent(event, value, isKeyUp = false, index = 0,) {
+    if (value == "automatic") {
+      if (this.userBackups[index].filtrosSearch[value].value == "-1") {
+        this.userBackups[index].filtrosSearch[value].isFilter = false;
+        this.userBackups[index].filtrosSearch[value].valueAnt = this.userBackups[index].filtrosSearch[value].value;
+        this.proccessFilter(index);
+        return;
+      }
+    } else {
+      if (isKeyUp && event.key != "Enter") return;
+      if (this.userBackups[index].filtrosSearch[value].value == "") return;
+    }
+    if (this.userBackups[index].filtrosSearch[value].value == this.userBackups[index].filtrosSearch[value].valueAnt) return;
+    this.resetFilterisActive(index);
+    this.userBackups[index].filtrosSearch[value].isFilter = true;
+    this.userBackups[index].filtrosSearch[value].valueAnt = this.userBackups[index].filtrosSearch[value].value;
+    this.proccessFilter(index);
+  }
+  public resetValuefiltroSearch(key, index = 0) {
+    this.userBackups[index].filtrosSearch[key].value =  "";
+    this.userBackups[index].filtrosSearch[key].valueAnt =  "";
+    this.userBackups[index].filtrosSearch[key].isFilter =  false;
+    if (key == "automatic") this.userBackups[index].filtrosSearch[key].value = "-1";
+
+    if (!this.isFilter(index)) {
+      this.userBackups[index].backupsFiltro = [];
+      return;
+    }
+    this.proccessFilter(index);
+  }
+  public resetFilterisActive(index = 0) {
+    if (!this.isFilter(index)) {
+      this.userBackups[index].backupsFiltro = [];
+      this.userBackups[index].backupsFiltro =  this.userBackups[index].backupsFiltro.concat(this.userBackups[index].backups);
+    }
+  }
+  public proccessFilter(index = 0) {
+    let temp = [];
+    this.userBackups[index].backups.forEach((back) => {
+      if (back.id_backup != 0) {
+
+        let bnd = true;
+        for (let k in this.userBackups[index].filtrosSearch) {
+          if (this.userBackups[index].filtrosSearch[k].isFilter) {
+            if (k == "automatic" && this.userBackups[index].filtrosSearch[k].value != "-1") {
+              if (back[k].toString() != this.userBackups[index].filtrosSearch[k].value) {
+                bnd = false;
+                break;
+              }
+            } else {
+              if (!back[k].toString().includes(this.userBackups[index].filtrosSearch[k].value)){
+                bnd = false;
+                break;
+              }
+            }
+          }
+        }
+
+        if (bnd) {
+          temp.push(back);
+        }
+      }
+    });
+    this.userBackups[index].backupsFiltro = [];
+    this.userBackups[index].backupsFiltro = this.userBackups[index].backupsFiltro.concat(temp);
+    temp = null;
+  }
+  public isFilter(index = 0): boolean {
+    for (let key in this.userBackups[index].filtrosSearch) {
+      if (this.userBackups[index].filtrosSearch[key].isFilter) return true;
+    }
+    return false;
+  }
+
+  // -------------------------------- Filter Backups User --------------------------------
+
+
   public actualizarBackup(backup): Observable<any> {
     const  parametro = new HttpParams()
       .append('backup', JSON.stringify(backup));
     //return this.http.post(URL + "actualizarBackup", {params: {backup: JSON.stringify(backup)}});
     return this.http.post(URL + "actualizarBackup", parametro);
   }
-  public eliminarBackup(id): Observable<any> {
+  public eliminarBackup(): Observable<any> {
     /*const  parametro = new HttpParams()
       .append('id', id);*/
-    return this.http.delete(URL + 'eliminarBackup', {params: {id: id}});
+    return this.http.delete(URL + 'eliminarBackup', {params: {id_backup: this.userBackups[this.indexUser].id_BackupSelected.toString()}});
   }
   public buscarBackupsUserEmail(email, pagina, order = "desc"): Observable<any> {
     return this.http.get(URL + 'buscarBackupsUserEmail', {params: {email: email, pagina: pagina, orderby: order}});
@@ -41,7 +122,7 @@ export class BackupService {
   }
 
   public buscarBackupsUserMnt(email, cantidad, pagina): Observable<any> {
-    // this.userBackupsMnt = [];
+    // this.userBackups = [];
     return this.http.get(URL + 'buscarBackupsUserMnt', {params: {email: email, cantidad: cantidad, pagina: pagina}});
   }
   public corregirInconsistencia(Tabla): Observable<any> {

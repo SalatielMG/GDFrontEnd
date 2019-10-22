@@ -25,7 +25,7 @@ export class DetalleUsuarioComponent implements OnInit {
 
     // this.msj = "Creando Grafica de movimientos negativos del usuario solicitado";
     /*this.util.crearLoading().then(() => {
-      this.userService.obtValoresGrafica(this.userService.User.id_user).subscribe(result => {
+      this.userService.obtValoresGrafica(this.userService.User.indexUser).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {

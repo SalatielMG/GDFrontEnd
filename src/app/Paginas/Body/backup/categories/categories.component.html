@@ -25,25 +25,25 @@
           <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
             <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar categoria num: {{(categoriesService.indexCategorySelected + 1)}} del Respaldo Id_backup: {{categoriesService.id_backup}} ?</h5>
           </div>
-          <div class="form-group">
+
+          <fieldset class="form-group" >
             <div class="form-row">
-              <div class="form col">
-                <label for="id_account">Account: </label>
-                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'">
-                  <option *ngIf="categoriesService.AccountsBackup.length > 0" value="">Seleccione una cuenta</option>
-                  <option *ngFor="let account of categoriesService.AccountsBackup" [value]="account.id_account">{{account.name}}</option>
-                </select>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
+                </div>
               </div>
-              <div class="col">
-                <label for="sign">Sign: </label>
-                <select class="form-control" id="sign" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
-                  <option value="-">-</option>
-                  <option value="+">+</option>
-                </select>
-                <div class="invalid-feedback">{{ getError('sign')}}</div>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <label class="custom-control-label" for="customControlValidation3">Gastos</label>
+                </div>
               </div>
+              <div class="invalid-feedback">{{ getError('sign')}}</div>
             </div>
-          </div>
+          </fieldset>
+
           <div class="form-group">
             <div class="form-row">
               <div class="form col">
@@ -52,12 +52,21 @@
                 <div class="invalid-feedback">{{ getError('id_category')}}</div>
               </div>
               <div class="form col">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="(getError('name') == '') ? 'valid-control' : 'invalid-control'">
-                <div class="invalid-feedback">{{ getError('name')}}</div>
+                <label for="id_account">Account: </label>
+                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'">
+                  <option *ngIf="categoriesService.AccountsBackup.length > 0" value="">Seleccione una cuenta</option>
+                  <option *ngFor="let account of categoriesService.AccountsBackup" [value]="account.id_account">{{account.name}}</option>
+                </select>
               </div>
             </div>
           </div>
+
+          <div class="form">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="(getError('name') == '') ? 'valid-control' : 'invalid-control'">
+            <div class="invalid-feedback">{{ getError('name')}}</div>
+          </div>
+
           <div class="form-group">
             <div class="form-row">
               <div class="form col">

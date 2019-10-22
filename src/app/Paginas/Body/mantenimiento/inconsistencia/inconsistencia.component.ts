@@ -106,7 +106,7 @@ export class InconsistenciaComponent implements OnInit {
               this.util.QueryComplete.isComplete = false;
               this.backupService.paginaB += 1;
               this.backupService.backups = this.backupService.backups.concat(result.backups);
-              this.util.userMntInconsistencia.id = result.id_user;
+              this.util.userMntInconsistencia.id = result.indexUser;
             } else {
               if (this.backupService.paginaB == 0) {
                 this.util.QueryComplete.isComplete = false;
@@ -342,7 +342,7 @@ export class InconsistenciaComponent implements OnInit {
 
         let bnd = true;
         for (let k in this.filtrosSearch) {
-          if (this.filtrosSearch[k].isFilter) {
+          if (this.filtrosSearch[k].isFilter) { // By filter option is verify emailUser
             if (k == "automatic" && this.filtrosSearch[k].value != "-1") {
               if (back[k].toString() != this.filtrosSearch[k].value) {
                 bnd = false;
