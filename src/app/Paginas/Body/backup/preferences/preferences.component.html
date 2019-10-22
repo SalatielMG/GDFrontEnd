@@ -4,35 +4,136 @@
   color="#fff"
   type="ball-scale-multiple"
 >
-  <p style="font-size: 20px; color: white">{{msj}}</p>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<div class="container text-center" *ngIf="preferencesService.Preferences.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">El Backup no tiene preferences relacionados</h2>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalPreference" tabindex="-1" role="dialog" aria-labelledby="modalPreferenceTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="preference != null">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalPreferenceTitle">{{option}} Preference</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="preference" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="util.isDelete(option)">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar la Preferencia núm: {{(preferencesService.indexPreferenceSelected + 1)}} del Respaldo Id_backup: {{preferencesService.id_backup}} ?</h5>
+          </div>
+          
+          <div class="form">
+            <label for="key_name">Key_Name: </label>
+            <select class="form-control" id="key_name" formControlName="key_name" [ngClass]="(getError('key_name') == '') ? 'valid-control' : 'invalid-control'" (change)="currencySelectedModal($event)">
+              <option value="" *ngIf="util.Keys_Names_Preferences.length > 0">Seleccione una key_name</option>
+              <option *ngFor="let keyName of util.Keys_Names_Preferences" [value]="keyName.key_name">{{keyName.key_name}}</option>
+            </select>
+            <div class="invalid-feedback">{{ getError('key_name')}}</div>
+          </div>
+
+          <div class="form">
+            <label for="value">Value:</label>
+            <input type="text" class="form-control" id="value" formControlName="value" [ngClass]="(getError('value') == '') ? 'valid-control' : 'invalid-control'">
+            <div class="invalid-feedback">{{ getError('value')}}</div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="preference.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<div *ngIf="preferencesService.Preferences.length > 0">
-  <table class="table table-hover">
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+<div class="container text-center" *ngIf="preferencesService.Preferences.length == 0" style="margin-top: 200px;">
+  <h2 class="font-weight-lighter">{{util.msj}}</h2>
+</div>
+<div *ngIf="preferencesService.Preferences.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-
-
-      <th scope="col" class="Encabezado-Tabla">key_name</th>
-      <th scope="col" class="Encabezado-Tabla">value</th>
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Key_Name
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="preferencesService.filtersSearch.key_name.value" name="key_name" (ngModelChange)="preferencesService.actionFilterEvent($event, 'key_name')">
+            <option value="-1" *ngIf="preferencesService.Preferences.length > 0">Todas</option>
+            <option *ngFor="let preference of preferencesService.Preferences" [value]="preference.key_name">{{preference.key_name}}</option>
+          </select>
+          <button type="button" [ngClass]="(preferencesService.filtersSearch.key_name.isFilter) ? 'close': 'btnFilter-disabled'" (click)="preferencesService.resetValuefiltroSearch('key_name')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Value
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="preferencesService.filtersSearch.value.value" name="value" (keyup)="preferencesService.actionFilterEvent($event, 'value', true)">
+          <button type="button" [ngClass]="(preferencesService.filtersSearch.value.isFilter) ? 'close': 'btnFilter-disabled'" (click)="preferencesService.resetValuefiltroSearch('value')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
-    <tr *ngFor="let preference of preferencesService.Preferences; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{preference.key_name}}</td>
-      <td class="Celdas-Tabla">{{preference.value}}</td>
-
-      <td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary" style="width: 100px; margin-right: 20px; font-size: 20px" >Editar</button>
-        <button type="button" class="btn btn-danger" style="width: 100px; margin-left: 20px; font-size: 20px" (click)="eliminar(i, back.id_backup)">Eliminar</button>
+    <tbody *ngIf="!preferencesService.isFilter()">
+      <tr *ngFor="let preference of preferencesService.Preferences; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{preference.repeated}}</td>
+        <td class="Celdas-Tabla">{{preference.key_name}}</td>
+        <td class="Celdas-Tabla">{{preference.value}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionPreference(util.ACTUALIZAR, preference, i)">
+            <span>
+              <fa-icon [icon]="util.faPen"></fa-icon>
+            </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionPreference(util.ELIMINAR, preference, i)">
+            <span>
+            <fa-icon [icon]="util.faTrash"></fa-icon>
+          </span>
+        </button>
       </td>
-    </tr>
-
+      </tr>
+      <div
+        [fromRoot]="true"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
+        (scrolled)="onScroll()">
+      </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="preferencesService.isFilter()">
+      <tr *ngFor="let preference of preferencesService.preferencesFilter; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{preference.repeated}}</td>
+        <td class="Celdas-Tabla">{{preference.key_name}}</td>
+        <td class="Celdas-Tabla">{{preference.value}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-update" (click)="accionPreference(util.ACTUALIZAR, preference, i)">
+              <span>
+                <fa-icon [icon]="util.faPen"></fa-icon>
+              </span>
+          </button>
+          <button type="button" class="btn btn-danger btn-delete" (click)="accionPreference(util.ELIMINAR, preference, i)">
+              <span>
+              <fa-icon [icon]="util.faTrash"></fa-icon>
+            </span>
+          </button>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
+<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionPreference(util.AGREGAR)">
+  <span>
+    <fa-icon [icon]="util.faPlus"></fa-icon>
+  </span>
+</button>

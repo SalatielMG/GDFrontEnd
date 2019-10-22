@@ -33,6 +33,7 @@ export class Utilerias {
   public exprOperation_Code: string = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
   public characterAllowInOperationCode: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   public idCardView = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}];
+  public Keys_Names_Preferences = [{key_name: "budget_reduce_period"}, {key_name: "week_is_updated"}];
   public nameMonth = [
     {
       value: 1,

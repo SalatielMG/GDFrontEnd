@@ -47,7 +47,11 @@ export class CurrenciesComponent implements OnInit {
         });
       });
     } else {
-
+      this.currenciesService.buscarCurrenciesBackup().subscribe(result => {
+        this.resultado(result);
+      }, error => {
+        this.util.msjErrorInterno(error, false);
+      });
     }
   }
   private resultado(result) {
@@ -170,7 +174,7 @@ export class CurrenciesComponent implements OnInit {
               this.currenciesService.Currencies.push(result.currency.new);
               if (this.currenciesService.isFilter()) this.currenciesService.proccessFilter();
             } else {
-              this.util.msjToast(result.currency.msj, result.util.errorRefreshListTable, result.currency.error);
+              this.util.msjToast(result.currency.msj, this.util.errorRefreshListTable, result.currency.error);
             }
           }
           this.closeModal();
