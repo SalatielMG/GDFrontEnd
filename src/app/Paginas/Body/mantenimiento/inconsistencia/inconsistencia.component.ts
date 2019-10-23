@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
-import {Backup} from "../../../../Modelos/Backup/backup";
 import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-backups";
+import {UserBackupsMnt} from '../../../../Modelos/User/userBackupsMnt';
 
 @Component({
   selector: 'app-inconsistencia',
@@ -20,8 +20,8 @@ export class InconsistenciaComponent implements OnInit {
   private todo: boolean = false;
   private errorValidacionUserBackup: boolean = true;
 
-  private filtrosSearch = new FiltrosSearchBackups();
-  private backupsFiltro: Backup[];
+  /*private filtrosSearch = new FiltrosSearchBackups();
+  private backupsFiltro: Backup[];*/
 
   constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
               private router: Router) {
@@ -52,6 +52,9 @@ export class InconsistenciaComponent implements OnInit {
     console.log("email user:", this.email);
     if (this.email.length == 0) {
       this.util.userMntInconsistencia.email = "Generales";
+      this.util.userMntInconsistencia.id = "0";
+      console.log("util.userMntInconsistencia user:", this.util.userMntInconsistencia);
+
       this.compararRutaHija(this.router.url, isFiltro);
     } else {
       if ((this.util.regex_email).exec(this.email)) {
@@ -70,8 +73,10 @@ export class InconsistenciaComponent implements OnInit {
   this.todo = true;
   this.errorValidacionUserBackup = true;
 
-  this.filtrosSearch = new FiltrosSearchBackups();
-  this.backupsFiltro= [];
+  this.backupService.userBackups = [];
+  this.backupService.userBackups.push(new UserBackupsMnt());
+  this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
+  this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
   }
   private compararRutaHija(ruta, isFiltro) {
     if (!isFiltro) {
@@ -91,12 +96,13 @@ export class InconsistenciaComponent implements OnInit {
     this.navegacion(ruta, isFiltro);
   }
   private buscarBackups() {
+    console.error("buscandso user" + JSON.stringify(this.util.userMntInconsistencia));
     let promise;
-    if (this.backupService.paginaB == 0) { // Es la primera busqueda implica un loading
+    if (this.backupService.pagina == 0) { // Es la primera busqueda implica un loading
       promise = new Promise(()=>{
         this.util.msjLoading = "Validando usuario" + ((this.util.userMntInconsistencia.email == "Generales") ? "s ": ": ") + this.util.userMntInconsistencia.email + " y backups relacionados ";
         this.util.crearLoading().then(() => {
-          return this.backupService.buscarBackupsUserEmail(this.util.userMntInconsistencia.email, this.backupService.paginaB).subscribe(result => {
+          return this.backupService.buscarBackupsUserEmail(this.util.userMntInconsistencia.email, this.backupService.pagina).subscribe(result => {
             this.util.detenerLoading();
             this.util.loadingModal = false;
             this.util.msjModal = result.msj;
@@ -104,11 +110,11 @@ export class InconsistenciaComponent implements OnInit {
 
             if (!result.error) {
               this.util.QueryComplete.isComplete = false;
-              this.backupService.paginaB += 1;
-              this.backupService.backups = this.backupService.backups.concat(result.backups);
-              this.util.userMntInconsistencia.id = result.indexUser;
+              this.backupService.pagina += 1;
+              this.backupService.userBackups[this.backupService.indexUser].backups = this.backupService.userBackups[this.backupService.indexUser].backups.concat(result.backups);
+              this.util.userMntInconsistencia.id = result.id_user;
             } else {
-              if (this.backupService.paginaB == 0) {
+              if (this.backupService.pagina == 0) {
                 this.util.QueryComplete.isComplete = false;
                 this.util.msjToast(result.msj, result.titulo, result.error);
               } else {
@@ -123,16 +129,16 @@ export class InconsistenciaComponent implements OnInit {
 
     } else {
       promise = new Promise(() => {
-        this.backupService.buscarBackupsUserEmail(this.util.userMntInconsistencia.email, this.backupService.paginaB).subscribe(result => {
+        this.backupService.buscarBackupsUserEmail(this.util.userMntInconsistencia.email, this.backupService.pagina).subscribe(result => {
           this.util.loadingModal = false;
           this.util.msjModal = result.msj;
 
           if (!result.error) {
             this.util.QueryComplete.isComplete = false;
-            this.backupService.paginaB += 1;
-            this.backupService.backups = this.backupService.backups.concat(result.backups);
+            this.backupService.pagina += 1;
+            this.backupService.userBackups[this.backupService.indexUser].backups = this.backupService.userBackups[this.backupService.indexUser].backups.concat(result.backups);
           } else {
-            if (this.backupService.paginaB == 0) {
+            if (this.backupService.pagina == 0) {
               this.util.QueryComplete.isComplete = false;
               this.util.msjToast(result.msj, result.titulo, result.error);
             } else {
@@ -149,8 +155,11 @@ export class InconsistenciaComponent implements OnInit {
   }
   private navegacion(tabla, isFilter) {
     if (isFilter) {
+      console.log("is filter true:=", this.util.userMntInconsistencia);
       this.router.navigate([tabla, this.stringyfyJSON()], {relativeTo: this.route});
     } else {
+      console.log("is filter false:=", this.util.userMntInconsistencia);
+
       this.router.navigate(["/mantenimiento/inconsistenciaMnt"]).then(()=> {
         this.router.navigate([tabla, this.stringyfyJSON()], {relativeTo: this.route});
       });
@@ -187,22 +196,22 @@ export class InconsistenciaComponent implements OnInit {
     this.operacion(ruta);
   }
   public onScroll() {
-    if (!this.isFilter()) this.buscarBackups();
+    if (!this.backupService.isFilter()) this.buscarBackups();
   }
   public checkBackup(index) {
-    if (this.backupService.backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
-      let pos = this.backupTemp.indexOf(this.backupService.backups[index].id_backup);
+    if (this.backupService.userBackups[this.backupService.indexUser].backups[index].checked) {//[Esta Activo] => [Se desactiva] :: {Eliminacion del arrary temporal}
+      let pos = this.backupTemp.indexOf(this.backupService.userBackups[this.backupService.indexUser].backups[index].id_backup);
       if (pos != -1) {
         this.backupTemp.splice(pos,1);
         this.backupIndexTemp.splice(pos,1);
       }
     } else {
-      if (!this.backupTemp.includes(this.backupService.backups[index].id_backup)) {
-        this.backupTemp.push(this.backupService.backups[index].id_backup);
+      if (!this.backupTemp.includes(this.backupService.userBackups[this.backupService.indexUser].backups[index].id_backup)) {
+        this.backupTemp.push(this.backupService.userBackups[this.backupService.indexUser].backups[index].id_backup);
         this.backupIndexTemp.push(index);
       }
     }
-    this.backupService.backups[index].checked = !this.backupService.backups[index].checked;
+    this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = !this.backupService.userBackups[this.backupService.indexUser].backups[index].checked;
     console.log("this.backupsTemp", this.backupTemp);
     console.log("this.backupIndexTemp", this.backupIndexTemp);
     console.log("this.backupIndex", this.backupIndex);
@@ -241,13 +250,13 @@ export class InconsistenciaComponent implements OnInit {
       let deseleccionar = this.backupIndexTemp.filter(el => !this.backupIndex.includes(el));
       console.log(deseleccionar);
       for(let index of deseleccionar) {
-        this.backupService.backups[index].checked = false;
+        this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = false;
       }
     } else  { //--- Selecciona ---//
       let seleccionar = this.backupIndex.filter(el => !this.backupIndexTemp.includes(el));
       console.log(seleccionar);
       for(let index of seleccionar) {
-        this.backupService.backups[index].checked = true;
+        this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = true;
       }
     }
     this.resetTemp();
@@ -270,13 +279,13 @@ export class InconsistenciaComponent implements OnInit {
       let seleccionar = this.backupIndex.filter(el => !this.backupIndexTemp.includes(el));
       console.log(seleccionar);
       for(let index of seleccionar) {
-        this.backupService.backups[index].checked = true;
+        this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = true;
       }
     } else { // -- Los faltantes se deseleccionan
       let deseleccionar = this.backupIndexTemp.filter(el => !this.backupIndex.includes(el));
       console.log(deseleccionar);
       for(let index of deseleccionar) {
-        this.backupService.backups[index].checked = false;
+        this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = false;
       }
     }
     this.resetTemp();
@@ -296,7 +305,7 @@ export class InconsistenciaComponent implements OnInit {
   }
   private deseleccionarEventoTodo() {
       for (let index of this.backupIndexTemp) {
-        this.backupService.backups[index].checked = false;
+        this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = false;
       }
       this.resetearFiltroSearch();
       this.resetTemp();
@@ -307,10 +316,10 @@ export class InconsistenciaComponent implements OnInit {
       this.backupTemp.push("0");
   }
   private resetearFiltroSearch() {
-    this.filtrosSearch = new FiltrosSearchBackups();
+    this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
   }
 
-  //-----------------------------------------------------------------------
+  /*-----------------------------------------------------------------------
   private actionFilterEvent(event, value, isKeyUp = false) {
     if (value == "automatic") {
       if (this.filtrosSearch[value].value == "-1") {
@@ -387,5 +396,6 @@ export class InconsistenciaComponent implements OnInit {
     }
     return false;
   }
+  /*-----------------------------------------------------------------------*/
 
 }

@@ -46,8 +46,9 @@ export class AccountsComponent implements OnInit {
 
   private buscarInconsistencia() {
     this.util.loadingMain = true;
+    console.log("dataUserMntincosnistencia", this.util.userMntInconsistencia);
     if (this.pagina == 0) {
-      this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Accounts';
+      this.util.msjLoading = 'OHH Buscando inconsistencia de datos en la tabla Accounts' + JSON.stringify(this.util.userMntInconsistencia);
       this.util.crearLoading().then(() => {
         this.accountService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);

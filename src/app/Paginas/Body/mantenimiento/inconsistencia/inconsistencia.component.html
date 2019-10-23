@@ -16,11 +16,12 @@
         </button>
       </div>
       <div class="modal-body">
+        <br>
         <div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
-          <h3 class="text-center" style="font-weight: 500;">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h3>
+          <h4 class="text-center" style="font-weight: 500;">Usuario{{((util.userMntInconsistencia.email == "Generales")  ? "s ": ": ") + util.userMntInconsistencia.email}}</h4>
         </div>
-
-        <div *ngIf="backupService.backups.length > 0">
+        <br>
+        <div *ngIf="backupService.userBackups[backupService.indexUser].backups.length > 0">
             <table class="table table-hover" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'table-fixed-bu' : 'table-fixed'">
               <thead class="thead-dark">
               <tr class="text-center">
@@ -29,8 +30,8 @@
                 <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Id_backup
-                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
-                    <button type="button" [ngClass]="(filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('id_backup')">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.id_backup.value" name="id_backup" (keyup)="backupService.actionFilterEvent($event, 'id_backup', true)">
+                    <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('id_backup')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -38,8 +39,8 @@
                 <th scope="col" *ngIf="util.userMntInconsistencia.email == 'Generales'" class="vertical-align-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">
                   <div class="row inline-grid">
                     Email
-                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.email.value" name="email" (keyup)="actionFilterEvent($event, 'email', true)">
-                    <button type="button" [ngClass]="(filtrosSearch.email.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('email')">
+                    <input type="search" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.email.value" name="email" (keyup)="backupService.actionFilterEvent($event, 'email', true)">
+                    <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.email.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('email')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -47,12 +48,12 @@
                 <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Automatic
-                    <select class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
+                    <select class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.automatic.value" name="automatic" (ngModelChange)="backupService.actionFilterEvent($event, 'automatic', false)">
                       <option value="-1">Ambos</option>
                       <option value="0">No</option>
                       <option value="1">Si</option>
                     </select>
-                    <button type="button" [ngClass]="(filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('automatic')">
+                    <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('automatic')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -60,8 +61,8 @@
                 <th scope="col" class="vertical-align-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">
                   <div class="row inline-grid">
                     Date_creation
-                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
-                    <button type="button" [ngClass]="(filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_creation')">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backupService.actionFilterEvent($event, 'date_creation', false)">
+                    <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_creation')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -69,8 +70,8 @@
                 <th scope="col" class="vertical-align-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">
                   <div class="row inline-grid">
                     Date_download
-                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
-                    <button type="button" [ngClass]="(filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('date_download')">
+                    <input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backupService.actionFilterEvent($event, 'date_download', false)">
+                    <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_download')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -78,8 +79,8 @@
                 <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Created_in
-                    <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
-                    <button type="button" [ngClass]="(filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="resetValuefiltroSearch('created_in')">
+                    <input type="text" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.created_in.value" name="created_in" (keyup)="backupService.actionFilterEvent($event, 'created_in', true)">
+                    <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('created_in')">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -93,16 +94,16 @@
                 </th>
               </tr>
               </thead>
-              <tbody *ngIf="!todo && !isFilter()">
-                <ng-container *ngFor="let back of backupService.backups; let i = index">
+              <tbody *ngIf="!todo && !backupService.isFilter()">
+                <ng-container *ngFor="let back of backupService.userBackups[backupService.indexUser].backups; let i = index">
                   <tr  class="font-weight-normal text-center" *ngIf="back.id_backup != 0" style="height: 70px;" (click)="checkBackup(i)">
                     <td class="v-a-middle font-weight-bold width-6"  scope="row">{{(i)}}</td>
                     <!--td *ngIf="back.id_backup != 0">{{back.pos}}</td-->
                     <td class="v-a-middle width-10">{{back.id_backup}}</td>
                     <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
-                    <td class="v-a-middle width-10">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
-                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                    <td class="v-a-middle width-10">{{back.automatic }}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation : back.date_creation | date:'dd MMMM yyyy'}}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy'}}</td>
                     <td class="v-a-middle width-10">{{back.created_in}}</td>
                     <td class="v-a-middle width-10">
                       <div class="custom-control custom-checkbox">
@@ -122,15 +123,15 @@
               </div>
               </tbody>
 
-              <tbody *ngIf="!todo && isFilter()">
-              <ng-container *ngFor="let back of backupsFiltro; let i = index">
+              <tbody *ngIf="!todo && backupService.isFilter()">
+              <ng-container *ngFor="let back of backupService.userBackups[backupService.indexUser].backupsFiltro; let i = index">
                 <tr class="font-weight-normal text-center" *ngIf="back.id_backup != 0" style="height: 70px;" (click)="checkBackup(back.pos)">
                   <td class="v-a-middle font-weight-bold width-6"  scope="row" >{{(i + 1)}}</td>
                   <!--td>{{back.pos}}</td-->
                   <td class="v-a-middle width-10">{{back.id_backup}}</td>
                   <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
                   <td class="v-a-middle width-10">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{back.date_creation | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation : back.date_creation | date:'dd MMMM yyyy'}}</td>
                   <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
                   <td class="v-a-middle width-10">{{back.created_in}}</td>
                   <td class="v-a-middle width-10">
@@ -144,10 +145,10 @@
               </tbody>
             </table>
             <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
-            <query-complete *ngIf="util.QueryComplete.isComplete && !isFilter()" [msj]="util.QueryComplete.msj"></query-complete>
+            <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
 
         </div>
-        <div class="row" style="width: 100%; display: block" *ngIf="backupService.backups.length == 0">
+        <div class="row" style="width: 100%; display: block" *ngIf="backupService.userBackups[backupService.indexUser].backups.length == 0">
           <h4 class="font-weight-light">{{util.msjModal}}</h4>
         </div>
       </div>
@@ -194,8 +195,8 @@
         <div class="form-group row">
           <label for="backup" class="col-3 col-form-label" style="font-size: 18px; font-weight: normal">Backup:</label>
           <div class="col-7">
-            <select id="backup" [multiple]="!todo" class="form-control" [(ngModel)]="backup" name="backup" (change)="changeOptionSelect($event)" *ngIf="backupService.backups.length > 0">
-              <ng-container *ngFor="let b of backupService.backups">
+            <select id="backup" [multiple]="!todo" class="form-control" [(ngModel)]="backup" name="backup" (change)="changeOptionSelect($event)" *ngIf="backupService.userBackups[backupService.indexUser].backups.length > 0">
+              <ng-container *ngFor="let b of backupService.userBackups[backupService.indexUser].backups">
                 <option  value="{{b.id_backup}}">{{(b.id_backup == 0) ? 'Todos': b.id_backup}}</option>
               </ng-container>
             </select>

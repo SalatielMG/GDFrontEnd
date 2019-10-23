@@ -3,8 +3,8 @@ import { Utilerias } from '../../../../Utilerias/Util';
 import { BackupService } from "../../../../Servicios/backup/backup.service";
 import { CampoNumerico } from '../../../../Utilerias/validacionCampoNumerico';
 import { UserSelect } from "./userSelect";
-import {FiltrosSearchBackupsUser} from "../../../../Modelos/Backup/filtros-search-backups-user";
 import {Backup} from '../../../../Modelos/Backup/backup';
+import {FiltrosSearchBackups} from '../../../../Modelos/Backup/filtros-search-backups';
 
 @Component({
   selector: 'app-backups',
@@ -115,7 +115,7 @@ export class BackupsComponent implements OnInit {
           console.log(result.backups);
 
           if (!result.error){
-            this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackupsUser();
+            this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackups();
             this.backupService.userBackups[indice].backupsFiltro = [];
             this.backupService.userBackups[indice].backups = result.backups;
             this.expandir(575, 13, this.cntBackupsUser['_results'][indice].nativeElement);

@@ -6,6 +6,7 @@ import { UserService } from '../../../Servicios/user/user.service';
 import {Backup} from "../../../Modelos/Backup/backup";
 import {FiltrosSearchBackupsUser} from "../../../Modelos/Backup/filtros-search-backups-user"
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {UserBackupsMnt} from '../../../Modelos/User/userBackupsMnt';
 
 @Component({
   selector: 'app-backups',
@@ -35,6 +36,7 @@ export class BackupsComponent implements OnInit {
     // this.backupSelected.id_backup = 0;
     // this.buildForm();
     this.backService.resetearBackups();
+    this.backService.userBackups.push(new UserBackupsMnt());
     this.buscar();
   }
   onScroll () {
@@ -74,15 +76,18 @@ export class BackupsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  public accionBackup(option, dataBackup, back: Backup) {
+  public actionBackup(option, backup: Backup, i = null) {
     this.option = option;
-    this.dataBackupSelected = dataBackup;
-    this.indexBackupSelected = this.dataBackupSelected[0];
-    if (this.dataBackupSelected[2]) this.indexBackupSelected = <number>this.backService.backups.indexOf(back);
-    this.isCreated = back.date_creation != "0000-00-00 00:00:00";
-    this.isDownload = back.date_download != "0000-00-00 00:00:00";
-    this.buildForm(back.id_backup, back.automatic, (this.isCreated) ? new Date(back.date_creation) : null, (this.isDownload) ? new Date(back.date_download) : null, back.created_in);
+    this.backService.userBackups[this.backService.indexUser].indexBackupSelected = i;
+    if (this.backService.isFilter()) {
+      this.backService.userBackups[this.backService.indexUser].indexBackupSelected = <number> this.backService.userBackups[this.backService.indexUser].backups.indexOf(backup);
+      this.backService.userBackups[this.backService.indexUser].indexBackupFilterSelected = i;
+    }
+    this.isCreated = backup.date_creation != "0000-00-00 00:00:00";
+    this.isDownload = backup.date_download != "0000-00-00 00:00:00";
+    this.buildForm(backup.id_backup, backup.automatic, (this.isCreated) ? new Date(backup.date_creation) : null, (this.isDownload) ? new Date(backup.date_download) : null, backup.created_in);
   }
+
   private buildForm(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
     this.backup = this.formBuilder.group({
       id_backup: [id_backup, Validators.required],
@@ -157,19 +162,20 @@ export class BackupsComponent implements OnInit {
       this.backService.actualizarBackup(newBackup).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         if (!result.error) {
-          this.cerrarModal();
           // this.util.cerrarModal("#modalBackup");
           if (!result.backup.error) {
-            if (this.dataBackupSelected[2]) {
-              if (this.indexBackupSelected != -1) this.backService.backups[this.indexBackupSelected] = result.backup.update;
-              this.backupsFiltro[this.dataBackupSelected[1]] = result.backup.update;
+            if (this.backService.isFilter()) {
+              if (this.backService.userBackups[this.backService.indexUser].indexBackupSelected != -1) this.backService.userBackups[this.backService.indexUser].backups[this.backService.userBackups[this.backService.indexUser].indexBackupSelected] = result.backup.update;
+              this.backService.userBackups[this.backService.indexUser].backupsFiltro[this.backService.userBackups[this.backService.indexUser].indexBackupFilterSelected] = result.backup.update;
             } else {
-              this.backService.backups[this.indexBackupSelected] = result.backup.update;
+              this.backService.userBackups[this.backService.indexUser].backups[this.backService.userBackups[this.backService.indexUser].indexBackupSelected] = result.backup.update;
             }
           } else {
             this.util.msjToast(result.backup.msj, "", result.backup.error);
           }
+          this.cerrarModal();
         }
       }, error => {
         this.util.msjErrorInterno(error);
@@ -177,23 +183,20 @@ export class BackupsComponent implements OnInit {
     });
   }
 
-  // $(".modal-backdrop").onClick(functi);
   private eliminarBackup() {
-    //let opcion = confirm("¿ Esta seguro de eliminar el Respaldo num: " + (this.indexBackupSelected + 1) + ", Id_Backup: " + back.id_backup + " ?");
       this.util.crearLoading().then(()=> {
         this.backService.eliminarBackup().subscribe(
           result => {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);
             if (!result.error) {
-              this.cerrarModal();
-              //this.util.cerrarModal("#modalBackup");
-              if (this.dataBackupSelected[2]) {
-                if (this.indexBackupSelected != -1) this.backService.backups.splice((this.indexBackupSelected),1);
-                this.backupsFiltro.splice(this.dataBackupSelected[1], 1);
+              if (this.backService.isFilter()) {
+                if (this.backService.userBackups[this.backService.indexUser].indexBackupSelected != -1) this.backService.userBackups[this.backService.indexUser].backups.splice(this.backService.userBackups[this.backService.indexUser].indexBackupSelected,1);
+                this.backService.userBackups[this.backService.indexUser].backupsFiltro.splice(this.backService.userBackups[this.backService.indexUser].indexBackupFilterSelected, 1);
               } else {
-                this.backService.backups.splice(this.indexBackupSelected,1);
+                this.backService.userBackups[this.backService.indexUser].backups.splice(this.backService.userBackups[this.backService.indexUser].indexBackupSelected,1);
               }
+              this.cerrarModal();
             }
             console.log(result);
           },
@@ -203,97 +206,9 @@ export class BackupsComponent implements OnInit {
       });
   }
 
-  /*private formatDateTimeSQL(key) {
-    let dateTime = "";
-    if (this.backup.value[key] != null) {
-      this.backup.value[key].toLocaleDateString().split("/").reverse().forEach((d) => {
-        dateTime = dateTime + d + "-";
-      });
-      dateTime = (dateTime.substring(0, dateTime.length - 1)) + " " + this.backup.value[key].toLocaleTimeString();
-    } else {
-      dateTime = "0000-00-00 00:00:00";
-    }
-    return dateTime;
-  }*/
 
   ngOnInit() {
     this.util.ready("left");
   }
-
-  // --------------------------------------------------------------------------------------------
-  // Filtro Backups User
-  /*private actionFilterEvent(event, value, isKeyUp = false) {
-    if (value == "automatic") {
-      if (this.filtrosSearch[value].value == "-1") {
-        this.filtrosSearch[value].isFilter = false;
-        this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
-        this.proccessFilter();
-        return;
-      }
-    } else {
-      if (isKeyUp && event.key != "Enter") return;
-      if (this.filtrosSearch[value].value == "") return;
-    }
-    if (this.filtrosSearch[value].value == this.filtrosSearch[value].valueAnt) return;
-    this.resetFilterisActive();
-    this.filtrosSearch[value].isFilter = true;
-    this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
-    this.proccessFilter();
-  }
-  private resetValuefiltroSearch(key) {
-    this.filtrosSearch[key].value =  "";
-    this.filtrosSearch[key].valueAnt =  "";
-    this.filtrosSearch[key].isFilter =  false;
-    if (key == "automatic") this.filtrosSearch[key].value = "-1";
-
-    if (!this.isFilter()) {
-      this.backupsFiltro = [];
-      return;
-    }
-    this.proccessFilter();
-  }
-  private resetFilterisActive() {
-    if (!this.isFilter()) {
-      this.backupsFiltro = [];
-      this.backupsFiltro =  this.backupsFiltro.concat(this.backService.backups);
-    }
-  }
-  private proccessFilter() {
-    let temp = [];
-    this.backService.backups.forEach((back) => {
-      if (back.id_backup != 0) {
-        let bnd = true;
-        for (let k in this.filtrosSearch) {
-          if (this.filtrosSearch[k].isFilter) {
-            if (k == "automatic" && this.filtrosSearch[k].value != "-1") {
-              if (back[k].toString() != this.filtrosSearch[k].value) {
-                bnd = false;
-                break;
-              }
-            } else {
-              if (!back[k].toString().includes(this.filtrosSearch[k].value)) {
-                bnd = false;
-                break;
-              }
-            }
-          }
-        }
-        if (bnd) {
-          temp.push(back);
-        }
-      }
-    });
-    this.backupsFiltro = [];
-    this.backupsFiltro = this.backupsFiltro.concat(temp);
-    temp = null;
-  }
-  private isFilter(): boolean {
-    for (let key in this.filtrosSearch) {
-      if (this.filtrosSearch[key].isFilter) return true;
-    }
-    return false;
-  }*/
-  // --------------------------------------------------------------------------------------------
-
 
 }

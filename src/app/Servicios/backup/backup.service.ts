@@ -22,6 +22,7 @@ export class BackupService {
     this.userBackups = [];
     this.pagina = 0;
     this.indexUser = 0;
+    this.userBackups = [];
   }
 
 

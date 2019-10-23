@@ -69,7 +69,7 @@ export class EntradasComponent implements OnInit {
     this.resetpiechar();
     this.msj = "Generando Grafica de Entradas, ¡ Porfavor espere !";
     this.util.crearLoading().then(() => {
-      this.userService.obtValoresGrafica(this.userService.User.id_user, "neg", this.backup, this.account, this.year, this.month).subscribe(result => {
+      this.userService.obtValoresGrafica(this.userService.User.id_user, "pos", this.backup, this.account, this.year, this.month).subscribe(result => {
         this.resultado(result);
       }, error => {
         this.util.detenerLoading();
