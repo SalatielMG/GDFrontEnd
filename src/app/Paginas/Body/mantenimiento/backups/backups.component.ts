@@ -25,14 +25,13 @@ export class BackupsComponent implements OnInit {
   };
   private users: UserSelect[] = [];
   private usersSelected : UserSelect[];
-  private pagina: number = 0;
   private msj = "";
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
   constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2) {
     this.usersSelected = [];
-    this.resetearVariables();
+    this.backupService.resetearBackups();
     this.buscarBackupsUserMnt();
   }
 
@@ -45,12 +44,8 @@ export class BackupsComponent implements OnInit {
     new CampoNumerico("#rangoBackups");
     this.util.ready();
   }
-  private resetearVariables() {
-    this.pagina = 0;
-    this.backupService.userBackups = [];
-  }
   public search() {
-    this.resetearVariables();
+    this.backupService.resetearBackups();
     console.log("email user:", this.email);
     if (this.email.length == 0) {
       this.util.emailUserMntBackup = "Generales";
@@ -67,10 +62,10 @@ export class BackupsComponent implements OnInit {
   }
   private buscarBackupsUserMnt() {
     this.util.loadingMain = true;
-    if (this.pagina == 0) {
+    if (this.backupService.pagina == 0) {
       this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
       this.util.crearLoading().then(() => {
-        this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value, this.pagina).subscribe(result => {
+        this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value).subscribe(result => {
           this.resultado(result);
           this.collapseSelected();
         }, error => {
@@ -78,7 +73,7 @@ export class BackupsComponent implements OnInit {
         });
       });
     } else {
-      this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value, this.pagina).subscribe(result => {
+      this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value).subscribe(result => {
         this.resultado(result, false);
       }, error => {
         this.util.msjErrorInterno(error, false);
@@ -93,12 +88,12 @@ export class BackupsComponent implements OnInit {
     }
     if (!result.error) {
       this.util.QueryComplete.isComplete = false;
-      this.pagina += 1;
+      this.backupService.pagina += 1;
       this.backupService.userBackups = this.backupService.userBackups.concat(result.backups);
       //let nuevoBack = this.backupService.userBackups.concat(result.backups);
       console.log("this.backupService.userBackups", this.backupService.userBackups);
     } else {
-      if (this.pagina == 0) {
+      if (this.backupService.pagina == 0) {
         this.util.QueryComplete.isComplete = false;
       } else {
         this.util.QueryComplete.isComplete = true;
@@ -215,6 +210,7 @@ export class BackupsComponent implements OnInit {
               this.backupService.userBackups[this.backupService.indexUser].backups.splice(this.backupService.userBackups[this.backupService.indexUser].indexBackupSelected, 1);
             }
             this.util.cerrarModal("#modalBackupsUserMnt");
+            this.option = "";
           }
           console.log(result);
         },
@@ -254,6 +250,8 @@ export class BackupsComponent implements OnInit {
         if (!result.error) {
           this.users = [];
           this.util.cerrarModal("#modalBackupsUserMnt");
+          this.option = "";
+
         } else {
           this.users = result.usuariosError;
         }
@@ -311,7 +309,7 @@ export class BackupsComponent implements OnInit {
   }
   private afterBlur(event) {
     if (this.rangoBackups.beforeValue != this.rangoBackups.value) {
-      this.resetearVariables();
+      this.backupService.resetearBackups();
       this.buscarBackupsUserMnt();
 
     }

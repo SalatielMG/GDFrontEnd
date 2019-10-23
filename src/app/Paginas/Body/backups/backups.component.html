@@ -91,13 +91,13 @@
           </span>
 </button-->
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<div *ngIf="backService.backups.length > 0">
-  <table class="table table-hover">
+<div *ngIf="backService.backups.length > 0"class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla">#</th>
+      <th scope="col" class="Encabezado-Tabla width-sm">#</th>
       <!--th scope="col" class="Encabezado-Tabla">Pos</th-->
-      <th scope="col" class="Encabezado-Tabla" >
+      <th scope="col" class="Encabezado-Tabla width-sm" >
         <div class="row inline-grid">
           Id_backup
           <input type="number" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.id_backup.value" name="id_backup" (keyup)="actionFilterEvent($event, 'id_backup', true)">
@@ -106,7 +106,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla">
+      <th scope="col" class="Encabezado-Tabla width-sm">
         <div class="row inline-grid">
           Automatic
           <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.automatic.value" name="automatic" (ngModelChange)="actionFilterEvent($event, 'automatic')">
@@ -119,7 +119,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla">
+      <th scope="col" class="Encabezado-Tabla width-lg">
         <div class="row inline-grid">
           Date_creation
           <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="actionFilterEvent($event, 'date_creation')">
@@ -128,7 +128,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla">
+      <th scope="col" class="Encabezado-Tabla width-lg">
         <div class="row inline-grid">
           Date_download
           <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="filtrosSearch.date_download.value" name="date_download" (ngModelChange)="actionFilterEvent($event, 'date_download')">
@@ -137,7 +137,7 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla">
+      <th scope="col" class="Encabezado-Tabla width-sm">
         <div class="row inline-grid">
           Created_in
           <input type="text" class="form-control mr-sm-2 form-control-md input-header"  [(ngModel)]="filtrosSearch.created_in.value" name="created_in" (keyup)="actionFilterEvent($event, 'created_in', true)">
@@ -146,22 +146,22 @@
           </button>
         </div>
       </th>
-      <th scope="col" class="Encabezado-Tabla">Operacion</th>
+      <th scope="col" class="Encabezado-Tabla width-sm">Operacion</th>
     </tr>
     </thead>
     <!-- ------------------------------------------------------------------------------------------------------ -->
     <tbody *ngIf="!isFilter()">
       <tr *ngFor="let back of backService.backups; let i = index" >
         <ng-container>
-          <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+          <td scope="row" class="Celdas-Tabla font-weight-bold width-sm">{{(i+1)}}</td>
           <!--td class="Celdas-Tabla">{{back.pos}}</td-->
-          <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
+          <td class="Celdas-Tabla width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
           <!--td class="text-center">{{back.indexUser}}</td-->
-          <td class="Celdas-Tabla">{{back.automatic}}</td>
-          <td class="Celdas-Tabla">{{(back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-          <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-          <td class="Celdas-Tabla">{{back.created_in}}</td>
-          <td class="Celdas-Tabla" >
+          <td class="Celdas-Tabla width-sm">{{back.automatic}}</td>
+          <td class="Celdas-Tabla width-lg">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation:back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+          <td class="Celdas-Tabla width-lg">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+          <td class="Celdas-Tabla width-sm">{{back.created_in}}</td>
+          <td class="Celdas-Tabla width-sm" >
             <button type="submit" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ACTUALIZAR, [i, back.pos, false], back)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
@@ -176,8 +176,10 @@
         </ng-container>
       </tr>
       <div
+        [fromRoot]="true"
         infiniteScroll
         [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
         (scrolled)="onScroll()">
       </div>
       <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
@@ -187,15 +189,15 @@
     <tbody *ngIf="isFilter()">
     <tr *ngFor="let back of backupsFiltro; let i = index" >
       <ng-container>
-        <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
+        <td scope="row" class="Celdas-Tabla font-weight-bold width-sm">{{(i+1)}}</td>
         <!--td class="Celdas-Tabla">{{back.pos}}</td-->
-        <td class="Celdas-Tabla" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
+        <td class="Celdas-Tabla width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
         <!--td class="text-center">{{back.indexUser}}</td-->
-        <td class="Celdas-Tabla">{{back.automatic}}</td>
-        <td class="Celdas-Tabla">{{back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-        <td class="Celdas-Tabla">{{(back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
-        <td class="Celdas-Tabla">{{back.created_in}}</td>
-        <td class="Celdas-Tabla" >
+        <td class="Celdas-Tabla width-sm">{{back.automatic}}</td>
+        <td class="Celdas-Tabla width-lg">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation:back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+        <td class="Celdas-Tabla width-lg">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+        <td class="Celdas-Tabla width-sm">{{back.created_in}}</td>
+        <td class="Celdas-Tabla width-sm">
           <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="accionBackup(util.ACTUALIZAR, [back.pos, i, true], back)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>

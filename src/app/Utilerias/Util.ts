@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { DatePipe } from '@angular/common';
 declare var $: any;
 
 @Injectable()
@@ -112,7 +113,12 @@ export class Utilerias {
   public stepDecimal: string = "0.000001";
   public limit: number= 50;
 
-  constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService) {
+  constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
+  }
+
+
+  public formatDatePipe(date, time = " hh:mm:ss") {
+    return ((date == "0000-00-00") || (date == "0000-00-00 00:00:00")) ? date : this.datePipe.transform(date, "dd MMMM yyyy" + time);
   }
   public getWeekNumber = function (now: Date) {
     let i=0,f,sem=(new Date(now.getFullYear(), 0,1).getDay()>0)?1:0;

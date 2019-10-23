@@ -13,7 +13,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title centerTitleModal" id="modalBackupsUserMntTitle">{{(option == util.ELIMINAR) ? option + " Backup" : option}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="option = ''">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -34,22 +34,21 @@
           <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
-              <th scope="col" >#</th>
-              <th scope="col" >Id_User</th>
-              <th scope="col" >Email</th>
-              <th scope="col">Núm. Backups</th>
+              <th scope="col" class="text-center">#</th>
+              <th scope="col" class="text-center">Id_User</th>
+              <th scope="col" class="text-center">Email</th>
+              <th scope="col" class="text-center">Núm. Backups</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let u of users; let posU = index">
-              <td class="font-weight-500">{{posU + 1}}</td>
-              <td >{{u.id}}</td>
-              <td >{{u.email}}</td>
-              <td >{{u.cantidadBackups}}</td>
+              <td class="font-weight-500 text-center">{{posU + 1}}</td>
+              <td class="text-center">{{u.id}}</td>
+              <td class="text-center">{{u.email}}</td>
+              <td class="text-center">{{u.cantidadBackups}}</td>
             </tr>
             </tbody>
           </table>
-
         </div>
 
         <div *ngIf="util.isDelete(option)">
@@ -59,9 +58,9 @@
 
           <div class="container">
 
-            <div class="flex-row-reverse">
+            <div class="form flex-row-reverse">
               <div class="custom-control custom-switch">
-                <input disabled type="checkbox" class="custom-control-input" id="automatic" [value]="util.valueChecked(backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].automatic)">
+                <input disabled type="checkbox" class="form-control custom-control-input" id="automatic" [checked]="util.valueChecked(backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].automatic)">
                 <label class="custom-control-label" for="automatic">Automatic</label>
               </div>
             </div>
@@ -69,19 +68,19 @@
             <div class="form-row">
               <div class="form-group col">
                 <label for="date_creation">Date_creation</label>
-                <input disabled type="text" class="form-control" id="date_creation" placeholder="date_creation" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].date_creation">
+                <input readonly type="text" class="form-control" id="date_creation" placeholder="date_creation" [value]="util.formatDatePipe(backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].date_creation)">
 
               </div>
               <div class="form-group col">
                 <label for="date_download">Date_download</label>
-                <input disabled type="text" class="form-control" id="date_download" placeholder="date_download" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].date_download">
+                <input readonly type="text" class="form-control" id="date_download" placeholder="date_download" [value]="util.formatDatePipe(backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].date_download)">
 
               </div>
             </div>
 
             <div class="form-group">
               <label for="created_in">Created_in: </label>
-              <input disabled type="text" class="form-control" id="created_in" placeholder="created_in" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].created_in">
+              <input readonly type="text" class="form-control" id="created_in" placeholder="created_in" [value]="backupService.userBackups[backupService.indexUser].backups[backupService.userBackups[backupService.indexUser].indexBackupSelected].created_in">
 
             </div>
 
@@ -90,8 +89,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" [ngClass]="util.classModal(option)" (click)="operation()">{{option}}</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="option = ''">Cerrar</button>
+        <button type="button" [ngClass]="util.classModal(option)" (click)="operation()">{{(util.isDelete(option)) ? option : "Limpiar"}}</button>
       </div>
     </div>
   </div>
@@ -194,8 +193,8 @@
         <table class="table table-hover table-fixed" *ngIf="user.cantRep > 0" >
           <thead>
           <tr class="text-center" >
-            <th scope="col" class="v-a-middle">#</th>
-            <th scope="col" class="v-a-middle">
+            <th scope="col" class="v-a-middle width-sm">#</th>
+            <th scope="col" class="v-a-middle width-sm">
               <div class="row inline-grid">
                 Id_backup
                 <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.id_backup.value" name="id_backup" (keyup)="backupService.actionFilterEvent($event, 'id_backup', true, i)">
@@ -204,7 +203,7 @@
                 </button>
               </div>
             </th>
-            <th scope="col" class="v-a-middle">
+            <th scope="col" class="v-a-middle width-sm">
               <div class="row inline-grid">
                 Automatic
                 <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.automatic.value" name="automatic" (ngModelChange)="backupService.actionFilterEvent($event, 'automatic', false, i)">
@@ -217,7 +216,7 @@
                 </button>
               </div>
             </th>
-            <th scope="col" class="v-a-middle">
+            <th scope="col" class="v-a-middle width-lg">
               <div class="row inline-grid">
                 Date_creation
                 <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backupService.actionFilterEvent($event, 'date_creation', false, i)">
@@ -226,7 +225,7 @@
                 </button>
               </div>
             </th>
-            <th scope="col" class="v-a-middle">
+            <th scope="col" class="v-a-middle width-lg">
               <div class="row inline-grid">
                 Date_download
                 <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backupService.actionFilterEvent($event, 'date_download', false, i)">
@@ -235,7 +234,7 @@
                 </button>
               </div>
             </th>
-            <th scope="col" class="v-a-middle">
+            <th scope="col" class="v-a-middle width-sm">
               <div class="row inline-grid">
                 Created_in
                 <input type="text" class="form-control mr-sm-2 form-control-md input-header"  [(ngModel)]="user.filtrosSearch.created_in.value" name="created_in" (keyup)="backupService.actionFilterEvent($event, 'created_in', true, i)">
@@ -244,7 +243,7 @@
                 </button>
               </div>
             </th>
-            <th scope="col" class="v-a-middle" style="display: block;">
+            <th scope="col" class="v-a-middle width-sm" style="display: block;">
               Operacion
               <br>
               <button class="btn btn-outline-success" (click)="accionLimpiarBackupsUser(util.LIMPIARBACKUPSUSER, user, i)">
@@ -258,13 +257,13 @@
           </thead>
           <tbody *ngIf="!backupService.isFilter(i)">
           <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
-            <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
-            <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
-            <td scope="row" class="v-a-middle">{{ back.automatic }}</td>
-            <td scope="row" class="v-a-middle">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-            <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-            <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
-            <td scope="row" class="v-a-middle">
+            <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.id_backup }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
+            <td scope="row" class="v-a-middle width-sm">
               <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT" (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
@@ -275,13 +274,13 @@
           </tbody>
         <tbody *ngIf="backupService.isFilter(i)">
         <tr class="text-center"  *ngFor="let back of user.backupsFiltro; let pos = index">
-          <td scope="row" class="v-a-middle font-weight-bold">{{ pos + 1 }}</td>
-          <td scope="row" class="v-a-middle">{{ back.id_backup }}</td>
-          <td scope="row" class="v-a-middle">{{ back.automatic }}</td>
-          <td scope="row" class="v-a-middle">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-          <td scope="row" class="v-a-middle">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-          <td scope="row" class="v-a-middle">{{ back.created_in }}</td>
-          <td scope="row" class="v-a-middle">
+          <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
+          <td scope="row" class="v-a-middle width-sm">{{ back.id_backup }}</td>
+          <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
+          <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+          <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+          <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
+          <td scope="row" class="v-a-middle width-sm">
             <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT"  (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>

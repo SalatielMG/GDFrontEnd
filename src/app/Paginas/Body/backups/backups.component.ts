@@ -15,15 +15,18 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 export class BackupsComponent implements OnInit {
 
   private option: string = "";
-  private pagina = 0;
-  private filtrosSearch = new FiltrosSearchBackupsUser();
-  private backupsFiltro: Backup[];
+
   private isCreated = false;
   private isDownload = false;
   //private backupSelected: Backup;
   private backup: FormGroup;
+
+
+  /*private pagina = 0;
+  private filtrosSearch = new FiltrosSearchBackupsUser();
+  private backupsFiltro: Backup[];
   private dataBackupSelected = [];
-  private indexBackupSelected: number = 0;
+  private indexBackupSelected: number = 0;*/
 
   constructor(private userService: UserService, private backService: BackupService, private util: Utilerias, private route: ActivatedRoute,
               private router: Router, private formBuilder: FormBuilder) {
@@ -31,29 +34,25 @@ export class BackupsComponent implements OnInit {
     //Consutar los bakups del usuario encontrado.
     // this.backupSelected.id_backup = 0;
     // this.buildForm();
-    this.resetearVariables();
+    this.backService.resetearBackups();
     this.buscar();
   }
   onScroll () {
-    if (!this.isFilter()) this.buscar();
-  }
-  private resetearVariables() {
-    this.pagina = 0;
-    this.backService.backups = [];
+    if (!this.backService.isFilter() && !this.util.loadingMain) this.buscar();
   }
   private buscar() {
     this.util.loadingMain = true;
-    if (this.pagina == 0) {
+    if (this.backService.pagina == 0) {
       this.util.msjLoading = "Buscando Backups del usuario: " + this.userService.User.email;
       this.util.crearLoading().then(() => {
-        this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "asc").subscribe(result => {
+        this.backService.buscarBackupsUserId(this.userService.User.id_user, this.backService.pagina, "asc").subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.backService.buscarBackupsUserId(this.userService.User.id_user, this.pagina, "asc").subscribe(result => {
+      this.backService.buscarBackupsUserId(this.userService.User.id_user, this.backService.pagina, "asc").subscribe(result => {
         this.resultado(result);
       }, error => {
         this.util.msjErrorInterno(error, false);
@@ -61,17 +60,17 @@ export class BackupsComponent implements OnInit {
     }
   }
   private resultado(result) {
-    if (this.pagina == 0) {
+    if (this.backService.pagina == 0) {
       this.util.detenerLoading();
       this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.pagina += 1;
-      this.backService.backups = this.backService.backups.concat(result.backups);
+      this.backService.pagina += 1;
+      this.backService.userBackups[this.backService.indexUser].backups = this.backService.userBackups[this.backService.indexUser].backups.concat(result.backups);
       this.util.QueryComplete.isComplete = false;
     } else {
-      this.util.QueryComplete.isComplete = this.pagina != 0;
+      this.util.QueryComplete.isComplete = this.backService.pagina != 0;
     }
     this.util.loadingMain = false;
   }
@@ -223,7 +222,7 @@ export class BackupsComponent implements OnInit {
 
   // --------------------------------------------------------------------------------------------
   // Filtro Backups User
-  private actionFilterEvent(event, value, isKeyUp = false) {
+  /*private actionFilterEvent(event, value, isKeyUp = false) {
     if (value == "automatic") {
       if (this.filtrosSearch[value].value == "-1") {
         this.filtrosSearch[value].isFilter = false;
@@ -293,7 +292,7 @@ export class BackupsComponent implements OnInit {
       if (this.filtrosSearch[key].isFilter) return true;
     }
     return false;
-  }
+  }*/
   // --------------------------------------------------------------------------------------------
 
 

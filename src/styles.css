@@ -379,3 +379,9 @@ app-gastos-entradas {
 .font-weight-500 {
   font-weight: 500;
 }
+.width-sm {
+  width: 12% !important;
+}
+.width-lg {
+  width: 20% !important;
+}

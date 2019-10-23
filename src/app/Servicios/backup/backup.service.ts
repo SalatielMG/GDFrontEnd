@@ -11,16 +11,17 @@ import {UserBackupsMnt} from "../../Modelos/User/userBackupsMnt";
 export class BackupService {
 
   public indexUser: number = 0;
-  public paginaB: number = 0;
-  public backups: Backup[];
+  public pagina: number = 0;
+  // public backups: Backup[];
   public userBackups: UserBackupsMnt[] = [];
 
   constructor(public http: HttpClient) {
   }
 
-  public resetearBaackups() {
-    this.backups = [];
-    this.paginaB = 0;
+  public resetearBackups() {
+    this.userBackups = [];
+    this.pagina = 0;
+    this.indexUser = 0;
   }
 
 
@@ -121,9 +122,9 @@ export class BackupService {
     return this.http.get(URL + 'buscarBackupsUserId', {params: {idUser: idUser, pagina: pagina, orderby: order}});
   }
 
-  public buscarBackupsUserMnt(email, cantidad, pagina): Observable<any> {
+  public buscarBackupsUserMnt(email, cantidad): Observable<any> {
     // this.userBackups = [];
-    return this.http.get(URL + 'buscarBackupsUserMnt', {params: {email: email, cantidad: cantidad, pagina: pagina}});
+    return this.http.get(URL + 'buscarBackupsUserMnt', {params: {email: email, cantidad: cantidad, pagina: this.pagina.toString()}});
   }
   public corregirInconsistencia(Tabla): Observable<any> {
     return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla);

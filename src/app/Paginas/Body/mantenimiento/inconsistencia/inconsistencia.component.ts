@@ -75,7 +75,7 @@ export class InconsistenciaComponent implements OnInit {
   }
   private compararRutaHija(ruta, isFiltro) {
     if (!isFiltro) {
-      this.backupService.resetearBaackups();
+      this.backupService.resetearBackups();
       this.resetVariables();
       this.buscarBackups().then(() => {
         if (!this.errorValidacionUserBackup) this.routeNavigate(ruta, isFiltro);
