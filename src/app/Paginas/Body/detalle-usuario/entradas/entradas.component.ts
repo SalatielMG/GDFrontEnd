@@ -16,6 +16,7 @@ export class EntradasComponent implements OnInit {
     responsive: true,
     legend: {
       position: 'right',
+      display: false,
 
       fullWidth: true,
     },showLines: false,

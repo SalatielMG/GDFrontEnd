@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faFileExport ,faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -89,6 +89,7 @@ export class Utilerias {
     },
   ];
 
+  public faFileExport = faFileExport;
   public faTimes = faTimes;
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;
@@ -115,7 +116,13 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
   }
-
+  public sumaTotal(arreglo) {
+    let total: number = 0;
+    for (let data of arreglo){
+      total += this.numberFormat(data);
+    }
+    return total;
+  }
 
   public formatDatePipe(date, time = " hh:mm:ss") {
     return ((date == "0000-00-00") || (date == "0000-00-00 00:00:00")) ? date : this.datePipe.transform(date, "dd MMMM yyyy" + time);

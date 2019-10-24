@@ -2,6 +2,12 @@ import {AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, View
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {Utilerias} from '../../../../Utilerias/Util';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+
+import html2canvas from 'html2canvas';
 
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -14,10 +20,12 @@ import { Label } from 'ng2-charts';
 export class GastosComponent implements AfterViewInit {
   public msj;
   public pieChartOptions: ChartOptions = {
+    devicePixelRatio: 2,
+    aspectRatio: 1.3,
     responsive: true,
     legend: {
-      position: 'right',
       display: false,
+      position: 'top',
       fullWidth: true,
     },showLines: true,
     plugins: {
@@ -121,8 +129,42 @@ export class GastosComponent implements AfterViewInit {
 
   public prueba() {
     for (let pos = 0; pos < this.colorCategorias['_results'].length; pos++) {
-      this.renderer.setStyle(this.colorCategorias['_results'][pos].nativeElement, "background", this.pieChartColors[0].backgroundColor[pos]);
+      this.renderer.setStyle(this.colorCategorias['_results'][pos].nativeElement, "background-color", this.pieChartColors[0].backgroundColor[pos]);
+      this.renderer.setStyle(this.colorCategorias['_results'][pos].nativeElement, "border", "1px solid " + this.pieChartColors[0].borderColor[pos]);
     }
+  }
+  public exportPDF()
+  {
+
+    var data = document.getElementById('dataUserExport');
+    html2canvas(data, { scale: 3,y: 100, }).then(canvas => {
+      var img = canvas.toDataURL("image/png");
+      var imgWidth = 216;
+      var pageHeight = 295;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      const documentDefinition = {
+        info: {
+          title: 'Reporte Gastos Usuario ' + this.userService.User.email,
+          author: 'EncodeMX',
+          subject: 'Reporte Gastos',
+          keywords: 'Gastos diarios.',
+        },
+        pageSize: 'letter',
+
+        // by default we use portrait, you can change it to landscape if you wish
+        pageOrientation: 'portrait',
+
+        // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
+        pageMargins: [ 5, 5, 5, 5 ],
+        content: [
+          {
+        image: img,
+          width: imgWidth * 2.80,
+          height: imgHeight * 2.80}]
+      };
+      pdfMake.createPdf(documentDefinition).open();
+
+    });
   }
 
 }

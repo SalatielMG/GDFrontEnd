@@ -30,50 +30,52 @@
       </div>
     </div>
   </div>
-  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="width:100%; border: 1px solid #000000;margin-top: 10px; border-radius: 15px; padding: 20px;">
-    <div class="container mb-5 mt-5">
-      <div class="row" >
-        <div class="col text-left">
-          <h4 class="font-weight-light"><strong>Codigo País: </strong>{{userService.User.country_code}}</h4>
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9" style="heigth: 100%; width:100%;margin-top: 10px; border-radius: 15px; padding: 20px;" id="dataUserExport">
+      <div class="container mb-5 mt-5">
+        <div class="row mb-3" >
+          <h4 class="font-weight-light text-center" style="width: 100%;"><strong>Usuario: </strong>{{userService.User.email}}</h4>
         </div>
-        <div class="col text-right">
-          <h4 class="font-weight-light"><strong>Ciudad: </strong>{{userService.User.city}}</h4>
+        <div class="row" >
+          <div class="col text-left">
+            <h4 class="font-weight-light"><strong>Codigo País: </strong>{{userService.User.country_code}}</h4>
+          </div>
+          <div class="col text-right">
+            <h4 class="font-weight-light"><strong>Ciudad: </strong>{{userService.User.city}}</h4>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="row text-center" style="margin-top: 15px; margin-bottom: 15px">
-      <h3 class="font-weight-500 text-center" style="width: 100%; ">GRAFICAS</h3>
-      <ul class="nav nav-tabs nav-color" style="width: calc(100% + 10px); margin-left: -5px; margin-right: -5px">
-        <li class="nav-item tam-tab tammm">
-          <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['gastos']">Gastos</a>
-        </li>
-        <li class="nav-item tam-tab tammm">
-          <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['entradas']">Ingresos</a>
-        </li>
-        <li class="nav-item tam-tab tammm">
-          <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['gastosvsEntradas']">Gastos vs Ingresos</a>
-        </li>
-      </ul>
-      <div style="width: calc(100% + 10px); margin-left: -5px; margin-right: -5px; height: 100%; overflow-y: scroll; overflow-x: hidden">
+      <div class="row text-center" style="margin-top: 15px; margin-bottom: 15px">
+        <h3 class="font-weight-500 text-center" style="width: 100%; ">GRAFICAS</h3>
+        <ul class="nav nav-tabs nav-color" style="width: calc(100% + 10px); margin-left: -5px; margin-right: -5px">
+          <li class="nav-item tam-tab tammm">
+            <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['gastos']">Gastos</a>
+          </li>
+          <li class="nav-item tam-tab tammm">
+            <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['entradas']">Ingresos</a>
+          </li>
+          <li class="nav-item tam-tab tammm">
+            <a class="nav-link tam-a text-light" routerLinkActive="active" [routerLink]="['gastosvsEntradas']">Gastos vs Ingresos</a>
+          </li>
+        </ul>
         <router-outlet></router-outlet>
-      </div>
 
-    </div>
-    <div class="row text-center">
-      <div class="col">
-        <div class="row">
-          <h3 class="font-weight-500" style="width: 100%; ">RESPALDOS</h3>
-        </div>
-        <div class="row">
-          <div class="col" style="text-align: left">
-            <button class="btn btn-outline-primary" (click)="paginaBackup(['/detalleRespaldo', 1, backService.userBackups[backService.indexUser].backups[0].id_backup])">Primer Respaldo<br>{{backService.userBackups[backService.indexUser].backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
+      </div>
+      <div class="row text-center">
+        <div class="col">
+          <div class="row">
+            <h3 class="font-weight-500" style="width: 100%; ">RESPALDOS</h3>
           </div>
-          <div class="col" style="text-align: right" *ngIf="backService.userBackups[backService.indexUser].backups.length > 0">
-            <button class="btn btn-outline-secondary" (click)="paginaBackup(['/detalleRespaldo', backService.userBackups[backService.indexUser].backups.length, backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
+          <div class="row">
+            <div class="col" style="text-align: left">
+              <button class="btn btn-outline-primary" (click)="paginaBackup(['/detalleRespaldo', 1, backService.userBackups[backService.indexUser].backups[0].id_backup])">Primer Respaldo<br>{{backService.userBackups[backService.indexUser].backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
+            </div>
+            <div class="col" style="text-align: right" *ngIf="backService.userBackups[backService.indexUser].backups.length > 0">
+              <button class="btn btn-outline-secondary" (click)="paginaBackup(['/detalleRespaldo', backService.userBackups[backService.indexUser].backups.length, backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
+
 </div>
