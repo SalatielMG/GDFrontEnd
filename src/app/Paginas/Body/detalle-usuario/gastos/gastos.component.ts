@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -76,9 +76,6 @@ export class GastosComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    // console.log("this.colorCategorias", this.query.forEach(color => console.log(color)));
-  }
 
   public busquedaFiltrosGastos() {
     this.resetpiechar();
@@ -135,14 +132,20 @@ export class GastosComponent implements AfterViewInit {
   }
   public exportPDF()
   {
-
-    var data = document.getElementById('dataUserExport');
-    html2canvas(data, { scale: 3,y: 100, }).then(canvas => {
+  var data = document.getElementById('dataUserExport');
+  var logoEMX = document.getElementById('logoEncodeMX');
+    html2canvas(logoEMX, { scale: 3}).then(canvaslogoEMX => {
+    html2canvas(data, { scale: 3}).then(canvas => {
       var img = canvas.toDataURL("image/png");
+      var imgLogo = canvaslogoEMX.toDataURL("image/png");
       var imgWidth = 216;
       var pageHeight = 295;
       var imgHeight = canvas.height * imgWidth / canvas.width;
       const documentDefinition = {
+        defaultStyle: {
+          fontSize: 20,
+          bold: true,
+        },
         info: {
           title: 'Reporte Gastos Usuario ' + this.userService.User.email,
           author: 'EncodeMX',
@@ -151,20 +154,58 @@ export class GastosComponent implements AfterViewInit {
         },
         pageSize: 'letter',
 
-        // by default we use portrait, you can change it to landscape if you wish
         pageOrientation: 'portrait',
+        styles: {
+          imgLogo: {
+            borderBottom: ['#000000'],
+          },
+          header: {
+            fontSize: 15,
+            alignment: 'center',
+            bold: false,
+            bodyFontFamily: 'Century Gothic',
+            marginBottom: 5
+          },
+          anotherStyle: {
+            fontSize: 12,
+            bold: false,
+            fontWeight: 'lighter',
+            bodyFontFamily: 'Century Gothic',
+            alignment: 'center',
+            marginBottom: 50
+          }
+        },
+        pageMargins: [ 5, 15, 5, 5],
 
-        // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
-        pageMargins: [ 5, 5, 5, 5 ],
         content: [
           {
-        image: img,
-          width: imgWidth * 2.80,
-          height: imgHeight * 2.80}]
+              image: imgLogo,
+              height:  10 * 11,
+              width: 50 * 11,
+              alignment: 'center',
+          },
+          {
+            text: 'Reporte gastos', style: 'header'
+          },
+          {
+            text: 'Usuario: ' + this.userService.User.email, style: 'anotherStyle'
+          },
+          {
+            image: img,
+            width: imgWidth * 2.78,
+            height: imgHeight * 2.78}]
       };
       pdfMake.createPdf(documentDefinition).open();
 
     });
+    });
+
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
   }
 
 }

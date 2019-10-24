@@ -36,3 +36,11 @@
 .shadow:hover {
   box-shadow: 0 0 11px rgba(33,33,33,.3) !important;
 }
+.membrete-logo {
+  position: fixed;
+  z-index: -1;
+  /* height: 1px; */
+  top: 1px;
+}
+
+

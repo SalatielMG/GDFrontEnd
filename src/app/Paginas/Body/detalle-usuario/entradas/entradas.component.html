@@ -55,15 +55,60 @@
 
 </div>
 
-
-<div style="display: block">
-  <canvas baseChart
-          [data]="pieChartData"
-          [labels]="pieChartLabels"
-          [chartType]="pieChartType"
-          [options]="pieChartOptions"
-          [colors]="pieChartColors"
-          [legend]="pieChartLegend">
-
-  ></canvas>
+<div class="row">
+  <div class="col-8">
+    <div style="display: block">
+      <canvas baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType"
+              [options]="pieChartOptions"
+              [colors]="pieChartColors"
+              [legend]="pieChartLegend">
+        ></canvas>
+    </div>
+  </div>
+  <div class="col-4">
+    <table class="table table-sm table-hover table-fixed" style="font-size: small" *ngIf="pieChartData.length > 0">
+      <thead class="thead-dark">
+      <tr>
+        <th class="text-center" colspan="4" style="width: 70%; padding-left: 30%;">
+          Simbología
+        </th>
+        <th class="text-center" colspan="4" style="width: 30%">
+          <button class="btn btn-outline-info btn-sm" (click)="exportPDF()">
+          <span>
+              <fa-icon [icon]="util.faFileExport"></fa-icon>
+            </span>
+          </button>
+        </th>
+      </tr>
+      </thead>
+      <thead>
+      <tr>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" colspan="2" style="width: 65%">Categoria</th>
+        <th scope="col" style="width: 30%">Cantidad</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let color of pieChartColors[0].backgroundColor; let i = index">
+        <td style="width: 5%" class="font-weight-500">{{i + 1}}</td>
+        <td style="width: 15%">
+          <div class="categoria" #colorCategorias></div>
+        </td>
+        <td style="width: 50%">{{pieChartLabels[i]}}</td>
+        <td style="width: 30%">{{pieChartData[i] | currency: '$':'symbol':'1.2-6'}}</td>
+      </tr>
+      </tbody>
+      <tbody style="height: 40px!important; overflow-y: hidden!important; overflow-x: hidden!important;">
+      <tr>
+        <td style="width: 70%" class="font-weight-500" colspan="3">TOTAL</td>
+        <td style="width: 30%">{{util.sumaTotal(pieChartData) | currency: '$':'symbol':'1.2-6'}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+

@@ -3,6 +3,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {Utilerias} from '../../../../Utilerias/Util';
 
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
+
 @Component({
   selector: 'app-gastos-entradas',
   templateUrl: './gastos-entradas.component.html',
@@ -14,29 +17,57 @@ export class GastosEntradasComponent implements OnInit {
 
   public msj= "";
   public barChartLabels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  public barChartType = 'bar';
+  public barChartType: ChartType = 'bar';
   public barChartLegend = true;
 
-  public barChartData = [
+  public barChartData: ChartDataSets[] = [
     {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Gastos'},
     {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Ingresos'}
   ];
-  public barChartOptions = {
-    scaleShowVerticalLines: false,
+  public barChartOptions: ChartOptions = {
     responsive: true,
+    scales: { xAxes: [{}], yAxes: [{}] },
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
+    }
   };
 
   public TotalbarChartLabels = [''];
-  public TotalbarChartType = 'bar';
+  public TotalbarChartType: ChartType = 'bar';
   public TotalbarChartLegend = true;
 
-  public TotalbarChartData = [
+  public TotalbarChartData: ChartDataSets[] = [
     {data: [0], label: 'Gastos'},
     {data: [0], label: 'Ingresos'}
   ];
-  public TotalbarChartOptions = {
-    scaleShowVerticalLines: false,
+  public TotalbarChartOptions: ChartOptions  = {
     responsive: true,
+    scales: {
+      xAxes: [{
+        barThickness:30,
+      }],
+      yAxes: [{
+
+        gridLines: {
+          offsetGridLines: true
+        },
+        ticks: {
+          stepSize: 2000,
+          beginAtZero: true,
+          suggestedMax: 10000
+        },
+
+      }]
+    },
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
+    }
   };
 
   /****************************************/
@@ -50,27 +81,7 @@ export class GastosEntradasComponent implements OnInit {
     this.msj = "Creando Grafica de Gastos vs Ingresos, ¡ Porfavor espere !";
     this.userService.obtValoresGraficaGVSI(this.userService.User.id_user).subscribe(result => {
       this.resultado(result);
-      /*this.util.detenerLoading();
-      this.util.msjToast(result.msj, result.titulo, result.error);
-      this.backups = result.backups;
-      this.id_backup = result.ultimoBackup;
 
-      this.years = result.años;
-      this.year = result.ultimoAño;
-
-      console.log("this.years", this.years);
-      console.log("this.year", this.year);
-      console.log("this.backups", this.backups);
-      console.log("this.id_backup", this.id_backup);
-      if (!result.error) {
-
-        this.barChartData[0].data = result.Gastos;
-        this.barChartData[1].data = result.Ingresos;
-
-        this.TotalbarChartLabels = result.TotalAñoLabel;
-        this.TotalbarChartData[0].data = result.TotalGastos;
-        this.TotalbarChartData[1].data = result.TotalIngresos;
-      }*/
     }, error => {
       this.util.detenerLoading();
       this.util.msjErrorInterno(error);
@@ -113,9 +124,12 @@ export class GastosEntradasComponent implements OnInit {
       this.barChartData[0].data = result.Gastos;
       this.barChartData[1].data = result.Ingresos;
 
-      this.TotalbarChartLabels = result.TotalAñoLabel;
+      this.TotalbarChartLabels = result.TotalAnhoLabel;
+      //this.TotalbarChartLabels = this.barChartLabels;
       this.TotalbarChartData[0].data = result.TotalGastos;
       this.TotalbarChartData[1].data = result.TotalIngresos;
+      /*this.TotalbarChartData[0].data = this.barChartData[0].data;
+      this.TotalbarChartData[1].data = this.barChartData[1].data;*/
     }
   }
   private resetbarchar(){
