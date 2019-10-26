@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faFileExport ,faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faDatabase, faUserCircle ,faFileExport ,faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -29,7 +29,11 @@ export class Utilerias {
 
   public timeOutMilliseconds: number = 1000;
   public emailUserMntBackup: string = "Generales";
+  public emailUserExportacionBackups: string = "Generales";
   public errorRefreshListTable: string = "RECARGA LA PÁGINA";
+  public errorMsjEmailNoValido: string = "Porfavor ingrese un correo valido";
+  public errorTituloEmailNoValido: string = "Email no Valido";
+
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
   public exprRegular_6Decimal: string = "([0-9]+\.?[0-9]{0,6})";
@@ -89,6 +93,8 @@ export class Utilerias {
     },
   ];
 
+  public faDatabase = faDatabase;
+  public faUserCircle = faUserCircle;
   public faFileExport = faFileExport;
   public faTimes = faTimes;
   public faCalendar = faCalendar;

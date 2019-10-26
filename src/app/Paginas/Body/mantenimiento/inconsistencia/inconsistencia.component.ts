@@ -96,7 +96,6 @@ export class InconsistenciaComponent implements OnInit {
     this.navegacion(ruta, isFiltro);
   }
   private buscarBackups() {
-    console.error("buscandso user" + JSON.stringify(this.util.userMntInconsistencia));
     let promise;
     if (this.backupService.pagina == 0) { // Es la primera busqueda implica un loading
       promise = new Promise(()=>{

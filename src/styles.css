@@ -214,9 +214,18 @@ app-gastos-entradas {
 }
 .HeaderSelected {
   background-color: rgb(35, 200, 0) !important;
+  color: white !important;
+
+}
+.HeaderSelected #device-android{
+  filter: saturate(2.5) !important;
+}
+.HeaderSelected #device-ios{
+  filter: saturate(2.5) !important;
 }
 .BodySelected {
   background-color: rgba(35, 200, 0, 0.5) !important;
+  color: black !important;
 }
 
 .HeaderNoSelected {
@@ -385,3 +394,50 @@ app-gastos-entradas {
 .width-lg {
   width: 20% !important;
 }
+
+
+/* ------------- Style Collapse -------------*/
+#accordion {
+  padding-left: 50px;padding-right: 50px;
+}
+.card-rounded-feature {
+  border-radius: 20px !important;
+}
+.card-header {
+  border-radius: 20px !important; padding: 0px !important;
+}
+.content-row {
+  margin-top: 5px; margin-bottom: 5px;
+}
+.column-userData {
+  padding: 15px!important; padding-left: 60px!important;
+}
+.column-checkCollapse {
+  display: flex; align-items: center; flex-direction: row-reverse; padding-right: 40px;
+}
+.icon-User, .icon-Backups {
+  font-size: 35px!important; color: #000000!important;
+}
+.btn-check-Collapse {
+  height: 50px; width: 50px;
+}
+
+
+
+
+.card-rounded-feature:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.3) !important;
+}
+.img-device {
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.14);
+}
+.cursor-point{
+  cursor: pointer;
+}
+.heigth-100-Percent{
+  height: 100%!important;
+}
+/* ------------- Style Collapse -------------*/

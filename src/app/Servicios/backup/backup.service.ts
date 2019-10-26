@@ -127,6 +127,10 @@ export class BackupService {
     // this.userBackups = [];
     return this.http.get(URL + 'buscarBackupsUserMnt', {params: {email: email, cantidad: cantidad, pagina: this.pagina.toString()}});
   }
+  public buscarUsersExportacionBackups(email): Observable<any> {
+    // this.userBackups = [];
+    return this.http.get(URL + 'buscarUsersExportacionBackups', {params: {email: email, pagina: this.pagina.toString()}});
+  }
   public corregirInconsistencia(Tabla): Observable<any> {
     return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla);
   }

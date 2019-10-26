@@ -1,5 +1,97 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
+</ngx-spinner>
+
 <div class="tamaño-titulo-encabezado">
-  <div class="tam-titulo-encabezado">
-    <h2 class="text-light">Exportacion</h2>
+  <div class="tam-titulo-encabezado"  style="padding-top: 160px !important;">
+    <nav class="navbar navbar-light bg-light" style = "padding-left: 40px; padding-right: 40px; background: transparent !important">
+      <form class="form-row" style="width: 100% !important" (submit)="search()">
+        <div class="col-11">
+          <input [(ngModel)]="email" name="correo" class="form-control-lg inputSearch" type="email" placeholder="Ingrese el correo del cliente" aria-label="Search">
+        </div>
+        <div class="col-1">
+          <button class="btn btn-lg btn-primary btnSearch" type="submit">
+            <span>
+              <fa-icon [icon]="util.faSearch"></fa-icon>
+            </span>
+          </button>
+        </div>
+      </form>
+    </nav>
   </div>
+</div>
+
+<div class="text-center" style=" padding: 50px">
+  <h3 class="font-weight-500">Exportación Backups:</h3>
+  <h3 class="font-weight-normal">{{util.emailUserExportacionBackups}}</h3>
+</div>
+
+<button class="up-right rounded-circle" (click)="util.subir()">
+    <span>
+      <fa-icon [icon]="util.faArrowUp"></fa-icon>
+    </span>
+</button>
+
+<div id="accordion" *ngIf="backupService.userBackups.length > 0">
+  <div   class="card rounded shadow-sm mb-md-1 card-rounded-feature" *ngFor="let user of backupService.userBackups; let i = index" >
+    <div class="card-header" [id] = "i">
+      <div class="row content-row" >
+        <div class="col-11 column-userData" >
+          <div class="row">
+            <div class="col-8">
+              <div class="d-inline-flex align-content-center align-items-center" >
+                <div class="mr-lg-5">
+                  <img src="../../../../../assets/img/android.png" class="img-device mr-2" *ngIf="user.android_v2 == 1 || user.android_v3 == 1" id="device-android">
+                  <img src="../../../../../assets/img/ios.png" class="img-device" id="device-ios" *ngIf="user.ios == 1">
+                </div>
+                <span class="icon-User mr-3">
+                    <fa-icon [icon]="util.faUserCircle"></fa-icon>
+                  </span>
+                <!--h5 class="font-weight-500 mr-2">Usuario: </h5-->
+                <h5 class="font-weight-normal cursor-point" > {{user.email}}</h5>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="d-inline-flex align-content-center align-items-center heigth-100-Percent">
+              <span class="icon-Backups mr-3">
+                <fa-icon [icon]="util.faDatabase"></fa-icon>
+              </span>
+                <h5 class="font-weight-normal"> {{user.cantRep}}</h5>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 column-checkCollapse">
+          <button type="button" class="btn btn-outline-info rounded-circle btn-check-Collapse" >
+            <span>
+                <fa-icon *ngIf="!user.collapsed" [icon]="util.faArrowDown"></fa-icon>
+              <fa-icon *ngIf="user.collapsed" [icon]="util.faArrowUp"></fa-icon>
+            </span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div #cntBackupsUser class="tarjetaCuerpo bg-transparent">
+    </div>
+  </div>
+
+  <div
+    infiniteScroll
+    [infiniteScrollDistance]="2"
+    (scrolled)="onScroll()">
+  </div>
+  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+  <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+
+</div>
+<div class="container" *ngIf="backupService.userBackups.length == 0">
+  <h3 class="font-weight-lighter text-center">{{util.msj}}</h3>
 </div>

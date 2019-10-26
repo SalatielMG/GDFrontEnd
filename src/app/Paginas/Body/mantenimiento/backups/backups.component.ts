@@ -59,14 +59,14 @@ export class BackupsComponent implements OnInit {
         console.log("this.util.emailUserMntBackup ", this.util.emailUserMntBackup );
         this.buscarBackupsUserMnt();
       } else {
-        this.util.msjToast("Porfavor ingrese un correo valido", "Email no Valido", true);
+        this.util.msjToast(this.util.errorMsjEmailNoValido, this.util.errorTituloEmailNoValido, true);
       }
     }
   }
   private buscarBackupsUserMnt() {
     this.util.loadingMain = true;
     if (this.backupService.pagina == 0) {
-      this.msj = "Buscando backups " + ((this.util.emailUserMntBackup == "Generales") ? this.util.emailUserMntBackup: "del usuario : " + this.util.emailUserMntBackup);
+      this.msj = "Buscando Usuario" + ((this.util.emailUserMntBackup == "Generales") ? "s: " : ": ") + this.util.emailUserMntBackup + " con un cantidad de Backups mayores a: " + this.rangoBackups.value;
       this.util.crearLoading().then(() => {
         this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value).subscribe(result => {
           this.resultado(result);
@@ -96,11 +96,7 @@ export class BackupsComponent implements OnInit {
       //let nuevoBack = this.backupService.userBackups.concat(result.backups);
       console.log("this.backupService.userBackups", this.backupService.userBackups);
     } else {
-      if (this.backupService.pagina == 0) {
-        this.util.QueryComplete.isComplete = false;
-      } else {
-        this.util.QueryComplete.isComplete = true;
-      }
+      this.util.QueryComplete.isComplete = this.backupService.pagina != 0;
     }
     this.util.loadingMain = false;
     // console.log(result);

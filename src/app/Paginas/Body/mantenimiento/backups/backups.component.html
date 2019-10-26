@@ -118,8 +118,8 @@
 </div>
 
 <div class="text-center" style=" padding: 50px">
-  <h2 class="font-weight-bold">Backups</h2>
-  <h3 class="font-weight-lighter">{{util.emailUserMntBackup}}</h3>
+  <h3 class="font-weight-500">Mantenimiento Backups:</h3>
+  <h3 class="font-weight-normal">{{util.emailUserMntBackup}}</h3>
   <div class="row">
     <div class="col-9"></div>
     <div class="col-3">
@@ -151,44 +151,49 @@
     </span>
 </button>
 
-<div id="accordion" style="padding-left: 50px;padding-right: 50px" *ngIf="backupService.userBackups.length > 0">
-  <div   class="card" *ngFor="let user of backupService.userBackups; let i = index">
+<div id="accordion" *ngIf="backupService.userBackups.length > 0">
+  <div   class="card rounded shadow-sm mb-md-1 card-rounded-feature" *ngFor="let user of backupService.userBackups; let i = index" [ngClass]="(user.checked) ? 'BodySelected' : 'BodyNoSelected'">
     <div class="card-header" [id] = "i" [ngClass]="(user.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
-      <div class="float-left" style="width: 90% !important; padding: 10px" (dblclick)="eventSelectCollapse(i)">
-        <div class="row">
-          <div class="col-8">
+      <div class="row content-row" >
+        <div class="col-11 column-userData" (dblclick)="eventSelectCollapse(i)">
             <div class="row">
-              <div class="col-2">
-                <h5 class="font-weight-bold">Usuario: </h5>
-              </div>
-              <div class="col-10">
-                <h5 class="font-weight-light" style="cursor: pointer" (click)="detalleUsuario(i)"> {{user.email}}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="row">
-              <div class="col-4">
-                <h5 class="font-weight-bold">Backups: </h5>
-              </div>
               <div class="col-8">
-                <h5 class="font-weight-light"> {{user.cantRep}} </h5>
+                <div class="d-inline-flex align-content-center align-items-center" >
+                  <div class="mr-lg-5">
+                    <img src="../../../../../assets/img/android.png" class="img-device mr-2" *ngIf="user.android_v2 == 1 || user.android_v3 == 1" id="device-android">
+                    <img src="../../../../../assets/img/ios.png" class="img-device" id="device-ios" *ngIf="user.ios == 1">
+                  </div>
+                  <span class="icon-User mr-3">
+                    <fa-icon [icon]="util.faUserCircle"></fa-icon>
+                  </span>
+                  <!--h5 class="font-weight-500 mr-2">Usuario: </h5-->
+                  <h5 class="font-weight-normal cursor-point" (click)="detalleUsuario(i)"> {{user.email}}</h5>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-inline-flex align-content-center align-items-center heigth-100-Percent">
+              <span class="icon-Backups mr-3">
+                <fa-icon [icon]="util.faDatabase"></fa-icon>
+              </span>
+                  <h5 class="font-weight-normal"> {{user.cantRep}}</h5>
+                </div>
               </div>
             </div>
-          </div>
+
         </div>
-      </div>
-      <div class="float-right">
-        <button type="button" class="btn btn-outline-info rounded-circle" (click)="verficarExpansion(i, user.id_user, user.email)" style="height: 50px; width: 50px;">
-          <span>
+        <div class="col-1 column-checkCollapse">
+          <button type="button" class="btn btn-outline-info rounded-circle btn-check-Collapse" (click)="verficarExpansion(i, user.id_user, user.email)">
+            <span>
                 <fa-icon *ngIf="!user.collapsed" [icon]="util.faArrowDown"></fa-icon>
               <fa-icon *ngIf="user.collapsed" [icon]="util.faArrowUp"></fa-icon>
             </span>
-        </button>
+          </button>
+        </div>
       </div>
+
     </div>
 
-    <div #cntBackupsUser class="tarjetaCuerpo" [ngClass]="(user.checked) ? 'BodySelected' : 'BodyNoSelected'">
+    <div #cntBackupsUser class="tarjetaCuerpo bg-transparent">
       <div *ngIf="user.collapsed">
         <table class="table table-hover table-fixed" *ngIf="user.cantRep > 0" >
           <thead>
