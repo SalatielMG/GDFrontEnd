@@ -1,0 +1,13 @@
+.color-var-ingresos{
+  background-color: var(--blue);
+  border-radius: 5px;
+  color: white;
+}
+.color-var-gastos{
+   background-color: var(--pink);
+   border-radius: 5px;
+   color: white;
+ }
+.border-b{
+  border-bottom: 1px solid var(--secondary);
+}

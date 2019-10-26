@@ -37,7 +37,7 @@
   <div style="display: block">
 
     <div class="row">
-      <div class="col-10">
+      <div class="col-9">
         <canvas baseChart
                 [datasets]="barChartData"
                 [labels]="barChartLabels"
@@ -46,14 +46,44 @@
                 [chartType]="barChartType">
         </canvas>
       </div>
-      <div class="col-2">
-        <canvas baseChart
-                [datasets]="TotalbarChartData"
-                [labels]="TotalbarChartLabels"
-                [options]="TotalbarChartOptions"
-                [legend]="TotalbarChartLegend"
-                [chartType]="TotalbarChartType">
-        </canvas>
+      <div class="col-3">
+        <table class="table table-sm table-hover" style="font-size: small">
+          <thead class="thead-dark">
+
+          <th class="text-center"  style="width: 70%; padding-left: 30%;">
+            Año: {{TotalbarChartLabels}}
+          </th>
+          <th class="text-center" style="width: 30%">
+            <button class="btn btn-outline-info btn-sm">
+            <span>
+                <fa-icon [icon]="util.faFileExport"></fa-icon>
+              </span>
+            </button>
+          </th>
+
+
+          </thead>
+          <thead>
+          <tr>
+            <th scope="col">Variables</th>
+            <th scope="col">Total</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="color-var-ingresos">Ingresos</td>
+            <td>{{TotalbarChartData[1].data[0] | currency: '$':'symbol':'1.2-6'}}</td>
+          </tr>
+          <tr class="mb-2">
+            <td class="color-var-gastos">Gastos</td>
+            <td class="border-b">{{TotalbarChartData[0].data[0] | currency: '$':'symbol':'1.2-6'}}</td>
+          </tr>
+          <tr>
+            <td>Diferencia</td>
+            <td>{{diferencia() | currency: '$':'symbol':'1.2-6'}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

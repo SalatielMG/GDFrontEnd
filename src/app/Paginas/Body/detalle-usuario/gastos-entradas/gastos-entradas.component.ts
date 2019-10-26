@@ -47,19 +47,13 @@ export class GastosEntradasComponent implements OnInit {
     responsive: true,
     scales: {
       xAxes: [{
-        barThickness:30,
       }],
       yAxes: [{
-
-        gridLines: {
-          offsetGridLines: true
-        },
-        ticks: {
-          stepSize: 2000,
-          beginAtZero: true,
-          suggestedMax: 10000
-        },
-
+        time: {
+          ticks: {
+            stepSize: 4000,
+          }
+        }
       }]
     },
     plugins: {
@@ -140,5 +134,7 @@ export class GastosEntradasComponent implements OnInit {
     this.TotalbarChartData[0].data = [];
     this.TotalbarChartData[1].data = [];
   }
-
+  public diferencia(): number {
+    return (this.util.numberFormat(this.TotalbarChartData[1].data[0]) - this.util.numberFormat(this.TotalbarChartData[0].data[0]));
+  }
 }

@@ -168,32 +168,33 @@ export class InconsistenciaComponent implements OnInit {
   private stringyfyJSON() {
     return JSON.stringify(this.backup);
   }
-  private operacion(tabla) {
-    let opcion = confirm("¿ Desea corregir las inconsistencias de la Tabla : "+ tabla +" ? ");
-    if (opcion) {
-      this.util.msjLoading = "Corrigiendo inconsistencia de datos en la Tabla : " + tabla;
-      this.util.crearLoading().then(() => {
-        this.backupService.corregirInconsistencia(tabla).subscribe(result => {
-          this.util.detenerLoading();
-          if (result.indice) { //Existe indice
-             this.util.msjToast(result.msj, result.titulo, result.indice);
-          } else {
-            this.navegacion(tabla, false);
-            for (let res of result.Result) {
-              this.util.msjToast(res.msj, res.titulo, res.error);
-            }
+  private operacion() {
+    this.util.msjLoading = "Corrigiendo inconsistencia de datos en la Tabla : " + this.nameTable;
+    this.util.crearLoading().then(() => {
+      this.backupService.corregirInconsistencia(this.nameTable).subscribe(result => {
+        this.util.detenerLoading();
+        if (result.indice) { //Existe indice
+           this.util.msjToast(result.msj, result.titulo, result.indice);
+        } else {
+          this.navegacion(this.nameTable, false);
+          for (let res of result.Result) {
+            this.util.msjToast(res.msj, res.titulo, res.error);
           }
-        }, error => {
-          this.util.msjErrorInterno(error);
-        });
+        }
+        this.util.cerrarModal("#modalConfirmInconsistencia");
+      }, error => {
+        this.util.msjErrorInterno(error);
       });
-    }
+    });
   }
+  private nameTable: string = "";
   public corregirTabla(){
+    this.nameTable = "";
     let route = this.router.url.split("/");
     if (route.length == 3) return;
-    let ruta = route[3];
-    this.operacion(ruta);
+    this.nameTable = route[3];
+    this.util.abrirModal("#modalConfirmInconsistencia");
+    // this.operacion();
   }
   public onScroll() {
     if (!this.backupService.isFilter()) this.buscarBackups();

@@ -1,9 +1,8 @@
 import {Backup} from "../Backup/backup";
 import {FiltrosSearchBackups} from '../Backup/filtros-search-backups';
+import {User} from './user';
 
-export class UserBackupsMnt {
-  id_user: number;
-  email: string;
+export class UserBackupsMnt extends User{
 
   // collapsed: number;
   collapsed: boolean;
@@ -20,9 +19,8 @@ export class UserBackupsMnt {
   indexBackupFilterSelected: number = 0;
   id_BackupSelected: number =0;
   // --------------------------------------- Variables - Multifiltros
-  constructor(id_user = 0, email = "", collapsed = false, backups: Backup[] = [], cantRep = 0, checked = false, filtrosSearch = new FiltrosSearchBackups(), backupsFiltro: Backup[] = [], msj = "", indexBackupSelected = 0, indexBackupFilterSelected = 0, id_BackupSelected = 0) {
-    this.id_user = id_user;
-    this.email = email;
+  constructor(collapsed = false, backups: Backup[] = [], cantRep = 0, checked = false, filtrosSearch = new FiltrosSearchBackups(), backupsFiltro: Backup[] = [], msj = "", indexBackupSelected = 0, indexBackupFilterSelected = 0, id_BackupSelected = 0) {
+    super();
     this.collapsed = collapsed;
     this.backups = backups;
     this.cantRep = cantRep;

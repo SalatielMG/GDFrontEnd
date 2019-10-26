@@ -5,6 +5,8 @@ import { CampoNumerico } from '../../../../Utilerias/validacionCampoNumerico';
 import { UserSelect } from "./userSelect";
 import {Backup} from '../../../../Modelos/Backup/backup';
 import {FiltrosSearchBackups} from '../../../../Modelos/Backup/filtros-search-backups';
+import {UserService} from '../../../../Servicios/user/user.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-backups',
@@ -29,7 +31,8 @@ export class BackupsComponent implements OnInit {
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
-  constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2) {
+  constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2, private userService: UserService, private route: ActivatedRoute,
+  private router: Router) {
     this.usersSelected = [];
     this.backupService.resetearBackups();
     this.buscarBackupsUserMnt();
@@ -120,6 +123,8 @@ export class BackupsComponent implements OnInit {
             this.backupService.userBackups[indice].backups = result.backups;
             this.expandir(575, 13, this.cntBackupsUser['_results'][indice].nativeElement);
             this.backupService.userBackups[indice].collapsed  = true;
+            this.backupService.indexUser = indice;
+            this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
           }
         }, error =>  {
           this.util.msjErrorInterno(error);
@@ -327,11 +332,11 @@ export class BackupsComponent implements OnInit {
   }
   private keyUpEventRangoUsers(event) {
     if (event.key == "Enter") {
-      this.afterBlurRangoUsers(event);
-      this.beforeBlurRangoUsers(event);
+      this.afterBlurRangoUsers();
+      this.beforeBlurRangoUsers();
     }
   }
-  private afterBlurRangoUsers(event) {// Evento filtroSeleccionar
+  private afterBlurRangoUsers() {// Evento filtroSeleccionar
     console.log("this.rangoUsers", this.rangoUsers);
     if (this.rangoUsers.value > this.rangoUsers.beforeValue) { //Selecionar usuarios faatantes
       let faltantes = this.rangoUsers.value - this.rangoUsers.beforeValue;
@@ -348,90 +353,53 @@ export class BackupsComponent implements OnInit {
         console.log("encontrado faltantes", faltantes);
       });
     } else { //Deseleccionar usuarios restantes.
-      for (let i = (this.usersSelected.length - 1); i >= this.rangoUsers.value; i--) {
-        this.backupService.userBackups[i].checked = false;
+      let cant: number = this.rangoUsers.beforeValue - this.rangoUsers.value;
+      for (let i = (this.rangoUsers.beforeValue - 1); i >= this.rangoUsers.value; i--) {
+        console.log(this.backupService.userBackups[this.usersSelected[i].index].checked);
+        this.backupService.userBackups[this.usersSelected[i].index].checked = false;
+        console.log("this.backupService.userBackups[" + this.usersSelected[i].index + "].checked", this.backupService.userBackups[this.usersSelected[i].index].checked);
       }
-      this.usersSelected.splice(this.rangoUsers.value, (this.rangoUsers.beforeValue - this.rangoUsers.value));
+      /*for (let i = (this.usersSelected.length - 1); i >= this.rangoUsers.value; i--) {
+        console.log(this.backupService.userBackups[i].checked);
+        this.backupService.userBackups[i].checked = false;
+        console.log("this.backupService.userBackups[" + i + "].checked", this.backupService.userBackups[i].checked);
+      }*/
+      this.usersSelected.splice(this.rangoUsers.value, cant);
       console.log("this.usersSelected", this.usersSelected);
     }
   }
-  private beforeBlurRangoUsers(event) {
+  private beforeBlurRangoUsers() {
     this.rangoUsers.beforeValue = this.rangoUsers.value;
   }
 
-  // -------------------------------- Filter Backups User --------------------------------
-  /*private actionFilterEvent(index, event, value, isKeyUp = false) {
-    if (value == "automatic") {
-      if (this.backupService.userBackups[index].filtrosSearch[value].value == "-1") {
-        this.backupService.userBackups[index].filtrosSearch[value].isFilter = false;
-        this.backupService.userBackups[index].filtrosSearch[value].valueAnt = this.backupService.userBackups[index].filtrosSearch[value].value;
-        this.proccessFilter(index);
-        return;
-      }
-    } else {
-      if (isKeyUp && event.key != "Enter") return;
-      if (this.backupService.userBackups[index].filtrosSearch[value].value == "") return;
-    }
-    if (this.backupService.userBackups[index].filtrosSearch[value].value == this.backupService.userBackups[index].filtrosSearch[value].valueAnt) return;
-    this.resetFilterisActive(index);
-    this.backupService.userBackups[index].filtrosSearch[value].isFilter = true;
-    this.backupService.userBackups[index].filtrosSearch[value].valueAnt = this.backupService.userBackups[index].filtrosSearch[value].value;
-    this.proccessFilter(index);
-  }
-  private resetValuefiltroSearch(index, key) {
-    this.backupService.userBackups[index].filtrosSearch[key].value =  "";
-    this.backupService.userBackups[index].filtrosSearch[key].valueAnt =  "";
-    this.backupService.userBackups[index].filtrosSearch[key].isFilter =  false;
-    if (key == "automatic") this.backupService.userBackups[index].filtrosSearch[key].value = "-1";
+  public detalleUsuario(index) {
+    this.backupService.indexUser = index;
+    this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
+    //console.log(this.backupService.userBackups[this.backupService.indexUser].backups);
+    console.log(this.backupService.userBackups[this.backupService.indexUser].collapsed);
+    if (!this.backupService.userBackups[this.backupService.indexUser].collapsed || this.backupService.userBackups[this.backupService.indexUser].collapsed == undefined) {
+      this.msj = "Cargando backups del usuario: " + this.backupService.userBackups[this.backupService.indexUser].email;
+      this.util.crearLoading().then(() => {
+        this.backupService.buscarBackupsUserId(this.backupService.userBackups[this.backupService.indexUser].id_user, '-1' ,'asc').subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          this.backupService.userBackups[this.backupService.indexUser].msj = result.msj;
+          this.backupService.userBackups[this.backupService.indexUser].cantRep = result.backups.length;
+          console.log(result.backups);
 
-    if (!this.isFilter(index)) {
-      this.backupService.userBackups[index].backupsFiltro = [];
-      return;
-    }
-    this.proccessFilter(index);
-  }
-  private resetFilterisActive(index) {
-    if (!this.isFilter(index)) {
-      this.backupService.userBackups[index].backupsFiltro = [];
-      this.backupService.userBackups[index].backupsFiltro =  this.backupService.userBackups[index].backupsFiltro.concat(this.backupService.userBackups[index].backups);
-    }
-  }
-  private proccessFilter(index) {
-    let temp = [];
-    this.backupService.userBackups[index].backups.forEach((back) => {
-      if (back.id_backup != 0) {
+          if (!result.error){
+            this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
+            this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
+            this.backupService.userBackups[this.backupService.indexUser].backups = result.backups;
+            this.router.navigate(['/detalleUsuario']);
 
-        let bnd = true;
-        for (let k in this.backupService.userBackups[index].filtrosSearch) {
-          if (this.backupService.userBackups[index].filtrosSearch[k].isFilter) {
-            if (k == "automatic" && this.backupService.userBackups[index].filtrosSearch[k].value != "-1") {
-              if (back[k].toString() != this.backupService.userBackups[index].filtrosSearch[k].value) {
-                bnd = false;
-                break;
-              }
-            } else {
-              if (!back[k].toString().includes(this.backupService.userBackups[index].filtrosSearch[k].value)){
-                bnd = false;
-                break;
-              }
-            }
           }
-        }
-
-        if (bnd) {
-          temp.push(back);
-        }
-      }
-    });
-    this.backupService.userBackups[index].backupsFiltro = [];
-    this.backupService.userBackups[index].backupsFiltro = this.backupService.userBackups[index].backupsFiltro.concat(temp);
-    temp = null;
-  }
-  private isFilter(index): boolean {
-    for (let key in this.backupService.userBackups[index].filtrosSearch) {
-      if (this.backupService.userBackups[index].filtrosSearch[key].isFilter) return true;
+        }, error =>  {
+          this.util.msjErrorInterno(error);
+        });
+        });
+    } else {
+      this.router.navigate(['/detalleUsuario']);
     }
-    return false;
-  }*/
-  // -------------------------------- Filter Backups User --------------------------------
+  }
 }
