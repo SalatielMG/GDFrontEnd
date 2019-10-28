@@ -53,7 +53,7 @@
                     <fa-icon [icon]="util.faUserCircle"></fa-icon>
                   </span>
                 <!--h5 class="font-weight-500 mr-2">Usuario: </h5-->
-                <h5 class="font-weight-normal cursor-point" > {{user.email}}</h5>
+                <h5 class="font-weight-normal cursor-point" (click)="detalleUsuario(i)"> {{user.email}}</h5>
               </div>
             </div>
             <div class="col-4">
@@ -68,7 +68,7 @@
 
         </div>
         <div class="col-1 column-checkCollapse">
-          <button type="button" class="btn btn-outline-info rounded-circle btn-check-Collapse" >
+          <button type="button" class="btn btn-outline-info rounded-circle btn-check-Collapse"  (click)="verficarExpansion(i, user.id_user, user.email)">
             <span>
                 <fa-icon *ngIf="!user.collapsed" [icon]="util.faArrowDown"></fa-icon>
               <fa-icon *ngIf="user.collapsed" [icon]="util.faArrowUp"></fa-icon>
@@ -80,6 +80,105 @@
     </div>
 
     <div #cntBackupsUser class="tarjetaCuerpo bg-transparent">
+      <div *ngIf="user.collapsed">
+        <table class="table table-hover table-fixed" *ngIf="user.cantRep > 0" >
+          <thead>
+          <tr class="text-center" >
+            <th scope="col" class="v-a-middle width-sm">#</th>
+            <th scope="col" class="v-a-middle width-sm">
+              <div class="row inline-grid">
+                Id_backup
+                <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.id_backup.value" name="id_backup" (keyup)="backupService.actionFilterEvent($event, 'id_backup', true, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.id_backup.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('id_backup', i)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="v-a-middle width-sm">
+              <div class="row inline-grid">
+                Automatic
+                <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.automatic.value" name="automatic" (ngModelChange)="backupService.actionFilterEvent($event, 'automatic', false, i)">
+                  <option value="-1">Ambos</option>
+                  <option value="0">No</option>
+                  <option value="1">Si</option>
+                </select>
+                <button type="button" [ngClass]="(user.filtrosSearch.automatic.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('automatic', i)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="v-a-middle width-lg">
+              <div class="row inline-grid">
+                Date_creation
+                <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backupService.actionFilterEvent($event, 'date_creation', false, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_creation', i)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="v-a-middle width-lg">
+              <div class="row inline-grid">
+                Date_download
+                <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="user.filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backupService.actionFilterEvent($event, 'date_download', false, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_download', i)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="v-a-middle width-sm">
+              <div class="row inline-grid">
+                Created_in
+                <input type="text" class="form-control mr-sm-2 form-control-md input-header"  [(ngModel)]="user.filtrosSearch.created_in.value" name="created_in" (keyup)="backupService.actionFilterEvent($event, 'created_in', true, i)">
+                <button type="button" [ngClass]="(user.filtrosSearch.created_in.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('created_in', i)">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </th>
+            <th scope="col" class="v-a-middle width-sm" style="display: block;">
+              Operacion
+
+            </th>
+          </tr>
+          </thead>
+          <tbody *ngIf="!backupService.isFilter(i)">
+          <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
+            <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
+            <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
+            <td scope="row" class="v-a-middle width-sm">
+              <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
+              <span>
+                <fa-icon [icon]="util.faFileExport"></fa-icon>
+              </span>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+          <tbody *ngIf="backupService.isFilter(i)">
+          <tr class="text-center"  *ngFor="let back of user.backupsFiltro; let pos = index">
+            <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.id_backup }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
+            <td scope="row" class="v-a-middle width-sm">
+              <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-primary btn-delete-MNT"  (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
+              <span>
+                <fa-icon [icon]="util.faFileExport"></fa-icon>
+              </span>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="container" *ngIf="user.cantRep == 0">
+          <h5 class="font-weight-lighter">{{user.msj}}</h5>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChildren} from '@angular/core';
 import {Utilerias} from '../../../Utilerias/Util';
 import {BackupService} from '../../../Servicios/backup/backup.service';
 import {UserService} from '../../../Servicios/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FiltrosSearchBackups} from '../../../Modelos/Backup/filtros-search-backups';
 
 @Component({
   selector: 'app-exportacion',
@@ -12,9 +13,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class ExportacionComponent implements OnInit {
 
   private email: string = "";
+  @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
   constructor(private util:Utilerias, private backupService: BackupService, private userService: UserService, private route: ActivatedRoute,
-  private router: Router) {
+  private router: Router, private renderer: Renderer2) {
     this.search();
   }
 
@@ -72,5 +74,84 @@ export class ExportacionComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
+  public detalleUsuario(index) {
+    this.backupService.indexUser = index;
+    this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
+    //console.log(this.backupService.userBackups[this.backupService.indexUser].backups);
+    console.log(this.backupService.userBackups[this.backupService.indexUser].collapsed);
+    if (!this.backupService.userBackups[this.backupService.indexUser].collapsed || this.backupService.userBackups[this.backupService.indexUser].collapsed == undefined) {
+      this.util.msjLoading = "Cargando backups del usuario: " + this.backupService.userBackups[this.backupService.indexUser].email;
+      this.util.crearLoading().then(() => {
+        this.backupService.buscarBackupsUserId(this.backupService.userBackups[this.backupService.indexUser].id_user, '-1' ,'asc').subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          this.backupService.userBackups[this.backupService.indexUser].msj = result.msj;
+          this.backupService.userBackups[this.backupService.indexUser].cantRep = result.backups.length;
+          console.log(result.backups);
 
+          if (!result.error){
+            this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
+            this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
+            this.backupService.userBackups[this.backupService.indexUser].backups = result.backups;
+            this.router.navigate(['/detalleUsuario']);
+
+          }
+        }, error =>  {
+          this.util.msjErrorInterno(error);
+        });
+      });
+    } else {
+      this.router.navigate(['/detalleUsuario']);
+    }
+  }
+  public verficarExpansion(indice, idUser, email) {
+    if (!this.backupService.userBackups[indice].collapsed) { // Expandir
+      this.util.msjLoading = "Cargando backups del usuario: " + email;
+      this.util.crearLoading().then(() => {
+        this.backupService.buscarBackupsUserId(idUser, '-1' ,'asc').subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          this.backupService.userBackups[indice].msj = result.msj;
+          this.backupService.userBackups[indice].cantRep = result.backups.length;
+          console.log(result.backups);
+
+          if (!result.error){
+            this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackups();
+            this.backupService.userBackups[indice].backupsFiltro = [];
+            this.backupService.userBackups[indice].backups = result.backups;
+            this.expandir(575, 13, this.cntBackupsUser['_results'][indice].nativeElement);
+            this.backupService.userBackups[indice].collapsed  = true;
+            this.backupService.indexUser = indice;
+            this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
+          }
+        }, error =>  {
+          this.util.msjErrorInterno(error);
+        });
+      });
+    } else { // Minimizar
+      this.minimizar(this.cntBackupsUser['_results'][indice].nativeElement);
+      this.backupService.userBackups[indice].collapsed  = false;
+      this.backupService.userBackups[indice].backupsFiltro = [];
+      this.backupService.userBackups[indice].backups = [];
+
+    }
+    // this.backupService.userBackups[indice].collapsed  = !this.backupService.userBackups[indice].collapsed;
+    console.log(this.backupService.userBackups[indice].collapsed );
+    console.log(this.cntBackupsUser['_results']);
+  }
+  private minimizar(content: any) {
+    console.log(content);
+    this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
+    this.renderer.setStyle(content, "height", "0px");
+    this.renderer.setStyle(content, "max-height", "0px");
+    this.renderer.setStyle(content, "padding", "0px 16px");
+    // this.renderer.setStyle(content, "overflow", "hidden");
+  }
+  private expandir(H, P, content) {
+    console.log(content);
+    this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
+    this.renderer.setStyle(content, "height", H + "px");
+    this.renderer.setStyle(content, "max-height", H + "px");
+    this.renderer.setStyle(content, "padding", P + "px 16px");
+  }
 }
