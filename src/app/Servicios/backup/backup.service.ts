@@ -141,4 +141,7 @@ export class BackupService {
   public limpiarBackupsUsers(users, rangoBackups): Observable<any> {
     return this.http.delete(URL + "limpiarBackupsUsers", {params: {users: JSON.stringify(users), rangoBackups: rangoBackups}});
   }
+  public exportBackup(type, id_backup): Observable<any> {
+    return this.http.get(URL + "exportarBackup", {params: {id_backup: id_backup, typeExport: type}});
+  }
 }

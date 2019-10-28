@@ -7,6 +7,57 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
+<!-- ------------------------------------------------------------------------------------------------------ -->
+<div class="modal fade" id="modalConfirmExportBackup" tabindex="-1" role="dialog" aria-labelledby="modalConfirmExportBackupTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalConfirmExportBackupTitle" *ngIf="option == util.EXPORTAR">Exportar Backup: {{backupService.userBackups[backupService.indexUser].id_BackupSelected}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="option = ''">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+         <div *ngIf="option == util.EXPORTAR">
+
+          <div class="container" >
+            <div class="row titulo-Modal">
+              <h5 class="text-center font-weight-500">¿ Como desea exportar el Respaldo con Id_backup: {{backupService.userBackups[backupService.indexUser].id_BackupSelected}} del Usuario: {{backupService.userBackups[backupService.indexUser].email}} ?</h5>
+            </div>
+
+            <fieldset class="form-group" style="margin-top: 200px; margin-bottom: 200px;">
+              <div class="form-row">
+                <div class="form col checkRadioCenter">
+                  <div class="custom-control custom-radio width-90">
+                    <input type="radio" class="custom-control-input" id="customControlValidation2" name="typeExport" [(ngModel)]="typeEXport" value="sqlite">
+                    <label class="custom-control-label" for="customControlValidation2">.SQLite</label>
+                  </div>
+                </div>
+                <div class="form col checkRadioCenter">
+                  <div class="custom-control custom-radio width-90">
+                    <input type="radio" class="custom-control-input" id="customControlValidation3" name="typeExport" [(ngModel)]="typeEXport" value="xls">
+                    <label class="custom-control-label" for="customControlValidation3">.Xls</label>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="option = ''">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="exportBackup()">Exportar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------------------------------------------------------------------------------ -->
+
+
+
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado"  style="padding-top: 160px !important;">
     <nav class="navbar navbar-light bg-light" style = "padding-left: 40px; padding-right: 40px; background: transparent !important">
@@ -149,7 +200,7 @@
             <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
-              <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
+              <button data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionExportar(util.EXPORTAR, back.id_backup, i)">
               <span>
                 <fa-icon [icon]="util.faFileExport"></fa-icon>
               </span>
@@ -166,7 +217,7 @@
             <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
-              <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-primary btn-delete-MNT"  (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
+              <button data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT"  (click)="accionExportar(util.EXPORTAR, back.id_backup, i)">
               <span>
                 <fa-icon [icon]="util.faFileExport"></fa-icon>
               </span>

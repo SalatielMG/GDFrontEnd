@@ -14,6 +14,7 @@ export class Utilerias {
   public AGREGAR: string = "Agregar";
   public ACTUALIZAR: string = "Actualizar";
   public ELIMINAR: string = "Eliminar";
+  public EXPORTAR: string = "Exportar";
   public CatTransfer: string = "Trasnferencias";
   public CataAccount_all: string = "Todas las cuentas";
   public CatCategory_all: string = "Todas las categorias";

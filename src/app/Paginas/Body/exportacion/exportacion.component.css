@@ -1,0 +1,16 @@
+.table-fixed input, select {
+  background-color: #21252987 !important;
+}
+.custom-control-label {
+  padding-left: 15px !important;
+  padding-top: 6px !important;
+}
+.custom-control-label::before {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+.custom-control-label::after {
+  width: 2rem !important;
+  height: 2rem !important;
+}

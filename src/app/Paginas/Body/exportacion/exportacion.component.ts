@@ -12,7 +12,10 @@ import {FiltrosSearchBackups} from '../../../Modelos/Backup/filtros-search-backu
 })
 export class ExportacionComponent implements OnInit {
 
+  private typeEXport: string = "sqlite";
   private email: string = "";
+  private option: string = "";
+
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
   constructor(private util:Utilerias, private backupService: BackupService, private userService: UserService, private route: ActivatedRoute,
@@ -153,5 +156,25 @@ export class ExportacionComponent implements OnInit {
     this.renderer.setStyle(content, "height", H + "px");
     this.renderer.setStyle(content, "max-height", H + "px");
     this.renderer.setStyle(content, "padding", P + "px 16px");
+  }
+  private accionExportar(option, id_backup, indexUser) {
+    this.typeEXport = "sqlite";
+    this.option = option;
+    this.backupService.indexUser = indexUser;
+    this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected = id_backup;
+
+  }
+  private exportBackup() {
+    console.log("Value typeExport Backup:=", this.typeEXport);
+    this.util.msjLoading = "Exportando Base de datos";
+    this.util.crearLoading().then(() => {
+      this.backupService.exportBackup(this.typeEXport, this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        console.log("Value Result:= ", result);
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
   }
 }
