@@ -4,6 +4,7 @@ import {BackupService} from '../../../Servicios/backup/backup.service';
 import {UserService} from '../../../Servicios/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FiltrosSearchBackups} from '../../../Modelos/Backup/filtros-search-backups';
+import { URL } from '../../../Utilerias/URL';
 
 @Component({
   selector: 'app-exportacion',
@@ -171,6 +172,17 @@ export class ExportacionComponent implements OnInit {
       this.backupService.exportBackup(this.typeEXport, this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        if (this.typeEXport == "sqlite") {
+          if (result.error == "warning") {
+            for (let error of result.errorInsert){
+              this.util.msjToast(error.msj, error.titulo, error.error);
+            }
+          } else {
+            window.open( URL + 'app/exports/database.sqlite', '_blank');
+          }
+        } else {
+
+        }
         console.log("Value Result:= ", result);
       }, error => {
         this.util.msjErrorInterno(error);

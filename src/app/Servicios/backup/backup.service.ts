@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Backup } from '../../Modelos/Backup/backup';
 import {UserBackupsMnt} from "../../Modelos/User/userBackupsMnt";
 
 @Injectable({

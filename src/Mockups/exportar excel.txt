@@ -1,0 +1,53 @@
+accounts:
+- account
+- detail
+- initial_balance
+- sign
+- income
+- expsense
+- balance
+- iso_code
+
+automatics:
+- title
+- period
+- each
+- repeat
+- counter
+- initial_date
+- next_date
+- enabled
+- account
+- category
+- amount
+- sign
+
+budgets:
+- account
+- category
+- period
+- amount
+- budget
+
+cardviews: esta no
+
+categories:
+- account
+- category
+- sign
+
+currencies:
+- iso_code
+- symbol
+
+movements:
+- account
+- category
+- amount
+- sign
+- detail
+- date
+- time
+
+preferences: esta no
+
