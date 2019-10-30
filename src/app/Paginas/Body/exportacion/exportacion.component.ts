@@ -172,16 +172,16 @@ export class ExportacionComponent implements OnInit {
       this.backupService.exportBackup(this.typeEXport, this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
-        if (this.typeEXport == "sqlite") {
-          if (result.error == "warning") {
-            for (let error of result.errorInsert){
-              this.util.msjToast(error.msj, error.titulo, error.error);
-            }
-          } else {
-            window.open( URL + 'app/exports/database.sqlite', '_blank');
+        if (result.error == "warning") {
+          for (let error of result.errorInsert){
+            this.util.msjToast(error.msj, error.titulo, error.error);
           }
         } else {
-          //window.open( URL + 'app/exports/Reporte.php', '_blank');
+          if (this.typeEXport == "sqlite") {
+            window.open( URL + 'exports/database.sqlite', '_blank');
+          } else {
+            window.open( URL + 'exports/Reporte.xlsx', '_blank');
+          }
         }
         console.log("Value Result:= ", result);
       }, error => {
