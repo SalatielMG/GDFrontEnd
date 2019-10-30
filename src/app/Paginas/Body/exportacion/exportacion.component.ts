@@ -181,7 +181,7 @@ export class ExportacionComponent implements OnInit {
             window.open( URL + 'app/exports/database.sqlite', '_blank');
           }
         } else {
-
+          //window.open( URL + 'app/exports/Reporte.php', '_blank');
         }
         console.log("Value Result:= ", result);
       }, error => {
