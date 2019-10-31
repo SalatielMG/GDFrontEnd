@@ -5,6 +5,9 @@
   border: 1px solid #1b0d37;
   border-radius: 2px;
 }
+.table-fixed tbody tr {
+  height: 40px !important;
+}
 @media screen and (max-width: 1920px) and (max-height: 1080px) {
   .table-fixed tbody{
     height: 600px !important;

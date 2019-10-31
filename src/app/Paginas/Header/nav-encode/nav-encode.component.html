@@ -10,8 +10,28 @@
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="nav" *ngIf="userService.activo()">
         <li class="nav-item">
-          <a class="nav-link text-light tamaño-font" routerLinkActive="active" [routerLink]="['/usuario']">Usuarios</a>
+          <a class="nav-link text-light tamaño-font" routerLinkActive="active" [routerLink]="['/usuarios']">Usuarios</a>
         </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-light tamaño-font" id="navbarDropdownMenuUsuariosLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Usuarios
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuUsuariosLink">
+            <a class="dropdown-item padding-left-p" [routerLink]="['/usuarios']">
+              <span class="margin-rigth-p">
+                <fa-icon [icon]="util.faList"></fa-icon>
+              </span>
+              Listado</a>
+            <a class="dropdown-item padding-left-p" [routerLink]="['usuarios/permisos']">
+              <span class="margin-rigth-p">
+                <fa-icon [icon]="util.faCheckSquare"></fa-icon>
+              </span>
+              Permisos</a>
+          </div>
+        </li>
+
+
         <li class="nav-item">
           <a class="nav-link text-light tamaño-font" routerLinkActive="active" [routerLink]="['/exportacion']">Exportación</a>
         </li>
@@ -21,8 +41,16 @@
             Mantenimiento
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuMantenimientoLink">
-            <a class="dropdown-item" [routerLink]="['/mantenimiento/backupsMnt']">Backups</a>
-            <a class="dropdown-item" [routerLink]="['/mantenimiento/inconsistenciaMnt']">Inconsistencia</a>
+            <a class="dropdown-item padding-left-p" [routerLink]="['/mantenimiento/backupsMnt']">
+              <span class="margin-rigth-p">
+                <fa-icon [icon]="util.faDatabase"></fa-icon>
+              </span>
+              Backups</a>
+            <a class="dropdown-item padding-left-p" [routerLink]="['/mantenimiento/inconsistenciaMnt']">
+              <span class="margin-rigth-p">
+                <fa-icon [icon]="util.faBug"></fa-icon>
+              </span>
+              Inconsistencia</a>
           </div>
         </li>
 
@@ -33,11 +61,19 @@
             <img src="../../../../assets/img/admin.png" alt="Avatar" class="avatar">
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" (click)="userService.prueba()">Prueba</a>
+            <!-- class="dropdown-item" (click)="userService.prueba()">Prueba</a>
             <a class="dropdown-item" (click)="generatePass()">Generate Pass</a>
-            <a class="dropdown-item" (click)="insertCurrencies()">Currency</a>
-            <a class="dropdown-item" href="#" >Configurar</a>
-            <a class="dropdown-item" (click)="userService.logout()">Cerrar sesion</a>
+            <a class="dropdown-item" (click)="insertCurrencies()">Currency</a-->
+            <a class="dropdown-item padding-left-p" [routerLink]="['/perfil']" >
+              <span class="margin-rigth-p">
+                <fa-icon [icon]="util.faCog"></fa-icon>
+              </span>
+              Perfil</a>
+            <a class="dropdown-item padding-left-p" (click)="userService.logout()">
+              <span class="margin-rigth-p">
+                <fa-icon [icon]="util.faTimesCircle"></fa-icon>
+              </span>
+              Cerrar sesion</a>
           </div>
         </li>
       </ul>

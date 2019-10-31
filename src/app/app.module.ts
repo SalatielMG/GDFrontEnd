@@ -21,7 +21,6 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 /*Componentes*/
 import { AppComponent } from './app.component';
-import { TituloEncabezadoComponent } from './Paginas/Header/titulo-encabezado/titulo-encabezado.component';
 import { LoginComponent } from './Paginas/Body/login/login.component';
 import { NavEncodeComponent } from './Paginas/Header/nav-encode/nav-encode.component';
 import { EncodeMXComponent } from './Paginas/Body/encode-mx/encode-mx.component';
@@ -44,12 +43,15 @@ import { UsuariosModule } from './Paginas/Body/usuarios/usuarios.module';
 import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistencia/inconsistencia.module';
 import { LoadingSpinnerModule } from './Components/loading-spinner/loading-spinner/loading-spinner.module';
 import { QueryCompleteModule } from './Components/query-complete/query-complete.module';
+import { TituloEncabezadoModule } from './Paginas/Header/titulo-encabezado/titulo-encabezado.module';
+import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    TituloEncabezadoComponent,
     LoginComponent,
+    PerfilComponent,
     NavEncodeComponent,
     EncodeMXComponent,
     BackupsComponent,
@@ -74,7 +76,7 @@ import { QueryCompleteModule } from './Components/query-complete/query-complete.
       preventDuplicates: true,
       closeButton: true
     }),
-    FontAwesomeModule, NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule, QueryCompleteModule
+    FontAwesomeModule, NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule, QueryCompleteModule, TituloEncabezadoModule
   ],
   providers: [
     DatePipe,

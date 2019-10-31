@@ -1,0 +1,19 @@
+button {
+  /* line-height: 80px; */
+  width: 80px;
+  /* text-align: center; */
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  overflow: hidden;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+  /* margin: 0 -20px; */
+  box-shadow: 3px 1px 3px rgba(0, 0, 0, 1);
+}
+button:hover {
+  background-color: #27cc00 !important;
+  color:  #ffffff !important;
+  width: 65px !important;
+  height: 65px !important;
+
+}

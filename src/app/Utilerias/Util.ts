@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faDatabase, faUserCircle ,faFileExport ,faTimes, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -94,10 +94,15 @@ export class Utilerias {
     },
   ];
 
+  public faUserPlus = faUserPlus;
+  public faCheckSquare = faCheckSquare;
+  public faList = faList;
+  public faBug = faBug;
+  public faCog = faCog;
   public faDatabase = faDatabase;
   public faUserCircle = faUserCircle;
   public faFileExport = faFileExport;
-  public faTimes = faTimes;
+  public faTimesCircle = faTimesCircle;
   public faCalendar = faCalendar;
   public faArrowDown = faArrowDown;
   public faArrowUp = faArrowUp;

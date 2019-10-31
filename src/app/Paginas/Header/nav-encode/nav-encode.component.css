@@ -3,11 +3,11 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  background-color: white;
 }
 
 li{
-  padding-top: 25px !important;
-  padding-bottom: 25px !important;
+  margin-left: 5px !important;
 }
 
 .text-light {
@@ -20,5 +20,12 @@ li{
 .nav-link.active {
   color: #ffffff !important;
 
+}
+
+.padding-left-p {
+  padding-left: 15px;
+}
+.margin-rigth-p {
+  margin-right: 10px;
 }
 
