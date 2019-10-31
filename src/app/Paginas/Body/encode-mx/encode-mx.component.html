@@ -7,35 +7,20 @@
   <p style="font-size: 20px; color: white">Buscando Backups del Usuario...</p>
 </ngx-spinner>
 
-<div class="super_container">
-  <div class="newsletter">
-    <div class="container">
-      <div class="row">
-        <div class="col text-lg-center text-left">
-          <div class="newsletter_content">
-            <form [formGroup]="usuarioSearch" (ngSubmit)="search()">
+<div class="container-home">
+</div>
 
-
-            <div class="newsletter_form_container">
-              <div class="input-group">
-                <input formControlName="email" type="email" class="newsletter_email" placeholder="Ingrese el correo del usuario" required="required" data-error="Email es requerido.">
-                <!--button id="newsletter_form_submit" type="submit" [disabled]="usuarioSearch.invalid" class="button newsletter_submit_button trans_200" value="Submit">
-                  BUSCAR
-                </button-->
-                <button class="btn btn-primary buttonP" type="submit" [disabled]="usuarioSearch.invalid">
-                  <span>
-                    <fa-icon [icon]="util.faSearch"></fa-icon>
-                  </span>
-                </button>
-              </div>
-
-            </div>
-            </form>
-
-          </div>
-        </div>
-      </div>
+<div class="searchBar">
+  <form class="form-row form-container" [formGroup]="usuarioSearch" (ngSubmit)="search()">
+    <div class="col-11">
+      <input formControlName="email" type="email"  name="correo" class="form-control-lg inputSearch" placeholder="Ingrese el correo del usuario" aria-label="Search">
     </div>
-  </div>
-
+    <div class="col-1">
+      <button class="btn btn-lg btn-warning btnSearch shadow-sm" type="submit" [disabled]="usuarioSearch.invalid">
+            <span class="tamaño-font">
+              <fa-icon [icon]="util.faSearch"></fa-icon>
+            </span>
+      </button>
+    </div>
+  </form>
 </div>

@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top navbar-expand-lg navEncode shadow-sm">
+<nav class="navbar fixed-top navbar-expand-lg navEncode shadow" [ngClass]="util.onScroll ? 'onScrollPage': 'noScrollPage'">
   <a class="navbar-brand" (click)="eventLogo()" *ngIf="userService.activo()" style="cursor: pointer;">
     <img src="../../../../assets/img/logo.png" class="imgLogo" >
   </a>
@@ -9,9 +9,9 @@
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="nav" *ngIf="userService.activo()">
-        <li class="nav-item">
+        <!--li class="nav-item">
           <a class="nav-link text-light tamaño-font" routerLinkActive="active" [routerLink]="['/usuarios']">Usuarios</a>
-        </li>
+        </li-->
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light tamaño-font" id="navbarDropdownMenuUsuariosLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

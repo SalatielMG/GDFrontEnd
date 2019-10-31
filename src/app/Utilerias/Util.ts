@@ -9,6 +9,7 @@ declare var $: any;
 
 export class Utilerias {
 
+  public onScroll: boolean = false;
   public LIMPIARBACKUPSUSERS: string = "Limpiar Backups Usuarios";
   public LIMPIARBACKUPSUSER: string = "Limpiar Backups Usuario";
   public AGREGAR: string = "Agregar";
@@ -331,6 +332,18 @@ export class Utilerias {
       }
     });
   }
+  /*public onScrollPage() {
+    $(window).scroll(function () {
+      console.log($(this).scrollTop());
+      if ($(this).scrollTop() != 0) {
+        $("#navEncodeMX").css("height", "110px");
+        $("#navEncodeMX").css("heightbackground-color", "rgba(0, 19, 36, 1)");
+      } else {
+        $("#navEncodeMX").css("height", "125px");
+        $("#navEncodeMX").css("heightbackground-color", "rgba(0, 19, 36, 0,9)");
+      }
+    });
+  }*/
   public subir() {
     $('body, html').animate({
       scrollTop: 0
