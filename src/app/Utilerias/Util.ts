@@ -11,7 +11,7 @@ export class Utilerias {
 
   public onScroll: boolean = false;
   public LIMPIARBACKUPSUSERS: string = "Limpiar Backups Usuarios";
-  public LIMPIARBACKUPSUSER: string = "Limpiar Backups Usuario";
+  public LIMPIARBACKUPSUSER: string = "Limpiar Backups usuario";
   public AGREGAR: string = "Agregar";
   public ACTUALIZAR: string = "Actualizar";
   public ELIMINAR: string = "Eliminar";

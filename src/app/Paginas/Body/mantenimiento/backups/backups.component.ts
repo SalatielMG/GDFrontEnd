@@ -66,7 +66,7 @@ export class BackupsComponent implements OnInit {
   private buscarBackupsUserMnt() {
     this.util.loadingMain = true;
     if (this.backupService.pagina == 0) {
-      this.msj = "Buscando Usuario" + ((this.util.emailUserMntBackup == "Generales") ? "s: " : ": ") + this.util.emailUserMntBackup + " con un cantidad de Backups mayores a: " + this.rangoBackups.value;
+      this.msj = "Buscando usuario" + ((this.util.emailUserMntBackup == "Generales") ? "s: " : ": ") + this.util.emailUserMntBackup + " con un cantidad de Backups mayores a: " + this.rangoBackups.value;
       this.util.crearLoading().then(() => {
         this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value).subscribe(result => {
           this.resultado(result);
@@ -195,7 +195,7 @@ export class BackupsComponent implements OnInit {
     }
   }
   public eliminarBackup() {
-    this.util.msjLoading = "Eliminando Respaldo con id_backup: " + this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected + " del Usuario con email: " + this.backupService.userBackups[this.backupService.indexUser].email;
+    this.util.msjLoading = "Eliminando Respaldo con id_backup: " + this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected + " del usuario con email: " + this.backupService.userBackups[this.backupService.indexUser].email;
     this.util.crearLoading().then(()=> {
       this.backupService.eliminarBackup().subscribe(
         result => {

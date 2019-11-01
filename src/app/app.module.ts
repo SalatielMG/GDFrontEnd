@@ -27,7 +27,7 @@ import { HomeComponent } from './Paginas/Body/home/home.component';
 import { BackupsComponent } from './Paginas/Body/backups/backups.component';
 
 /*Servicios*/
-import { UsuarioService } from './Servicios/Usuario/usuario.service';
+import { UsuarioService } from './Servicios/usuario/usuario.service';
 import { UserService } from './Servicios/user/user.service';
 import { BackupService } from './Servicios/backup/backup.service';
 

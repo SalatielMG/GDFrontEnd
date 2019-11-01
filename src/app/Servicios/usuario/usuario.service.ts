@@ -8,6 +8,7 @@ import {Router, ActivatedRoute, ParamMap, CanActivate, ActivatedRouteSnapshot, R
   providedIn: 'root'
 })
 export class UsuarioService implements CanActivate{
+
   public id;
 
   public Headers = new HttpHeaders({'Content-Type':  'application/json'});
@@ -16,24 +17,16 @@ export class UsuarioService implements CanActivate{
     this.cargarStorage();
   }
 
-  public login(data): Observable<any> {
-    console.log(data);
-    const  parametro = new HttpParams()
-      .append('data', JSON.stringify(data));
-    return this.http.post(URL + 'login', parametro);
-  }
-
   public prueba() {
     let storage = localStorage.getItem('id');
-
     console.log('Valor actual del storage', storage);
     console.log('Valor actual del id', this.id);
   }
 
   public activo(): boolean {
-    // console.log('Valor de id en method activ()', this.id);
-    if (this.id == "null") return false; else return true;
+    return this.id != "null";
   }
+
   public cargarStorage() {
     let storage = localStorage.getItem('id');
     this.id = storage;
@@ -48,8 +41,7 @@ export class UsuarioService implements CanActivate{
     this.id = null;
     this.actualizarStorage();
     this.cargarStorage();
-    this.router.navigate(['/login'])
-
+    this.router.navigate(['/login']);
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -61,8 +53,20 @@ export class UsuarioService implements CanActivate{
     // you can save redirect url so after authing we can move them back to the page they requested
     return false;
   }
+
   public pass(): Observable<any> {
     return this.http.get(URL + "contraseña");
+  }
+
+  public login(data): Observable<any> {
+    console.log(data);
+    const  parametro = new HttpParams()
+      .append('data', JSON.stringify(data));
+    return this.http.post(URL + 'login', parametro);
+  }
+
+  public obtUsuariosGral(id_usuario = "0", show_permiso = "0"): Observable<any> {
+    return this.http.get(URL + "", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
   }
 
 }

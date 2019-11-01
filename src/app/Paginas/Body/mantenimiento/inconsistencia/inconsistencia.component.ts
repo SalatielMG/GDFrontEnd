@@ -3,7 +3,7 @@ import {Utilerias} from '../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-backups";
-import {UserBackupsMnt} from '../../../../Modelos/User/userBackupsMnt';
+import {UsersBackupsMnt} from '../../../../Modelos/users/usersBackupsMnt';
 
 @Component({
   selector: 'app-inconsistencia',
@@ -74,7 +74,7 @@ export class InconsistenciaComponent implements OnInit {
   this.errorValidacionUserBackup = true;
 
   this.backupService.userBackups = [];
-  this.backupService.userBackups.push(new UserBackupsMnt());
+  this.backupService.userBackups.push(new UsersBackupsMnt());
   this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
   this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
   }

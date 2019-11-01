@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {UsuarioService} from '../../../Servicios/Usuario/usuario.service';
+import {UsuarioService} from '../../../Servicios/usuario/usuario.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CurrenciesService} from '../../../Servicios/currencies/currencies.service';
 import {Utilerias} from '../../../Utilerias/Util';

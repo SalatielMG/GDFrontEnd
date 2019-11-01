@@ -124,10 +124,25 @@ export class MovementsService {
               break;
             }
           } else {
-            if (!movement[k].toString().includes(this.filtersSearch[k].value)) {
-              bnd = false;
-              break;
+            if (k == "date_record") {
+              let date = "";
+              this.filtersSearch[k].value.toLocaleDateString().split("/").reverse().forEach((d) => {
+                date += ((d.length == 1) ? "0" + d : d) + "-";
+              });
+              date = date.substring(0, date.length - 1);
+              /*console.log("FiltroSearch Value = ", date);
+              console.log("movement [" + k + "] Value = ", movement[k]);*/
+              if (!movement[k].toString().includes(date)){
+                bnd = false;
+                break;
+              }
+            } else {
+              if (!movement[k].toString().includes(this.filtersSearch[k].value)) {
+                bnd = false;
+                break;
+              }
             }
+
           }
         }
       }

@@ -10,7 +10,7 @@
 [33m96c6e95[m Trigerr mnt backup
 [33m2c3583c[m Metodo scrollinfitnito con btn arriba
 [33md8cb1ec[m Metodo infinite scroll
-[33mf81b041[m Metodo limpiar back User
+[33mf81b041[m Metodo limpiar back Users
 [33m4d0609d[m Metodo correcion backupsUser mnt
 [33m782ff37[m Preparando input rango mnt backup
 [33md4c224c[m Subida

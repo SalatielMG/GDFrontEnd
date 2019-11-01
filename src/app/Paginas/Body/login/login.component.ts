@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UsuarioService } from '../../../Servicios/Usuario/usuario.service';
+import { UsuarioService } from '../../../Servicios/usuario/usuario.service';
 import { Utilerias } from '../../../Utilerias/Util';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -33,15 +33,15 @@ export class LoginComponent implements OnInit {
     console.log(this.usuario.value);
     this.util.crearLoading().then(()=> {
       this.userSerevice.login(this.usuario.value).subscribe(result => {
+        this.util.msjToast(result.msj, result. titulo, result.error);
+        this.util.detenerLoading();
         if (!result.error){
-          this.userSerevice.id = result.id;
+          this.userSerevice.id = result.idEncode;
           this.userSerevice.actualizarStorage();
           this.router.navigate(['/home']);
         }
-        this.util.msjToast(result.msj, result. titulo, result.error);
-        this.util.detenerLoading();
+        console.log("resultado Login:=", result);
       }, error => {
-        this.util.detenerLoading();
         this.util.msjErrorInterno(error);
       });
     });

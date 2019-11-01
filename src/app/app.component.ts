@@ -1,5 +1,5 @@
 import {Component, HostListener} from '@angular/core';
-import {UsuarioService} from './Servicios/Usuario/usuario.service';
+import {UsuarioService} from './Servicios/usuario/usuario.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Utilerias} from './Utilerias/Util';
 

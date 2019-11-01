@@ -47,7 +47,7 @@ export class ExportacionComponent implements OnInit {
   private searchUsers() {
     this.util.loadingMain = true;
     if (this.backupService.pagina == 0) {
-      this.util.msjLoading = "Buscando Usuario" + ((this.util.emailUserExportacionBackups == "Generales") ? "s: " : ": ") + this.util.emailUserExportacionBackups;
+      this.util.msjLoading = "Buscando usuario" + ((this.util.emailUserExportacionBackups == "Generales") ? "s: " : ": ") + this.util.emailUserExportacionBackups;
       this.util.crearLoading().then(() => {
         this.backupService.buscarUsersExportacionBackups(this.util.emailUserExportacionBackups).subscribe(result => {
           this.resultado(result)

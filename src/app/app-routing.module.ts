@@ -4,7 +4,7 @@ import { HomeComponent } from './Paginas/Body/home/home.component';
 import { BackupsComponent } from './Paginas/Body/backups/backups.component';
 import { LoginComponent } from './Paginas/Body/login/login.component';
 import { PaginaNoEmcontradaComponent } from './Paginas/Body/pagina-no-emcontrada/pagina-no-emcontrada.component';
-import { UsuarioService } from './Servicios/Usuario/usuario.service';
+import { UsuarioService } from './Servicios/usuario/usuario.service';
 import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
 
 

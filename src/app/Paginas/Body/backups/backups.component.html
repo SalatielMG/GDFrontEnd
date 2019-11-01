@@ -75,6 +75,7 @@
     <a></a>
   </div>
 </div>
+
 <div class="container text-center" *ngIf="backService.userBackups[backService.indexUser].backups.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -115,7 +116,11 @@
       <th scope="col" class="Encabezado-Tabla width-lg">
         <div class="row inline-grid">
           Date_creation
-          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="backService.userBackups[backService.indexUser].filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backService.actionFilterEvent($event, 'date_creation', false)">
+
+          <input type="text" [owlDateTimeTrigger]="dateC" [owlDateTime]="dateC" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="backService.userBackups[backService.indexUser].filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backService.actionFilterEvent($event, 'date_creation', false)">
+          <owl-date-time #dateC [pickerType]="'calendar'"></owl-date-time>
+
+          <!--input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="backService.userBackups[backService.indexUser].filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backService.actionFilterEvent($event, 'date_creation', false)"-->
           <button type="button" [ngClass]="(backService.userBackups[backService.indexUser].filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backService.resetValuefiltroSearch('date_creation')">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -124,7 +129,11 @@
       <th scope="col" class="Encabezado-Tabla width-lg">
         <div class="row inline-grid">
           Date_download
-          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="backService.userBackups[backService.indexUser].filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backService.actionFilterEvent($event, 'date_download', false)">
+
+          <input type="text" [owlDateTimeTrigger]="dateD" [owlDateTime]="dateD" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="backService.userBackups[backService.indexUser].filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backService.actionFilterEvent($event, 'date_download', false)">
+          <owl-date-time #dateD [pickerType]="'calendar'"></owl-date-time>
+
+          <!--input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="backService.userBackups[backService.indexUser].filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backService.actionFilterEvent($event, 'date_download', false)"-->
           <button type="button" [ngClass]="(backService.userBackups[backService.indexUser].filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backService.resetValuefiltroSearch('date_download')">
             <span aria-hidden="true">&times;</span>
           </button>

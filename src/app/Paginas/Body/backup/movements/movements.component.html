@@ -367,7 +367,11 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Date_record
-          <input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')">
+
+          <input type="text" [owlDateTimeTrigger]="dateR" [owlDateTime]="dateR" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')">
+          <owl-date-time #dateR [pickerType]="'calendar'"></owl-date-time>
+
+          <!--input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')"-->
           <button type="button" [ngClass]="(movementsService.filtersSearch.date_record.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('date_record')">
             <span aria-hidden="true">&times;</span>
           </button>

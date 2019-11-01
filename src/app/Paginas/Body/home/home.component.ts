@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Utilerias } from '../../../Utilerias/Util';
 import { UserService } from '../../../Servicios/user/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User } from '../../../Modelos/User/user';
+import { Users } from '../../../Modelos/users/users';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
       this.userService.buscarUser(this.usuarioSearch.value.email).subscribe(result => {
 
           if (!result.error) {
-            this.userService.User = <User>result.user;
+            this.userService.User = <Users>result.user;
             this.router.navigate(['/backups']);
           }
           this.util.msjToast(result.msj, result.titulo, result.error);

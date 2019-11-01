@@ -4,9 +4,8 @@ import { Utilerias } from '../../../Utilerias/Util';
 import { BackupService } from '../../../Servicios/backup/backup.service';
 import { UserService } from '../../../Servicios/user/user.service';
 import {Backup} from "../../../Modelos/Backup/backup";
-import {FiltrosSearchBackupsUser} from "../../../Modelos/Backup/filtros-search-backups-user"
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
-import {UserBackupsMnt} from '../../../Modelos/User/userBackupsMnt';
+import {UsersBackupsMnt} from '../../../Modelos/users/usersBackupsMnt';
 
 @Component({
   selector: 'app-backups',
@@ -36,7 +35,7 @@ export class BackupsComponent implements OnInit {
     // this.backupSelected.id_backup = 0;
     // this.buildForm();
     this.backService.resetearBackups();
-    this.backService.userBackups.push(new UserBackupsMnt());
+    this.backService.userBackups.push(new UsersBackupsMnt());
     this.buscar();
   }
   onScroll () {

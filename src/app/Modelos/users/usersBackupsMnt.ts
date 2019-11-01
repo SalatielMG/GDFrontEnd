@@ -1,8 +1,8 @@
 import {Backup} from "../Backup/backup";
 import {FiltrosSearchBackups} from '../Backup/filtros-search-backups';
-import {User} from './user';
+import {Users} from './users';
 
-export class UserBackupsMnt extends User{
+export class UsersBackupsMnt extends Users{
 
   // collapsed: number;
   collapsed: boolean;

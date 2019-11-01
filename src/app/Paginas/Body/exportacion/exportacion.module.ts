@@ -8,6 +8,7 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {LoadingSpinnerModule} from '../../../Components/loading-spinner/loading-spinner/loading-spinner.module';
 import {FormsModule} from '@angular/forms';
 import {QueryCompleteModule} from '../../../Components/query-complete/query-complete.module';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 
 @NgModule({
   declarations: [ExportacionComponent],
@@ -19,7 +20,9 @@ import {QueryCompleteModule} from '../../../Components/query-complete/query-comp
     FormsModule,
     QueryCompleteModule,
     CommonModule,
-    ExportacionRoutingModule
+    ExportacionRoutingModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ]
 })
 export class ExportacionModule { }

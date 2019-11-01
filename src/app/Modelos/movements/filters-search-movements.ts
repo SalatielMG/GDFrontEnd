@@ -25,8 +25,8 @@ export class FiltersSearchMovements {
     isFilter: false
   };
   date_record = {
-    value:  "",
-    valueAnt: "",
+    value:  null,
+    valueAnt: null,
     isFilter: false
   };
 
@@ -57,8 +57,8 @@ export class FiltersSearchMovements {
       isFilter: false
     };
     this.date_record = {
-      value:  "",
-      valueAnt: "",
+      value:  null,
+      valueAnt: null,
       isFilter: false
     };
   }

@@ -147,7 +147,7 @@ export class GastosComponent implements AfterViewInit {
           bold: true,
         },
         info: {
-          title: 'Reporte Gastos Usuario ' + this.userService.User.email,
+          title: 'Reporte Gastos usuario ' + this.userService.User.email,
           author: 'EncodeMX',
           subject: 'Reporte Gastos',
           keywords: 'Gastos diarios.',
@@ -188,7 +188,7 @@ export class GastosComponent implements AfterViewInit {
             text: 'Reporte gastos', style: 'header'
           },
           {
-            text: 'Usuario: ' + this.userService.User.email, style: 'anotherStyle'
+            text: 'usuario: ' + this.userService.User.email, style: 'anotherStyle'
           },
           {
             image: img,

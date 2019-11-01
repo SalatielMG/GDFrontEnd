@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {UserBackupsMnt} from "../../Modelos/User/userBackupsMnt";
+import {UsersBackupsMnt} from "../../Modelos/users/usersBackupsMnt";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class BackupService {
   public indexUser: number = 0;
   public pagina: number = 0;
   // public backups: Backup[];
-  public userBackups: UserBackupsMnt[] = [];
+  public userBackups: UsersBackupsMnt[] = [];
 
   constructor(public http: HttpClient) {
   }
@@ -25,7 +25,7 @@ export class BackupService {
   }
 
 
-  // -------------------------------- Filter Backups User --------------------------------
+  // -------------------------------- Filter Backups users --------------------------------
   public actionFilterEvent(event, value, isKeyUp = false, index = 0,) {
     if (value == "automatic") {
       if (this.userBackups[index].filtrosSearch[value].value == "-1") {
@@ -76,9 +76,23 @@ export class BackupService {
                 break;
               }
             } else {
-              if (!back[k].toString().includes(this.userBackups[index].filtrosSearch[k].value)){
-                bnd = false;
-                break;
+              if (k == "date_creation" || k == "date_download") {
+                let date = "";
+                this.userBackups[index].filtrosSearch[k].value.toLocaleDateString().split("/").reverse().forEach((d) => {
+                  date += ((d.length == 1) ? "0" + d : d) + "-";
+                });
+                date = date.substring(0, date.length - 1);
+                /*console.log("FiltroSearch Value = ", date);
+                console.log("Backup [" + k + "] Value = ", back[k]);*/
+                if (!back[k].toString().includes(date)){
+                  bnd = false;
+                  break;
+                }
+              } else {
+                if (!back[k].toString().includes(this.userBackups[index].filtrosSearch[k].value)){
+                  bnd = false;
+                  break;
+                }
               }
             }
           }
@@ -100,7 +114,7 @@ export class BackupService {
     return false;
   }
 
-  // -------------------------------- Filter Backups User --------------------------------
+  // -------------------------------- Filter Backups users --------------------------------
 
 
   public actualizarBackup(backup): Observable<any> {

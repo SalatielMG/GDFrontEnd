@@ -142,7 +142,7 @@ export class EntradasComponent implements AfterViewInit {
             bold: true,
           },
           info: {
-            title: 'Reporte Entradas Usuario ' + this.userService.User.email,
+            title: 'Reporte Entradas usuario ' + this.userService.User.email,
             author: 'EncodeMX',
             subject: 'Reporte Entradas',
             keywords: 'Gastos diarios.',
@@ -183,7 +183,7 @@ export class EntradasComponent implements AfterViewInit {
               text: 'Reporte entradas', style: 'header'
             },
             {
-              text: 'Usuario: ' + this.userService.User.email, style: 'anotherStyle'
+              text: 'usuario: ' + this.userService.User.email, style: 'anotherStyle'
             },
             {
               image: img,
