@@ -23,7 +23,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Paginas/Body/login/login.component';
 import { NavEncodeComponent } from './Paginas/Header/nav-encode/nav-encode.component';
-import { EncodeMXComponent } from './Paginas/Body/encode-mx/encode-mx.component';
+import { HomeComponent } from './Paginas/Body/home/home.component';
 import { BackupsComponent } from './Paginas/Body/backups/backups.component';
 
 /*Servicios*/
@@ -53,7 +53,7 @@ import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
     LoginComponent,
     PerfilComponent,
     NavEncodeComponent,
-    EncodeMXComponent,
+    HomeComponent,
     BackupsComponent,
     PaginaNoEmcontradaComponent,
 

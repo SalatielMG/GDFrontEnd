@@ -129,6 +129,7 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
   }
+
   public sumaTotal(arreglo) {
     let total: number = 0;
     for (let data of arreglo){

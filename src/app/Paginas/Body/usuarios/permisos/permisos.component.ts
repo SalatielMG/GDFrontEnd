@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Utilerias} from '../../../../Utilerias/Util';
 
 @Component({
   selector: 'app-permisos',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PermisosComponent implements OnInit {
 
-  constructor() { }
+  constructor(private util: Utilerias) { }
 
   ngOnInit() {
   }

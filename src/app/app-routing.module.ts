@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { EncodeMXComponent } from './Paginas/Body/encode-mx/encode-mx.component';
+import { HomeComponent } from './Paginas/Body/home/home.component';
 import { BackupsComponent } from './Paginas/Body/backups/backups.component';
 import { LoginComponent } from './Paginas/Body/login/login.component';
 import { PaginaNoEmcontradaComponent } from './Paginas/Body/pagina-no-emcontrada/pagina-no-emcontrada.component';
@@ -12,7 +12,7 @@ import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'perfil', component: PerfilComponent},
-  { path: 'home', component: EncodeMXComponent,  canActivate: [UsuarioService]},
+  { path: 'home', component: HomeComponent,  canActivate: [UsuarioService]},
   { path: 'backups', component: BackupsComponent, canActivate: [UsuarioService]},
   { path: 'detalleRespaldo/:numBack/:idBack', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/backup/backup.module').then(m => m.BackupModule)},
   { path: 'detalleUsuario', canActivate: [UsuarioService], loadChildren: () => import('./Paginas/Body/detalle-usuario/detalle-usuario.module').then(m => m.DetalleUsuarioModule)},

@@ -7,11 +7,11 @@ import { User } from '../../../Modelos/User/user';
 
 
 @Component({
-  selector: 'app-encode-mx',
-  templateUrl: './encode-mx.component.html',
-  styleUrls: ['./encode-mx.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class EncodeMXComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
   public usuarioSearch: FormGroup;
 
