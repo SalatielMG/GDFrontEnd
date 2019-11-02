@@ -11,7 +11,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="modalPermisoTitle">{{option}} Permiso {{Permiso.value.permiso}}</h5>
+        <h5 class="modal-title centerTitleModal" id="modalPermisoTitle">{{option}} Permiso</h5>
         <button type="button" class="close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -33,6 +33,50 @@
               <label for="descripcion">Descripcion: </label>
               <textarea  type="text" class="form-control" id="descripcion" formControlName="descripcion" [ngClass]="(getError('descripcion') == '') ? 'valid-control' : 'invalid-control'"></textarea>
               <div class="invalid-feedback">{{ getError('descripcion')}}</div>
+            </div>
+
+
+            <div class="form">
+              <div class="card rounded ">
+                <div class="card-header border-top-0 border-left-0 border-right-0 border-bottom">
+                  <div >
+                    <label class="font-weight-normal">Usuarios</label>
+                    <button type= "button" class="btn btn-outline-info rounded-circle btn-sm" (click)="isExpandUseCard = !isExpandUseCard; verifyExpandCardUser()">
+                      <span>
+                        <fa-icon [icon]="util.faChevronDown" *ngIf="!isExpandUseCard"></fa-icon>
+                        <fa-icon [icon]="util.faChevronUp" *ngIf="isExpandUseCard"></fa-icon>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div #cntUsers class="card-body p-0 body-Table-User">
+                  <table class="table table-hover table-fixed">
+                    <thead class="thead-dark">
+                      <tr class="text-center">
+                        <th class="v-a-middle font-weight-500 width-lg">Email</th>
+                        <th class="v-a-middle font-weight-500 width-sm">Tipo</th>
+                        <th class="v-a-middle font-weight-500 width-sm">Cargo</th>
+                        <th class="v-a-middle font-weight-500 width-sm">Seleccionar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let user of permisoService.UsuariosGal; let i = index">
+                        <tr class="text-center" (click)="checkUser(i)">
+                          <td class="v-a-middle width-lg">{{user.email}}</td>
+                          <td class="v-a-middle width-sm">{{user.tipo}}</td>
+                          <td class="v-a-middle width-sm">{{user.cargo}}</td>
+                          <td class="v-a-middle width-sm">
+                            <div class="custom-control custom-checkbox"  >
+                              <input type="checkbox" class="custom-control-input" [id]="i"  [disabled]="util.isDelete(option)" [checked]="user.checked" (click)="checkUser(i)">
+                              <label class="custom-control-label" [attr.for]="i"></label>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
           </div>

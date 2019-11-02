@@ -5,6 +5,8 @@ export class Usuarios {
   tipo: string;
   cargo: string;
   imagen: string;
+
+  checked: boolean;
   constructor(
     id = 0,
     email = "",
@@ -12,6 +14,7 @@ export class Usuarios {
     tipo: "",
     cargo: "",
     imagen: "",
+    checked: false,
   ) {
     this.id = id;
     this.email =  email;
@@ -19,5 +22,6 @@ export class Usuarios {
     this.tipo = tipo;
     this.cargo = cargo;
     this.imagen = imagen;
+    this.checked = checked;
   }
 }

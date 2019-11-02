@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -117,6 +117,9 @@ export class Utilerias {
   public faTrash = faTrash;
   public faPen = faPen;
   public faRedo = faRedo;
+  public faChevronRight = faChevronRight;
+  public faChevronUp =  faChevronUp;
+  public faChevronDown =  faChevronDown;
   public faChevronLeft = faChevronLeft;
   public faFilter = faFilter;
   public loadingMain: boolean = true;
@@ -129,7 +132,9 @@ export class Utilerias {
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
   }
-
+  public obtisFullHDDisplay(): boolean {
+    return  window.innerHeight > 768;
+  }
   public sumaTotal(arreglo) {
     let total: number = 0;
     for (let data of arreglo){

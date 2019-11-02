@@ -40,3 +40,13 @@
 .width-6 {
   width: 6% !important;
 }
+.table-fixed thead,
+.table-fixed-bu thead {
+  background-color: black !important;
+}
+
+.table-fixed thead tr > th,
+.table-fixed-bu thead tr > th {
+  background-color: black !important;
+  border-color: black !important;
+}

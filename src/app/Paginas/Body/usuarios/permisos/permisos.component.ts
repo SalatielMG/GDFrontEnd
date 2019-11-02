@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {PermisoService} from '../../../../Servicios/permiso/permiso.service';
 import {Permisos} from '../../../../Modelos/permisos/Permisos';
@@ -16,9 +16,11 @@ export class PermisosComponent implements OnInit {
   private PermisoSelected = new Permisos();
   private UsersSelected = [];
   private Permiso: FormGroup = null;
+  private isExpandUseCard: boolean = false;
 
+  @ViewChild("cntUsers", {read: "", static: false}) cntUsers = ElementRef;
 
-  constructor(private util: Utilerias, private permisoService: PermisoService, private usuarioService: UsuarioService, private formBuilder: FormBuilder) {
+  constructor(private util: Utilerias, private permisoService: PermisoService, private usuarioService: UsuarioService, private formBuilder: FormBuilder, private renderer: Renderer2) {
     this.permisoService.resetVariables();
     this.sarchPermisosGral();
   }
@@ -54,17 +56,26 @@ export class PermisosComponent implements OnInit {
           this.option = option;
           this.buildForm(permiso);
           if (this.option != this.util.AGREGAR) {
+            this.isExpandUseCard = true;
             this.PermisoSelected = permiso;
             this.permisoService.indexPermisoSelected = index;
             if (this.option == this.util.ACTUALIZAR) {
               for (let user of permiso.usuarios) {
                 this.UsersSelected.push(user.id);
+                this.permisoService.UsuariosGal.forEach((u) => {
+                  if (u.id == user.id){
+                    u.checked = true;
+                  }
+                });
               }
             }
+          } else {
+            this.isExpandUseCard = true;
           }
           setTimeout(() => {
             this.util.detenerLoading();
             this.util.abrirModal("#modalPermiso");
+            this.verifyExpandCardUser();
           }, this.util.timeOutMilliseconds);
         } else {
           this.util.detenerLoading();
@@ -74,6 +85,36 @@ export class PermisosComponent implements OnInit {
         this.util.msjErrorInterno(error);
       });
     });
+  }
+  // ---------------------------- CheckUser
+  private checkUser(index) {
+    if (this.util.isDelete(this.option)) return;
+    if (this.permisoService.UsuariosGal[index].checked) { // Uncheck =>
+      let posInArrayUserSelected = this.UsersSelected.indexOf(this.permisoService.UsuariosGal[index].id);
+      if (posInArrayUserSelected != -1) {
+        this.UsersSelected.splice(posInArrayUserSelected, 1);
+      }
+    } else { // Uncheck =>
+      if (!this.UsersSelected.includes(this.permisoService.UsuariosGal[index].id)) {
+        this.UsersSelected.push(this.permisoService.UsuariosGal[index].id);
+      }
+    }
+    this.permisoService.UsuariosGal[index].checked = !this.permisoService.UsuariosGal[index].checked;
+    console.log(this.UsersSelected);
+  }
+  // ---------------------------- CheckUser
+  private verifyExpandCardUser() {
+    console.log(this.cntUsers);
+    let H = (this.util.obtisFullHDDisplay()) ? 300: 220;
+    if (this.isExpandUseCard) {
+      this.renderer.setStyle(this.cntUsers['nativeElement'], "transition", "height 500ms, max-height 500ms");
+      this.renderer.setStyle(this.cntUsers['nativeElement'], "height", H + "px");
+      this.renderer.setStyle(this.cntUsers['nativeElement'], "max-height", H + "px");
+    } else {
+      this.renderer.setStyle(this.cntUsers['nativeElement'], "transition", "height 500ms, max-height 500ms");
+      this.renderer.setStyle(this.cntUsers['nativeElement'], "height", "0px");
+      this.renderer.setStyle(this.cntUsers['nativeElement'], "max-height", "0px");
+    }
   }
   private buildForm(permiso: Permisos) {
     this.Permiso = this.formBuilder.group({
@@ -116,6 +157,8 @@ export class PermisosComponent implements OnInit {
         this.eliminarPermiso();
         break;
     }
+    console.log(this.Permiso.value);
+    console.log(this.UsersSelected);
   }
   private agregarPermiso() {
     this.util.msjLoading = "Agregando nuevo Permiso " + this.Permiso.value.permiso;

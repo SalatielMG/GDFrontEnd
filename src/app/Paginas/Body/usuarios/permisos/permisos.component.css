@@ -25,3 +25,113 @@
 .table-fixed-xl tbody tr td {
   width: 20% !important;
 }
+/*
+.table-fixed thead tr th,
+.table-fixed tbody tr td {
+  width: 25% !important;
+}*/
+
+
+.card {
+  border: 0px;
+
+}
+
+
+.card-header {
+  background: var(--white);
+  border-radius: 0px !important;
+  border: 0px;
+  border-bottom: 1px solid #343a405e;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.card-header > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+.card-header > div > label {
+  font-size: 20px;
+  /* margin-top: 15px; */
+  margin-bottom: 10px;
+}
+.card-header > div > button {
+  position: absolute;
+  margin-top: 30px;
+  background: white;
+}
+.card-header > div > button:hover {
+  color: #ffffff !important;
+  background-color: #17a2b8 !important;
+}
+.card-body {
+  /*border: 1px solid #6c757d24;*/
+  border-radius: 15px;
+}
+
+
+@media screen and (max-width: 1920px) and (max-height: 1080px) {
+  .table-fixed {
+    height: 300px !important;
+  }
+  .table-fixed tbody{
+    height: 245px!important;
+  }
+}
+@media screen and (max-width: 1366px) and (max-height: 768px) {
+  .table-fixed {
+    height: 220px !important;
+  }
+  .table-fixed tbody{
+    height: 165px!important;
+  }
+}
+
+.table-fixed tbody{
+  border: 1px solid rgba(108, 117, 125, 0.06);
+}
+
+.table-fixed thead{
+  background-color: black !important;
+  height: 55px !important;
+}
+.table-fixed thead tr {
+  height: 100% !important;
+}
+.table-fixed thead tr > th {
+   background-color: black;
+   border-color: black;
+}
+.table-fixed tbody tr {
+  height: 50px !important;
+}
+
+.width-sm{
+  width: 20% !important;
+}
+.width-lg{
+  width: 40% !important;
+}
+.body-Table-User {
+  height: 0px;
+  transition: max-height 500ms;
+  overflow: hidden;
+  border-radius: 0px;
+}
+/*
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
+  color: #fff !important;
+  border-color: #007bff !important;
+  background-color: #007bff !important;
+}
+
+.custom-control-input:disabled ~ .custom-control-label::before {
+  background-color: #ffffff !important;
+}
+*/
+
