@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { URL } from '../../Utilerias/URL';
 import {Permisos} from '../../Modelos/permisos/Permisos';
@@ -12,6 +12,7 @@ export class PermisoService {
 
   public Permisos: Permisos[] = [];
   public UsuariosGal: Usuarios[] = [];
+  public indexPermisoSelected: number = 0;
 
   constructor(public http: HttpClient) { }
 
@@ -21,6 +22,23 @@ export class PermisoService {
   public resetVariables() {
     this.Permisos = [];
     this.UsuariosGal = [];
+    this.indexPermisoSelected = 0;
+  }
+  public agregarPermiso(permiso, userSelected): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('permiso', JSON.stringify(permiso))
+      .append('userSelected', JSON.stringify(userSelected));
+    return this.http.post(URL + "agregarPermiso", parametro);
+  }
+  public actualizarPermiso(permiso, permisoSelected, userSelected): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('permiso', JSON.stringify(permiso))
+      .append('permisoSelected', JSON.stringify(permisoSelected))
+      .append('userSelected', JSON.stringify(userSelected));
+    return this.http.post(URL + "actualizarPermiso", parametro);
+  }
+  public eliminarPermiso(permiso): Observable<any> {
+    return this.http.delete(URL + "eliminarPermiso", {params: {permiso: JSON.stringify(permiso)}});
   }
 
 }

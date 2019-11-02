@@ -11,6 +11,7 @@ export class UsuarioService implements CanActivate{
 
   public id;
 
+
   public Headers = new HttpHeaders({'Content-Type':  'application/json'});
   constructor(public http: HttpClient, private route: ActivatedRoute,
               private router: Router) {
@@ -66,7 +67,7 @@ export class UsuarioService implements CanActivate{
   }
 
   public obtUsuariosGral(id_usuario = "0", show_permiso = "0"): Observable<any> {
-    return this.http.get(URL + "", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
+    return this.http.get(URL + "obtUsuariosGral", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
   }
 
 }

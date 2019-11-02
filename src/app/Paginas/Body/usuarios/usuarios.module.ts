@@ -6,7 +6,7 @@ import { TituloEncabezadoModule } from '../../Header/titulo-encabezado/titulo-en
 import {PermisosComponent} from './permisos/permisos.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {QueryCompleteModule} from '../../../Components/query-complete/query-complete.module';
 import {PermisoService} from '../../../Servicios/permiso/permiso.service';
 
@@ -17,6 +17,7 @@ import {PermisoService} from '../../../Servicios/permiso/permiso.service';
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     NgxSpinnerModule,
     CommonModule,
     UsuariosRoutingModule,

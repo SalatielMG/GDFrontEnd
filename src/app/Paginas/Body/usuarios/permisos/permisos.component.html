@@ -6,7 +6,48 @@
 >
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
+
+<div class="modal fade" id="modalPermiso" tabindex="-1" role="dialog" aria-labelledby="modalPermisoTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Permiso != null">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalPermisoTitle">{{option}} Permiso {{Permiso.value.permiso}}</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="Permiso" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Permiso núm: {{(permisoService.indexPermisoSelected + 1)}} ?</h5>
+          </div>
+          <div class="container">
+
+            <div class="form">
+              <label for="permiso">Permiso: </label>
+              <input type="text" class="form-control" id="permiso" formControlName="permiso" [ngClass]="(getError('permiso') == '') ? 'valid-control' : 'invalid-control'">
+              <div class="invalid-feedback">{{ getError('permiso')}}</div>
+            </div>
+
+            <div class="form">
+              <label for="descripcion">Descripcion: </label>
+              <textarea  type="text" class="form-control" id="descripcion" formControlName="descripcion" [ngClass]="(getError('descripcion') == '') ? 'valid-control' : 'invalid-control'"></textarea>
+              <div class="invalid-feedback">{{ getError('descripcion')}}</div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="Permiso.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <app-titulo-encabezado [titulo]="'Permisos'"></app-titulo-encabezado>
+
 <div class="overflow-x-scroll">
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
