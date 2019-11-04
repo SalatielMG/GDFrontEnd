@@ -129,15 +129,4 @@
   overflow: hidden;
   border-radius: 0px;
 }
-/*
-.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
-  color: #fff !important;
-  border-color: #007bff !important;
-  background-color: #007bff !important;
-}
-
-.custom-control-input:disabled ~ .custom-control-label::before {
-  background-color: #ffffff !important;
-}
-*/
 

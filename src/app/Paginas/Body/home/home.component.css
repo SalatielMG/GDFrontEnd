@@ -15,7 +15,7 @@
 
   }
   .form-container {
-    height: 120px;
+    height: 100px;
   }
   .searchBar {
     padding-top: 130px !important;
@@ -67,4 +67,6 @@
   color: #e8d9e8;
   background-color: rgb(0, 19, 35);
   border-color: #005065;
+  filter: drop-shadow(5px 5px 2px #000000);
+
 }

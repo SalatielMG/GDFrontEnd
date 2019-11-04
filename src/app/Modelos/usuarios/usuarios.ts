@@ -1,3 +1,5 @@
+import {Permisos} from '../permisos/Permisos';
+
 export class Usuarios {
   id: number;
   email: string;
@@ -5,16 +7,18 @@ export class Usuarios {
   tipo: string;
   cargo: string;
   imagen: string;
+  permisos: Permisos[] = [];
 
   checked: boolean;
   constructor(
     id = 0,
     email = "",
-    password: "",
-    tipo: "",
-    cargo: "",
-    imagen: "",
-    checked: false,
+    password = "",
+    tipo = "aux",
+    cargo = "",
+    imagen = "",
+    permisos: Permisos[] = [],
+    checked = false,
   ) {
     this.id = id;
     this.email =  email;
@@ -22,6 +26,7 @@ export class Usuarios {
     this.tipo = tipo;
     this.cargo = cargo;
     this.imagen = imagen;
+    this.permisos = permisos;
     this.checked = checked;
   }
 }

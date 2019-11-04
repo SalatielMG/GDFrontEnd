@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Usuarios} from '../../Modelos/usuarios/usuarios';
+import {Permisos} from '../../Modelos/permisos/Permisos';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,9 @@ import {Usuarios} from '../../Modelos/usuarios/usuarios';
 export class UsuarioService implements CanActivate{
 
   public id;
-  public Usuarios: Usuarios[] =[];
+  public Usuarios: Usuarios[] = [];
+  public PermisosGral: Permisos[] = [];
+  public indexUsuarioSelected: number = 0;
 
   public Headers = new HttpHeaders({'Content-Type':  'application/json'});
 

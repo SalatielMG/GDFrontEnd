@@ -69,7 +69,7 @@ export class PermisosComponent implements OnInit {
               });
             }
           } else {
-            this.isExpandUseCard = true;
+            this.isExpandUseCard = false;
           }
           setTimeout(() => {
             this.util.detenerLoading();

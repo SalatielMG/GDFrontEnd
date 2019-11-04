@@ -1,6 +1,171 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
+</ngx-spinner>
+
 <app-titulo-encabezado titulo="Listado de usuarios"></app-titulo-encabezado>
 
-<button class="btn btn-outline-success rounded-circle addButton">
+<div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Usuario != null">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalUsuarioTitle">{{option}} Usuario</h5>
+        <button type="button" class="close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="Usuario" (ngSubmit)="operation()">
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el siguiente Usuario ?</h5>
+          </div>
+          <div class="container">
+
+            <div class="form-row">
+
+              <div class="col-4">
+                <div class="w-100 h-100 bg-dark"></div>
+              </div>
+
+              <div class="col-8">
+
+                <div class="form-group">
+                  <label for="email">Email: </label>
+                  <input type="email" class="form-control" id="email" formControlName="email" [ngClass]="(getError('email') == '') ? 'valid-control' : 'invalid-control'">
+                  <div class="invalid-feedback">{{ getError('email')}}</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password: </label>
+                  <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="(getError('password') == '') ? 'valid-control' : 'invalid-control'">
+                  <div class="invalid-feedback">{{ getError('password')}}</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="tipo">Password: </label>
+                  <select class="form-control" id="tipo" formControlName="tipo" [ngClass]="(getError('tipo') == '') ? 'valid-control' : 'invalid-control'">
+                    <option value=""></option>
+                    <option value="admin">Administrador</option>
+                    <option value="aux">Auxiliar</option>
+                  </select>
+                  <div class="invalid-feedback">{{ getError('tipo')}}</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="cargo">Cargo: </label>
+                  <input type="text" class="form-control" id="cargo" formControlName="cargo" [ngClass]="(getError('cargo') == '') ? 'valid-control' : 'invalid-control'">
+                  <div class="invalid-feedback">{{ getError('cargo')}}</div>
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+            <div class="form">
+              <div class="card rounded card-Permisos">
+                <div class="card-header card-header-Permisos border-top-0 border-left-0 border-right-0 border-bottom">
+                  <div >
+                    <label class="font-weight-normal">Usuarios</label>
+                    <button type= "button" class="btn btn-outline-info rounded-circle btn-sm" (click)="isExpandedPermisoCard = !isExpandedPermisoCard; verifyExpandCardUser()">
+                      <span>
+                        <fa-icon [icon]="util.faChevronDown" *ngIf="!isExpandedPermisoCard"></fa-icon>
+                        <fa-icon [icon]="util.faChevronUp" *ngIf="isExpandedPermisoCard"></fa-icon>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div #cntPermisos class="card-body card-body-Permisos p-0 body-Table-Permiso">
+                  <table class="table table-hover table-fixed">
+                    <thead class="thead-dark">
+                    <tr class="text-center">
+                      <th class="v-a-middle font-weight-500 width-sm">Permiso</th>
+                      <th class="v-a-middle font-weight-500 width-lg">Descripción</th>
+                      <th class="v-a-middle font-weight-500 width-sm">Seleccionar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container *ngFor="let permiso of usuarioService.PermisosGral; let i = index">
+                      <tr class="text-center" (click)="checkPermiso(i)">
+                        <td class="v-a-middle width-sm">{{permiso.permiso}}</td>
+                        <td class="v-a-middle width-lg">{{permiso.descripcion}}</td>
+                        <td class="v-a-middle width-sm">
+                          <div class="custom-control custom-checkbox"  >
+                            <input type="checkbox" class="custom-control-input" [id]="i"  [disabled]="util.isDelete(option)" [checked]="permiso.checked" (click)="checkPermiso(i)">
+                            <label class="custom-control-label" [attr.for]="i"></label>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cerrar</button>
+          <button type="submit" [ngClass]="util.classModal(option)" [disabled]="Usuario.invalid">{{option}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container-users">
+  <div class="row row-card">
+    <ng-container *ngFor="let user of usuarioService.Usuarios; let i = index">
+      <div class="col-4 col-user">
+        <div class="card card-user shadow-sm">
+          <div class="card-header card-header-user">
+            <div class="desenfoque">
+              <img [src]="url + 'util/avatar/' + user.imagen" style="width: 100%">
+            </div>
+            <img [src]="url + 'util/avatar/' + user.imagen" class="avatar-user">
+          </div>
+          <div class="card-body card-body-user">
+            <p class="font-weigp c500">{{user.email}}</p>
+            <p class="font-weight-light">{{user.tipo}}</p>
+            <p class="font-weight-light">{{user.cargo}}</p>
+          </div>
+          <div class="row card-footer">
+            <div class="col">
+                <button class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos">
+                  <span>
+                  <fa-icon [icon]="util.faCheckSquare" ></fa-icon>
+                </span>
+                </button>
+            </div>
+            <div class="col">
+              <button class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" (click)="actionUsuario(util.ACTUALIZAR, user, i)">
+                <span>
+                  <fa-icon [icon]="util.faPen" ></fa-icon>
+                </span>
+              </button>
+            </div>
+            <div class="col">
+              <button class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="actionUsuario(util.ELIMINAR, user, i)">
+                <span>
+                  <fa-icon [icon]="util.faTrash" ></fa-icon>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<button class="btn btn-outline-success rounded-circle addButton" (click)="actionUsuario(util.AGREGAR)">
   <span>
     <fa-icon [icon]="util.faUserPlus" ></fa-icon>
   </span>
