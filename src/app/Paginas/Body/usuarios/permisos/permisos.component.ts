@@ -55,19 +55,18 @@ export class PermisosComponent implements OnInit {
           this.permisoService.UsuariosGal = result.usuarios;
           this.option = option;
           this.buildForm(permiso);
+          this.UsersSelected = [];
           if (this.option != this.util.AGREGAR) {
             this.isExpandUseCard = true;
             this.PermisoSelected = permiso;
             this.permisoService.indexPermisoSelected = index;
-            if (this.option == this.util.ACTUALIZAR) {
-              for (let user of permiso.usuarios) {
-                this.UsersSelected.push(user.id);
-                this.permisoService.UsuariosGal.forEach((u) => {
-                  if (u.id == user.id){
-                    u.checked = true;
-                  }
-                });
-              }
+            for (let user of permiso.usuarios) {
+              this.UsersSelected.push(user.id);
+              this.permisoService.UsuariosGal.forEach((u) => {
+                if (u.id == user.id){
+                  u.checked = true;
+                }
+              });
             }
           } else {
             this.isExpandUseCard = true;

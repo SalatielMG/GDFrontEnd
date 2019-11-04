@@ -409,6 +409,12 @@ app-gastos-entradas {
 .color-red {
   color: #dc3545;
 }
+.btn-show {
+  /*width: 90px;
+  height: 40px;
+  width: 40px;*/
+  font-size: 18px;
+}
 .btn-update {
   width: 90px;
   margin-right: 10px;
@@ -491,3 +497,6 @@ app-gastos-entradas {
   height: 100%!important;
 }
 /* ------------- Style Collapse -------------*/
+.toast-title {
+  font-weight: 500!important;
+}

@@ -117,6 +117,12 @@
 .width-lg{
   width: 40% !important;
 }
+.width-sm-up{
+  width: 25% !important;
+}
+.width-lg-up{
+  width: 50% !important;
+}
 .body-Table-User {
   height: 0px;
   transition: max-height 500ms;

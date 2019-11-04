@@ -3,6 +3,7 @@ import { URL } from '../../Utilerias/URL';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Usuarios} from '../../Modelos/usuarios/usuarios';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,17 @@ import {Router, ActivatedRoute, ParamMap, CanActivate, ActivatedRouteSnapshot, R
 export class UsuarioService implements CanActivate{
 
   public id;
-
+  public Usuarios: Usuarios[] =[];
 
   public Headers = new HttpHeaders({'Content-Type':  'application/json'});
+
   constructor(public http: HttpClient, private route: ActivatedRoute,
               private router: Router) {
     this.cargarStorage();
+  }
+
+  public resetVariables() {
+    this.Usuarios = [];
   }
 
   public prueba() {
@@ -68,6 +74,10 @@ export class UsuarioService implements CanActivate{
 
   public obtUsuariosGral(id_usuario = "0", show_permiso = "0"): Observable<any> {
     return this.http.get(URL + "obtUsuariosGral", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
+  }
+
+  public obtUsersGral(): Observable<any> {
+    return this.http.get(URL + "obtUsersGral");
   }
 
 }
