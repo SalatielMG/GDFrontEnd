@@ -12,6 +12,7 @@ export class Utilerias {
   public onScroll: boolean = false;
   public LIMPIARBACKUPSUSERS: string = "Limpiar Backups Usuarios";
   public LIMPIARBACKUPSUSER: string = "Limpiar Backups usuario";
+  public CONSULTA: string = "Consulta";
   public AGREGAR: string = "Agregar";
   public ACTUALIZAR: string = "Actualizar";
   public ELIMINAR: string = "Eliminar";
@@ -468,5 +469,22 @@ export class Utilerias {
     }
     return classModal;
   }
+  /*
+  compare([1,2,3],[1,2,3])
+  true
 
+  compare([1,2],[1,2,3])
+  false*/
+  public compare(arr1 = [],arr2 = []){
+    if (!arr1  || !arr2) return;
+    if (arr1.length == 0 && arr2.length == 0) return true;
+    let result: boolean = false;
+    arr1.forEach((e1,i) => arr2.forEach(e2 => {
+        if(e1.length > 1 && e2.length){
+          result = this.compare(e1,e2);
+        } else result = e1 === e2;
+      })
+    );
+    return result;
+  }
 }

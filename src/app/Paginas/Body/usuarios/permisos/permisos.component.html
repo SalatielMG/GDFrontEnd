@@ -8,7 +8,7 @@
 </ngx-spinner>
 
 <div class="modal fade" id="modalUsuarios_Permiso" tabindex="-1" role="dialog" aria-labelledby="modalUsuarios_PermisoTitle" aria-hidden="true" >
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+  <div class="modal-dialog modal-dialog-centered" [ngClass]="util.obtisFullHDDisplay() ? 'modal-xl' : 'modal-lg'" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title centerTitleModal" id="modalUsuarios_PermisoTitle">Usuarios Permiso: {{PermisoSelected.permiso}}</h5>
@@ -17,22 +17,37 @@
         </button>
       </div>
         <div class="modal-body">
-
+          
           <div class="container">
+
+            <div class="flex-row-reverse mb-2 mt-2">
+              <div class="custom-control custom-switch ">
+                <input type="checkbox" class="custom-control-input" id="isUpdateUsuariosSelectPermiso" [(ngModel)]="isUpdateUsuariosSelectPermiso">
+                <label class="custom-control-label" for="isUpdateUsuariosSelectPermiso">Actualizar</label>
+              </div>
+            </div>
+            
             <table class="table table-hover table-fixed">
               <thead class="thead-dark">
               <tr class="text-center">
-                <th class="v-a-middle font-weight-500 width-lg-up">Email</th>
-                <th class="v-a-middle font-weight-500 width-sm-up">Tipo</th>
-                <th class="v-a-middle font-weight-500 width-sm-up">Cargo</th>
+                <th class="v-a-middle font-weight-500 width-lg">Email</th>
+                <th class="v-a-middle font-weight-500 width-sm">Tipo</th>
+                <th class="v-a-middle font-weight-500 width-sm">Cargo</th>
+                <th class="v-a-middle font-weight-500 width-sm">Seleccionar</th>
               </tr>
               </thead>
               <tbody>
-              <ng-container *ngFor="let user of PermisoSelected.usuarios; let i = index">
-                <tr class="text-center">
-                  <td class="v-a-middle width-lg-up">{{user.email}}</td>
-                  <td class="v-a-middle width-sm-up">{{user.tipo}}</td>
-                  <td class="v-a-middle width-sm-up">{{user.cargo}}</td>
+              <ng-container *ngFor="let user of permisoService.UsuariosGal; let i = index">
+                <tr class="text-center" (click)="checkUser(i)" [ngClass]="(user.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
+                  <td class="v-a-middle width-lg">{{user.email}}</td>
+                  <td class="v-a-middle width-sm">{{user.tipo}}</td>
+                  <td class="v-a-middle width-sm">{{user.cargo}}</td>
+                  <td class="v-a-middle width-sm">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [id]="i"  [disabled]="!isUpdateUsuariosSelectPermiso" [checked]="user.checked" (click)="checkUser(i)">
+                      <label class="custom-control-label" [attr.for]="i"></label>
+                    </div>
+                  </td>
                 </tr>
               </ng-container>
               </tbody>
@@ -41,6 +56,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" *ngIf="isUpdateUsuariosSelectPermiso" (click)="actualizarUsuariosPermisos()">Actualizar</button>
         </div>
     </div>
   </div>
@@ -58,7 +74,7 @@
       <form [formGroup]="Permiso" (ngSubmit)="operation()">
         <div class="modal-body">
           <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
-            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Permiso núm: {{(permisoService.indexPermisoSelected + 1)}} ?</h5>
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el siguiente permiso ?</h5>
           </div>
           <div class="container">
 
@@ -80,7 +96,7 @@
                 <div class="card-header border-top-0 border-left-0 border-right-0 border-bottom">
                   <div >
                     <label class="font-weight-normal">Usuarios</label>
-                    <button type= "button" class="btn btn-outline-info rounded-circle btn-sm" (click)="isExpandUseCard = !isExpandUseCard; verifyExpandCardUser()">
+                    <button type= "button" class="btn btn-outline-info rounded-circle btn-sm" (click)="cargarUsuariosGral()">
                       <span>
                         <fa-icon [icon]="util.faChevronDown" *ngIf="!isExpandUseCard"></fa-icon>
                         <fa-icon [icon]="util.faChevronUp" *ngIf="isExpandUseCard"></fa-icon>
@@ -100,7 +116,7 @@
                     </thead>
                     <tbody>
                       <ng-container *ngFor="let user of permisoService.UsuariosGal; let i = index">
-                        <tr class="text-center" (click)="checkUser(i)">
+                        <tr class="text-center" (click)="checkUser(i)" [ngClass]="(user.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
                           <td class="v-a-middle width-lg">{{user.email}}</td>
                           <td class="v-a-middle width-sm">{{user.tipo}}</td>
                           <td class="v-a-middle width-sm">{{user.cargo}}</td>
@@ -135,7 +151,7 @@
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
       <tr>
-        <th scope="col" class="Encabezado-Tabla">#</th>
+        <th scope="col" class="Encabezado-Tabla">Id</th>
         <th scope="col" class="Encabezado-Tabla">Permiso</th>
         <th scope="col" class="Encabezado-Tabla">Descripción</th>
         <th scope="col" class="Encabezado-Tabla">Usuarios</th>
@@ -151,23 +167,23 @@
     </tbody>
     <tbody *ngIf="permisoService.Permisos.length > 0">
     <tr *ngFor="let permiso of permisoService.Permisos; let i = index" >
-      <td class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-weight-bold ">{{(permiso.id)}}</td>
       <td class="Celdas-Tabla ">{{permiso.permiso}}</td>
       <td class="Celdas-Tabla ">{{permiso.descripcion}}</td>
       <td class="Celdas-Tabla ">
-        <button type="button" class="btn btn-outline-info btn-show border-0" data-toggle="modal" data-target="#modalUsuarios_Permiso" (click)="PermisoSelected = permiso">
+        <button type="button" class="btn btn-outline-info btn-show border-0" data-toggle="modal" data-target="#modalUsuarios_Permiso" (click)="actionUsuariosPermiso(util.CONSULTA, permiso, i)">
             <span>
               <fa-icon [icon]="util.faEye"></fa-icon>
             </span>
         </button>
       </td>
       <td class="Celdas-Tabla ">
-        <button type="button" class="btn btn-primary btn-update" (click)="actionPermiso(util.ACTUALIZAR, permiso, i)">
+        <button type="button" class="btn btn-primary btn-update" (click)="actionPermiso(util.ACTUALIZAR, permiso, i)" data-toggle="modal" data-target="#modalPermiso">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
         </button>
-        <button type="button" class="btn btn-danger btn-delete" (click)="actionPermiso(util.ELIMINAR, permiso, i)">
+        <button type="button" class="btn btn-danger btn-delete" (click)="actionPermiso(util.ELIMINAR, permiso, i)" data-toggle="modal" data-target="#modalPermiso">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -179,7 +195,7 @@
   </table>
 </div>
 
-<button type="button" class="btn btn-outline-success rounded-circle addButton" (click)="actionPermiso(util.AGREGAR)">
+<button type="button" class="btn btn-outline-success rounded-circle addButton" (click)="actionPermiso(util.AGREGAR)" data-toggle="modal" data-target="#modalPermiso">
   <span>
     <fa-icon [icon]="util.faPlus" ></fa-icon>
   </span>

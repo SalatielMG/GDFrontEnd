@@ -130,3 +130,17 @@
   border-radius: 0px;
 }
 
+.HeaderSelected {
+  background-color: rgb(35, 200, 0) !important;
+  color: white !important;
+}
+.HeaderSelected:hover {
+  background-color: rgb(35, 190, 0) !important;
+  color: white !important;
+}
+.HeaderNoSelected {
+  background-color: #ffffff !important;
+}
+.HeaderNoSelected:hover {
+  background-color: #ededed !important;
+}

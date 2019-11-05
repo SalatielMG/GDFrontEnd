@@ -14,9 +14,13 @@ export class PermisosComponent implements OnInit {
 
   private option: string = "";
   private PermisoSelected = new Permisos();
-  private UsersSelected = [];
+  private UsersSelected = {
+    value: [],
+    valueAnt: []
+  };
   private Permiso: FormGroup = null;
   private isExpandUseCard: boolean = false;
+  private isUpdateUsuariosSelectPermiso: boolean = false;
 
   @ViewChild("cntUsers", {read: "", static: false}) cntUsers = ElementRef;
 
@@ -46,38 +50,32 @@ export class PermisosComponent implements OnInit {
       });
     });
   }
-
-  private actionPermiso(option, permiso = new Permisos(), index = null) {
+  private resetUserSelected() {
+    this.UsersSelected.value = [];
+    this.UsersSelected.valueAnt = [];
+  }
+  private obtUsuariosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando usuarios";
     this.util.crearLoading().then(() => {
       this.usuarioService.obtUsuariosGral().subscribe(result => {
+        this.util.detenerLoading();
         if (!result.error) {
           this.permisoService.UsuariosGal = result.usuarios;
-          this.option = option;
-          this.buildForm(permiso);
-          this.UsersSelected = [];
+          this.isExpandUseCard = true;
           if (this.option != this.util.AGREGAR) {
-            this.isExpandUseCard = true;
-            this.PermisoSelected = permiso;
-            this.permisoService.indexPermisoSelected = index;
-            for (let user of permiso.usuarios) {
-              this.UsersSelected.push(user.id);
+            for (let user of this.PermisoSelected.usuarios) {
+              this.UsersSelected.valueAnt.push(user.id);
               this.permisoService.UsuariosGal.forEach((u) => {
                 if (u.id == user.id){
                   u.checked = true;
                 }
               });
             }
-          } else {
-            this.isExpandUseCard = false;
+            this.UsersSelected.value = this.UsersSelected.value.concat(this.UsersSelected.valueAnt);
           }
-          setTimeout(() => {
-            this.util.detenerLoading();
-            this.util.abrirModal("#modalPermiso");
-            this.verifyExpandCardUser();
-          }, this.util.timeOutMilliseconds);
+          if (isExpanded) this.verifyExpandCardUser();
+          else this.util.abrirModal("#modalUsuarios_Permiso");
         } else {
-          this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
         }
       }, error => {
@@ -85,21 +83,55 @@ export class PermisosComponent implements OnInit {
       });
     });
   }
+  private cargarUsuariosGral() {
+    this.isExpandUseCard = !this.isExpandUseCard;
+    this.resetUserSelected();
+    //this.verifyExpandCardUser();
+    if (this.isExpandUseCard) { // Expandir y obtener permisos generales.
+      this.obtUsuariosGral();
+    } else this.verifyExpandCardUser();
+  }
+  private actionPermiso(option, permiso = new Permisos(), index = null) {
+    this.option = option;
+    this.buildForm(permiso);
+    this.resetUserSelected();
+    this.isExpandUseCard = false;
+    if (this.option != this.util.AGREGAR) {
+      this.PermisoSelected = permiso;
+      this.permisoService.indexPermisoSelected = index;
+      if (this.util.isDelete(this.option)) {
+        this.cargarUsuariosGral();
+      }
+    }
+
+  }
+  private actionUsuariosPermiso(option, permiso: Permisos, index) {
+    this.isUpdateUsuariosSelectPermiso = false;
+    this.option = option;
+    this.resetUserSelected();
+    if (this.option == this.util.CONSULTA){
+      this.PermisoSelected = permiso;
+      this.permisoService.indexPermisoSelected = index;
+      this.obtUsuariosGral(false);
+    }
+  }
   // ---------------------------- CheckUser
   private checkUser(index) {
-    if (this.util.isDelete(this.option)) return;
+    console.log(this.option);
+    if (this.util.isDelete(this.option) || !this.isUpdateUsuariosSelectPermiso) return;
     if (this.permisoService.UsuariosGal[index].checked) { // Uncheck =>
-      let posInArrayUserSelected = this.UsersSelected.indexOf(this.permisoService.UsuariosGal[index].id);
+      let posInArrayUserSelected = this.UsersSelected.value.indexOf(this.permisoService.UsuariosGal[index].id);
       if (posInArrayUserSelected != -1) {
-        this.UsersSelected.splice(posInArrayUserSelected, 1);
+        this.UsersSelected.value.splice(posInArrayUserSelected, 1);
       }
     } else { // Uncheck =>
-      if (!this.UsersSelected.includes(this.permisoService.UsuariosGal[index].id)) {
-        this.UsersSelected.push(this.permisoService.UsuariosGal[index].id);
+      if (!this.UsersSelected.value.includes(this.permisoService.UsuariosGal[index].id)) {
+        this.UsersSelected.value.push(this.permisoService.UsuariosGal[index].id);
       }
     }
     this.permisoService.UsuariosGal[index].checked = !this.permisoService.UsuariosGal[index].checked;
-    console.log(this.UsersSelected);
+    console.log("this.UsersSelected.value", this.UsersSelected.value);
+    console.log("this.UsersSelected.valueAnt", this.UsersSelected.valueAnt);
   }
   // ---------------------------- CheckUser
   private verifyExpandCardUser() {
@@ -117,6 +149,7 @@ export class PermisosComponent implements OnInit {
   }
   private buildForm(permiso: Permisos) {
     this.Permiso = this.formBuilder.group({
+      id: [permiso.id, [Validators.required]],
       permiso: [permiso.permiso, [Validators.required, Validators.maxLength(50)]],
       descripcion: [permiso.descripcion, [Validators.maxLength(255)]],
     });
@@ -157,12 +190,13 @@ export class PermisosComponent implements OnInit {
         break;
     }
     console.log(this.Permiso.value);
-    console.log(this.UsersSelected);
+    console.log("this.UsersSelected.value", this.UsersSelected.value);
+    console.log("this.UsersSelected.valueAnt", this.UsersSelected.valueAnt);
   }
   private agregarPermiso() {
     this.util.msjLoading = "Agregando nuevo Permiso " + this.Permiso.value.permiso;
     this.util.crearLoading().then(() => {
-      this.permisoService.agregarPermiso(this.Permiso.value, this.UsersSelected).subscribe(result => {
+      this.permisoService.agregarPermiso(this.Permiso.value, this.UsersSelected.value).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
@@ -178,9 +212,17 @@ export class PermisosComponent implements OnInit {
     });
   }
   private actualizarPermiso() {
+    console.log("this.UsersSelected", this.UsersSelected);
+    console.log("value == ValueAnt", (this.UsersSelected.value == this.UsersSelected.valueAnt));
+    let isChangeUsers = { isChangeUsers: false, };
+    if (!this.util.compare(this.UsersSelected.value, this.UsersSelected.valueAnt)) {
+      isChangeUsers.isChangeUsers = true;
+      isChangeUsers["userSelected"] = this.UsersSelected.value;
+    }
+    //this.UsersSelected.value.
     this.util.msjLoading = "Actualizando Permiso " + this.PermisoSelected.permiso;
     this.util.crearLoading().then(() => {
-      this.permisoService.actualizarPermiso(this.Permiso.value, this.PermisoSelected, this.UsersSelected).subscribe(result => {
+      this.permisoService.actualizarPermiso(this.Permiso.value, this.PermisoSelected, isChangeUsers).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
@@ -209,5 +251,18 @@ export class PermisosComponent implements OnInit {
         this.util.msjErrorInterno(error);
       });
     });
+  }
+
+  private actualizarUsuariosPermisos() {
+    console.log("this.UsersSelected", this.UsersSelected);
+    let isChangeUsers = { isChangeUsers: false, };
+    if (!this.util.compare(this.UsersSelected.value, this.UsersSelected.valueAnt)) {
+      isChangeUsers.isChangeUsers = true;
+      isChangeUsers["userSelected"] = this.UsersSelected.value;
+      isChangeUsers["permisoSelected"] = {id: this.PermisoSelected.id, permiso: this.PermisoSelected.permiso};
+    }
+
+    console.log("isChangeUsers", isChangeUsers);
+    console.log("this.permisoService.indexPermisoSelected", this.permisoService.indexPermisoSelected);
   }
 }

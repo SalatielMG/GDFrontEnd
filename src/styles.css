@@ -261,7 +261,9 @@ app-gastos-entradas {
 .HeaderSelected {
   background-color: rgb(35, 200, 0) !important;
   color: white !important;
-
+}
+.HeaderNoSelected {
+  background-color: #e1e1e1 !important;
 }
 .HeaderSelected #device-android{
   filter: saturate(2.5) !important;
@@ -272,10 +274,6 @@ app-gastos-entradas {
 .BodySelected {
   background-color: rgba(35, 200, 0, 0.5) !important;
   color: black !important;
-}
-
-.HeaderNoSelected {
-  background-color: #e1e1e1 !important;
 }
 .BodyNoSelected {
   background-color: white !important;

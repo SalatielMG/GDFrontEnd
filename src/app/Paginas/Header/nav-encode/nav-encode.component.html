@@ -9,9 +9,6 @@
 
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
       <ul class="nav" *ngIf="userService.activo()">
-        <!--li class="nav-item">
-          <a class="nav-link text-light tamaño-font" routerLinkActive="active" [routerLink]="['/usuarios']">Usuarios</a>
-        </li-->
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light tamaño-font" id="navbarDropdownMenuUsuariosLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,8 +59,8 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <!-- class="dropdown-item" (click)="userService.prueba()">Prueba</a>
-            <a class="dropdown-item" (click)="generatePass()">Generate Pass</a>
-            <a class="dropdown-item" (click)="insertCurrencies()">Currency</a-->
+            <a class="dropdown-item" (click)="generatePass()">Generate Pass</a-->
+            <!--a class="dropdown-item" (click)="insertCurrencies()">Currency</a-->
             <a class="dropdown-item padding-left-p" [routerLink]="['/perfil']" >
               <span class="margin-rigth-p">
                 <fa-icon [icon]="util.faCog"></fa-icon>

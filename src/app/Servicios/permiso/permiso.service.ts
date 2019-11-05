@@ -30,11 +30,11 @@ export class PermisoService {
       .append('userSelected', JSON.stringify(userSelected));
     return this.http.post(URL + "agregarPermiso", parametro);
   }
-  public actualizarPermiso(permiso, permisoSelected, userSelected): Observable<any> {
+  public actualizarPermiso(permiso, permisoSelected, isChangeUsers): Observable<any> {
     const  parametro = new HttpParams()
       .append('permiso', JSON.stringify(permiso))
       .append('permisoSelected', JSON.stringify(permisoSelected))
-      .append('userSelected', JSON.stringify(userSelected));
+      .append('isChangeUsers', JSON.stringify(isChangeUsers));
     return this.http.post(URL + "actualizarPermiso", parametro);
   }
   public eliminarPermiso(permiso): Observable<any> {
