@@ -57,7 +57,7 @@ export class PermisosComponent implements OnInit {
   private obtUsuariosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando usuarios";
     this.util.crearLoading().then(() => {
-      this.usuarioService.obtUsuariosGral().subscribe(result => {
+      this.usuarioService.obtUsuariosGral("0", "0").subscribe(result => {
         this.util.detenerLoading();
         if (!result.error) {
           this.permisoService.UsuariosGal = result.usuarios;

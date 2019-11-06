@@ -80,8 +80,15 @@
 
             <div class="form-row">
 
-              <div class="col-4">
-                <div class="w-100 h-100 bg-dark"></div>
+              <div class="col-4 flex-column align-content-center justify-content-center" style="display: flex; padding-bottom: 15px;">
+                <img class="w-100 h-100 bg-dark rounded mb-2" id="imgSalida" width="100%" height="250 px" [src]="rutaImg"/>
+                <input type="file" id="imagenP" name="imagenP" id="imagen" formControlName="imagen"  (change)="agregarImagen($event)">
+                <!--div class="w-100 h-100 bg-dark rounded mb-2"></div>
+                <button type= "button" class="btn btn-outline-info">
+                  <span>
+                    <fa-icon [icon]="util.faFileImage"></fa-icon>
+                  </span>
+                </button-->
               </div>
               <div class="col-8">
 
@@ -91,7 +98,7 @@
                   <div class="invalid-feedback">{{ getError('email')}}</div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" *ngIf="option == util.AGREGAR">
                   <label for="password">Password: </label>
                   <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="(getError('password') == '') ? 'valid-control' : 'invalid-control'">
                   <div class="invalid-feedback">{{ getError('password')}}</div>
@@ -100,7 +107,7 @@
                 <div class="form-group">
                   <label for="tipo">Tipo: </label>
                   <select class="form-control" id="tipo" formControlName="tipo" [ngClass]="(getError('tipo') == '') ? 'valid-control' : 'invalid-control'">
-                    <option value=""></option>
+                    <option value="">Seleccione un tipo</option>
                     <option value="admin">Administrador</option>
                     <option value="aux">Auxiliar</option>
                   </select>
@@ -118,7 +125,7 @@
             </div>
 
             <div class="form">
-              <div class="card rounded card-Permisos">
+              <div class="card rounded card-Permisos ">
                 <div class="card-header card-header-Permisos border-top-0 border-left-0 border-right-0 border-bottom">
                   <div >
                     <label class="font-weight-normal">Permisos</label>
@@ -170,11 +177,16 @@
 
 
 
+
 <div class="container-users">
+
   <div class="row row-card">
+    <div *ngIf="usuarioService.Usuarios.length == 0">
+      <h2 class="font-weight-lighter">{{util.msj}}</h2>
+    </div>
     <ng-container *ngFor="let user of usuarioService.Usuarios; let i = index">
       <div class="col-4 col-user">
-        <div class="card card-user shadow-sm">
+        <div class="card card-user">
           <div class="card-header card-header-user">
             <div class="desenfoque">
               <img [src]="usuarioService.url + 'util/avatar/' + user.imagen" style="width: 100%">

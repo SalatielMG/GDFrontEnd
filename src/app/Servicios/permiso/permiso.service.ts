@@ -16,8 +16,8 @@ export class PermisoService {
 
   constructor(public http: HttpClient) { }
 
-  public obtPermisosGral(): Observable<any> {
-    return this.http.get(URL + 'obtPermisosGral');
+  public obtPermisosGral(show_usuario = "1"): Observable<any> {
+    return this.http.get(URL + 'obtPermisosGral', {params: {show_usuario: show_usuario}});
   }
   public resetVariables() {
     this.Permisos = [];
@@ -37,8 +37,8 @@ export class PermisoService {
       .append('isChangeUsers', JSON.stringify(isChangeUsers));
     return this.http.post(URL + "actualizarPermiso", parametro);
   }
-  public eliminarPermiso(permiso): Observable<any> {
-    return this.http.delete(URL + "eliminarPermiso", {params: {permiso: JSON.stringify(permiso)}});
+  public eliminarPermiso(permisoSelected): Observable<any> {
+    return this.http.delete(URL + "eliminarPermiso", {params: {permisoSelected: JSON.stringify(permisoSelected)}});
   }
   public actuaizarUsuarios_Permiso(isChangeUsers): Observable<any> {
     const  parametro = new HttpParams()

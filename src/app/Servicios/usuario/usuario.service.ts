@@ -76,12 +76,33 @@ export class UsuarioService implements CanActivate{
     return this.http.post(URL + 'login', parametro);
   }
 
-  public obtUsuariosGral(id_usuario = "0", show_permiso = "0"): Observable<any> {
+  public obtUsuariosGral(id_usuario = "0", show_permiso = "1"): Observable<any> {
     return this.http.get(URL + "obtUsuariosGral", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
   }
 
-  public obtUsersGral(): Observable<any> {
+  /*public obtUsersGral(): Observable<any> {
     return this.http.get(URL + "obtUsersGral");
-  }
+  }*/
 
+  public agregarUsuario(usuario, permisosSelected): Observable <any> {
+    const  parametro = new HttpParams()
+      .append('usuario', JSON.stringify(usuario))
+      .append('permisosSelected', JSON.stringify(permisosSelected));
+    return this.http.post(URL + "agregarUsuario", parametro);
+  }
+  public actualizarUsuario(usuario, usuarioSelected, isChangePermisos): Observable <any> {
+    const  parametro = new HttpParams()
+      .append('usuario', JSON.stringify(usuario))
+      .append('usuarioSelected', JSON.stringify(usuarioSelected))
+      .append('isChangePermisos', JSON.stringify(isChangePermisos));
+    return this.http.post(URL + "actualizarUsuario", parametro);
+  }
+  public eliminarUsuario(usuarioSelected): Observable <any> {
+    return this.http.delete(URL + "eliminarUsuario", {params: {usuarioSelected: JSON.stringify(usuarioSelected)}});
+  }
+  public actualizarPermisos_Usuario(isChangePermisos): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('isChangePermisos', JSON.stringify(isChangePermisos));
+    return this.http.post(URL + "actualizarPermisos_Usuario", parametro);
+  }
 }

@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Utilerias} from '../../../Utilerias/Util';
 import {UsuarioService} from '../../../Servicios/usuario/usuario.service';
-import {URL} from './../../../Utilerias/URL';
 import {Usuarios} from '../../../Modelos/usuarios/usuarios';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PermisoService} from '../../../Servicios/permiso/permiso.service';
@@ -13,6 +12,7 @@ import {PermisoService} from '../../../Servicios/permiso/permiso.service';
 })
 export class UsuariosComponent implements OnInit {
 
+  private rutaImg: any;
   private option: string = "";
   private UsuarioSelected = new Usuarios();
   private PermisosSelected = {
@@ -36,9 +36,10 @@ export class UsuariosComponent implements OnInit {
   private obtUsuarios() {
     this.util.msjLoading = "Buscando usuarios registrados en la Base de Datos";
     this.util.crearLoading().then(() => {
-      this.usuarioService.obtUsuariosGral(this.usuarioService.id, "1").subscribe(result => {
+      this.usuarioService.obtUsuariosGral(this.usuarioService.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
         this.usuarioService.Usuarios = result.usuarios;
       }, error => {
         this.util.msjErrorInterno(error);
@@ -52,7 +53,7 @@ export class UsuariosComponent implements OnInit {
   private obtPermisosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando permisos";
     this.util.crearLoading().then(() => {
-      this.permisoService.obtPermisosGral().subscribe(result => {
+      this.permisoService.obtPermisosGral("0").subscribe(result => {
         this.util.detenerLoading();
         if (!result.error) {
           this.usuarioService.PermisosGral = result.permisos;
@@ -99,7 +100,7 @@ export class UsuariosComponent implements OnInit {
     }
   }
   private actionPermisosUsuario(option, usuario: Usuarios, index) {
-    this.isExpandedPermisoCard = false;
+    this.isUpdatePermisosSelectUsuario = false;
     this.option = option;
     this.resetPermisoSelected();
     if (this.option == this.util.CONSULTA) {
@@ -142,12 +143,19 @@ export class UsuariosComponent implements OnInit {
     this.Usuario = this.formBuilder.group({
       id: [usuario.id, [Validators.required]],
       email: [usuario.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
-      password: [usuario.password, [Validators.required]],
+      password: [usuario.password, [(this.option == this.util.AGREGAR) ? Validators.required : Validators.nullValidator]],
       tipo: [usuario.tipo, [Validators.required]],
       cargo: [usuario.cargo, [Validators.required]],
+      imagen: [""],
       //imagen: [usuario.imagen, ],
     });
-    if (this.util.isDelete(this.option)) this.disable();
+    if (this.option == this.util.ACTUALIZAR) {
+      this.Usuario.removeControl("password");
+    }
+    if (this.util.isDelete(this.option)) {
+      this.disable();
+      this.Usuario.removeControl("password");
+    }
   }
   private getError(controlName: string): string {
     let error = '';
@@ -187,15 +195,122 @@ export class UsuariosComponent implements OnInit {
     console.log(this.PermisosSelected);
   }
   private agregarUsuario() {
+    this.util.msjLoading = "Agregando nuevo Usuario: " + this.Usuario.value.email;
+    this.util.crearLoading().then(() => {
+      this.usuarioService.agregarUsuario(this.Usuario.value, this.PermisosSelected.value).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
 
+        if (!result.error) {
+          if (!result.usuario.error) {
+            this.usuarioService.Usuarios.push(result.usuario.new);
+          } else {
+            this.util.msjToast(result.usuario.msj, this.util.errorRefreshListTable, result.usuario.error);
+          }
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
   }
   private actualizarUsuario() {
+    console.log("this.PermisosSelected", this.PermisosSelected);
+    let isChangePermisos = { isChangePermisos: false, };
+    if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
+      isChangePermisos.isChangePermisos = true;
+      isChangePermisos["permisosSelected"] = this.PermisosSelected.value;
+    }
+    console.log("isChangePermisos", isChangePermisos);
+
+    this.util.msjLoading = "Actualizando Usuario: " + this.Usuario.value.email;
+    this.util.crearLoading().then(() => {
+      this.usuarioService.actualizarUsuario(this.Usuario.value, this.UsuarioSelected, isChangePermisos).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
+
+        if (!result.error) {
+          if (!result.usuario.error) {
+            this.usuarioService.Usuarios[this.usuarioService.indexUsuarioSelected] = result.usuario.update;
+          } else {
+            this.util.msjToast(result.usuario.msj, this.util.errorRefreshListTable, result.usuario.error);
+          }
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
 
   }
   private eliminarUsuario() {
+    this.util.msjLoading = "Eliiminando Usuario: " + this.Usuario.value.email;
+    this.util.crearLoading().then(() => {
+      this.usuarioService.eliminarUsuario(this.UsuarioSelected).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        this.util.msj = result.msj;
+
+        if (!result.error) {
+          this.usuarioService.Usuarios.splice(this.usuarioService.indexUsuarioSelected, 1);
+          this.closeModal();
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
 
   }
   private actualizarPermisosUsuario() {
+    console.log("this.PermisosSelected", this.PermisosSelected);
+    let isChangePermisos = { isChangePermisos: false, };
+    if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
+      isChangePermisos.isChangePermisos = true;
+      isChangePermisos["permisosSelected"] = this.PermisosSelected.value;
+      isChangePermisos["usuarioSelected"] = {id: this.UsuarioSelected.id, email: this.UsuarioSelected.email};
+    }
+    console.log("isChangePermisos", isChangePermisos);
 
+    this.util.msjLoading = "Actualizando permisos asignados al Usuario: " + this.UsuarioSelected.email;
+    this.util.crearLoading().then(() => {
+      this.usuarioService.actualizarPermisos_Usuario(isChangePermisos).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.eror);
+        this.util.msj = result.msj;
+
+        if (!result.error) {
+          if (isChangePermisos.isChangePermisos) {
+            if (!result.permisos.error) {
+              this.usuarioService.Usuarios[this.usuarioService.indexUsuarioSelected].permisos = result.permisos.permisos;
+            } else{
+              this.util.msjToast(result.permisos.msj, result.permisos.titulo, result.permisos.error);
+            }
+          }
+          this.util.cerrarModal("#modalPermisos_Usuario");
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
   }
+  private agregarImagen(e) {
+    console.log("Rtua Img ", this.rutaImg);
+    console.log(e);
+    console.log(this.Usuario.value);
+    var file = e.target.files[0],
+      imageType = /image.*/;
+    if (!file.type.match(imageType))
+      return;
+    //this.rutaImg = e.target.value;
+
+    /*reader.onload = this.fileOnload(e);
+    reader.readAsDataURL(file);*/
+  }
+  /*
+  public fileOnload(e) {
+    var result=e.target.result;
+    $('#imgSalida').attr("src",result);
+  }*/
 }

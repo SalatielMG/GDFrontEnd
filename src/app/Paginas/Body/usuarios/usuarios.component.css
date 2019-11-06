@@ -17,6 +17,8 @@
 .card-user {
   height: 100%;
   width: 100%;
+  /*filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));*/
+
 }
 .card-header-user {
   border-radius: 0px !important;
@@ -43,11 +45,11 @@
   transition: all 0.4s ease ;
 }
 
-.card:hover {
+.card-user:hover {
   box-shadow: 0 0 11px rgba(33,33,33,.3) !important;
 }
 
-.card:hover > .card-header > img {
+.card-user:hover > .card-header > img {
   top: 50px;
   height: 230px;
 }
@@ -80,12 +82,13 @@
   width: 100%;
   overflow: hidden;
   filter: blur(80px);
-  background: #000000;
+  background: #ffffff;
 }
 
 /*----- Modal Usuario - Tabla Permisos ----------------*/
 
 .card-Permisos {
+  box-shadow: white;
   border: 0px;
 }
 

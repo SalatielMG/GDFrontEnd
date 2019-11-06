@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faEye, faChevronRight, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faFileImage, faEye, faChevronRight, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -96,6 +96,7 @@ export class Utilerias {
     },
   ];
 
+  public faFileImage = faFileImage;
   public faEye = faEye;
   public faUserPlus = faUserPlus;
   public faCheckSquare = faCheckSquare;
@@ -223,6 +224,9 @@ export class Utilerias {
     let error = '';
     if (control.hasError("required")) {
       error += "El campo es requerido.\n"
+    }
+    if (control.hasError("email")) {
+      error += "Ingrese un email valido\n";
     }
     if (control.hasError("minlength")) {
       error += "Longitud mínima permitida de " + control.getError("minlength").requiredLength + " caracteres.\n"
@@ -475,7 +479,18 @@ export class Utilerias {
 
   compare([1,2],[1,2,3])
   false*/
-  public compare(arr1 = [],arr2 = []){
+  public compare(array1 = [],array2 = []){
+
+    array1.sort();
+    array2.sort();
+
+    let result = (array1.length==array2.length && array1.every(function(v,i) { return v === array2[i] } ));
+    console.log(result);
+    return result;
+
+    /*
+    console.log("arr1", arr1);
+    console.log("arr2", arr2);
     if (!arr1  || !arr2) return;
     if (arr1.length == 0 && arr2.length == 0) return true;
     let result: boolean = false;
@@ -485,6 +500,7 @@ export class Utilerias {
         } else result = e1 === e2;
       })
     );
-    return result;
+    console.log("result", result);
+    return result;*/
   }
 }
