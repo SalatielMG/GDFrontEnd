@@ -40,5 +40,9 @@ export class PermisoService {
   public eliminarPermiso(permiso): Observable<any> {
     return this.http.delete(URL + "eliminarPermiso", {params: {permiso: JSON.stringify(permiso)}});
   }
-
+  public actuaizarUsuarios_Permiso(isChangeUsers): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('isChangeUsers', JSON.stringify(isChangeUsers));
+    return this.http.post(URL + 'actualizarUsuarios_Permiso', parametro);
+  }
 }

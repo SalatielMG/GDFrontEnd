@@ -183,3 +183,10 @@
   border-radius: 0px;
 }
 /*----- Modal Usuario - Tabla Permisos ----------------*/
+
+.HeaderNoSelected {
+  background-color: #ffffff !important;
+}
+.HeaderNoSelected:hover {
+  background-color: #ededed !important;
+}

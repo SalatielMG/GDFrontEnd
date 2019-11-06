@@ -34,7 +34,7 @@ export class PermisosComponent implements OnInit {
 
   private sarchPermisosGral() {
     this.util.QueryComplete.isComplete = false;
-    this.util.msjLoading = "Cargando permisos registrados";
+    this.util.msjLoading = "Cargando permisos registrados en la Base de Datos";
     this.util.crearLoading().then(() => {
       this.permisoService.obtPermisosGral().subscribe(result => {
         this.util.detenerLoading();
@@ -103,13 +103,12 @@ export class PermisosComponent implements OnInit {
         this.cargarUsuariosGral();
       }
     }
-
   }
   private actionUsuariosPermiso(option, permiso: Permisos, index) {
     this.isUpdateUsuariosSelectPermiso = false;
     this.option = option;
     this.resetUserSelected();
-    if (this.option == this.util.CONSULTA){
+    if (this.option == this.util.CONSULTA) {
       this.PermisoSelected = permiso;
       this.permisoService.indexPermisoSelected = index;
       this.obtUsuariosGral(false);
@@ -117,8 +116,9 @@ export class PermisosComponent implements OnInit {
   }
   // ---------------------------- CheckUser
   private checkUser(index) {
-    console.log(this.option);
-    if (this.util.isDelete(this.option) || !this.isUpdateUsuariosSelectPermiso) return;
+    console.log("this.option", this.option);
+    console.log("this.isUpdateUsuariosSelectPermiso", this.isUpdateUsuariosSelectPermiso);
+    if (this.util.isDelete(this.option) || (this.option == this.util.CONSULTA && !this.isUpdateUsuariosSelectPermiso)) return;
     if (this.permisoService.UsuariosGal[index].checked) { // Uncheck =>
       let posInArrayUserSelected = this.UsersSelected.value.indexOf(this.permisoService.UsuariosGal[index].id);
       if (posInArrayUserSelected != -1) {
@@ -261,7 +261,25 @@ export class PermisosComponent implements OnInit {
       isChangeUsers["userSelected"] = this.UsersSelected.value;
       isChangeUsers["permisoSelected"] = {id: this.PermisoSelected.id, permiso: this.PermisoSelected.permiso};
     }
-
+    this.util.msjLoading = "Actualizando usuario asignados al Permiso: " + this.PermisoSelected.permiso;
+    this.util.crearLoading().then(() => {
+      this.permisoService.actuaizarUsuarios_Permiso(isChangeUsers).subscribe(result => {
+        this.util.detenerLoading();
+        this.util.msjToast(result.msj, result.titulo, result.error);
+        if (!result.error ) {
+          if (isChangeUsers.isChangeUsers) {
+            if (!result.usuarios.error) {
+              this.permisoService.Permisos[this.permisoService.indexPermisoSelected].usuarios = result.usuarios.usuarios;
+            } else {
+              this.util.msjToast(result.usuarios.msj, result.usuarios.titulo, result.usuarios.error);
+            }
+          }
+          this.util.cerrarModal("#modalUsuarios_Permiso");
+        }
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
     console.log("isChangeUsers", isChangeUsers);
     console.log("this.permisoService.indexPermisoSelected", this.permisoService.indexPermisoSelected);
   }

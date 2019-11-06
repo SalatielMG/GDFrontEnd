@@ -12,12 +12,16 @@ import {PermisoService} from '../../../Servicios/permiso/permiso.service';
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
+
   private option: string = "";
-  private url = URL;
   private UsuarioSelected = new Usuarios();
-  private PermisosSelected = [];
+  private PermisosSelected = {
+    value: [],
+    valueAnt: []
+  };
   private Usuario: FormGroup = null;
   private isExpandedPermisoCard: boolean = false;
+  private isUpdatePermisosSelectUsuario: boolean = false;
 
   @ViewChild("cntPermisos", {read: "", static: false}) cntPermisos = ElementRef;
 
@@ -30,7 +34,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   private obtUsuarios() {
-    this.util.msjLoading = "Buscand usuarios registrados en la Base de Datos";
+    this.util.msjLoading = "Buscando usuarios registrados en la Base de Datos";
     this.util.crearLoading().then(() => {
       this.usuarioService.obtUsuariosGral(this.usuarioService.id, "1").subscribe(result => {
         this.util.detenerLoading();
@@ -41,38 +45,32 @@ export class UsuariosComponent implements OnInit {
       });
     });
   }
-
-  private actionUsuario(option, usuario = new Usuarios(), index= null) {
+  private resetPermisoSelected() {
+    this.PermisosSelected.value = [];
+    this.PermisosSelected.valueAnt = [];
+  }
+  private obtPermisosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando permisos";
     this.util.crearLoading().then(() => {
       this.permisoService.obtPermisosGral().subscribe(result => {
+        this.util.detenerLoading();
         if (!result.error) {
           this.usuarioService.PermisosGral = result.permisos;
-          this.option = option;
-          this.buildForm(usuario);
-          this.PermisosSelected = [];
+          this.isExpandedPermisoCard = true;
           if (this.option != this.util.AGREGAR) {
-            this.isExpandedPermisoCard = true;
-            this.UsuarioSelected = usuario;
-            this.usuarioService.indexUsuarioSelected = index;
-            for (let permiso of usuario.permisos) {
-              this.PermisosSelected.push(permiso.permiso);
+            for (let permiso of this.UsuarioSelected.permisos) {
+              this.PermisosSelected.valueAnt.push(permiso.id);
               this.usuarioService.PermisosGral.forEach(p => {
-                if (p.permiso == permiso.permiso) {
+                if (p.id == permiso.id) {
                   p.checked = true;
                 }
               });
             }
-          } else {
-            this.isExpandedPermisoCard = false;
+            this.PermisosSelected.value = this.PermisosSelected.value.concat(this.PermisosSelected.valueAnt);
           }
-          setTimeout(() => {
-            this.util.detenerLoading();
-            this.util.abrirModal("#modalUsuario");
-            this.verifyExpandCardUser();
-          }, this.util.timeOutMilliseconds);
+          if (isExpanded) this.verifyExpandCardUser();
+          else this.util.abrirModal("#modalPermisos_Usuario");
         } else {
-          this.util.detenerLoading() ;
           this.util.msjToast(result.msj, result.titulo, result.error);
         }
       }, error => {
@@ -80,17 +78,47 @@ export class UsuariosComponent implements OnInit {
       });
     });
   }
+  private cargarPermisosGral() {
+    this.isExpandedPermisoCard = !this.isExpandedPermisoCard;
+    this.resetPermisoSelected();
+    if (this.isExpandedPermisoCard) {
+      this.obtPermisosGral();
+    } else this.verifyExpandCardUser();
+  }
+  private actionUsuario(option, usuario = new Usuarios(), index= null) {
+    this.option = option;
+    this.buildForm(usuario);
+    this.resetPermisoSelected();
+    this.isExpandedPermisoCard = false;
+    if (this.option != this.util.AGREGAR) {
+      this.UsuarioSelected = usuario;
+      this.usuarioService.indexUsuarioSelected = index;
+      if (this.util.isDelete(this.option)) {
+        this.cargarPermisosGral();
+      }
+    }
+  }
+  private actionPermisosUsuario(option, usuario: Usuarios, index) {
+    this.isExpandedPermisoCard = false;
+    this.option = option;
+    this.resetPermisoSelected();
+    if (this.option == this.util.CONSULTA) {
+      this.UsuarioSelected = usuario;
+      this.usuarioService.indexUsuarioSelected = index;
+      this.obtPermisosGral(false);
+    }
+  }
   // ---------------------------- CheckPermisos
   private checkPermiso(index) {
-    if (this.util.isDelete(this.option)) return;
+    if (this.util.isDelete(this.option) || (this.option == this.util.CONSULTA && !this.isUpdatePermisosSelectUsuario)) return;
     if (this.usuarioService.PermisosGral[index].checked) { // Uncheck =>
-      let posInArrayUserSelected = this.PermisosSelected.indexOf(this.usuarioService.PermisosGral[index].permiso);
+      let posInArrayUserSelected = this.PermisosSelected.value.indexOf(this.usuarioService.PermisosGral[index].id);
       if (posInArrayUserSelected != -1) {
-        this.PermisosSelected.splice(posInArrayUserSelected, 1);
+        this.PermisosSelected.value.splice(posInArrayUserSelected, 1);
       }
     } else { // Uncheck =>
-      if (!this.PermisosSelected.includes(this.usuarioService.PermisosGral[index].permiso)) {
-        this.PermisosSelected.push(this.usuarioService.PermisosGral[index].permiso);
+      if (!this.PermisosSelected.value.includes(this.usuarioService.PermisosGral[index].id)) {
+        this.PermisosSelected.value.push(this.usuarioService.PermisosGral[index].id);
       }
     }
     this.usuarioService.PermisosGral[index].checked = !this.usuarioService.PermisosGral[index].checked;
@@ -112,6 +140,7 @@ export class UsuariosComponent implements OnInit {
   }
   private buildForm(usuario: Usuarios) {
     this.Usuario = this.formBuilder.group({
+      id: [usuario.id, [Validators.required]],
       email: [usuario.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
       password: [usuario.password, [Validators.required]],
       tipo: [usuario.tipo, [Validators.required]],
@@ -166,5 +195,7 @@ export class UsuariosComponent implements OnInit {
   private eliminarUsuario() {
 
   }
+  private actualizarPermisosUsuario() {
 
+  }
 }

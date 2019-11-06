@@ -11,6 +11,7 @@ import {Permisos} from '../../Modelos/permisos/Permisos';
 })
 export class UsuarioService implements CanActivate{
 
+  public url = URL;
   public id;
   public Usuarios: Usuarios[] = [];
   public PermisosGral: Permisos[] = [];

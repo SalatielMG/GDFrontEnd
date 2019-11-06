@@ -90,7 +90,7 @@
 
 <div id="accordion" *ngIf="backupService.userBackups.length > 0">
   <div   class="card rounded shadow-sm mb-md-1 card-rounded-feature" *ngFor="let user of backupService.userBackups; let i = index" >
-    <div class="card-header" [id] = "i">
+    <div class="card-header HeaderNoSelected" [id] = "i">
       <div class="row content-row" >
         <div class="col-11 column-userData" >
           <div class="row">

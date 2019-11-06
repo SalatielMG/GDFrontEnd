@@ -9,6 +9,59 @@
 
 <app-titulo-encabezado titulo="Listado de usuarios"></app-titulo-encabezado>
 
+<div class="modal fade" id="modalPermisos_Usuario" tabindex="-1" role="dialog" aria-labelledby="modalPermisos_UsuarioTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" [ngClass]="util.obtisFullHDDisplay() ? 'modal-xl' : 'modal-lg'" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalPermisos_UsuarioTitle">Permisos Usuario: {{UsuarioSelected.email}}</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="container">
+
+          <div class="flex-row-reverse mb-2 mt-2">
+            <div class="custom-control custom-switch ">
+              <input type="checkbox" class="custom-control-input" id="isUpdatePermisosSelectUsuario" [(ngModel)]="isUpdatePermisosSelectUsuario">
+              <label class="custom-control-label" for="isUpdatePermisosSelectUsuario">Actualizar</label>
+            </div>
+          </div>
+
+          <table class="table table-hover table-fixed">
+            <thead class="thead-dark">
+            <tr class="text-center">
+              <th class="v-a-middle font-weight-500 width-sm">Permiso</th>
+              <th class="v-a-middle font-weight-500 width-lg">Descripcion</th>
+              <th class="v-a-middle font-weight-500 width-sm">Seleccionar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let permiso of usuarioService.PermisosGral; let i = index">
+              <tr class="text-center" (click)="checkPermiso(i)" [ngClass]="(permiso.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
+                <td class="v-a-middle width-sm">{{permiso.permiso}}</td>
+                <td class="v-a-middle width-lg">{{permiso.descripcion}}</td>
+                <td class="v-a-middle width-sm">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" [id]="i"  [disabled]="!isUpdatePermisosSelectUsuario" [checked]="permiso.checked" (click)="checkPermiso(i)">
+                    <label class="custom-control-label" [attr.for]="i"></label>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" *ngIf="isUpdatePermisosSelectUsuario" (click)="actualizarPermisosUsuario()">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Usuario != null">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -30,7 +83,6 @@
               <div class="col-4">
                 <div class="w-100 h-100 bg-dark"></div>
               </div>
-
               <div class="col-8">
 
                 <div class="form-group">
@@ -46,7 +98,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="tipo">Password: </label>
+                  <label for="tipo">Tipo: </label>
                   <select class="form-control" id="tipo" formControlName="tipo" [ngClass]="(getError('tipo') == '') ? 'valid-control' : 'invalid-control'">
                     <option value=""></option>
                     <option value="admin">Administrador</option>
@@ -63,16 +115,14 @@
 
               </div>
 
-
             </div>
-
 
             <div class="form">
               <div class="card rounded card-Permisos">
                 <div class="card-header card-header-Permisos border-top-0 border-left-0 border-right-0 border-bottom">
                   <div >
                     <label class="font-weight-normal">Permisos</label>
-                    <button type= "button" class="btn btn-outline-info rounded-circle btn-sm" (click)="isExpandedPermisoCard = !isExpandedPermisoCard; verifyExpandCardUser()">
+                    <button type= "button" class="btn btn-outline-info rounded-circle btn-sm" (click)="cargarPermisosGral()">
                       <span>
                         <fa-icon [icon]="util.faChevronDown" *ngIf="!isExpandedPermisoCard"></fa-icon>
                         <fa-icon [icon]="util.faChevronUp" *ngIf="isExpandedPermisoCard"></fa-icon>
@@ -91,7 +141,7 @@
                     </thead>
                     <tbody>
                     <ng-container *ngFor="let permiso of usuarioService.PermisosGral; let i = index">
-                      <tr class="text-center" (click)="checkPermiso(i)">
+                      <tr class="text-center" (click)="checkPermiso(i)" [ngClass]="(permiso.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
                         <td class="v-a-middle width-sm">{{permiso.permiso}}</td>
                         <td class="v-a-middle width-lg">{{permiso.descripcion}}</td>
                         <td class="v-a-middle width-sm">
@@ -127,9 +177,9 @@
         <div class="card card-user shadow-sm">
           <div class="card-header card-header-user">
             <div class="desenfoque">
-              <img [src]="url + 'util/avatar/' + user.imagen" style="width: 100%">
+              <img [src]="usuarioService.url + 'util/avatar/' + user.imagen" style="width: 100%">
             </div>
-            <img [src]="url + 'util/avatar/' + user.imagen" class="avatar-user">
+            <img [src]="usuarioService.url + 'util/avatar/' + user.imagen" class="avatar-user">
           </div>
           <div class="card-body card-body-user">
             <p class="font-weigp c500">{{user.email}}</p>
@@ -138,21 +188,21 @@
           </div>
           <div class="row card-footer">
             <div class="col">
-                <button class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos">
+                <button class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos" data-toggle="modal" data-target="#modalPermisos_Usuario" (click)="actionPermisosUsuario(util.CONSULTA, user, i)">
                   <span>
                   <fa-icon [icon]="util.faCheckSquare" ></fa-icon>
                 </span>
                 </button>
             </div>
             <div class="col">
-              <button class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" (click)="actionUsuario(util.ACTUALIZAR, user, i)">
+              <button class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ACTUALIZAR, user, i)">
                 <span>
                   <fa-icon [icon]="util.faPen" ></fa-icon>
                 </span>
               </button>
             </div>
             <div class="col">
-              <button class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" (click)="actionUsuario(util.ELIMINAR, user, i)">
+              <button class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ELIMINAR, user, i)">
                 <span>
                   <fa-icon [icon]="util.faTrash" ></fa-icon>
                 </span>
@@ -165,7 +215,7 @@
   </div>
 </div>
 
-<button class="btn btn-outline-success rounded-circle addButton" (click)="actionUsuario(util.AGREGAR)">
+<button class="btn btn-outline-success rounded-circle addButton" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.AGREGAR)">
   <span>
     <fa-icon [icon]="util.faUserPlus" ></fa-icon>
   </span>
