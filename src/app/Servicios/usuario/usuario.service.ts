@@ -36,10 +36,12 @@ export class UsuarioService implements CanActivate{
   }
 
   public activo(): boolean {
-
+    if (this.id == null) return false;
     return (this.id.toString() != "" );
   }
-
+  public isAdmin(): boolean {
+    return (this.UsuarioCurrent.tipo == "admin");
+  }
   public cargarStorage() {
     let id = localStorage.getItem('id');
     let usuario = localStorage.getItem('usuario');

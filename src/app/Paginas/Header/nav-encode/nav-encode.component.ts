@@ -56,4 +56,9 @@ export class NavEncodeComponent implements OnInit {
     });
   }
 
+  private logout(){
+    this.userService.logout();
+    this.util.cerrarModal("#modalConfirmLogout");
+  }
+
 }

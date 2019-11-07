@@ -1,16 +1,37 @@
+<div class="modal fade" id="modalConfirmLogout" tabindex="-1" role="dialog" aria-labelledby="modalPermisos_UsuarioTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalPermisos_UsuarioTitle">Cerrar sesión:</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="container">
+          <div class="row" style="width: 100%; display: block; margin:200px 0px;">
+            <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de cerrar la sesión actual ?</h5>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <nav class="navbar fixed-top navbar-expand-lg navEncode" [ngClass]="util.onScroll ? 'onScrollPage': 'noScrollPage'">
-  <a class="navbar-brand" (click)="eventLogo()" *ngIf="userService.activo()" style="cursor: pointer;">
+  <a class="navbar-brand" (click)="eventLogo()" style="cursor: pointer;">
     <img src="../../../../assets/img/logo.png" class="imgLogo" >
   </a>
-
-  <a class="navbar-brand" routerLink="/login" *ngIf="!userService.activo()">
-    <img src="../../../../assets/img/logo.png" class="imgLogo">
-  </a>
-
   <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-      <ul class="nav" *ngIf="userService.activo()">
-
-        <li class="nav-item dropdown">
+    <ng-container *ngIf="userService.activo()">
+      <ul class="nav">
+        <li class="nav-item dropdown"  *ngIf="userService.isAdmin()">
           <a class="nav-link dropdown-toggle text-light tamaño-font" id="navbarDropdownMenuUsuariosLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Usuarios
           </a>
@@ -27,7 +48,6 @@
               Permisos</a>
           </div>
         </li>
-
 
         <li class="nav-item">
           <a class="nav-link text-light tamaño-font" routerLinkActive="active" [routerLink]="['/exportacion']">Exportación</a>
@@ -52,7 +72,7 @@
         </li>
 
       </ul>
-      <ul class="nav" *ngIf="userService.activo()">
+      <ul class="nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light tamaño-font" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img [src]="urlAvatar()" alt="Avatar" class="avatar">
@@ -60,13 +80,13 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <!-- class="dropdown-item" (click)="userService.prueba()">Prueba</a>
             <a class="dropdown-item" (click)="generatePass()">Generate Pass</a-->
-            <a class="dropdown-item" (click)="insertCurrencies()">Currency</a>
+            <!--a class="dropdown-item" (click)="insertCurrencies()">Currency</a-->
             <a class="dropdown-item padding-left-p" [routerLink]="['/perfil']" >
               <span class="margin-rigth-p">
                 <fa-icon [icon]="util.faCog"></fa-icon>
               </span>
               Perfil</a>
-            <a class="dropdown-item padding-left-p" (click)="userService.logout()">
+            <a class="dropdown-item padding-left-p" data-toggle="modal" data-target="#modalConfirmLogout">
               <span class="margin-rigth-p">
                 <fa-icon [icon]="util.faTimesCircle"></fa-icon>
               </span>
@@ -74,12 +94,14 @@
           </div>
         </li>
       </ul>
-
-    <ul class="nav" *ngIf="!userService.activo()">
-      <li class="nav-item">
-        <a class="nav-link text-light tamaño-font" routerLink="/login" routerLinkActive="active">Iniciar sesión</a>
-      </li>
-    </ul>
+    </ng-container>
+    <ng-container *ngIf="!userService.activo()">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link text-light tamaño-font" routerLink="/login" routerLinkActive="active">Iniciar sesión</a>
+        </li>
+      </ul>
+    </ng-container>
 
   </div>
 </nav>

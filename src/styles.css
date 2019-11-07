@@ -510,3 +510,10 @@ app-gastos-entradas {
 .toast-title {
   font-weight: 500!important;
 }
+.desenfoque {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  filter: blur(80px);
+  background: #ffffff;
+}

@@ -79,13 +79,7 @@
   width: 100%;
   font-size: 18px;
 }
-.desenfoque {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  filter: blur(80px);
-  background: #ffffff;
-}
+
 
 /*----- Modal Usuario - Tabla Permisos ----------------*/
 
