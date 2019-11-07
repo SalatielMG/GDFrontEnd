@@ -16,7 +16,9 @@ export class NavEncodeComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  private urlAvatar() {
+    return this.userService.url + "util/avatar/" + this.userService.UsuarioCurrent.imagen;
+  }
   private eventLogo() {
     let ruta = this.router.url.split("/");
     console.log(ruta);

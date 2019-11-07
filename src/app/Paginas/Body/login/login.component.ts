@@ -36,7 +36,9 @@ export class LoginComponent implements OnInit {
         this.util.msjToast(result.msj, result. titulo, result.error);
         this.util.detenerLoading();
         if (!result.error){
-          this.userSerevice.id = result.idEncode;
+          this.userSerevice.id = result.id;
+          if (!result.usuario.error)
+            this.userSerevice.UsuarioCurrent = result.usuario.usuarios[0];
           this.userSerevice.actualizarStorage();
           this.router.navigate(['/home']);
         }

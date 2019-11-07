@@ -16,7 +16,7 @@ export class Usuarios {
     password = "",
     tipo = "aux",
     cargo = "",
-    imagen = "",
+    imagen = "anonymus.png",
     permisos: Permisos[] = [],
     checked = false,
   ) {

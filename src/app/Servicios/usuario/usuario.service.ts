@@ -13,6 +13,7 @@ export class UsuarioService implements CanActivate{
 
   public url = URL;
   public id;
+  public UsuarioCurrent: Usuarios = null;
   public Usuarios: Usuarios[] = [];
   public PermisosGral: Permisos[] = [];
   public indexUsuarioSelected: number = 0;
@@ -35,21 +36,29 @@ export class UsuarioService implements CanActivate{
   }
 
   public activo(): boolean {
-    return this.id != "null";
+
+    return (this.id.toString() != "" );
   }
 
   public cargarStorage() {
-    let storage = localStorage.getItem('id');
-    this.id = storage;
-    console.log(storage);
+    let id = localStorage.getItem('id');
+    let usuario = localStorage.getItem('usuario');
+    this.id = id;
+    this.UsuarioCurrent = JSON.parse(usuario);
+    this.printVariables();
   }
-
+  private printVariables() {
+    console.log("id", this.id);
+    console.log("UsuarioCurrent", this.UsuarioCurrent);
+  }
   public actualizarStorage() {
     localStorage.setItem('id', this.id);
+    localStorage.setItem("usuario", JSON.stringify(this.UsuarioCurrent));
   }
 
   public logout() {
-    this.id = null;
+    this.id = "";
+    this.UsuarioCurrent = null;
     this.actualizarStorage();
     this.cargarStorage();
     this.router.navigate(['/login']);
@@ -84,17 +93,21 @@ export class UsuarioService implements CanActivate{
     return this.http.get(URL + "obtUsersGral");
   }*/
 
-  public agregarUsuario(usuario, permisosSelected): Observable <any> {
-    const  parametro = new HttpParams()
-      .append('usuario', JSON.stringify(usuario))
-      .append('permisosSelected', JSON.stringify(permisosSelected));
+  public agregarUsuario(usuario, isChange , imagen, permisosSelected): Observable <any> {
+    const  parametro = new FormData();
+      parametro.append('usuario', JSON.stringify(usuario));
+      parametro.append('isChange', isChange);
+      parametro.append('imagen', imagen);
+      parametro.append('permisosSelected', JSON.stringify(permisosSelected));
     return this.http.post(URL + "agregarUsuario", parametro);
   }
-  public actualizarUsuario(usuario, usuarioSelected, isChangePermisos): Observable <any> {
-    const  parametro = new HttpParams()
-      .append('usuario', JSON.stringify(usuario))
-      .append('usuarioSelected', JSON.stringify(usuarioSelected))
-      .append('isChangePermisos', JSON.stringify(isChangePermisos));
+  public actualizarUsuario(usuario, isChange , imagen, usuarioSelected, isChangePermisos): Observable <any> {
+    const parametro = new FormData();
+      parametro.append('usuario', JSON.stringify(usuario));
+      parametro.append('isChange', isChange);
+      parametro.append('imagen', imagen);
+      parametro.append('usuarioSelected', JSON.stringify(usuarioSelected));
+      parametro.append('isChangePermisos', JSON.stringify(isChangePermisos));
     return this.http.post(URL + "actualizarUsuario", parametro);
   }
   public eliminarUsuario(usuarioSelected): Observable <any> {

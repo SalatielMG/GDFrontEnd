@@ -55,7 +55,7 @@
       <ul class="nav" *ngIf="userService.activo()">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light tamaño-font" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="../../../../assets/img/admin.png" alt="Avatar" class="avatar">
+            <img [src]="urlAvatar()" alt="Avatar" class="avatar">
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <!-- class="dropdown-item" (click)="userService.prueba()">Prueba</a>

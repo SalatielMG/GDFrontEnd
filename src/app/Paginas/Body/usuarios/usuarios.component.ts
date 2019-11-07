@@ -12,7 +12,10 @@ import {PermisoService} from '../../../Servicios/permiso/permiso.service';
 })
 export class UsuariosComponent implements OnInit {
 
-  private rutaImg: any;
+  private isChangeIMG = false;
+  private fileIMG = null;
+
+  private urlImg: string = "";
   private option: string = "";
   private UsuarioSelected = new Usuarios();
   private PermisosSelected = {
@@ -145,15 +148,17 @@ export class UsuariosComponent implements OnInit {
       email: [usuario.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
       password: [usuario.password, [(this.option == this.util.AGREGAR) ? Validators.required : Validators.nullValidator]],
       tipo: [usuario.tipo, [Validators.required]],
-      cargo: [usuario.cargo, [Validators.required]],
-      imagen: [""],
+      cargo: [usuario.cargo, [Validators.required]]
       //imagen: [usuario.imagen, ],
     });
-    if (this.option == this.util.ACTUALIZAR) {
-      this.Usuario.removeControl("password");
-    }
-    if (this.util.isDelete(this.option)) {
-      this.disable();
+    this.isChangeIMG = false;
+    this.fileIMG = null;
+    this.urlImg = this.usuarioService.url + "util/avatar/" + usuario.imagen;
+    console.log(this.urlImg);
+    if (this.option != this.util.AGREGAR) {
+      if (this.util.isDelete(this.option)) {
+        this.disable();
+      }
       this.Usuario.removeControl("password");
     }
   }
@@ -197,7 +202,7 @@ export class UsuariosComponent implements OnInit {
   private agregarUsuario() {
     this.util.msjLoading = "Agregando nuevo Usuario: " + this.Usuario.value.email;
     this.util.crearLoading().then(() => {
-      this.usuarioService.agregarUsuario(this.Usuario.value, this.PermisosSelected.value).subscribe(result => {
+      this.usuarioService.agregarUsuario(this.Usuario.value, this.isChangeIMG, this.fileIMG, this.PermisosSelected.value).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -226,7 +231,7 @@ export class UsuariosComponent implements OnInit {
 
     this.util.msjLoading = "Actualizando Usuario: " + this.Usuario.value.email;
     this.util.crearLoading().then(() => {
-      this.usuarioService.actualizarUsuario(this.Usuario.value, this.UsuarioSelected, isChangePermisos).subscribe(result => {
+      this.usuarioService.actualizarUsuario(this.Usuario.value, this.isChangeIMG, this.fileIMG, this.UsuarioSelected, isChangePermisos).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -295,22 +300,32 @@ export class UsuariosComponent implements OnInit {
       });
     });
   }
-  private agregarImagen(e) {
-    console.log("Rtua Img ", this.rutaImg);
-    console.log(e);
-    console.log(this.Usuario.value);
-    var file = e.target.files[0],
-      imageType = /image.*/;
-    if (!file.type.match(imageType))
-      return;
-    //this.rutaImg = e.target.value;
 
-    /*reader.onload = this.fileOnload(e);
-    reader.readAsDataURL(file);*/
+  private agregarImagen(event) {
+    var files = event.target.files;
+    var file = files[0],
+      imageType = /image.*/;
+    if (!file.type.match(imageType)) {
+      alert("Porfavor ingrese un formato de imagen valido");
+      return;
+    }
+    if (files && file) {
+      /*var reader = new FileReader();
+      reader.onload = this._handleReaderLoaded.bind(this);
+      reader.readAsBinaryString(file);*/
+      this.isChangeIMG = true;
+      this.fileIMG = file;
+      let img = document.getElementById("imgSalida");
+      const objectURL = URL.createObjectURL(file);
+      img.setAttribute("src", objectURL );
+      console.log("objectURL", objectURL);
+    }
+    console.log(this.fileIMG);
   }
-  /*
-  public fileOnload(e) {
-    var result=e.target.result;
-    $('#imgSalida').attr("src",result);
+  /*_handleReaderLoaded(readerEvent) {
+    console.log(readerEvent);
+    var binaryString = readerEvent.target.result;
+    this.archivo.base64textString = btoa(binaryString);
+    this.isChange = true;
   }*/
 }
