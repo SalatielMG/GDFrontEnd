@@ -9,11 +9,15 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {QueryCompleteModule} from '../../../Components/query-complete/query-complete.module';
 import {PermisoService} from '../../../Servicios/permiso/permiso.service';
+import { ConfirmPasswordCurrentDirective } from '../../../Validations/confirmPasswordCurrent/confirm-password-current.directive';
+import { ConfirmNewPasswordDirective } from '../../../Validations/confirmNewPassword/confirm-new-password.directive';
 
 @NgModule({
   declarations: [
     UsuariosComponent,
     PermisosComponent,
+    ConfirmPasswordCurrentDirective,
+    ConfirmNewPasswordDirective,
   ],
   imports: [
     FormsModule,

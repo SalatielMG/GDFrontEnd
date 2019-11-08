@@ -225,6 +225,9 @@ export class Utilerias {
     if (control.hasError("required")) {
       error += "El campo es requerido.\n"
     }
+    if (control.hasError("passwordNoVerify")) {
+      error += "Contraseña incorrecta";
+    }
     if (control.hasError("email")) {
       error += "Ingrese un email valido\n";
     }

@@ -132,4 +132,9 @@ export class UsuarioService implements CanActivate{
       .append('isChangePermisos', JSON.stringify(isChangePermisos));
     return this.http.post(URL + "actualizarPermisos_Usuario", parametro);
   }
+
+  public verifyPasswordCurrent(password): Observable<any> {
+    return this.http.get(URL + "verifyPasswordCurrent", {params: { password: password, id_usuario: this.UsuarioCurrent.id.toString()}});
+  }
+
 }

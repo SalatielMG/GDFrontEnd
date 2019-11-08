@@ -46,7 +46,6 @@ import { QueryCompleteModule } from './Components/query-complete/query-complete.
 import { TituloEncabezadoModule } from './Paginas/Header/titulo-encabezado/titulo-encabezado.module';
 import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +55,6 @@ import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
     HomeComponent,
     BackupsComponent,
     PaginaNoEmcontradaComponent,
-
   ],
   imports: [
     BrowserAnimationsModule,

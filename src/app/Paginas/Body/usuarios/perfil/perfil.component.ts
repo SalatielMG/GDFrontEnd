@@ -1,7 +1,8 @@
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 import {Utilerias} from '../../../../Utilerias/Util';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ConfirmPasswordCurrentDirective} from '../../../../Validations/confirm-password-current.directive';
 
 @Component({
   selector: 'app-perfil',
@@ -12,21 +13,29 @@ export class PerfilComponent implements OnInit {
 
   @ViewChild("cntPermisos", {read: "", static: false}) cntPermisos = ElementRef;
   private isExpandCntPermisos: boolean = true;
+  private isConfirmPasswordCurrent: boolean = false;
   private Usuario: FormGroup = null;
+  private Password: FormGroup = null;
   private isChangeIMG = false;
   private fileIMG = null;
 
-  constructor(private usuarioService: UsuarioService, private util: Utilerias, private renderer: Renderer2, private formBuilder: FormBuilder) {
+  constructor(private usuarioService: UsuarioService, private util: Utilerias, private renderer: Renderer2, private formBuilder: FormBuilder, private confirmPasswordCurrentDirective: ConfirmPasswordCurrentDirective ) {
 
   }
 
   ngOnInit() {
+    this.confirmPasswordCurrentDirective.enviarPasswordVerifyObservable.subscribe(verifyNoPasssword => {
+      console.log("Password NO verify", verifyNoPasssword);
+      if (!verifyNoPasssword) {
+        this.isConfirmPasswordCurrent = true;
+        this.Password.get("confirmPasswordCurrent").disable();
+        this.Password.addControl("newPassword", new FormControl('', Validators.required));
+        this.Password.addControl("confirmNewPassword", new FormControl('', Validators.required));
+      }
+    });
   }
 
   private actionUpdateUsuario(){
-    this.buildForm();
-  }
-  private buildForm() {
     this.Usuario = this.formBuilder.group({
       id: [this.usuarioService.UsuarioCurrent.id, [Validators.required]],
       email: [this.usuarioService.UsuarioCurrent.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
@@ -36,20 +45,44 @@ export class PerfilComponent implements OnInit {
     });
     this.Usuario.get("tipo").disable();
   }
-  private getError(controlName: string): string {
-    let error = '';
-    const control = this.Usuario.get(controlName);
-    if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
-      error = this.util.hasError(control);
+  private actionResetPassword() {
+    this.isConfirmPasswordCurrent = false;
+    this.Password = this.formBuilder.group({
+      confirmPasswordCurrent: ['', {
+        validators: [Validators.required],
+        asyncValidators: [this.confirmPasswordCurrentDirective.validate.bind(this.confirmPasswordCurrentDirective)],
+        updateOn: "submit"
+      }]
+    });
+  }
+  private getError(controlName: string, isPasswordReset = false): string {
+    //console.log(isPasswordReset);
+    if (!isPasswordReset) {
+      let error = '';
+      const control = this.Usuario.get(controlName);
+      if (control.touched && control.errors != null && control.invalid) {
+        console.log("Error Control:=[" + controlName + "]", control.errors);
+        error = this.util.hasError(control);
+      }
+      return error;
+    } else {
+      let error = '';
+      const control = this.Password.get(controlName);
+      if (control.touched && control.errors != null && control.invalid) {
+        console.log("Error Control:=[" + controlName + "]", control.errors);
+        error = this.util.hasError(control);
+      }
+      return error;
     }
-    return error;
   }
 
-  private closeModal() {
-    this.util.cerrarModal("#modalUsuarioUpdate").then(() => {
+  private closeModal(nameModal = "#modalUsuarioUpdate") {
+    this.util.cerrarModal(nameModal);
+    if (nameModal == "#modalUsuarioUpdate") {
       this.Usuario = null;
-    });
+    } else {
+      this.Password = null;
+    }
   }
 
   private UpdateUsuario(){
@@ -73,6 +106,13 @@ export class PerfilComponent implements OnInit {
         this.util.msjErrorInterno(error);
       });
     });
+  }
+
+  private UpdatePasword() {
+
+    if (this.isConfirmPasswordCurrent) {
+      console.log(this.Password.value);
+    }
   }
 
   private verficarExpansion() {
@@ -126,5 +166,7 @@ export class PerfilComponent implements OnInit {
     }
     console.log(this.fileIMG);
   }
-
+  public confirmNewPassword(event) {
+    console.log("confirmando contraseña", event);
+  }
 }

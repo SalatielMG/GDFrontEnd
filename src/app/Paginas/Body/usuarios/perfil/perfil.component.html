@@ -9,6 +9,54 @@
 
 <app-titulo-encabezado titulo="Perfil"></app-titulo-encabezado>
 
+<div class="modal fade" id="modalResetPassword" tabindex="-1" role="dialog" aria-labelledby="modalResetPasswordTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Password != null">
+  <div class="modal-dialog modal-dialog-centered modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalResetPasswordTitle">{{(!isConfirmPasswordCurrent) ? 'Confirmar password actual': 'Actualizar password'}}</h5>
+        <button type="button" class="close" (click)="closeModal('#modalResetPassword')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="Password" (ngSubmit)="UpdatePasword()">
+        <div class="modal-body">
+          <div class="container">
+
+            <div class="form-group">
+              <div class="form-group mb-3">
+                <label for="confirmPasswordCurrent">Contraseña Actual: </label>
+                <input type="confirmPasswordCurrent" class="form-control" id="confirmPasswordCurrent" formControlName="confirmPasswordCurrent" [ngClass]="(getError('confirmPasswordCurrent', true) == '') ? 'valid-control' : 'invalid-control'">
+                <div class="invalid-feedback">{{ getError('confirmPasswordCurrent', true)}}</div>
+              </div>
+              <div *ngIf="isConfirmPasswordCurrent">
+                <div class="form-group" >
+                  <label for="newPassword">Nueva Contraseña: </label>
+                  <input type="newPassword" class="form-control" id="newPassword" formControlName="newPassword" [ngClass]="(getError('newPassword', true) == '') ? 'valid-control' : 'invalid-control'">
+                  <div class="invalid-feedback">{{ getError('newPassword', true)}}</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmNewPassword">Confirme la nueva Contraseña: </label>
+                  <input [readOnly]="Password.value.newPassword == ''" type="confirmNewPassword" class="form-control" (ngModelChange)="confirmNewPassword($event)" id="confirmNewPassword" formControlName="confirmNewPassword" [ngClass]="(getError('confirmNewPassword', true) == '') ? 'valid-control' : 'invalid-control'">
+                  <div class="invalid-feedback">{{ getError('confirmNewPassword', true)}}</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal('#modalResetPassword')">Cerrar</button>
+          <button type="submit" class="btn btn-primary" *ngIf="isConfirmPasswordCurrent" [disabled]="Password.invalid">Actualizar</button>
+          <button type="submit" class="btn btn-info" *ngIf="!isConfirmPasswordCurrent" >Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="modalUsuarioUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioUpdateTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Usuario != null">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -91,7 +139,7 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-info rounded-circle btn-key">
+      <button class="btn btn-info rounded-circle btn-key" data-toggle="modal" data-target="#modalResetPassword" (click)="actionResetPassword()">
       <span>
           <fa-icon [icon]="util.faKey"></fa-icon>
       </span>
