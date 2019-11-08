@@ -1,4 +1,5 @@
 .profile-avatar {
+  width: 100%!important; height: 100%!important;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
 }
 
@@ -23,7 +24,7 @@
   border: 0px !important;
   position: relative;
   background: #ffffff;
-  border-radius: 7px;
+  border-radius: 10px;
   padding: 0;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -108,7 +109,7 @@
   margin: 100px -17px 50px -17px!important;
 }
 .column-userData {
-  padding: 30px!important;
+  padding: 25px!important;
   padding-left: 200px!important;
 }
 

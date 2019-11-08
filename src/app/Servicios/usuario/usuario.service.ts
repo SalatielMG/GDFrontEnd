@@ -112,6 +112,18 @@ export class UsuarioService implements CanActivate{
       parametro.append('isChangePermisos', JSON.stringify(isChangePermisos));
     return this.http.post(URL + "actualizarUsuario", parametro);
   }
+  public UpdateProfile(usuarioProfile, usuarioCurrent): Observable<any> {
+    const parametro = new HttpParams().append("usuarioProfile", JSON.stringify(usuarioProfile))
+      .append("usuarioCurrent", JSON.stringify(usuarioCurrent));
+    return this.http.post(URL + "UpdateProfile", parametro);
+  }
+  public UpdateImage(isChange, imagen): Observable<any> {
+    const parametro = new FormData();
+    parametro.append('isChange', isChange);
+    parametro.append('imagen', imagen);
+    parametro.append('id_usuario', this.UsuarioCurrent.id.toString());
+    return this.http.post(URL + "UpdateImage", parametro);
+  }
   public eliminarUsuario(usuarioSelected): Observable <any> {
     return this.http.delete(URL + "eliminarUsuario", {params: {usuarioSelected: JSON.stringify(usuarioSelected)}});
   }

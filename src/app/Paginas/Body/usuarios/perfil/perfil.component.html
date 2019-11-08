@@ -1,3 +1,12 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
+</ngx-spinner>
+
 <app-titulo-encabezado titulo="Perfil"></app-titulo-encabezado>
 
 <div class="modal fade" id="modalUsuarioUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioUpdateTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Usuario != null">
@@ -50,18 +59,16 @@
   </div>
 </div>
 
-
-
 <div class="super-container">
   <div class="row">
     <div class="col-7 card info" style="" id="card-img">
       <div class="desenfoque" >
-        <img src="./../../../../../assets/img/background-lg-Logo.png" >
+        <img src="./../../../../../assets/img/background-lg.png" >
       </div>
       <div class="col-img position-absolute">
         <div class="img-preview">
-          <img [src]="usuarioService.url + 'util/avatar/' + usuarioService.UsuarioCurrent.imagen" class="rounded-circle w-100 bg-light profile-avatar mb-5">
-          <input [disabled]="util.isDelete(option)" type="file" (change)="actualizarImagen($event)" accept="image/*">
+          <img [src]="obtURLIMG()" class="rounded-circle bg-light profile-avatar" >
+          <input type="file" (change)="actualizarImagen($event)" accept="image/*">
         </div>
       </div>
     </div>
