@@ -1,5 +1,42 @@
 .table-fixed input, select {
   background-color: #21252987 !important;
 }
+@media screen and (max-width: 1920px) and (max-height: 1080px) {
+  .table-fixed-bu {
+    height: 600px;
+  }
+  .table-fixed-bu tbody {
+    height: 525px;
+  }
+}
+@media screen and (max-width: 1366px) and (max-height: 768px) {
 
+  .table-fixed-bu {
+    height: 400px;
+  }
+  .table-fixed-bu tbody {
+    height: 325px;
+  }
+}
 
+.table-fixed-bu thead{
+  height: 75px !important;
+}
+
+.table-fixed-bu thead {
+  background-color: black !important;
+}
+
+.table-fixed-bu thead tr > th {
+  background-color: black !important;
+  border-color: black !important;
+}
+ .table-fixed-bu tbody tr {
+   height: 50px;
+ }
+.width-md {
+  width: 55% !important;
+}
+.width-sm {
+  width: 15% !important;
+}

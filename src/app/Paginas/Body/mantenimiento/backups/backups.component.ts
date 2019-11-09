@@ -7,6 +7,7 @@ import {Backup} from '../../../../Modelos/Backup/backup';
 import {FiltrosSearchBackups} from '../../../../Modelos/Backup/filtros-search-backups';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {UsersBackupsMnt} from '../../../../Modelos/users/usersBackupsMnt';
 
 @Component({
   selector: 'app-backups',
@@ -117,7 +118,8 @@ export class BackupsComponent implements OnInit {
             this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackups();
             this.backupService.userBackups[indice].backupsFiltro = [];
             this.backupService.userBackups[indice].backups = result.backups;
-            this.expandir(575, 13, this.cntBackupsUser['_results'][indice].nativeElement);
+            let H = (this.util.obtisFullHDDisplay()) ? 775 : 575;
+            this.expandir(H, 13, this.cntBackupsUser['_results'][indice].nativeElement);
             this.backupService.userBackups[indice].collapsed  = true;
             this.backupService.indexUser = indice;
             this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
@@ -165,13 +167,13 @@ export class BackupsComponent implements OnInit {
       this.backupService.userBackups[this.backupService.indexUser].indexBackupFilterSelected = backupIndex;
     }
   }
-  public accionLimpiarBackupsUser(option, userSpecified =  null, i = 0) {
+  public accionLimpiarBackupsUser(option, userSpecified: UsersBackupsMnt =  null, i = 0) {
     this.option = option;
     this.users = [];
     if (this.option == this.util.LIMPIARBACKUPSUSERS) {
       this.users = this.users.concat(this.usersSelected);
     } else {
-      let user = new UserSelect(userSpecified.indexUser, userSpecified.email, userSpecified.cantRep, i);
+      let user = new UserSelect(userSpecified.id_user, userSpecified.email, userSpecified.cantRep, i);
       this.users.push(user);
     }
     if (this.users.length == 0) {

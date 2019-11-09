@@ -31,21 +31,21 @@
             </div>
           </div>
 
-          <table class="table table-hover">
+          <table class="table table-hover table-fixed-bu">
             <thead class="thead-dark">
             <tr>
-              <th scope="col" class="text-center">#</th>
-              <th scope="col" class="text-center">Id_User</th>
-              <th scope="col" class="text-center">Email</th>
-              <th scope="col" class="text-center">Núm. Backups</th>
+              <th scope="col" class="text-center width-sm">#</th>
+              <th scope="col" class="text-center width-sm">Id_User</th>
+              <th scope="col" class="text-center width-md">Email</th>
+              <th scope="col" class="text-center width-sm">Núm. Backups</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let u of users; let posU = index">
-              <td class="font-weight-500 text-center">{{posU + 1}}</td>
-              <td class="text-center">{{u.id}}</td>
-              <td class="text-center">{{u.email}}</td>
-              <td class="text-center">{{u.cantidadBackups}}</td>
+              <td class="font-weight-500 text-center width-sm">{{posU + 1}}</td>
+              <td class="text-center width-sm">{{u.id}}</td>
+              <td class="text-center width-md">{{u.email}}</td>
+              <td class="text-center width-sm">{{u.cantidadBackups}}</td>
             </tr>
             </tbody>
           </table>
@@ -128,7 +128,7 @@
           <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" [(ngModel)]="rangoUsers.value" id="rangoUsers" name="rangoUsers" (keyup)="keyUpEventRangoUsers($event)" (blur)="afterBlurRangoUsers()" (focus)="beforeBlurRangoUsers()">
         </div>
         <div class="form-group col-4">
-          <label for="rangoBackups" class="col-form-label" style="font-size: 18px; font-weight: normal">Backups mayores a:</label>
+          <label for="rangoBackups" class="col-form-label" style="font-size: 18px; font-weight: normal; padding-top: 34px;">Backups mayores a:</label>
           <input type="number" value="10" class="form-control" pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups.value" name="rangoBackups" (keyup)="keyUpEvent($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="form-group col-4" style="padding-top: 68px;">
@@ -183,8 +183,8 @@
         <div class="col-1 column-checkCollapse">
           <button type="button" class="btn btn-outline-info rounded-circle btn-check-Collapse" (click)="verficarExpansion(i, user.id_user, user.email)">
             <span>
-                <fa-icon *ngIf="!user.collapsed" [icon]="util.faArrowDown"></fa-icon>
-              <fa-icon *ngIf="user.collapsed" [icon]="util.faArrowUp"></fa-icon>
+                <fa-icon *ngIf="!user.collapsed" [icon]="util.faChevronDown"></fa-icon>
+              <fa-icon *ngIf="user.collapsed" [icon]="util.faChevronUp"></fa-icon>
             </span>
           </button>
         </div>

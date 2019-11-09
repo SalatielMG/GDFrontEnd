@@ -132,6 +132,7 @@ export class Utilerias {
   public msj: string = "";
   public stepDecimal: string = "0.000001";
   public limit: number= 50;
+  public newPassword: string = "";
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
   }
@@ -227,6 +228,9 @@ export class Utilerias {
     }
     if (control.hasError("passwordNoVerify")) {
       error += "Contraseña incorrecta";
+    }
+    if (control.hasError("NoConfirmNewPassword")) {
+      error += "Las contraseñas no coinciden";
     }
     if (control.hasError("email")) {
       error += "Ingrese un email valido\n";

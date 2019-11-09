@@ -186,27 +186,27 @@
             <img [src]="usuarioService.url + 'util/avatar/' + user.imagen" class="avatar-user">
           </div>
           <div class="card-body card-body-user">
-            <p class="font-weigp c500">{{user.email}}</p>
-            <p class="font-weight-light">{{user.tipo}}</p>
+            <p class="font-weight-500">{{user.email}}</p>
+            <p class="font-weight-normal">{{user.tipo}}</p>
             <p class="font-weight-light">{{user.cargo}}</p>
           </div>
           <div class="row card-footer">
             <div class="col">
-                <button class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos" data-toggle="modal" data-target="#modalPermisos_Usuario" (click)="actionPermisosUsuario(util.CONSULTA, user, i)">
+                <button type="button" class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos" data-toggle="modal" data-target="#modalPermisos_Usuario" (click)="actionPermisosUsuario(util.CONSULTA, user, i)">
                   <span>
                   <fa-icon [icon]="util.faCheckSquare" ></fa-icon>
                 </span>
                 </button>
             </div>
             <div class="col">
-              <button class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ACTUALIZAR, user, i)">
+              <button type="button" class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ACTUALIZAR, user, i)">
                 <span>
                   <fa-icon [icon]="util.faPen" ></fa-icon>
                 </span>
               </button>
             </div>
             <div class="col">
-              <button class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ELIMINAR, user, i)">
+              <button type="button" class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ELIMINAR, user, i)">
                 <span>
                   <fa-icon [icon]="util.faTrash" ></fa-icon>
                 </span>

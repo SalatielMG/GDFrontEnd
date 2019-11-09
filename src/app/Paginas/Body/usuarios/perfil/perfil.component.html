@@ -25,19 +25,19 @@
             <div class="form-group">
               <div class="form-group mb-3">
                 <label for="confirmPasswordCurrent">Contraseña Actual: </label>
-                <input type="confirmPasswordCurrent" class="form-control" id="confirmPasswordCurrent" formControlName="confirmPasswordCurrent" [ngClass]="(getError('confirmPasswordCurrent', true) == '') ? 'valid-control' : 'invalid-control'">
+                <input type="password" class="form-control" id="confirmPasswordCurrent" formControlName="confirmPasswordCurrent" [ngClass]="(getError('confirmPasswordCurrent', true) == '') ? 'valid-control' : 'invalid-control'">
                 <div class="invalid-feedback">{{ getError('confirmPasswordCurrent', true)}}</div>
               </div>
               <div *ngIf="isConfirmPasswordCurrent">
                 <div class="form-group" >
                   <label for="newPassword">Nueva Contraseña: </label>
-                  <input type="newPassword" class="form-control" id="newPassword" formControlName="newPassword" [ngClass]="(getError('newPassword', true) == '') ? 'valid-control' : 'invalid-control'">
+                  <input type="password" class="form-control" id="newPassword" formControlName="newPassword" (blur)="confirmNewPassword($event)" [ngClass]="(getError('newPassword', true) == '') ? 'valid-control' : 'invalid-control'">
                   <div class="invalid-feedback">{{ getError('newPassword', true)}}</div>
                 </div>
 
                 <div class="form-group">
                   <label for="confirmNewPassword">Confirme la nueva Contraseña: </label>
-                  <input [readOnly]="Password.value.newPassword == ''" type="confirmNewPassword" class="form-control" (ngModelChange)="confirmNewPassword($event)" id="confirmNewPassword" formControlName="confirmNewPassword" [ngClass]="(getError('confirmNewPassword', true) == '') ? 'valid-control' : 'invalid-control'">
+                  <input [readOnly]="Password.value.newPassword == ''" type="password" class="form-control"  id="confirmNewPassword" formControlName="confirmNewPassword" [ngClass]="(getError('confirmNewPassword', true) == '') ? 'valid-control' : 'invalid-control'">
                   <div class="invalid-feedback">{{ getError('confirmNewPassword', true)}}</div>
                 </div>
               </div>
@@ -139,7 +139,7 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-info rounded-circle btn-key" data-toggle="modal" data-target="#modalResetPassword" (click)="actionResetPassword()">
+      <button class="btn btn-info rounded-circle btn-key" data-toggle="tooltip" data-placement="top" title="Actualizar password" data-toggle="modal" data-target="#modalResetPassword" (click)="actionResetPassword()">
       <span>
           <fa-icon [icon]="util.faKey"></fa-icon>
       </span>
@@ -148,7 +148,7 @@
 
   </div>
 
-  <div   class="card rounded shadow-sm mb-md-1 mt-5 card-rounded-feature BodySelected">
+  <div  class="card rounded shadow-sm mb-md-1 mt-5 card-rounded-feature">
     <div class="card-header HeaderSelected">
       <div class="row content-row" >
         <div class="col-11 column-userData text-center" >
@@ -208,11 +208,7 @@
   </div>
 </div>
 
-
-
-
-
-<button class="btn btn-outline-success rounded-circle addButton" data-toggle="modal" data-target="#modalUsuarioUpdate" (click)="actionUpdateUsuario()">
+<button class="btn btn-outline-success rounded-circle addButton" data-toggle="tooltip" data-placement="top" title="Actualizar perfil" data-toggle="modal" data-target="#modalUsuarioUpdate" (click)="actionUpdateUsuario()">
   <span>
     <fa-icon [icon]="util.faPen" ></fa-icon>
   </span>

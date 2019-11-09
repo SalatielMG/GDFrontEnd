@@ -1,23 +1,22 @@
-import { Directive } from '@angular/core';
-import {AbstractControl, ValidationErrors, Validator, ValidatorFn} from '@angular/forms';
+import {Directive, Injectable} from '@angular/core';
+import {AbstractControl, ValidationErrors, Validator} from '@angular/forms';
+import {Utilerias} from '../../Utilerias/Util';
 
 @Directive({
   selector: '[appCofirmNewPassword]'
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class ConfirmNewPasswordDirective implements Validator{
 
-  constructor() { }
-
-  // @ts-ignore
-  public confirmNewPassword(): ValidatorFn {
-    return (control: AbstractControl) => {
-      return this.validate(control);
-    }
-  }
-
+  constructor(private util: Utilerias) { }
   validate(control: AbstractControl): ValidationErrors | null {
     const confirmPassword = <string>control.value;
-    return undefined;
+    if (this.util.newPassword != confirmPassword){
+      return {NoConfirmNewPassword: true};
+    }
+    return null;
   }
 
 }

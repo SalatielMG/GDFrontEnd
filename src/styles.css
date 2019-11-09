@@ -112,7 +112,8 @@
 .inputSearch {
   width: 100%; height: 80px;
   background: rgba(255, 255, 255, 0.16);
-  border: 0px;
+  filter: drop-shadow(5px 5px 5px #000000);
+  border: 0;
   color: white;
 }
 
@@ -129,6 +130,10 @@
 }
 .btnSearch {
   width: 100%; height: 80px;
+  color: #e8d9e8;
+  background-color: rgb(0, 19, 35);
+  border-color: #005065;
+  filter: drop-shadow(5px 5px 2px #000000);
 }
 
 .tamaño-titulo-encabezado {
@@ -286,15 +291,24 @@ app-gastos-entradas {
 }
 .table-fixed,
 .table-fixed-bu {
-  height: 600px;
   overflow: scroll;
+}
+.table-fixed thead,
+.table-fixed-bu thead{
+  width: 100%;
+  height: 112px !important;
 }
 .table-fixed tbody,
 .table-fixed-bu tbody {
-  height: 450px;
   overflow-y: scroll;
   width: 100%;
 }
+.table-fixed thead tr,
+.table-fixed-bu thead tr {
+  width: calc(100% - 17px);
+  height: 100% !important;
+}
+
 .table-fixed thead,
 .table-fixed-bu thead,
 .table-fixed tbody,
@@ -306,18 +320,14 @@ app-gastos-entradas {
 {
   display: block;
 }
-/*
-.table-fixed thead,
-.table-fixed-bu thead {
-  border-top: 2px solid #454d55 !important;
-  border-bottom: 2px solid #454d55 !important;
-}*/
 
 .table-fixed thead tr,
 .table-fixed-bu thead tr,
 .table-fixed tbody tr,
 .table-fixed-bu tbody tr {
   display: flex;
+  justify-content: center;
+  align-content: center;
 }
 .table-fixed tbody tr,
 .table-fixed-bu tbody tr {
@@ -337,10 +347,6 @@ app-gastos-entradas {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.table-fixed thead tr,
-.table-fixed-bu thead tr {
-  width: calc(100% - 17px);
 }
 
 /*Tabla Fixed XL*/
@@ -394,6 +400,15 @@ app-gastos-entradas {
   .table-fixed-xl tbody{
     height: 600px !important;
   }
+
+  .table-fixed,
+  .table-fixed-bu {
+    height: 750px;
+  }
+  .table-fixed tbody,
+  .table-fixed-bu tbody {
+    height: 638px;
+  }
 }
 @media screen and (max-width: 1366px) and (max-height: 768px) {
   .table-fixed-xl {
@@ -401,6 +416,15 @@ app-gastos-entradas {
   }
   .table-fixed-xl tbody{
     height: 400px !important;
+  }
+
+  .table-fixed,
+  .table-fixed-bu {
+    height: 550px;
+  }
+  .table-fixed tbody,
+  .table-fixed-bu tbody {
+    height: 438px;
   }
 }
 
@@ -479,7 +503,8 @@ app-gastos-entradas {
   padding: 15px!important; padding-left: 60px!important;
 }
 .column-checkCollapse {
-  display: flex; align-items: center; flex-direction: row-reverse; padding-right: 40px;
+  justify-content: center;
+  display: flex; align-items: center; margin-left: -10px;
 }
 .icon-User, .icon-Backups {
   font-size: 35px!important; color: #000000!important;

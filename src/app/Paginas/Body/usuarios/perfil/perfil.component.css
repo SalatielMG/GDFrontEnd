@@ -46,9 +46,12 @@
   overflow: hidden;
   background-color: black;
 }
+.super-container {
+  padding-top: 50px !important;
+}
 @media screen and (max-width: 1920px) and (max-height: 1080px) {
   .super-container {
-    margin: 10px 150px 0px 150px;
+    margin: 0 150px 0 150px;
   }
   .img-preview{
     height: 400px;
@@ -65,7 +68,7 @@
 }
 @media screen and (max-width: 1366px) and (max-height: 768px) {
   .super-container {
-    margin: 10px 120px 0px 120px;
+    margin: 0 120px 0 120px;
   }
   h3 {
     font-size: 20px;
@@ -106,7 +109,7 @@
   width: 60%!important;
 }
 .card-rounded-feature {
-  margin: 100px -17px 50px -17px!important;
+  margin: 50px -17px 50px -17px!important;
 }
 .column-userData {
   padding: 25px!important;
@@ -116,6 +119,10 @@
 .table-fixed thead,
 .table-fixed thead tr {
   height: 100px !important;
+}
+.table-fixed thead > tr > th,
+.table-fixed tbody > tr > td{
+  font-size: 18px;
 }
 .item-transparent {
   display: flex !important;

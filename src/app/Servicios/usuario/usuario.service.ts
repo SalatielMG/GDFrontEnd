@@ -117,6 +117,12 @@ export class UsuarioService implements CanActivate{
       .append("usuarioCurrent", JSON.stringify(usuarioCurrent));
     return this.http.post(URL + "UpdateProfile", parametro);
   }
+  public UpdatePassword(newPassword, ): Observable<any> {
+    const parametro = new HttpParams()
+      .append("newPassword", newPassword)
+      .append("id_usuario", this.UsuarioCurrent.id.toString());
+    return this.http.post(URL + "UpdatePassword", parametro);
+  }
   public UpdateImage(isChange, imagen): Observable<any> {
     const parametro = new FormData();
     parametro.append('isChange', isChange);

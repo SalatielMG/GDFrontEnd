@@ -2,7 +2,8 @@ import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core
 import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ConfirmPasswordCurrentDirective} from '../../../../Validations/confirm-password-current.directive';
+import {ConfirmPasswordCurrentDirective} from '../../../../Validations/confirmPasswordCurrent/confirm-password-current.directive';
+import {ConfirmNewPasswordDirective} from '../../../../Validations/confirmNewPassword/confirm-new-password.directive';
 
 @Component({
   selector: 'app-perfil',
@@ -19,7 +20,7 @@ export class PerfilComponent implements OnInit {
   private isChangeIMG = false;
   private fileIMG = null;
 
-  constructor(private usuarioService: UsuarioService, private util: Utilerias, private renderer: Renderer2, private formBuilder: FormBuilder, private confirmPasswordCurrentDirective: ConfirmPasswordCurrentDirective ) {
+  constructor(private usuarioService: UsuarioService, private util: Utilerias, private renderer: Renderer2, private formBuilder: FormBuilder, private confirmPasswordCurrentDirective: ConfirmPasswordCurrentDirective, private confirmNewPasswordDirective: ConfirmNewPasswordDirective ) {
 
   }
 
@@ -29,8 +30,12 @@ export class PerfilComponent implements OnInit {
       if (!verifyNoPasssword) {
         this.isConfirmPasswordCurrent = true;
         this.Password.get("confirmPasswordCurrent").disable();
-        this.Password.addControl("newPassword", new FormControl('', Validators.required));
-        this.Password.addControl("confirmNewPassword", new FormControl('', Validators.required));
+        this.Password.addControl("newPassword", new FormControl('', {
+          validators:[Validators.required]
+        }));
+        this.Password.addControl("confirmNewPassword", new FormControl('', {
+          validators:[Validators.required, this.confirmNewPasswordDirective.validate.bind(this.confirmNewPasswordDirective)]
+        }));
       }
     });
   }
@@ -61,7 +66,7 @@ export class PerfilComponent implements OnInit {
       let error = '';
       const control = this.Usuario.get(controlName);
       if (control.touched && control.errors != null && control.invalid) {
-        console.log("Error Control:=[" + controlName + "]", control.errors);
+        //console.log("Error Control:=[" + controlName + "]", control.errors);
         error = this.util.hasError(control);
       }
       return error;
@@ -69,7 +74,7 @@ export class PerfilComponent implements OnInit {
       let error = '';
       const control = this.Password.get(controlName);
       if (control.touched && control.errors != null && control.invalid) {
-        console.log("Error Control:=[" + controlName + "]", control.errors);
+        //console.log("Error Control:=[" + controlName + "]", control.errors);
         error = this.util.hasError(control);
       }
       return error;
@@ -109,8 +114,19 @@ export class PerfilComponent implements OnInit {
   }
 
   private UpdatePasword() {
-
     if (this.isConfirmPasswordCurrent) {
+      this.util.msjLoading = "Actualizando contraseña actual";
+      this.util.crearLoading().then(() => {
+        this.usuarioService.UpdatePassword(this.Password.value.newPassword).subscribe(result => {
+          this.util.detenerLoading();
+          this.util.msjToast(result.msj, result.titulo, result.error);
+          if (!result.error) {
+            this.closeModal("#modalResetPassword");
+          }
+        }, error => {
+          this.util.msjErrorInterno(error);
+        });
+      });
       console.log(this.Password.value);
     }
   }
@@ -159,14 +175,10 @@ export class PerfilComponent implements OnInit {
           this.util.msjErrorInterno(error);
         });
       });
-      /*let img = document.getElementById("imgSalida");
-      const objectURL = URL.createObjectURL(file);
-      img.setAttribute("src", objectURL );
-      console.log("objectURL", objectURL);*/
     }
     console.log(this.fileIMG);
   }
   public confirmNewPassword(event) {
-    console.log("confirmando contraseña", event);
+    this.util.newPassword = this.Password.value.newPassword;
   }
 }

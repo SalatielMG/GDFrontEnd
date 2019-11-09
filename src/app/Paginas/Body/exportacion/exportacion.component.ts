@@ -123,7 +123,8 @@ export class ExportacionComponent implements OnInit {
             this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackups();
             this.backupService.userBackups[indice].backupsFiltro = [];
             this.backupService.userBackups[indice].backups = result.backups;
-            this.expandir(575, 13, this.cntBackupsUser['_results'][indice].nativeElement);
+            let H = (this.util.obtisFullHDDisplay()) ? 775 : 575;
+            this.expandir(H, 13, this.cntBackupsUser['_results'][indice].nativeElement);
             this.backupService.userBackups[indice].collapsed  = true;
             this.backupService.indexUser = indice;
             this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
