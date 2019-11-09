@@ -396,13 +396,13 @@
         <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic">{{movement.repeated}}</td>
         <td class="Celdas-Tabla">{{movement.id_account}}</td>
-        <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_account, movement.nameAccount)}}</td>
+        <td class="Celdas-Tabla">{{movement.nameAccount}}</td>
         <td class="Celdas-Tabla">{{movement.id_category}}</td>
-        <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_category, movement.nameCategory)}}</td>
-        <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{movement.nameCategory}}</td>
+        <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
         <td class="Celdas-Tabla">{{movement.sign}}</td>
         <td class="Celdas-Tabla">{{movement.detail}}</td>
-        <td class="Celdas-Tabla">{{movement.date_record | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(movement.date_record == '0000-00-00') ? movement.date_record : movement.date_record  | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla">{{movement.time_record}}</td>
         <td class="Celdas-Tabla">{{movement.confirmed}}</td>
         <td class="Celdas-Tabla">{{movement.transfer}}</td>
@@ -443,13 +443,13 @@
         <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic">{{movement.repeated}}</td>
         <td class="Celdas-Tabla">{{movement.id_account}}</td>
-        <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_account, movement.nameAccount)}}</td>
+        <td class="Celdas-Tabla">{{movement.nameAccount}}</td>
         <td class="Celdas-Tabla">{{movement.id_category}}</td>
-        <td class="Celdas-Tabla">{{util.asignarNombre(movement.id_category, movement.nameCategory)}}</td>
-        <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla">{{movement.nameCategory}}</td>
+        <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
         <td class="Celdas-Tabla">{{movement.sign}}</td>
         <td class="Celdas-Tabla">{{movement.detail}}</td>
-        <td class="Celdas-Tabla">{{movement.date_record | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(movement.date_record == '0000-00-00') ? movement.date_record : movement.date_record  | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla">{{movement.time_record}}</td>
         <td class="Celdas-Tabla">{{movement.confirmed}}</td>
         <td class="Celdas-Tabla">{{movement.transfer}}</td>

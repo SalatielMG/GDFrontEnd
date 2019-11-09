@@ -12,25 +12,25 @@ import {UsersBackupsMnt} from '../../../../Modelos/users/usersBackupsMnt';
 })
 export class InconsistenciaComponent implements OnInit {
 
-  private email: string = "";
-  private backup = ["0"];
-  private backupIndex = ["0"];
-  private backupTemp = [];
-  private backupIndexTemp = [];
-  private todo: boolean = false;
-  private errorValidacionUserBackup: boolean = true;
+  public email: string = "";
+  public backup = ["0"];
+  public backupIndex = ["0"];
+  public backupTemp = [];
+  public backupIndexTemp = [];
+  public todo: boolean = false;
+  public errorValidacionUserBackup: boolean = true;
 
-  /*private filtrosSearch = new FiltrosSearchBackups();
-  private backupsFiltro: Backup[];*/
+  /*public filtrosSearch = new FiltrosSearchBackups();
+  public backupsFiltro: Backup[];*/
 
-  constructor(private backupService: BackupService, private util: Utilerias,  private route: ActivatedRoute,
-              private router: Router) {
+  constructor(public backupService: BackupService, public util: Utilerias,  public route: ActivatedRoute,
+              public router: Router) {
     // this.resetearFiltroSearch();
     this.search();
   }
   ngOnInit() {
   }
-  private changeOptionSelect(event) {
+  public changeOptionSelect(event) {
     this.todo = false;
     let indices = [];
     console.log('Valor event:= ', event.target.selectedOptions);
@@ -65,7 +65,7 @@ export class InconsistenciaComponent implements OnInit {
       }
     }
   }
-  private resetVariables() {
+  public resetVariables() {
   this.backup = ["0"];
   this.backupIndex = ["0"];
   this.backupTemp = [];
@@ -78,7 +78,7 @@ export class InconsistenciaComponent implements OnInit {
   this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
   this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
   }
-  private compararRutaHija(ruta, isFiltro) {
+  public compararRutaHija(ruta, isFiltro) {
     if (!isFiltro) {
       this.backupService.resetearBackups();
       this.resetVariables();
@@ -89,13 +89,13 @@ export class InconsistenciaComponent implements OnInit {
       this.routeNavigate(ruta, isFiltro);
     }
   }
-  private routeNavigate(ruta, isFiltro)  {
+  public routeNavigate(ruta, isFiltro)  {
     let route = ruta.split("/");
     if (route.length == 3) return;
     ruta = route[3];
     this.navegacion(ruta, isFiltro);
   }
-  private buscarBackups() {
+  public buscarBackups() {
     let promise;
     if (this.backupService.pagina == 0) { // Es la primera busqueda implica un loading
       promise = new Promise(()=>{
@@ -152,7 +152,7 @@ export class InconsistenciaComponent implements OnInit {
     return promise;
 
   }
-  private navegacion(tabla, isFilter) {
+  public navegacion(tabla, isFilter) {
     if (isFilter) {
       console.log("is filter true:=", this.util.userMntInconsistencia);
       this.router.navigate([tabla, this.stringyfyJSON()], {relativeTo: this.route});
@@ -164,10 +164,10 @@ export class InconsistenciaComponent implements OnInit {
       });
     }
   }
-  private stringyfyJSON() {
+  public stringyfyJSON() {
     return JSON.stringify(this.backup);
   }
-  private operacion() {
+  public operacion() {
     this.util.msjLoading = "Corrigiendo inconsistencia de datos en la Tabla : " + this.nameTable;
     this.util.crearLoading().then(() => {
       this.backupService.corregirInconsistencia(this.nameTable).subscribe(result => {
@@ -186,7 +186,7 @@ export class InconsistenciaComponent implements OnInit {
       });
     });
   }
-  private nameTable: string = "";
+  public nameTable: string = "";
   public corregirTabla(){
     this.nameTable = "";
     let route = this.router.url.split("/");
@@ -223,21 +223,21 @@ export class InconsistenciaComponent implements OnInit {
     this.backupIndex =  this.backupIndex.concat(this.backupIndexTemp);
     this.searchWithFilter();
   }
-  private searchWithFilter() {
+  public searchWithFilter() {
     this.lengthBackupFilter();
     this.search(true);
   }
-  private lengthBackupFilter() {
+  public lengthBackupFilter() {
     if (this.backup.length == 0) {
       alert("Porfavor filtre el(los) backup(s) " + ((this.util.userMntInconsistencia.email == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.userMntInconsistencia.email);
       return;
     }
   }
-  private reset() {
+  public reset() {
     this.backup = [];
     this.backupIndex = [];
   }
-  private resetTemp() {
+  public resetTemp() {
     this.backupTemp = [];
     this.backupIndexTemp = [];
   }
@@ -303,7 +303,7 @@ export class InconsistenciaComponent implements OnInit {
       this.reset();
     }
   }
-  private deseleccionarEventoTodo() {
+  public deseleccionarEventoTodo() {
       for (let index of this.backupIndexTemp) {
         this.backupService.userBackups[this.backupService.indexUser].backups[index].checked = false;
       }
@@ -315,12 +315,12 @@ export class InconsistenciaComponent implements OnInit {
       this.backup.push("0");
       this.backupTemp.push("0");
   }
-  private resetearFiltroSearch() {
+  public resetearFiltroSearch() {
     this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
   }
 
   /*-----------------------------------------------------------------------
-  private actionFilterEvent(event, value, isKeyUp = false) {
+  public actionFilterEvent(event, value, isKeyUp = false) {
     if (value == "automatic") {
       if (this.filtrosSearch[value].value == "-1") {
         this.filtrosSearch[value].isFilter = false;
@@ -338,13 +338,13 @@ export class InconsistenciaComponent implements OnInit {
     this.filtrosSearch[value].valueAnt = this.filtrosSearch[value].value;
     this.proccessFilter();
   }
-  private resetFilterisActive() {
+  public resetFilterisActive() {
     if (!this.isFilter()) {
       this.backupsFiltro = [];
       this.backupsFiltro =  this.backupsFiltro.concat(this.backupService.backups);
     }
   }
-  private proccessFilter() {
+  public proccessFilter() {
     let temp = [];
     this.backupService.backups.forEach((back) => {
       if (back.id_backup != 0) {
@@ -376,7 +376,7 @@ export class InconsistenciaComponent implements OnInit {
     temp = null;
   }
 
-  private resetValuefiltroSearch(key) {
+  public resetValuefiltroSearch(key) {
     // console.log("Resetenado datos de la caja de filtros : " + key);
     this.filtrosSearch[key].value =  "";
     this.filtrosSearch[key].valueAnt =  "";
@@ -390,7 +390,7 @@ export class InconsistenciaComponent implements OnInit {
     this.proccessFilter();
   }
 
-  private isFilter(): boolean {
+  public isFilter(): boolean {
     for (let key in this.filtrosSearch) {
       if (this.filtrosSearch[key].isFilter) return true;
     }

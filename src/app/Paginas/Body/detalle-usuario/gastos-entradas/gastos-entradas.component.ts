@@ -69,8 +69,8 @@ export class GastosEntradasComponent implements OnInit {
   public backups = [];
 
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private userService: UserService, private util: Utilerias) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public userService: UserService, public util: Utilerias) {
     this.resetbarchar();
     this.msj = "Creando Grafica de Gastos vs Ingresos, ¡ Porfavor espere !";
     this.userService.obtValoresGraficaGVSI(this.userService.User.id_user).subscribe(result => {
@@ -100,7 +100,7 @@ export class GastosEntradasComponent implements OnInit {
     });
   }
 
-  private resultado(result){
+  public resultado(result){
     this.util.detenerLoading();
     this.util.msjToast(result.msj, result.titulo, result.error);
     this.backups = result.backups;
@@ -126,7 +126,7 @@ export class GastosEntradasComponent implements OnInit {
       this.TotalbarChartData[1].data = this.barChartData[1].data;*/
     }
   }
-  private resetbarchar(){
+  public resetbarchar(){
     this.barChartData[0].data = [];
     this.barChartData[1].data = [];
 

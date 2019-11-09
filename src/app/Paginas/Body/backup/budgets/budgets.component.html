@@ -217,12 +217,12 @@
         <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
         <td class="Celdas-Tabla ">{{budget.id_account}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_account, budget.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
         <td class="Celdas-Tabla ">{{budget.id_category}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_category, budget.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{budget.nameCategory}}</td>
         <td class="Celdas-Tabla ">{{budget.period}}</td>
-        <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol':'1.0-6'}}</td>
-        <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
         <td class="Celdas-Tabla ">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla ">{{budget.number}}</td>
@@ -254,14 +254,14 @@
         <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
         <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
         <td class="Celdas-Tabla ">{{budget.id_account}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_account, budget.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
         <td class="Celdas-Tabla ">{{budget.id_category}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(budget.id_category, budget.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{budget.nameCategory}}</td>
         <td class="Celdas-Tabla ">{{budget.period}}</td>
-        <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol':'1.0-6'}}</td>
-        <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol':'1.0-6'}}</td>
-        <td class="Celdas-Tabla ">{{budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla ">{{budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla ">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla ">{{budget.number}}</td>
         <td class="Celdas-Tabla ">
           <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">

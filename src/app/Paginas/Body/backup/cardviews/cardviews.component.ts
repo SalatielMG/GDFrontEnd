@@ -12,12 +12,12 @@ import {Cardviews} from '../../../../Modelos/cardviews/cardviews';
 })
 export class CardviewsComponent implements OnInit {
 
-  private option: string = "";
-  private cardview: FormGroup = null;
-  private indexUniqueAutomaticSelected = {};
+  public option: string = "";
+  public cardview: FormGroup = null;
+  public indexUniqueAutomaticSelected = {};
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private cardviewService: CardviewsService, private util: Utilerias, private formBuider: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public cardviewService: CardviewsService, public util: Utilerias, public formBuider: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.cardviewService.id_backup = parseInt(params.get("idBack"));
       this.cardviewService.resetVariables();
@@ -26,10 +26,10 @@ export class CardviewsComponent implements OnInit {
   }
   ngOnInit() {
   }
-  private onScroll() {
+  public onScroll() {
     if (!this.cardviewService.isFilter() && !this.util.loadingMain) this.searchCardViews();
   }
-  private searchCardViews() {
+  public searchCardViews() {
     this.util.loadingMain = true;
     if (this.cardviewService.pagina == 0) {
       this.util.msjLoading = "Buscando Cardviews del Respaldo con id_backup: " + this.cardviewService.id_backup;
@@ -48,7 +48,7 @@ export class CardviewsComponent implements OnInit {
       });
     }
   }
-  private resultado(result){
+  public resultado(result){
     this.util.msj = result.msj;
     if (this.cardviewService.pagina == 0) {
       this.util.detenerLoading();
@@ -71,7 +71,7 @@ export class CardviewsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  private accionCardview(option, cardview = new Cardviews(), i = null) {
+  public accionCardview(option, cardview = new Cardviews(), i = null) {
     this.option = option;
     this.buildForm(cardview);
     if (this.option != this.util.AGREGAR) {
@@ -87,7 +87,7 @@ export class CardviewsComponent implements OnInit {
       this.util.abrirModal("#modalCardview");
     }, 500);
   }
-  private buildForm(cardview: Cardviews) {
+  public buildForm(cardview: Cardviews) {
     this.cardview = this.formBuider.group({
       id_backup : [cardview.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_card : [cardview.id_card, [Validators.required, Validators.min(0)]],
@@ -99,7 +99,7 @@ export class CardviewsComponent implements OnInit {
     });
     if (this.util.isDelete(this.option)) this.disableForm();
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.cardview.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -108,20 +108,20 @@ export class CardviewsComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.cardview.getRawValue()) {
       this.cardview.get(key).disable();
     }
     this.cardview.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalCardview").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.cardview = null;
     });
   }
-  private operation() {
+  public operation() {
     console.log("this.valueCategoriesForm:=", this.cardview.value);
     switch (this.option) {
       case this.util.AGREGAR:
@@ -228,12 +228,12 @@ export class CardviewsComponent implements OnInit {
 
     });
   }
-  private patchValueFormDataBeforeOperation () {
+  public patchValueFormDataBeforeOperation () {
     this.cardview.patchValue({id_backup: this.cardviewService.id_backup});
     this.cardview.patchValue({sign: this.util.signValue(this.cardview.value.sign)});
     this.cardview.patchValue({show_card: this.util.unValueChecked(this.cardview.value.show_card)});
   }
-  private patchValueFormDataAfterOperationError () {
+  public patchValueFormDataAfterOperationError () {
     this.cardview.patchValue({sign: this.util.signUnvalue(this.cardview.value.sign)});
     this.cardview.patchValue({show_card: this.util.valueChecked(this.cardview.value.show_card)});
   }

@@ -12,24 +12,24 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class AccountsComponent implements OnInit {
 
-  private option: string = "";
-  private account: FormGroup = null;
-  private indexUniqueAccountSelected = {};
-  private currencySelected = "";
+  public option: string = "";
+  public account: FormGroup = null;
+  public indexUniqueAccountSelected = {};
+  public currencySelected = "";
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private accountService: AccountsService, private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public accountService: AccountsService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.accountService.id_backup = parseInt(params.get("idBack"));
       this.accountService.resetearVariables();
       this.buscarAccounts();
     });
   }
-  private onScroll() {
+  public onScroll() {
     if (!this.accountService.isFilter() && !this.util.loadingMain) this.buscarAccounts();
   }
 
-  private buscarAccounts() {
+  public buscarAccounts() {
     this.util.loadingMain = true;
     if (this.accountService.pagina == 0) {
       this.util.msjLoading = "Buscando registros en la tabla Accounts del backup : " + this.accountService.id_backup;
@@ -48,7 +48,7 @@ export class AccountsComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.accountService.pagina == 0) { // Primera Busqueda
       this.util.detenerLoading();
@@ -114,7 +114,7 @@ export class AccountsComponent implements OnInit {
     });
 
   }
-  private getNewId_Account() {
+  public getNewId_Account() {
     console.log("account value:", this.account);
       this.util.msjLoading = "Calculando el id_account para la nueva cuenta a agregar";
       this.util.crearLoading().then(() => {
@@ -132,7 +132,7 @@ export class AccountsComponent implements OnInit {
         });
       });
   }
-  private buildForm(account) {
+  public buildForm(account) {
     this.account = this.formBuilder.group({
       id_backup : [account.id_backup, Validators.required],
       id_account : [account.id_account, Validators.required],
@@ -159,7 +159,7 @@ export class AccountsComponent implements OnInit {
     if (this.util.isDelete(this.option)) this.disable();
     console.log("account after method buildForm()", this.account);
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.account.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -169,20 +169,20 @@ export class AccountsComponent implements OnInit {
     return error;
   }
 
-  private disable() {
+  public disable() {
     for (let key in this.account.getRawValue()) {
         this.account.get(key).disable();
     }
     this.account.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalAccount").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.account = null;
     });
   }
-  private operacion() {
+  public operacion() {
     switch (this.option) {
       case this.util.AGREGAR:
         this.agregarAccount();
@@ -196,7 +196,7 @@ export class AccountsComponent implements OnInit {
     }
     console.log("value in Account FormGroup:=", this.account.value);
   }
-  private agregarAccount() {
+  public agregarAccount() {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(()=> {
@@ -228,7 +228,7 @@ export class AccountsComponent implements OnInit {
       });
     });
   }
-  private actualizarAccount() {
+  public actualizarAccount() {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
@@ -256,7 +256,7 @@ export class AccountsComponent implements OnInit {
       });
     });
   }
-  private eliminarAccount() {
+  public eliminarAccount() {
     this.util.msjLoading = "Eliminando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
       this.accountService.eliminarAccount(this.indexUniqueAccountSelected).subscribe(result => {
@@ -277,7 +277,7 @@ export class AccountsComponent implements OnInit {
       });
     });
   }
-  private patchValueFormDataBeforeOperation () {
+  public patchValueFormDataBeforeOperation () {
     this.account.patchValue({id_backup: this.accountService.id_backup});
     this.account.patchValue({income: this.util.zeroFile(this.account.value.income)});
     this.account.patchValue({expense: this.util.zeroFile(this.account.value.expense)});
@@ -290,7 +290,7 @@ export class AccountsComponent implements OnInit {
     this.account.patchValue({selected: this.util.unValueChecked(this.account.value.selected)});
     console.log("Value this.accout after addZeroFile:=", this.account.value);
   }
-  private patchValueFormDataAfterOperationError () {
+  public patchValueFormDataAfterOperationError () {
     this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});
     this.account.patchValue({selected: this.util.valueChecked(this.account.value.selected)});
   }

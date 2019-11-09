@@ -9,12 +9,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class AutomaticsComponent implements OnInit {
 
-  private pagina: number = 0;
-  private backups;
-  private msj: string = "";
+  public pagina: number = 0;
+  public backups;
+  public msj: string = "";
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private automaticsService: AutomaticsService, private util: Utilerias) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public automaticsService: AutomaticsService, public util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
       this.resetearVariable();
@@ -35,12 +35,12 @@ export class AutomaticsComponent implements OnInit {
     console.log('scrolled!!');
     this.buscarInconsistencia();
   }
-  private resetearVariable() {
+  public resetearVariable() {
     this.automaticsService.Automatics = [];
     this.pagina = 0;
   }
 
-  private buscarInconsistencia() {
+  public buscarInconsistencia() {
     this.util.loadingMain = true;
     if(this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Automatics';
@@ -60,7 +60,7 @@ export class AutomaticsComponent implements OnInit {
     }
   }
 
-  private resultado(result, bnd = true) {
+  public resultado(result, bnd = true) {
     if (bnd) {
       this.util.detenerLoading();
       this.util.msjLoading =  result.msj;

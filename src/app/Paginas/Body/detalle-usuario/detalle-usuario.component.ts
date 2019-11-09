@@ -15,8 +15,8 @@ export class DetalleUsuarioComponent implements OnInit {
   public PieChart=[];
   public etiquetas = [];
   public valores = [];
-  constructor(private route: ActivatedRoute,
-              private router: Router, private userService: UserService, private backService: BackupService, private util: Utilerias) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public userService: UserService, public backService: BackupService, public util: Utilerias) {
     this.router.navigate(['gastos'], {relativeTo: this.route});
   }
 

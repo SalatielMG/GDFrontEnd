@@ -15,8 +15,8 @@ export class HomeComponent implements OnInit {
 
   public usuarioSearch: FormGroup;
 
-  constructor(public formBuilder: FormBuilder, private util: Utilerias, public userService: UserService, private route: ActivatedRoute,
-              private router: Router) {
+  constructor(public formBuilder: FormBuilder, public util: Utilerias, public userService: UserService, public route: ActivatedRoute,
+              public router: Router) {
 
   }
 
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
 
           if (!result.error) {
             this.userService.User = <Users>result.user;
-            this.router.navigate(['/backups']);
+            this.router.navigate(['home/backups']);
           }
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.util.detenerLoading();

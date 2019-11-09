@@ -11,31 +11,37 @@ import {Utilerias} from '../../../Utilerias/Util';
 })
 export class NavEncodeComponent implements OnInit {
 
-  constructor(public userService: UsuarioService, private route: ActivatedRoute,
-              private router: Router, private currencyService: CurrenciesService, private util: Utilerias) { }
+  constructor(public userService: UsuarioService, public route: ActivatedRoute,
+              public router: Router, public currencyService: CurrenciesService, public util: Utilerias) { }
 
   ngOnInit() {
   }
-  private urlAvatar() {
+  public urlAvatar() {
     return this.userService.url + "util/avatar/" + this.userService.UsuarioCurrent.imagen;
   }
-  private eventLogo() {
+  public eventLogo() {
     let ruta = this.router.url.split("/");
     console.log(ruta);
-    switch (ruta[1]) {
-      case "detalleRespaldo":
-        this.router.navigate(["/backups"]);
-        break;
-      case "detalleUsuario":
-        this.router.navigate(["/backups"]);
-        break;
-      default:
-        this.router.navigate(["/home"]);
-        break;
+    if (ruta.length > 3) {
+      switch (ruta[3]) {
+        case "detalleRespaldo":
+          this.router.navigate(["home/backups"]);
+          break;
+        case "detalleUsuario":
+          this.router.navigate(["home/backups"]);
+          break;
+        default:
+          this.router.navigate(["/home"]);
+          break;
+      }
+    } else {
+      this.router.navigate(["/home"]);
+
     }
+
   }
 
-  private insertCurrencies() {
+  public insertCurrencies() {
     this.util.msjLoading = "Insertando datos en la tabla table_currencies";
     this.util.crearLoading().then(() => {
       this.currencyService.insertCurrencies().subscribe(result => {
@@ -47,7 +53,7 @@ export class NavEncodeComponent implements OnInit {
     });
   }
 
-  private generatePass(){
+  public generatePass(){
     this.userService.pass().subscribe(result => {
       console.log("resultado", result);
 
@@ -56,7 +62,7 @@ export class NavEncodeComponent implements OnInit {
     });
   }
 
-  private logout(){
+  public logout(){
     this.userService.logout();
     this.util.cerrarModal("#modalConfirmLogout");
   }

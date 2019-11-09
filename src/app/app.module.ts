@@ -21,10 +21,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 /*Componentes*/
 import { AppComponent } from './app.component';
-import { LoginComponent } from './Paginas/Body/login/login.component';
 import { NavEncodeComponent } from './Paginas/Header/nav-encode/nav-encode.component';
-import { HomeComponent } from './Paginas/Body/home/home.component';
-import { BackupsComponent } from './Paginas/Body/backups/backups.component';
 
 /*Servicios*/
 import { UsuarioService } from './Servicios/usuario/usuario.service';
@@ -35,25 +32,21 @@ import { BackupService } from './Servicios/backup/backup.service';
 import { Utilerias } from './Utilerias/Util';
 
 import { PaginaNoEmcontradaComponent } from './Paginas/Body/pagina-no-emcontrada/pagina-no-emcontrada.component';
-import { BackupModule } from './Paginas/Body/backup/backup.module';
-import { DetalleUsuarioModule } from './Paginas/Body/detalle-usuario/detalle-usuario.module';
 import { MantenimientoModule } from './Paginas/Body/mantenimiento/mantenimiento.module';
 import { ExportacionModule } from './Paginas/Body/exportacion/exportacion.module';
 import { UsuariosModule } from './Paginas/Body/usuarios/usuarios.module';
-import { InconsistenciaModule } from './Paginas/Body/mantenimiento/inconsistencia/inconsistencia.module';
 import { LoadingSpinnerModule } from './Components/loading-spinner/loading-spinner/loading-spinner.module';
 import { QueryCompleteModule } from './Components/query-complete/query-complete.module';
 import { TituloEncabezadoModule } from './Paginas/Header/titulo-encabezado/titulo-encabezado.module';
+import { LoginModule } from './Paginas/Body/login/login.module';
+import { HomeModule } from './Paginas/Body/home/home.module';
 import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
     PerfilComponent,
+    AppComponent,
     NavEncodeComponent,
-    HomeComponent,
-    BackupsComponent,
     PaginaNoEmcontradaComponent,
   ],
   imports: [
@@ -74,7 +67,12 @@ import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
       preventDuplicates: true,
       closeButton: true
     }),
-    FontAwesomeModule, NgxSpinnerModule, ChartsModule, MantenimientoModule, InconsistenciaModule, ExportacionModule, UsuariosModule, BackupModule, DetalleUsuarioModule, AppRoutingModule, QueryCompleteModule, TituloEncabezadoModule
+    HomeModule,
+    LoginModule,
+    UsuariosModule,
+    ExportacionModule,
+    MantenimientoModule,
+    FontAwesomeModule, NgxSpinnerModule, ChartsModule, QueryCompleteModule, TituloEncabezadoModule, AppRoutingModule
   ],
   providers: [
     DatePipe,

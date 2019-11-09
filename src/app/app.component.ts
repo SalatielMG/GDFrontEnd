@@ -9,8 +9,8 @@ import {Utilerias} from './Utilerias/Util';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public userService: UsuarioService, private route: ActivatedRoute,
-              private router: Router, private util: Utilerias){
+  constructor(public userService: UsuarioService, public route: ActivatedRoute,
+              public router: Router, public util: Utilerias){
     if (userService.activo()) {
       this.router.navigate(['/home'])
     } else {

@@ -42,7 +42,7 @@
               <ng-container *ngFor="let user of permisoService.UsuariosGal; let i = index">
                 <tr class="text-center" (click)="checkUser(i)" [ngClass]="(user.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
                   <td class="v-a-middle width-lg">{{user.email}}</td>
-                  <td class="v-a-middle width-sm">{{user.tipo}}</td>
+                  <td class="v-a-middle width-sm">{{util.nameTipo(user.tipo)}}</td>
                   <td class="v-a-middle width-sm">{{user.cargo}}</td>
                   <td class="v-a-middle width-sm">
                     <div class="custom-control custom-checkbox">
@@ -119,7 +119,7 @@
                       <ng-container *ngFor="let user of permisoService.UsuariosGal; let i = index">
                         <tr class="text-center" (click)="checkUser(i)" [ngClass]="(user.checked) ? 'HeaderSelected' : 'HeaderNoSelected'">
                           <td class="v-a-middle width-lg">{{user.email}}</td>
-                          <td class="v-a-middle width-sm">{{user.tipo}}</td>
+                          <td class="v-a-middle width-sm">{{util.nameTipo(user.tipo)}}</td>
                           <td class="v-a-middle width-sm">{{user.cargo}}</td>
                           <td class="v-a-middle width-sm">
                             <div class="custom-control custom-checkbox"  >

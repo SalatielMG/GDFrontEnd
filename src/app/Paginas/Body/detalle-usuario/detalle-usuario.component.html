@@ -71,10 +71,10 @@
           </div>
           <div class="row">
             <div class="col" style="text-align: left">
-              <button class="btn btn-outline-primary" (click)="paginaBackup(['/detalleRespaldo', 1, backService.userBackups[backService.indexUser].backups[0].id_backup])">Primer Respaldo<br>{{backService.userBackups[backService.indexUser].backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
+              <button class="btn btn-outline-primary" (click)="paginaBackup(['/home/backups/detalleRespaldo', 1, backService.userBackups[backService.indexUser].backups[0].id_backup])">Primer Respaldo<br>{{backService.userBackups[backService.indexUser].backups[0].date_creation | date:'dd MMMM yyyy'}}</button>
             </div>
             <div class="col" style="text-align: right" *ngIf="backService.userBackups[backService.indexUser].backups.length > 0">
-              <button class="btn btn-outline-secondary" (click)="paginaBackup(['/detalleRespaldo', backService.userBackups[backService.indexUser].backups.length, backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
+              <button class="btn btn-outline-secondary" (click)="paginaBackup(['/home/backups/detalleRespaldo', backService.userBackups[backService.indexUser].backups.length, backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].id_backup])">Ultimo Respaldo<br>{{backService.userBackups[backService.indexUser].backups[backService.userBackups[backService.indexUser].backups.length - 1].date_creation | date:'dd MMMM yyyy'}}</button>
             </div>
           </div>
         </div>

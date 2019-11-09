@@ -122,16 +122,16 @@
   <div class="row">
     <div class="col-9"></div>
     <div class="col-3">
-      <div class="form-row">
-        <div class="form-group col-4">
-          <label for="rangoUsers" class="col-form-label" style="font-size: 18px; font-weight: normal">Núm. Usuarios a limpiar:</label>
+      <div class="row">
+        <div class="form-group col-4 col-rango">
+          <label for="rangoUsers" class="col-form-label label-rango">Núm. Usuarios a limpiar:</label>
           <input type="number" value="10" class="form-control"pattern="^[0-9]+" min="1" [(ngModel)]="rangoUsers.value" id="rangoUsers" name="rangoUsers" (keyup)="keyUpEventRangoUsers($event)" (blur)="afterBlurRangoUsers()" (focus)="beforeBlurRangoUsers()">
         </div>
-        <div class="form-group col-4">
-          <label for="rangoBackups" class="col-form-label" style="font-size: 18px; font-weight: normal; padding-top: 34px;">Backups mayores a:</label>
+        <div class="form-group col-4 col-rango">
+          <label for="rangoBackups" class="col-form-label label-rango" >Backups mayores a:</label>
           <input type="number" value="10" class="form-control" pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups.value" name="rangoBackups" (keyup)="keyUpEvent($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
-        <div class="form-group col-4" style="padding-top: 68px;">
+        <div class="form-group col-4 col-btn-Filter">
           <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.userBackups.length == 0" (click)="accionLimpiarBackupsUser(util.LIMPIARBACKUPSUSERS)">
             <span>
               <fa-icon [icon]="util.faTools"></fa-icon>
@@ -143,6 +143,7 @@
     </div>
   </div>
 </div>
+
 
 <button class="up-right rounded-circle" (click)="util.subir()">
     <span>
@@ -270,10 +271,10 @@
           <tbody *ngIf="!backupService.isFilter(i)">
           <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
             <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
-            <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
+            <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/home/backups/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
-            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? back.date_creation: back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
               <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT" (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
@@ -287,10 +288,10 @@
         <tbody *ngIf="backupService.isFilter(i)">
         <tr class="text-center"  *ngFor="let back of user.backupsFiltro; let pos = index">
           <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
-          <td scope="row" class="v-a-middle width-sm">{{ back.id_backup }}</td>
+          <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/home/backups/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
           <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
-          <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-          <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+          <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? back.date_creation: back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+          <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
           <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
           <td scope="row" class="v-a-middle width-sm">
             <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT"  (click)="accionEliminar(util.ELIMINAR, back, i, pos)">

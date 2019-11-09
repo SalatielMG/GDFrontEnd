@@ -12,13 +12,13 @@ import {Automatics} from '../../../../Modelos/automatics/automatics';
 })
 export class AutomaticsComponent implements OnInit {
 
-  private option: string = "";
-  private automatic: FormGroup = null;
-  private indexUniqueSelectedAutomatic = {};
-  private indexSelectAutomaticModal: number = 0;
+  public option: string = "";
+  public automatic: FormGroup = null;
+  public indexUniqueSelectedAutomatic = {};
+  public indexSelectAutomaticModal: number = 0;
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private automaticService: AutomaticsService, private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public automaticService: AutomaticsService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.automaticService.id_backup = params.get("idBack");
       this.automaticService.resetearVarables();
@@ -29,11 +29,11 @@ export class AutomaticsComponent implements OnInit {
   ngOnInit() {
   }
 
-  private onScroll() {
+  public onScroll() {
     if (!this.automaticService.isFilter() && !this.util.loadingMain) this.buscarAutomatics();
   }
 
-  private buscarAutomatics() {
+  public buscarAutomatics() {
     this.util.loadingMain = true;
     if (this.automaticService.pagina == 0) {
       this.util.msjLoading = "Buscando registros en la tabla Automatics del backup : " + this.automaticService.id_backup;
@@ -53,7 +53,7 @@ export class AutomaticsComponent implements OnInit {
     }
   }
 
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.automaticService.pagina == 0) { // Primera Busqueda
       this.util.detenerLoading();
@@ -140,7 +140,7 @@ export class AutomaticsComponent implements OnInit {
 
   }
 
-  private buildForm(automatic: Automatics) {
+  public buildForm(automatic: Automatics) {
     this.automatic = this.formBuilder.group({
       id_backup : [automatic.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_operation : [automatic.id_operation, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
@@ -161,7 +161,7 @@ export class AutomaticsComponent implements OnInit {
     });
     if (this.util.isDelete(this.option)) this.disableForm();
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.automatic.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -170,13 +170,13 @@ export class AutomaticsComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.automatic.getRawValue()) {
       this.automatic.get(key).disable();
     }
     this.automatic.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalAutomatic").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
@@ -185,7 +185,7 @@ export class AutomaticsComponent implements OnInit {
     //console.log("Value Form := ", this.automatic.value.next_date.toLocaleDateString());
   }
 
-  private operation() {
+  public operation() {
     switch (this.option) {
       case this.util.AGREGAR:
         this.agregarAutomatic();
@@ -198,7 +198,7 @@ export class AutomaticsComponent implements OnInit {
         break;
     }
   }
-  private agregarAutomatic() {
+  public agregarAutomatic() {
     this.patchValueFormDataDate();
     this.util.msjLoading = "Agregando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
@@ -224,7 +224,7 @@ export class AutomaticsComponent implements OnInit {
       });
     });
   }
-  private actualizarAutomatic() {
+  public actualizarAutomatic() {
     this.patchValueFormDataDate();
     this.util.msjLoading = "Actualizando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
@@ -252,7 +252,7 @@ export class AutomaticsComponent implements OnInit {
       });
     });
   }
-  private eliminarAutomatic() {
+  public eliminarAutomatic() {
     this.util.msjLoading = "Eliminando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
       this.automaticService.eliminarAutomatic(this.indexUniqueSelectedAutomatic).subscribe(result => {
@@ -274,7 +274,7 @@ export class AutomaticsComponent implements OnInit {
     });
   }
 
-  private accountSelectedModal(event) {
+  public accountSelectedModal(event) {
     this.indexSelectAutomaticModal = event.target.selectedIndex;
     this.automatic.patchValue({id_category: ''});
     console.log("event:=", event.target.selectedIndex);
@@ -283,7 +283,7 @@ export class AutomaticsComponent implements OnInit {
     if (this.automatic.value.id_account == "") return;
     this.automaticService.obtCategoriesAccountBackup(this.indexSelectAutomaticModal.toString());
   }
-  private AccountsAndCategoriesBackup(result) {
+  public AccountsAndCategoriesBackup(result) {
     if (!result.accountsBackup.error) {
       this.automaticService.AccountsBackup = result.accountsBackup.accounts;
       console.log("this.automaticService.AccountsBackup", this.automaticService.AccountsBackup);
@@ -291,7 +291,7 @@ export class AutomaticsComponent implements OnInit {
       this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
     }
   }
-  private patchValueFormDataDate() {
+  public patchValueFormDataDate() {
     this.automatic.patchValue({id_backup: this.automaticService.id_backup});
     this.automatic.patchValue({initial_date: this.util.formatDateTimeSQL( this.automatic,"initial_date", false)});
     this.automatic.patchValue({next_date: this.util.formatDateTimeSQL( this.automatic,"next_date", false)});
@@ -300,7 +300,7 @@ export class AutomaticsComponent implements OnInit {
     this.automatic.patchValue({sign: this.util.signValue(this.automatic.value.sign)});
     this.automatic.patchValue({enabled: this.util.unValueChecked(this.automatic.value.enabled)});
   }
-  private patchValueAfterError() {
+  public patchValueAfterError() {
     this.automatic.patchValue({initial_date: this.util.formatComponentDateCalendar( this.automatic.value.initial_date)});
     this.automatic.patchValue({next_date: this.util.formatComponentDateCalendar( this.automatic.value.next_date)});
     this.automatic.patchValue({sign: this.util.signUnvalue(this.automatic.value.sign)});

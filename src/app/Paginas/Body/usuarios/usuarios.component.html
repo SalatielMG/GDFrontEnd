@@ -103,7 +103,7 @@
                   <label for="tipo">Tipo: </label>
                   <select class="form-control" id="tipo" formControlName="tipo" [ngClass]="(getError('tipo') == '') ? 'valid-control' : 'invalid-control'">
                     <option value="">Seleccione un tipo</option>
-                    <option value="admin">Administrador</option>
+                    <option value="admin" *ngIf="usuarioService.isSuperAdmin()">Administrador</option>
                     <option value="aux">Auxiliar</option>
                   </select>
                   <div class="invalid-feedback">{{ getError('tipo')}}</div>
@@ -187,7 +187,7 @@
           </div>
           <div class="card-body card-body-user">
             <p class="font-weight-500">{{user.email}}</p>
-            <p class="font-weight-normal">{{user.tipo}}</p>
+            <p class="font-weight-normal">{{util.nameTipo(user.tipo)}}</p>
             <p class="font-weight-light">{{user.cargo}}</p>
           </div>
           <div class="row card-footer">

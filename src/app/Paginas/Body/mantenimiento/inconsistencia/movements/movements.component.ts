@@ -10,11 +10,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class MovementsComponent implements OnInit {
 
-  private pagina: number = 0;
-  private backups;
+  public pagina: number = 0;
+  public backups;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private movementsService: MovementsService, private util: Utilerias) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public movementsService: MovementsService, public util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
       this.resetearVariables();
@@ -33,11 +33,11 @@ export class MovementsComponent implements OnInit {
   public onScroll() {
     this.buscarInconsistencias();
   }
-  private resetearVariables() {
+  public resetearVariables() {
     this.movementsService.Movements = [];
     this.pagina = 0;
   }
-  private buscarInconsistencias() {
+  public buscarInconsistencias() {
     this.util.loadingMain = true;
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Movements';
@@ -56,7 +56,7 @@ export class MovementsComponent implements OnInit {
       });
     }
   }
-  private resultado(result, bnd =  true) {
+  public resultado(result, bnd =  true) {
     if (bnd) {
       this.util.detenerLoading();
       this.util.msjLoading = result.msj;

@@ -12,13 +12,13 @@ import {Categories} from '../../../../Modelos/categories/categories';
 })
 export class CategoriesComponent implements OnInit {
 
-  private option: string = "";
-  private category: FormGroup = null;
-  private indexUniqueCategorySelected = {};
-  private indexCategorySelectModal: number = 0;
+  public option: string = "";
+  public category: FormGroup = null;
+  public indexUniqueCategorySelected = {};
+  public indexCategorySelectModal: number = 0;
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private categoriesService: CategoriesService,  private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public categoriesService: CategoriesService,  public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.categoriesService.id_backup = params.get("idBack");
       this.categoriesService.resetVariables();
@@ -28,10 +28,10 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit() {
   }
-  private onScroll() {
+  public onScroll() {
     if (!this.categoriesService.isFilter() && !this.util.loadingMain) this.searchCategories();
   }
-  private searchCategories() {
+  public searchCategories() {
     this.util.loadingMain = true;
     if (this.categoriesService.pagina == 0) {
       this.util.msjLoading = 'Buscando Categorias del Respaldo con id_backup: ' + this.categoriesService.id_backup;
@@ -50,7 +50,7 @@ export class CategoriesComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.categoriesService.pagina == 0) {
       this.util.detenerLoading();
@@ -74,7 +74,7 @@ export class CategoriesComponent implements OnInit {
     this.util.loadingMain = false;
   }
 
-  private accionCategory(option, category = new Categories(), i = null) {
+  public accionCategory(option, category = new Categories(), i = null) {
     this.util.msjLoading = "Cargando cuentas del backup: " + this.categoriesService.id_backup;
     this.util.crearLoading().then(() => {
       this.categoriesService.accountsCategoriesServices.obtAccountsBackup(this.categoriesService.id_backup, "0").subscribe(result => {
@@ -126,7 +126,7 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  private buildForm(category: Categories) {
+  public buildForm(category: Categories) {
     this.category = this.formBuilder.group({
       id_backup : [category.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_account : [(this.option == this.util.AGREGAR) ? "":category.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
@@ -139,7 +139,7 @@ export class CategoriesComponent implements OnInit {
     if (this.util.isDelete(this.option)) this.disableForm();
 
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.category.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -148,20 +148,20 @@ export class CategoriesComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.category.getRawValue()) {
       this.category.get(key).disable();
     }
     this.category.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalCategory").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.category = null;
     });
   }
-  private operation() {
+  public operation() {
     console.log("this.valueCategoriesForm:=", this.category.value);
     switch (this.option) {
       case this.util.AGREGAR:
@@ -175,7 +175,7 @@ export class CategoriesComponent implements OnInit {
         break;
     }
   }
-  private agregarCategory() {
+  public agregarCategory() {
     this.category.patchValue({id_backup: this.categoriesService.id_backup});
     this.category.patchValue({sign: this.util.signValue(this.category.value.sign)});
     this.util.msjLoading = "Agregando la nueva categoria con id_category: " + this.category.value.id_category + " del respaldo con id_backup: " + this.categoriesService.id_backup;
@@ -202,7 +202,7 @@ export class CategoriesComponent implements OnInit {
       });
     });
   }
-  private actualizarCategory() {
+  public actualizarCategory() {
     this.category.patchValue({sign: this.util.signValue(this.category.value.sign)});
     this.util.msjLoading = "Actualizando la categoria con id_category: " + this.category.value.id_category + " del respaldo con id_backup: " + this.categoriesService.id_backup;
     this.util.crearLoading().then(() => {
@@ -230,7 +230,7 @@ export class CategoriesComponent implements OnInit {
       });
     });
   }
-  private eliminarCategory() {
+  public eliminarCategory() {
     this.util.msjLoading = "Eliminando la categoria con id_category: " + this.category.value.id_category + " del respaldo con id_backup: " + this.categoriesService.id_backup;
     this.util.crearLoading().then(() => {
       this.categoriesService.eliminarCategory(this.indexUniqueCategorySelected).subscribe(result => {

@@ -9,10 +9,10 @@ import {Utilerias} from "../../../Utilerias/Util";
   styleUrls: ['./backup.component.css']
 })
 export class BackupComponent implements OnInit {
-  private numBack;
-  private idBack;
-  constructor(private userService: UserService, private route: ActivatedRoute,
-              private router: Router, private util: Utilerias) {
+  public numBack;
+  public idBack;
+  constructor(public userService: UserService, public route: ActivatedRoute,
+              public router: Router, public util: Utilerias) {
     this.route.paramMap.subscribe(params => {
       this.numBack = params.get('numBack');
       this.idBack = params.get('idBack');

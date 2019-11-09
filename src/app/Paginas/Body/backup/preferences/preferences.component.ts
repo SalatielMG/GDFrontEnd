@@ -12,12 +12,12 @@ import {Preferences} from '../../../../Modelos/preferences/preferences';
 })
 export class PreferencesComponent implements OnInit {
 
-  private option = "";
-  private preference: FormGroup = null;
-  private indexUniquePreferenceSelected= {};
+  public option = "";
+  public preference: FormGroup = null;
+  public indexUniquePreferenceSelected= {};
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private preferencesService: PreferencesService,  private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public preferencesService: PreferencesService,  public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.preferencesService.id_backup = this.util.numberFormat(params.get("idBack"));
       this.preferencesService.resetVariables();
@@ -31,7 +31,7 @@ export class PreferencesComponent implements OnInit {
     if (this.preferencesService.isFilter() && !this.util.loadingMain) this.searchPreferences();
   }
 
-  private searchPreferences() {
+  public searchPreferences() {
     this.util.loadingMain = true;
     if (this.preferencesService.pagina == 0) {
       this.util.msjLoading = "Buscando Preferences del Respaldo con id_backup: " + this.preferencesService.id_backup;
@@ -50,7 +50,7 @@ export class PreferencesComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.preferencesService.pagina == 0) {
       this.util.detenerLoading();
@@ -69,7 +69,7 @@ export class PreferencesComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  private accionPreference(option, preference = new Preferences(), i = null) {
+  public accionPreference(option, preference = new Preferences(), i = null) {
     this.option = option;
     this.buildForm(preference);
     if (this.option != this.util.AGREGAR) {
@@ -85,7 +85,7 @@ export class PreferencesComponent implements OnInit {
       this.util.abrirModal("#modalPreference");
     }, 500);
   }
-  private buildForm(preference: Preferences) {
+  public buildForm(preference: Preferences) {
     this.preference = this.formBuilder.group({
       id_backup : [preference.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       key_name : [preference.key_name, [Validators.required, Validators.maxLength(30)]],
@@ -93,7 +93,7 @@ export class PreferencesComponent implements OnInit {
     });
     if (this.util.isDelete(this.option)) this.disableForm();
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.preference.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -102,20 +102,20 @@ export class PreferencesComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.preference.getRawValue()) {
       this.preference.get(key).disable();
     }
     this.preference.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalPreference").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.preference = null;
     });
   }
-  private operation() {
+  public operation() {
     console.log("this.valuepreferenceForm:=", this.preference.value);
     switch (this.option) {
       case this.util.AGREGAR:

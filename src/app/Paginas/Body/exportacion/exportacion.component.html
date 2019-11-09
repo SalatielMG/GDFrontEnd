@@ -202,10 +202,10 @@
           <tbody *ngIf="!backupService.isFilter(i)">
           <tr class="text-center"  *ngFor="let back of user.backups; let pos = index">
             <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
-            <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
+            <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/home/backups/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
-            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? back.date_creation: back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
               <button data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionExportar(util.EXPORTAR, back.id_backup, i)">
@@ -219,10 +219,10 @@
           <tbody *ngIf="backupService.isFilter(i)">
           <tr class="text-center"  *ngFor="let back of user.backupsFiltro; let pos = index">
             <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
-            <td scope="row" class="v-a-middle width-sm">{{ back.id_backup }}</td>
+            <td scope="row" class="v-a-middle width-sm" style="cursor: pointer;" [routerLink]="['/home/backups/detalleRespaldo', (pos + 1), back.id_backup]">{{ back.id_backup }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.automatic }}</td>
-            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
-            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? '0000-00-00 00:00:00': back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_creation == '0000-00-00 00:00:00') ? back.date_creation: back.date_creation | date:'dd MMMM yyyy hh:mm:ss' }}</td>
+            <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
               <button data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT"  (click)="accionExportar(util.EXPORTAR, back.id_backup, i)">

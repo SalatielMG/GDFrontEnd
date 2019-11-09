@@ -107,24 +107,15 @@ export class Utilerias {
   public faUserCircle = faUserCircle;
   public faFileExport = faFileExport;
   public faTimesCircle = faTimesCircle;
-  public faCalendar = faCalendar;
-  public faArrowDown = faArrowDown;
   public faArrowUp = faArrowUp;
   public faSearch = faSearch;
-  public faArrowLeft = faArrowLeft;
-  public faRecycle = faRecycle;
-  public faPlusSquare = faPlusSquare;
   public faPlus = faPlus;
   public faTools = faTools;
   public faSlidersH = faSlidersH;
   public faTrash = faTrash;
   public faPen = faPen;
-  public faRedo = faRedo;
-  public faChevronRight = faChevronRight;
   public faChevronUp =  faChevronUp;
   public faChevronDown =  faChevronDown;
-  public faChevronLeft = faChevronLeft;
-  public faFilter = faFilter;
   public loadingMain: boolean = true;
   public loadingModal: boolean = true;
   public msjModal: string = "";
@@ -133,8 +124,25 @@ export class Utilerias {
   public stepDecimal: string = "0.000001";
   public limit: number= 50;
   public newPassword: string = "";
+  public symbolDecimalNumber6Digits: string = "1.2-6";
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
+  }
+
+  public nameTipo(tipo) {
+    let name = "";
+    switch (tipo) {
+      case "superAdmin":
+        name = "Super Administrador";
+        break;
+      case "admin":
+        name = "Administrador";
+        break;
+      case "aux":
+        name = "Auxiliar";
+        break;
+    }
+    return name;
   }
   public obtisFullHDDisplay(): boolean {
     return  window.innerHeight > 768;

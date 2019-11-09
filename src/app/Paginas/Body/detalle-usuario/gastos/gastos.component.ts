@@ -62,8 +62,8 @@ export class GastosComponent implements AfterViewInit {
   // @ViewChildren("colorCategorias") colorCategorias = ElementRef;
   @ViewChildren("colorCategorias") colorCategorias: QueryList<"colorCategorias">;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private userService: UserService, private util: Utilerias, private renderer: Renderer2) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public userService: UserService, public util: Utilerias, public renderer: Renderer2) {
     this.resetpiechar();
     this.msj = "Creando Grafica de movimientos negativos del usuario solicitado";
     this.util.crearLoading().then(() => {
@@ -90,7 +90,7 @@ export class GastosComponent implements AfterViewInit {
     });
   }
 
-  private resultado(result) {
+  public resultado(result) {
     this.util.detenerLoading();
     this.util.msjToast(result.msj, result.titulo, result.error);
 
@@ -117,7 +117,7 @@ export class GastosComponent implements AfterViewInit {
     }
   }
 
-  private resetpiechar() {
+  public resetpiechar() {
     this.pieChartLabels = [];
     this.pieChartData = [];
     this.pieChartColors[0].borderColor = [];

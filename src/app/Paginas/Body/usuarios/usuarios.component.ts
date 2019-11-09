@@ -12,23 +12,23 @@ import {PermisoService} from '../../../Servicios/permiso/permiso.service';
 })
 export class UsuariosComponent implements OnInit {
 
-  private isChangeIMG = false;
-  private fileIMG = null;
+  public isChangeIMG = false;
+  public fileIMG = null;
 
-  private urlImg: string = "";
-  private option: string = "";
-  private UsuarioSelected = new Usuarios();
-  private PermisosSelected = {
+  public urlImg: string = "";
+  public option: string = "";
+  public UsuarioSelected = new Usuarios();
+  public PermisosSelected = {
     value: [],
     valueAnt: []
   };
-  private Usuario: FormGroup = null;
-  private isExpandedPermisoCard: boolean = false;
-  private isUpdatePermisosSelectUsuario: boolean = false;
+  public Usuario: FormGroup = null;
+  public isExpandedPermisoCard: boolean = false;
+  public isUpdatePermisosSelectUsuario: boolean = false;
 
   @ViewChild("cntPermisos", {read: "", static: false}) cntPermisos = ElementRef;
 
-  constructor(private util: Utilerias, private usuarioService: UsuarioService, private permisoService: PermisoService, private formBuilder: FormBuilder, private renderer: Renderer2) {
+  constructor(public util: Utilerias, public usuarioService: UsuarioService, public permisoService: PermisoService, public formBuilder: FormBuilder, public renderer: Renderer2) {
     this.usuarioService.resetVariables();
     this.obtUsuarios();
   }
@@ -36,10 +36,10 @@ export class UsuariosComponent implements OnInit {
   ngOnInit() {
   }
 
-  private obtUsuarios() {
+  public obtUsuarios() {
     this.util.msjLoading = "Buscando usuarios registrados en la Base de Datos";
     this.util.crearLoading().then(() => {
-      this.usuarioService.obtUsuariosGral(this.usuarioService.id).subscribe(result => {
+      this.usuarioService.obtUsuariosGral(this.usuarioService.UsuarioCurrent.id.toString()).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -49,11 +49,11 @@ export class UsuariosComponent implements OnInit {
       });
     });
   }
-  private resetPermisoSelected() {
+  public resetPermisoSelected() {
     this.PermisosSelected.value = [];
     this.PermisosSelected.valueAnt = [];
   }
-  private obtPermisosGral(isExpanded = true) {
+  public obtPermisosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando permisos";
     this.util.crearLoading().then(() => {
       this.permisoService.obtPermisosGral("0").subscribe(result => {
@@ -82,14 +82,14 @@ export class UsuariosComponent implements OnInit {
       });
     });
   }
-  private cargarPermisosGral() {
+  public cargarPermisosGral() {
     this.isExpandedPermisoCard = !this.isExpandedPermisoCard;
     this.resetPermisoSelected();
     if (this.isExpandedPermisoCard) {
       this.obtPermisosGral();
     } else this.verifyExpandCardUser();
   }
-  private actionUsuario(option, usuario = new Usuarios(), index= null) {
+  public actionUsuario(option, usuario = new Usuarios(), index= null) {
     this.option = option;
     this.buildForm(usuario);
     this.resetPermisoSelected();
@@ -102,7 +102,7 @@ export class UsuariosComponent implements OnInit {
       }
     }
   }
-  private actionPermisosUsuario(option, usuario: Usuarios, index) {
+  public actionPermisosUsuario(option, usuario: Usuarios, index) {
     this.isUpdatePermisosSelectUsuario = false;
     this.option = option;
     this.resetPermisoSelected();
@@ -113,7 +113,7 @@ export class UsuariosComponent implements OnInit {
     }
   }
   // ---------------------------- CheckPermisos
-  private checkPermiso(index) {
+  public checkPermiso(index) {
     if (this.util.isDelete(this.option) || (this.option == this.util.CONSULTA && !this.isUpdatePermisosSelectUsuario)) return;
     if (this.usuarioService.PermisosGral[index].checked) { // Uncheck =>
       let posInArrayUserSelected = this.PermisosSelected.value.indexOf(this.usuarioService.PermisosGral[index].id);
@@ -129,7 +129,7 @@ export class UsuariosComponent implements OnInit {
     console.log(this.PermisosSelected);
   }
   // ---------------------------- CheckPermisos
-  private verifyExpandCardUser() {
+  public verifyExpandCardUser() {
     console.log(this.cntPermisos);
     let H = (this.util.obtisFullHDDisplay()) ? 300: 220;
     if (this.isExpandedPermisoCard) {
@@ -142,7 +142,7 @@ export class UsuariosComponent implements OnInit {
       this.renderer.setStyle(this.cntPermisos['nativeElement'], "max-height", "0px");
     }
   }
-  private buildForm(usuario: Usuarios) {
+  public buildForm(usuario: Usuarios) {
     this.Usuario = this.formBuilder.group({
       id: [usuario.id, [Validators.required]],
       email: [usuario.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
@@ -162,7 +162,7 @@ export class UsuariosComponent implements OnInit {
       this.Usuario.removeControl("password");
     }
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.Usuario.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -172,19 +172,19 @@ export class UsuariosComponent implements OnInit {
     return error;
   }
 
-  private disable() {
+  public disable() {
     for (let key in this.Usuario.getRawValue()) {
       this.Usuario.get(key).disable();
     }
     this.Usuario.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalUsuario").then(() => {
       this.option = "";
       this.Usuario = null;
     });
   }
-  private operation() {
+  public operation() {
     switch (this.option) {
       case this.util.AGREGAR:
         this.agregarUsuario();
@@ -199,7 +199,7 @@ export class UsuariosComponent implements OnInit {
     console.log(this.Usuario.value);
     console.log(this.PermisosSelected);
   }
-  private agregarUsuario() {
+  public agregarUsuario() {
     this.util.msjLoading = "Agregando nuevo Usuario: " + this.Usuario.value.email;
     this.util.crearLoading().then(() => {
       this.usuarioService.agregarUsuario(this.Usuario.value, this.isChangeIMG, this.fileIMG, this.PermisosSelected.value).subscribe(result => {
@@ -220,7 +220,7 @@ export class UsuariosComponent implements OnInit {
       });
     });
   }
-  private actualizarUsuario() {
+  public actualizarUsuario() {
     console.log("this.PermisosSelected", this.PermisosSelected);
     let isChangePermisos = { isChangePermisos: false, };
     if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
@@ -250,7 +250,7 @@ export class UsuariosComponent implements OnInit {
     });
 
   }
-  private eliminarUsuario() {
+  public eliminarUsuario() {
     this.util.msjLoading = "Eliiminando Usuario: " + this.Usuario.value.email;
     this.util.crearLoading().then(() => {
       this.usuarioService.eliminarUsuario(this.UsuarioSelected).subscribe(result => {
@@ -268,7 +268,7 @@ export class UsuariosComponent implements OnInit {
     });
 
   }
-  private actualizarPermisosUsuario() {
+  public actualizarPermisosUsuario() {
     console.log("this.PermisosSelected", this.PermisosSelected);
     let isChangePermisos = { isChangePermisos: false, };
     if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
@@ -301,7 +301,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  private agregarImagen(event) {
+  public agregarImagen(event) {
     var files = event.target.files;
     var file = files[0],
       imageType = /image.*/;

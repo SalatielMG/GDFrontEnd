@@ -16,30 +16,30 @@ import {UsersBackupsMnt} from '../../../../Modelos/users/usersBackupsMnt';
 })
 export class BackupsComponent implements OnInit {
 
-  private option: string = "";
-  private email: string = "";
-  private rangoBackups = {
+  public option: string = "";
+  public email: string = "";
+  public rangoBackups = {
     value : 10,
     beforeValue: 0,
   };
-  private rangoUsers = {
+  public rangoUsers = {
     value : 5,
     beforeValue: 0,
   };
-  private users: UserSelect[] = [];
-  private usersSelected : UserSelect[];
-  private msj = "";
+  public users: UserSelect[] = [];
+  public usersSelected : UserSelect[];
+  public msj = "";
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
-  constructor(private util: Utilerias, private backupService: BackupService, private renderer: Renderer2, private userService: UserService, private route: ActivatedRoute,
-  private router: Router) {
+  constructor(public util: Utilerias, public backupService: BackupService, public renderer: Renderer2, public userService: UserService, public route: ActivatedRoute,
+  public router: Router) {
     this.usersSelected = [];
     this.backupService.resetearBackups();
     this.buscarBackupsUserMnt();
   }
 
-  private onScroll () {
+  public onScroll () {
     console.log('scrolled!!');
     this.buscarBackupsUserMnt();
   }
@@ -64,7 +64,7 @@ export class BackupsComponent implements OnInit {
       }
     }
   }
-  private buscarBackupsUserMnt() {
+  public buscarBackupsUserMnt() {
     this.util.loadingMain = true;
     if (this.backupService.pagina == 0) {
       this.msj = "Buscando usuario" + ((this.util.emailUserMntBackup == "Generales") ? "s: " : ": ") + this.util.emailUserMntBackup + " con un cantidad de Backups mayores a: " + this.rangoBackups.value;
@@ -84,7 +84,7 @@ export class BackupsComponent implements OnInit {
       });
     }
   }
-  private resultado(result, bnd = true) {
+  public resultado(result, bnd = true) {
     if (bnd){
       this.util.detenerLoading();
       this.msj = result.msj;
@@ -139,7 +139,7 @@ export class BackupsComponent implements OnInit {
     console.log(this.backupService.userBackups[indice].collapsed );
     console.log(this.cntBackupsUser['_results']);
   }
-  private minimizar(content: any) {
+  public minimizar(content: any) {
     console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", "0px");
@@ -147,7 +147,7 @@ export class BackupsComponent implements OnInit {
     this.renderer.setStyle(content, "padding", "0px 16px");
     // this.renderer.setStyle(content, "overflow", "hidden");
   }
-  private expandir(H, P, content) {
+  public expandir(H, P, content) {
     console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", H + "px");
@@ -223,7 +223,7 @@ export class BackupsComponent implements OnInit {
     });
   }
 
-  private limpiarBackupsUser() {
+  public limpiarBackupsUser() {
     let Quien = "";
     for (let user of this.users)
       Quien = Quien + user.email + ", \n";
@@ -265,7 +265,7 @@ export class BackupsComponent implements OnInit {
     });
   }
 
-  private eventSelectCollapse(index){
+  public eventSelectCollapse(index){
     console.log("After Event Collapse Activated:= ", this.backupService.userBackups[index]);
     console.log("this.backupService.userBackups[index].checked ", this.backupService.userBackups[index].checked);
     if (!this.backupService.userBackups[index].checked || this.backupService.userBackups[index].checked == undefined) { //Checked => push userSelected
@@ -286,7 +286,7 @@ export class BackupsComponent implements OnInit {
     console.log("Before Event Collapse Activated:= ", this.backupService.userBackups[index]);
     console.log("this.usersSelected", this.usersSelected);
   }
-  private collapseSelected() {
+  public collapseSelected() {
     this.usersSelected = [];
     this.rangoUsers.value = 10;
     this.rangoUsers.beforeValue = 10;
@@ -310,17 +310,17 @@ export class BackupsComponent implements OnInit {
     }
     console.log("this.usersSelected", this.usersSelected);
   }
-  private afterBlur(event) {
+  public afterBlur(event) {
     if (this.rangoBackups.beforeValue != this.rangoBackups.value) {
       this.backupService.resetearBackups();
       this.buscarBackupsUserMnt();
 
     }
   }
-  private beforeBlur(event) {
+  public beforeBlur(event) {
     this.rangoBackups.beforeValue = this.rangoBackups.value;
   }
-  private keyUpEvent(event){
+  public keyUpEvent(event){
     if (event.key == "Enter") {
       console.log("this.rangoBackups.value", this.rangoBackups.value);
       console.log("this.rangoBackups.beforeValue", this.rangoBackups.beforeValue);
@@ -328,13 +328,13 @@ export class BackupsComponent implements OnInit {
       this.beforeBlur(event);
     }
   }
-  private keyUpEventRangoUsers(event) {
+  public keyUpEventRangoUsers(event) {
     if (event.key == "Enter") {
       this.afterBlurRangoUsers();
       this.beforeBlurRangoUsers();
     }
   }
-  private afterBlurRangoUsers() {// Evento filtroSeleccionar
+  public afterBlurRangoUsers() {// Evento filtroSeleccionar
     console.log("this.rangoUsers", this.rangoUsers);
     if (this.rangoUsers.value > this.rangoUsers.beforeValue) { //Selecionar usuarios faatantes
       let faltantes = this.rangoUsers.value - this.rangoUsers.beforeValue;
@@ -366,7 +366,7 @@ export class BackupsComponent implements OnInit {
       console.log("this.usersSelected", this.usersSelected);
     }
   }
-  private beforeBlurRangoUsers() {
+  public beforeBlurRangoUsers() {
     this.rangoUsers.beforeValue = this.rangoUsers.value;
   }
 
@@ -389,7 +389,7 @@ export class BackupsComponent implements OnInit {
             this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
             this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
             this.backupService.userBackups[this.backupService.indexUser].backups = result.backups;
-            this.router.navigate(['/detalleUsuario']);
+            this.router.navigate(['/home/backups/detalleUsuario']);
 
           }
         }, error =>  {
@@ -397,7 +397,7 @@ export class BackupsComponent implements OnInit {
         });
         });
     } else {
-      this.router.navigate(['/detalleUsuario']);
+      this.router.navigate(['/home/backups/detalleUsuario']);
     }
   }
 }

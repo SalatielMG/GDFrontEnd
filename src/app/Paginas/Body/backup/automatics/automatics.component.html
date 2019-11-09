@@ -310,14 +310,14 @@
         <td class="Celdas-Tabla font-italic ">{{automatic.cantidadRepetida}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.nameCategory}}</td>
         <td class="Celdas-Tabla ">{{automatic.period}}</td>
         <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
         <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
         <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
-        <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
         <td class="Celdas-Tabla ">{{automatic.sign}}</td>
         <td class="Celdas-Tabla ">{{automatic.detail}}</td>
         <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
@@ -354,18 +354,18 @@
         <td class="Celdas-Tabla font-italic ">{{automatic.cantidadRepetida}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_account, automatic.nameAccount)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
-        <td class="Celdas-Tabla ">{{util.asignarNombre(automatic.id_category, automatic.nameCategory)}}</td>
+        <td class="Celdas-Tabla ">{{automatic.nameCategory}}</td>
         <td class="Celdas-Tabla ">{{automatic.period}}</td>
         <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
         <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
         <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
-        <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol':'1.0-6'}}</td>
+        <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
         <td class="Celdas-Tabla ">{{automatic.sign}}</td>
         <td class="Celdas-Tabla ">{{automatic.detail}}</td>
-        <td class="Celdas-Tabla ">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-        <td class="Celdas-Tabla ">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+        <td class="Celdas-Tabla ">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
         <td class="Celdas-Tabla ">{{automatic.rate}}</td>
         <td class="Celdas-Tabla ">{{automatic.counter}}</td>

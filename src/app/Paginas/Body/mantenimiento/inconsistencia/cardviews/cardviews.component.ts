@@ -10,11 +10,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class CardviewsComponent implements OnInit {
 
-  private pagina: number = 0;
-  private backups;
+  public pagina: number = 0;
+  public backups;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private cardviewService: CardviewsService, private util: Utilerias) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public cardviewService: CardviewsService, public util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
       this.resetearVariables();
@@ -34,11 +34,11 @@ export class CardviewsComponent implements OnInit {
     console.log('scrolled!!');
     this.buscarInconsistencia();
   }
-  private resetearVariables(){
+  public resetearVariables(){
     this.cardviewService.Cardviews = [];
     this.pagina = 0;
   }
-  private buscarInconsistencia(){
+  public buscarInconsistencia(){
     this.util.loadingMain = true;
     if (this.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla CardViews';
@@ -58,7 +58,7 @@ export class CardviewsComponent implements OnInit {
     }
 
   }
-  private resultado(result, bnd = true) {
+  public resultado(result, bnd = true) {
     if (bnd) {
       this.util.detenerLoading();
       this.util.msjLoading =  result.msj;

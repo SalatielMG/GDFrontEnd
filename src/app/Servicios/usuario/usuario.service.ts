@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Router, ActivatedRoute, ParamMap, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Usuarios} from '../../Modelos/usuarios/usuarios';
 import {Permisos} from '../../Modelos/permisos/Permisos';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService implements CanActivate{
+export class UsuarioService {
 
   public url = URL;
   public id;
@@ -20,8 +20,7 @@ export class UsuarioService implements CanActivate{
 
   public Headers = new HttpHeaders({'Content-Type':  'application/json'});
 
-  constructor(public http: HttpClient, private route: ActivatedRoute,
-              private router: Router) {
+  constructor(public http: HttpClient, private router: Router) {
     this.cargarStorage();
   }
 
@@ -34,13 +33,18 @@ export class UsuarioService implements CanActivate{
     console.log('Valor actual del storage', storage);
     console.log('Valor actual del id', this.id);
   }
-
   public activo(): boolean {
     if (this.id == null) return false;
     return (this.id.toString() != "" );
   }
+  public isSuperAdmin(): boolean {
+    return (this.UsuarioCurrent.tipo == "superAdmin");
+  }
   public isAdmin(): boolean {
     return (this.UsuarioCurrent.tipo == "admin");
+  }
+  public isAux(): boolean {
+    return (this.UsuarioCurrent.tipo == "aux");
   }
   public cargarStorage() {
     let id = localStorage.getItem('id');
@@ -66,16 +70,6 @@ export class UsuarioService implements CanActivate{
     this.router.navigate(['/login']);
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.activo()) {
-      return true;
-    }
-    // navigate to login page
-    this.router.navigate(['/login']);
-    // you can save redirect url so after authing we can move them back to the page they requested
-    return false;
-  }
-
   public pass(): Observable<any> {
     return this.http.get(URL + "contraseña");
   }
@@ -90,11 +84,6 @@ export class UsuarioService implements CanActivate{
   public obtUsuariosGral(id_usuario = "0", show_permiso = "1"): Observable<any> {
     return this.http.get(URL + "obtUsuariosGral", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
   }
-
-  /*public obtUsersGral(): Observable<any> {
-    return this.http.get(URL + "obtUsersGral");
-  }*/
-
   public agregarUsuario(usuario, isChange , imagen, permisosSelected): Observable <any> {
     const  parametro = new FormData();
       parametro.append('usuario', JSON.stringify(usuario));

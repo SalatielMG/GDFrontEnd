@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+/*body {
+  font-family: 'Lato', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}*/
+
 .dropdown-menu {
   background-color: rgba(255, 255, 255, 0.86) !important;
   transition: all 0.2s ease ;

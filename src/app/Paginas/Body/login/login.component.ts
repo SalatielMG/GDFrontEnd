@@ -15,8 +15,8 @@ export class LoginComponent implements OnInit {
   public usuario: FormGroup;
   public faCheck = faCheck;
 
-  constructor(public userSerevice: UsuarioService, public formBuilder: FormBuilder, private util: Utilerias, private route: ActivatedRoute,
-              private router: Router) { }
+  constructor(public userSerevice: UsuarioService, public formBuilder: FormBuilder, public util: Utilerias, public route: ActivatedRoute,
+              public router: Router) { }
 
   ngOnInit() {
     this.construirFormulario();

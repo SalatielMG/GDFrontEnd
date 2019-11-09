@@ -12,12 +12,12 @@ import {Extras} from '../../../../Modelos/extras/extras';
 })
 export class ExtrasComponent implements OnInit {
 
-  private option = "";
-  private extra: FormGroup = null;
-  private indexUniqueExtrasSelected= {};
+  public option = "";
+  public extra: FormGroup = null;
+  public indexUniqueExtrasSelected= {};
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private extrasService: ExtrasService, private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public extrasService: ExtrasService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.extrasService.id_backup = this.util.numberFormat(params.get("idBack"));
       this.extrasService.resetVariables();
@@ -33,7 +33,7 @@ export class ExtrasComponent implements OnInit {
       this.searchExtras();
     }
   }
-  private searchExtras() {
+  public searchExtras() {
     this.util.loadingMain = true;
     if (this.extrasService.pagina == 0) {
       this.util.msjLoading = "Buscando Extras del Respaldo con id_backup: " + this.extrasService.id_backup;
@@ -52,7 +52,7 @@ export class ExtrasComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.extrasService.pagina == 0) {
       this.util.detenerLoading();
@@ -71,7 +71,7 @@ export class ExtrasComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  private accionExtras(option, extras = new Extras(), i = null) {
+  public accionExtras(option, extras = new Extras(), i = null) {
     this.option = option;
     this.buildForm(extras);
     if (this.option != this.util.AGREGAR) {
@@ -87,7 +87,7 @@ export class ExtrasComponent implements OnInit {
       this.util.abrirModal("#modalExtra");
     }, 500);
   }
-  private buildForm(extra: Extras) {
+  public buildForm(extra: Extras) {
     this.extra = this.formBuilder.group({
       id_backup : [extra.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_extra : [extra.id_extra, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
@@ -96,7 +96,7 @@ export class ExtrasComponent implements OnInit {
     });
     if (this.util.isDelete(this.option)) this.disableForm();
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.extra.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -105,20 +105,20 @@ export class ExtrasComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.extra.getRawValue()) {
       this.extra.get(key).disable();
     }
     this.extra.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalExtra").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.extra = null;
     });
   }
-  private operation() {
+  public operation() {
     console.log("this.valueExtrasForm:=", this.extra.value);
     switch (this.option) {
       case this.util.AGREGAR:

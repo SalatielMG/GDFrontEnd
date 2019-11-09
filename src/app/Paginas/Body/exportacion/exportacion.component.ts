@@ -13,24 +13,24 @@ import { URL } from '../../../Utilerias/URL';
 })
 export class ExportacionComponent implements OnInit {
 
-  private typeEXport: string = "sqlite";
-  private email: string = "";
-  private option: string = "";
+  public typeEXport: string = "sqlite";
+  public email: string = "";
+  public option: string = "";
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
-  constructor(private util:Utilerias, private backupService: BackupService, private userService: UserService, private route: ActivatedRoute,
-  private router: Router, private renderer: Renderer2) {
+  constructor(public util:Utilerias, public backupService: BackupService, public userService: UserService, public route: ActivatedRoute,
+  public router: Router, public renderer: Renderer2) {
     this.search();
   }
 
   ngOnInit() {
   }
-  private onScroll() {
+  public onScroll() {
     this.searchUsers();
   }
 
-  private search() {
+  public search() {
     this.backupService.resetearBackups();
     if (this.email.length == 0) {
       this.util.emailUserExportacionBackups = "Generales";
@@ -44,7 +44,7 @@ export class ExportacionComponent implements OnInit {
       }
     }
   }
-  private searchUsers() {
+  public searchUsers() {
     this.util.loadingMain = true;
     if (this.backupService.pagina == 0) {
       this.util.msjLoading = "Buscando usuario" + ((this.util.emailUserExportacionBackups == "Generales") ? "s: " : ": ") + this.util.emailUserExportacionBackups;
@@ -63,7 +63,7 @@ export class ExportacionComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     if (this.backupService.pagina == 0) {
       this.util.detenerLoading();
       this.util.msj = result.msj;
@@ -97,7 +97,7 @@ export class ExportacionComponent implements OnInit {
             this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
             this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
             this.backupService.userBackups[this.backupService.indexUser].backups = result.backups;
-            this.router.navigate(['/detalleUsuario']);
+            this.router.navigate(['/home/backups/detalleUsuario']);
 
           }
         }, error =>  {
@@ -105,7 +105,7 @@ export class ExportacionComponent implements OnInit {
         });
       });
     } else {
-      this.router.navigate(['/detalleUsuario']);
+      this.router.navigate(['/home/backups/detalleUsuario']);
     }
   }
   public verficarExpansion(indice, idUser, email) {
@@ -144,7 +144,7 @@ export class ExportacionComponent implements OnInit {
     console.log(this.backupService.userBackups[indice].collapsed );
     console.log(this.cntBackupsUser['_results']);
   }
-  private minimizar(content: any) {
+  public minimizar(content: any) {
     console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", "0px");
@@ -152,21 +152,21 @@ export class ExportacionComponent implements OnInit {
     this.renderer.setStyle(content, "padding", "0px 16px");
     // this.renderer.setStyle(content, "overflow", "hidden");
   }
-  private expandir(H, P, content) {
+  public expandir(H, P, content) {
     console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", H + "px");
     this.renderer.setStyle(content, "max-height", H + "px");
     this.renderer.setStyle(content, "padding", P + "px 16px");
   }
-  private accionExportar(option, id_backup, indexUser) {
+  public accionExportar(option, id_backup, indexUser) {
     this.typeEXport = "sqlite";
     this.option = option;
     this.backupService.indexUser = indexUser;
     this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected = id_backup;
 
   }
-  private exportBackup() {
+  public exportBackup() {
     console.log("Value typeExport Backup:=", this.typeEXport);
     this.util.msjLoading = "Exportando Respaldo con id_backup: " + this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected + " como fichero " + this.typeEXport;
     this.util.crearLoading().then(() => {

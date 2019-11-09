@@ -71,7 +71,7 @@
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado">
-    <h3 class="font-weight-normal text-light">Backups Usuario: <a [routerLink]="['/detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h3>
+    <h3 class="font-weight-normal text-light">Backups Usuario: <a [routerLink]="['detalleUsuario']" class="text-light" style="text-decoration: none;">{{userService.User.email}}</a> </h3>
     <a></a>
   </div>
 </div>
@@ -157,7 +157,7 @@
         <ng-container>
           <td scope="row" class="Celdas-Tabla font-weight-bold width-sm">{{(i+1)}}</td>
           <!--td class="Celdas-Tabla">{{back.pos}}</td-->
-          <td class="Celdas-Tabla width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
+          <td class="Celdas-Tabla width-sm" style="cursor: pointer;" [routerLink]="['detalleRespaldo', (i + 1), back.id_backup]">{{back.id_backup}}</td>
           <!--td class="text-center">{{back.indexUser}}</td-->
           <td class="Celdas-Tabla width-sm">{{back.automatic}}</td>
           <td class="Celdas-Tabla width-lg">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation:back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
@@ -193,7 +193,7 @@
       <ng-container>
         <td scope="row" class="Celdas-Tabla font-weight-bold width-sm">{{(i+1)}}</td>
         <!--td class="Celdas-Tabla">{{back.pos}}</td-->
-        <td class="Celdas-Tabla width-sm" style="cursor: pointer;" [routerLink]="['/detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
+        <td class="Celdas-Tabla width-sm" style="cursor: pointer;" [routerLink]="['detalleRespaldo', (back.pos), back.id_backup]">{{back.id_backup}}</td>
         <!--td class="text-center">{{back.indexUser}}</td-->
         <td class="Celdas-Tabla width-sm">{{back.automatic}}</td>
         <td class="Celdas-Tabla width-lg">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation:back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>

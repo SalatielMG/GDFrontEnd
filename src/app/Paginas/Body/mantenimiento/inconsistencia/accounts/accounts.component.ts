@@ -11,11 +11,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class AccountsComponent implements OnInit {
 
-  private pagina: number = 0;
-  private backups;
+  public pagina: number = 0;
+  public backups;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router, private accountService: AccountsService, private util: Utilerias) {
+  constructor(public route: ActivatedRoute,
+              public router: Router, public accountService: AccountsService, public util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
       this.resetearVariables();
@@ -38,17 +38,17 @@ export class AccountsComponent implements OnInit {
     this.buscarInconsistencia();
   }
 
-  private resetearVariables() {
+  public resetearVariables() {
 
     this.accountService.Accounts = [];
     this.pagina = 0;
   }
 
-  private buscarInconsistencia() {
+  public buscarInconsistencia() {
     this.util.loadingMain = true;
     console.log("dataUserMntincosnistencia", this.util.userMntInconsistencia);
     if (this.pagina == 0) {
-      this.util.msjLoading = 'OHH Buscando inconsistencia de datos en la tabla Accounts' + JSON.stringify(this.util.userMntInconsistencia);
+      this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Accounts';
       this.util.crearLoading().then(() => {
         this.accountService.buscarInconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
           this.resultado(result);
@@ -66,7 +66,7 @@ export class AccountsComponent implements OnInit {
 
   }
 
-  private resultado(result, bnd = true) {
+  public resultado(result, bnd = true) {
     if (bnd) {
       this.util.detenerLoading();
       this.util.msjLoading =  result.msj;

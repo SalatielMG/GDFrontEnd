@@ -138,8 +138,8 @@
                     <td class="v-a-middle width-10">{{back.id_backup}}</td>
                     <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
                     <td class="v-a-middle width-10">{{back.automatic }}</td>
-                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation : back.date_creation | date:'dd MMMM yyyy'}}</td>
-                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy'}}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation : back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+                    <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
                     <td class="v-a-middle width-10">{{back.created_in}}</td>
                     <td class="v-a-middle width-10">
                       <div class="custom-control custom-checkbox">
@@ -167,8 +167,8 @@
                   <td class="v-a-middle width-10">{{back.id_backup}}</td>
                   <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'" *ngIf="util.userMntInconsistencia.email == 'Generales'">{{back.email}}</td>
                   <td class="v-a-middle width-10">{{(back.automatic == 1) ? 'Si': 'No'}}</td>
-                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation : back.date_creation | date:'dd MMMM yyyy'}}</td>
-                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? 'Sin descarga': back.date_download | date:'dd MMMM yyyy'}}</td>
+                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_creation == '0000-00-00 00:00:00') ? back.date_creation : back.date_creation | date:'dd MMMM yyyy hh:mm:ss'}}</td>
+                  <td class="v-a-middle" [ngClass]="(util.userMntInconsistencia.email == 'Generales') ? 'gralBackups': 'noGralBackups'">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
                   <td class="v-a-middle width-10">{{back.created_in}}</td>
                   <td class="v-a-middle width-10">
                     <div class="custom-control custom-checkbox">

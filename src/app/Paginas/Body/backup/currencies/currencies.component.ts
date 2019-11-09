@@ -12,13 +12,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class CurrenciesComponent implements OnInit {
 
-  private option = "";
-  private currency: FormGroup = null;
-  private indexUniqueCurrencySelected= {};
-  private indexCurrencySelectModal: number = 0;
+  public option = "";
+  public currency: FormGroup = null;
+  public indexUniqueCurrencySelected= {};
+  public indexCurrencySelectModal: number = 0;
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private currenciesService: CurrenciesService, private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public currenciesService: CurrenciesService, public util: Utilerias, public formBuilder: FormBuilder) {
 
     this.route.parent.paramMap.subscribe(params => {
       this.currenciesService.id_backup = this.util.numberFormat(params.get("idBack"));
@@ -35,7 +35,7 @@ export class CurrenciesComponent implements OnInit {
       this.searchCurrencies();
     }
   }
-  private searchCurrencies() {
+  public searchCurrencies() {
     this.util.loadingMain = true;
     if (this.currenciesService.pagina == 0) {
       this.util.msjLoading = 'Buscando Currencies del Respaldo con id_backup: ' + this.currenciesService.id_backup;
@@ -54,7 +54,7 @@ export class CurrenciesComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.currenciesService.pagina == 0) {
       this.util.detenerLoading();
@@ -77,7 +77,7 @@ export class CurrenciesComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  private accionCurrency(option, currency = new Currencies(), i = null) {
+  public accionCurrency(option, currency = new Currencies(), i = null) {
     this.util.msjLoading = "";
     this.util.crearLoading().then(() => {
       this.currenciesService.obtCurrenciesGralBackup().subscribe(result => {
@@ -113,7 +113,7 @@ export class CurrenciesComponent implements OnInit {
       });
     });
   }
-  private buildForm(currency: Currencies) {
+  public buildForm(currency: Currencies) {
     this.currency = this.formBuilder.group({
       id_backup : [currency.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       iso_code : [currency.iso_code, [Validators.required, Validators.maxLength(3), Validators.minLength(3)]],
@@ -123,7 +123,7 @@ export class CurrenciesComponent implements OnInit {
     });
     if (this.util.isDelete(this.option)) this.disableForm();
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.currency.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -132,20 +132,20 @@ export class CurrenciesComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.currency.getRawValue()) {
       this.currency.get(key).disable();
     }
     this.currency.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalCurrency").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.currency = null;
     });
   }
-  private operation() {
+  public operation() {
     console.log("this.valueCurrenciesForm:=", this.currency.value);
     switch (this.option) {
       case this.util.AGREGAR:
@@ -159,7 +159,7 @@ export class CurrenciesComponent implements OnInit {
         break;
     }
   }
-  private agregarCurrency () {
+  public agregarCurrency () {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando Currency con iso_code: " + this.currency.value.iso_code + " del Respaldo con id_backup: " + this.currenciesService.id_backup;
     this.util.crearLoading().then(() => {
@@ -187,7 +187,7 @@ export class CurrenciesComponent implements OnInit {
       });
     });
   }
-  private actualizarCurrency () {
+  public actualizarCurrency () {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizando Currency con iso_code: " + this.indexUniqueCurrencySelected["iso_code"] + " del Respaldo con id_backup: " + this.currenciesService.id_backup;
     this.util.crearLoading().then(() => {
@@ -215,7 +215,7 @@ export class CurrenciesComponent implements OnInit {
       });
     });
   }
-  private eliminarCurrency () {
+  public eliminarCurrency () {
     this.util.msjLoading = "Eliminando Currency con iso_code: " + this.indexUniqueCurrencySelected["iso_code"] + " del Respaldo con id_backup: " + this.currenciesService.id_backup;
     this.util.crearLoading().then(() => {
       this.currenciesService.eliminarCurrency(this.indexUniqueCurrencySelected).subscribe(result => {
@@ -236,14 +236,14 @@ export class CurrenciesComponent implements OnInit {
       });
     });
   }
-  private patchValueFormDataBeforeOperation() {
+  public patchValueFormDataBeforeOperation() {
     this.currency.patchValue({id_backup: this.currenciesService.id_backup});
     this.currency.patchValue({selected: this.util.unValueChecked(this.currency.value.selected)});
   }
-  private patchValueFormDataAfterOperationError() {
+  public patchValueFormDataAfterOperationError() {
     this.currency.patchValue({selected: this.util.valueChecked(this.currency.value.selected)});
   }
-  private currencySelectedModal (event){
+  public currencySelectedModal (event){
     this.indexCurrencySelectModal = event.target.selectedIndex;
     this.currency.patchValue({symbol: ((this.currency.value.iso_code == '') ? "": this.currenciesService.CurrenciesGralBackup[this.indexCurrencySelectModal - 1].symbol)});
     this.currency.patchValue({icon_name: ((this.currency.value.iso_code == '') ? "": this.currenciesService.CurrenciesGralBackup[this.indexCurrencySelectModal - 1].icon_name)});

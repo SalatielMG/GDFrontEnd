@@ -1,3 +1,16 @@
+.col-rango {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.col-btn-Filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.label-rango {
+  font-size: 18px; font-weight: normal
+}
 .table-fixed input, select {
   background-color: #21252987 !important;
 }

@@ -25,7 +25,7 @@
           
           <div class="form">
             <label for="key_name">Key_Name: </label>
-            <select class="form-control" id="key_name" formControlName="key_name" [ngClass]="(getError('key_name') == '') ? 'valid-control' : 'invalid-control'" (change)="currencySelectedModal($event)">
+            <select class="form-control" id="key_name" formControlName="key_name" [ngClass]="(getError('key_name') == '') ? 'valid-control' : 'invalid-control'">
               <option value="" *ngIf="util.Keys_Names_Preferences.length > 0">Seleccione una key_name</option>
               <option *ngFor="let keyName of util.Keys_Names_Preferences" [value]="keyName.key_name">{{keyName.key_name}}</option>
             </select>

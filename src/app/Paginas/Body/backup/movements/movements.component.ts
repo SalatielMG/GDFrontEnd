@@ -12,13 +12,13 @@ import {Movements} from '../../../../Modelos/movements/movements';
 })
 export class MovementsComponent implements OnInit {
 
-  private option: string = "";
-  private movement: FormGroup = null;
-  private indexUniqueMovementSelected = {};
-  private indexMovementSelectModal: number = 0;
+  public option: string = "";
+  public movement: FormGroup = null;
+  public indexUniqueMovementSelected = {};
+  public indexMovementSelectModal: number = 0;
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private movementsService: MovementsService, private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public movementsService: MovementsService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.movementsService.id_backup = parseInt(params.get("idBack"));
       this.movementsService.resetVariables();
@@ -28,8 +28,8 @@ export class MovementsComponent implements OnInit {
 
   ngOnInit() {
   }
-  //private paginaAnt = 0;
-  private onScroll(event) {
+  //public paginaAnt = 0;
+  public onScroll(event) {
     console.log("Event:=", event);
     if (!this.movementsService.isFilter() && !this.util.loadingMain) {
       this.searchMovements();
@@ -37,7 +37,7 @@ export class MovementsComponent implements OnInit {
     }
   }
 
-  private searchMovements() {
+  public searchMovements() {
     this.util.loadingMain = true;
     if (this.movementsService.pagina == 0) {
       this.util.msjLoading = 'Buscando Movimientos del Respaldo con id_backup: ' + this.movementsService.id_backup;
@@ -56,7 +56,7 @@ export class MovementsComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj =  result.msj;
     if (this.movementsService.pagina == 0) {
       this.util.detenerLoading();
@@ -79,7 +79,7 @@ export class MovementsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  private acccionMovement(option, movement = new Movements(), i = null) {
+  public acccionMovement(option, movement = new Movements(), i = null) {
     this.util.msjLoading = "Cagando cuentas del backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
       this.movementsService.accountsCategoriesServices.obtAccountsBackup(this.movementsService.id_backup, "1").subscribe(result => {
@@ -119,7 +119,7 @@ export class MovementsComponent implements OnInit {
     });
   }
 
-  private buildForm(movement: Movements) {
+  public buildForm(movement: Movements) {
     this.movement = this.formBuilder.group({
       id_backup : [movement.id_backup, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("10")), Validators.min(0)]],
       id_account : [(this.option == this.util.AGREGAR) ? "" :movement.id_account, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("5")), Validators.min(0)]],
@@ -146,7 +146,7 @@ export class MovementsComponent implements OnInit {
       this.setValueTimeRecord();
     }
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.movement.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -155,26 +155,26 @@ export class MovementsComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.movement.getRawValue()) {
       this.movement.get(key).disable();
     }
     this.movement.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalMovement").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.movement = null;
     });
   }
-  private changeEvent(event) {
+  public changeEvent(event) {
     this.movement.patchValue({id_category: ''});
     console.log("event changeradioBtutton:= ", event);
     console.log("Value movement:=", this.movement.value);
     console.log("mvement Form:=", this.movement);
   }
-    private accountSelectedModal(event) {
+    public accountSelectedModal(event) {
     this.indexMovementSelectModal = event.target.selectedIndex;
     this.movement.patchValue({id_category: ''});
     console.log("event:=", event.target.selectedIndex);
@@ -184,7 +184,7 @@ export class MovementsComponent implements OnInit {
     if (this.movement.value.id_account == "") return;
     this.movementsService.obtCategoriesAccountBackup(this.indexMovementSelectModal.toString());
   }
-  private changeDateTime(event, isDate) {
+  public changeDateTime(event, isDate) {
     console.log("event changeDateTime:=", event);
     console.log("movement changeDateTime:=", this.movement.value);
     console.log("isDate changeDateTime:=", isDate);
@@ -196,7 +196,7 @@ export class MovementsComponent implements OnInit {
       this.setValueTimeRecord();
     }
   }
-  private setValueDateRecord() {
+  public setValueDateRecord() {
     if (this.movement.value.date_record != null) {
       let date = this.util.formatDateTimeSQL(this.movement, "date_record", false).split("-");
       this.movement.patchValue({day: date[2]});
@@ -217,7 +217,7 @@ export class MovementsComponent implements OnInit {
       console.log("date", date);
     }
   }
-  private setValueTimeRecord() {
+  public setValueTimeRecord() {
     if (this.movement.value.time_record != null) {
       let time = this.movement.value.time_record.toLocaleTimeString().split(":");
       time.forEach((value, index) => {
@@ -229,7 +229,7 @@ export class MovementsComponent implements OnInit {
     }
   }
 
-  private operation() {
+  public operation() {
     switch (this.option) {
       case this.util.AGREGAR:
         this.agregarMovement();
@@ -243,7 +243,7 @@ export class MovementsComponent implements OnInit {
     }
     console.log("Value movement:=", this.movement.value);
   }
-  private agregarMovement () {
+  public agregarMovement () {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando Movimiento " + ((this.movement.value.sign) ? "Ingreso": "Gasto") + " del Respaldo con id_backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
@@ -269,7 +269,7 @@ export class MovementsComponent implements OnInit {
       });
     });
   }
-  private actualizarMovement () {
+  public actualizarMovement () {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizado Movimiento " + ((this.movement.value.sign) ? "Ingreso": "Gasto") + " del Respaldo con id_backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
@@ -297,7 +297,7 @@ export class MovementsComponent implements OnInit {
       });
     });
   }
-  private eliminarMovement () {
+  public eliminarMovement () {
     this.util.msjLoading = "Eliminando Movimiento " + ((this.movement.value.sign) ? "Ingreso": "Gasto") + " del Respaldo con id_backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
       this.movementsService.eliminarMovement(this.indexUniqueMovementSelected).subscribe(result => {
@@ -320,7 +320,7 @@ export class MovementsComponent implements OnInit {
       });
     });
   }
-  private patchValueFormDataBeforeOperation () {
+  public patchValueFormDataBeforeOperation () {
     this.movement.patchValue({id_backup: this.movementsService.id_backup});
     this.movement.patchValue({amount: this.util.zeroFile(this.movement.value.amount)});
     this.movement.patchValue({sign: this.util.signValue(this.movement.value.sign)});
@@ -331,7 +331,7 @@ export class MovementsComponent implements OnInit {
     console.log("Value before error Operation:= ", this.movement.value);
 
   }
-  private patchValueFormDataAfterOperationError () {
+  public patchValueFormDataAfterOperationError () {
     this.movement.patchValue({sign: this.util.signUnvalue(this.movement.value.sign)});
     this.movement.patchValue({time_record: this.util.formatComponentTime(this.movement.value.date_record, this.movement.value.time_record)});
     this.movement.patchValue({date_record: this.util.formatComponentDateCalendar(this.movement.value.date_record)});

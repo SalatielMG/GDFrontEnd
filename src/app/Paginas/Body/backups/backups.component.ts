@@ -14,22 +14,22 @@ import {UsersBackupsMnt} from '../../../Modelos/users/usersBackupsMnt';
 })
 export class BackupsComponent implements OnInit {
 
-  private option: string = "";
+  public option: string = "";
 
-  private isCreated = false;
-  private isDownload = false;
-  //private backupSelected: Backup;
-  private backup: FormGroup;
+  public isCreated = false;
+  public isDownload = false;
+  //public backupSelected: Backup;
+  public backup: FormGroup;
 
 
-  /*private pagina = 0;
-  private filtrosSearch = new FiltrosSearchBackupsUser();
-  private backupsFiltro: Backup[];
-  private dataBackupSelected = [];
-  private indexBackupSelected: number = 0;*/
+  /*public pagina = 0;
+  public filtrosSearch = new FiltrosSearchBackupsUser();
+  public backupsFiltro: Backup[];
+  public dataBackupSelected = [];
+  public indexBackupSelected: number = 0;*/
 
-  constructor(private userService: UserService, private backService: BackupService, private util: Utilerias, private route: ActivatedRoute,
-              private router: Router, private formBuilder: FormBuilder) {
+  constructor(public userService: UserService, public backService: BackupService, public util: Utilerias, public route: ActivatedRoute,
+              public router: Router, public formBuilder: FormBuilder) {
 
     //Consutar los bakups del usuario encontrado.
     // this.backupSelected.id_backup = 0;
@@ -41,7 +41,7 @@ export class BackupsComponent implements OnInit {
   onScroll () {
     if (!this.backService.isFilter() && !this.util.loadingMain) this.buscar();
   }
-  private buscar() {
+  public buscar() {
     this.util.loadingMain = true;
     if (this.backService.pagina == 0) {
       this.util.msjLoading = "Buscando Backups del usuario: " + this.userService.User.email;
@@ -60,7 +60,7 @@ export class BackupsComponent implements OnInit {
       });
     }
   }
-  private resultado(result) {
+  public resultado(result) {
     if (this.backService.pagina == 0) {
       this.util.detenerLoading();
       this.util.msj = result.msj;
@@ -87,7 +87,7 @@ export class BackupsComponent implements OnInit {
     this.buildForm(backup.id_backup, backup.automatic, (this.isCreated) ? new Date(backup.date_creation) : null, (this.isDownload) ? new Date(backup.date_download) : null, backup.created_in);
   }
 
-  private buildForm(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
+  public buildForm(id_backup = 0, automatic = 0, date_creation = null, date_download = null, created_in = "") {
     this.backup = this.formBuilder.group({
       id_backup: [id_backup, Validators.required],
       automatic: [this.util.valueChecked(automatic), Validators.required],
@@ -97,7 +97,7 @@ export class BackupsComponent implements OnInit {
     });
     if (this.isDelete()) this.disable(); else this.enable();
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.backup.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -106,22 +106,22 @@ export class BackupsComponent implements OnInit {
     }
     return error;
   }
-  private disable() {
+  public disable() {
     for (let key in this.backup.getRawValue()) {
       this.backup.get(key).disable();
     }
     this.backup.disable();
   }
-  private enable() {
+  public enable() {
     for (let key in this.backup.getRawValue()) {
       this.backup.get(key).enable();
     }
     this.backup.enable();
   }
-  private isDelete(): boolean {
+  public isDelete(): boolean {
     return this.option == this.util.ELIMINAR;
   }
-  private operacion() {
+  public operacion() {
     // console.log(this.option, this.backup.value);
     switch (this.option) {
       case this.util.ACTUALIZAR:
@@ -132,7 +132,7 @@ export class BackupsComponent implements OnInit {
         break;
     }
   }
-  private cerrarModal() {
+  public cerrarModal() {
     console.log("cerrando Modal :v");
     this.util.cerrarModal("#modalBackup").then(() => {
       this.option = "";
@@ -143,7 +143,7 @@ export class BackupsComponent implements OnInit {
     console.log("clik modal :v");
   }
 
-  private actualizarBackup(){
+  public actualizarBackup(){
     console.log("Valor backup", this.backup.value);
     let dateTime_date_creation = this.util.formatDateTimeSQL( this.backup,"date_creation");
     let dateTime_date_download = this.util.formatDateTimeSQL( this.backup,"date_download");
@@ -182,7 +182,7 @@ export class BackupsComponent implements OnInit {
     });
   }
 
-  private eliminarBackup() {
+  public eliminarBackup() {
       this.util.crearLoading().then(()=> {
         this.backService.eliminarBackup().subscribe(
           result => {

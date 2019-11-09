@@ -10,6 +10,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {LoadingSpinnerModule} from '../../../Components/loading-spinner/loading-spinner/loading-spinner.module';
 import {QueryCompleteModule} from '../../../Components/query-complete/query-complete.module';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import {InconsistenciaModule} from './inconsistencia/inconsistencia.module';
 
 @NgModule({
   declarations: [MantenimientoComponent, BackupsComponent],
@@ -24,6 +25,6 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
     QueryCompleteModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-  ],
+    InconsistenciaModule],
 })
 export class MantenimientoModule { }

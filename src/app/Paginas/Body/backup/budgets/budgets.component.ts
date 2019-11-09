@@ -12,13 +12,13 @@ import {Budgets} from '../../../../Modelos/budgets/budgets';
 })
 export class BudgetsComponent implements OnInit {
 
-  private option: string = "";
-  private budget: FormGroup = null;
-  private indexUniqueBudgetSelected = {};
-  private indexBudgetSelectModal: number = 0;
+  public option: string = "";
+  public budget: FormGroup = null;
+  public indexUniqueBudgetSelected = {};
+  public indexBudgetSelectModal: number = 0;
 
-  constructor( private route: ActivatedRoute,
-               private router: Router, private budgetService: BudgetsService,  private util: Utilerias, private formBuilder: FormBuilder) {
+  constructor( public route: ActivatedRoute,
+               public router: Router, public budgetService: BudgetsService,  public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.budgetService.id_backup = params.get("idBack");
       this.budgetService.resetVariables();
@@ -31,11 +31,11 @@ export class BudgetsComponent implements OnInit {
   ngOnInit() {
   }
 
-  private onScroll() {
+  public onScroll() {
     if (!this.budgetService.isFilter() && !this.util.loadingMain) this.searchBudgets();
   }
 
-  private searchBudgets() {
+  public searchBudgets() {
     this.util.loadingMain = true;
     if (this.budgetService.pagina == 0) {
       this.util.msjLoading = 'Buscando budgest relacionados con el id_backup: ' + this.budgetService.id_backup;
@@ -55,7 +55,7 @@ export class BudgetsComponent implements OnInit {
     }
   }
 
-  private resultado(result) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.budgetService.pagina == 0) {
       this.util.detenerLoading();
@@ -75,7 +75,7 @@ export class BudgetsComponent implements OnInit {
     }
     this.util.loadingMain = false;
   }
-  private AccountsAndCategoriesBackup(result) {
+  public AccountsAndCategoriesBackup(result) {
     if (!result.accountsBackup.error) {
       this.budgetService.AccountsBackup = result.accountsBackup.accounts;
       console.log("this.budgetService.AccountsBackup", this.budgetService.AccountsBackup);
@@ -84,7 +84,7 @@ export class BudgetsComponent implements OnInit {
     }
   }
 
-  private accionBudget(option, budget = new Budgets(), i = null) {
+  public accionBudget(option, budget = new Budgets(), i = null) {
     this.util.msjLoading = "Cargando cuentas y categorias del backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
       this.budgetService.obtAccountsBackup().then(error => {
@@ -124,7 +124,7 @@ export class BudgetsComponent implements OnInit {
     });
   }
 
-  private buildForm(budget: Budgets) {
+  public buildForm(budget: Budgets) {
     console.log("Construyendo form");
     this.budget = this.formBuilder.group({
       id_backup : [budget.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
@@ -140,7 +140,7 @@ export class BudgetsComponent implements OnInit {
     if (this.util.isDelete(this.option)) this.disableForm();
 
   }
-  private getError(controlName: string): string {
+  public getError(controlName: string): string {
     let error = '';
     const control = this.budget.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
@@ -149,20 +149,20 @@ export class BudgetsComponent implements OnInit {
     }
     return error;
   }
-  private disableForm() {
+  public disableForm() {
     for (let key in this.budget.getRawValue()) {
       this.budget.get(key).disable();
     }
     this.budget.disable();
   }
-  private closeModal() {
+  public closeModal() {
     this.util.cerrarModal("#modalBudget").then(() => {
       console.log("Modal cerrado :v");
       this.option = "";
       this.budget = null;
     });
   }
-  private operation() {
+  public operation() {
     switch (this.option) {
       case this.util.AGREGAR:
         this.agregarBudget();
@@ -175,7 +175,7 @@ export class BudgetsComponent implements OnInit {
         break;
     }
   }
-  private agregarBudget() {
+  public agregarBudget() {
     this.patchValueFormDate();
     this.addZeroDecimalValue();
     this.util.msjLoading = "Agregando nuevo presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
@@ -202,7 +202,7 @@ export class BudgetsComponent implements OnInit {
       });
     });
   }
-  private actualizarBudget() {
+  public actualizarBudget() {
     this.patchValueFormDate();
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
@@ -231,7 +231,7 @@ export class BudgetsComponent implements OnInit {
       });
     });
   }
-  private eliminarBudget() {
+  public eliminarBudget() {
     this.util.msjLoading = "Eliminando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
       this.budgetService.eliminarBudget(this.indexUniqueBudgetSelected).subscribe(result => {
@@ -252,11 +252,11 @@ export class BudgetsComponent implements OnInit {
       });
     });
   }
-  private addZeroDecimalValue() {
+  public addZeroDecimalValue() {
     this.budget.patchValue({amount: this.util.zeroFile(this.budget.value.amount)});
     this.budget.patchValue({budget: this.util.zeroFile(this.budget.value.budget)});
   }
-  private accountSelectedModal(event) {
+  public accountSelectedModal(event) {
     this.indexBudgetSelectModal = event.target.selectedIndex;
     this.budget.patchValue({id_category: ''});
     console.log("event:=", event.target.selectedIndex);
@@ -265,12 +265,12 @@ export class BudgetsComponent implements OnInit {
 
     this.budgetService.obtCategoriesAccountBackup(this.indexBudgetSelectModal.toString());
   }
-  private patchValueFormDate() {
+  public patchValueFormDate() {
     this.budget.patchValue({id_backup: this.budgetService.id_backup});
     this.budget.patchValue({initial_date: this.util.formatDateTimeSQL( this.budget,"initial_date", false)});
     this.budget.patchValue({final_date: this.util.formatDateTimeSQL( this.budget,"final_date", false)});
   }
-  private patchValueAfterError() {
+  public patchValueAfterError() {
     this.budget.patchValue({initial_date: this.util.formatComponentDateCalendar( this.budget.value.initial_date)});
     this.budget.patchValue({final_date: this.util.formatComponentDateCalendar( this.budget.value.final_date)});
   }

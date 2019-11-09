@@ -13,14 +13,14 @@ import {ConfirmNewPasswordDirective} from '../../../../Validations/confirmNewPas
 export class PerfilComponent implements OnInit {
 
   @ViewChild("cntPermisos", {read: "", static: false}) cntPermisos = ElementRef;
-  private isExpandCntPermisos: boolean = true;
-  private isConfirmPasswordCurrent: boolean = false;
-  private Usuario: FormGroup = null;
-  private Password: FormGroup = null;
-  private isChangeIMG = false;
-  private fileIMG = null;
+  public isExpandCntPermisos: boolean = true;
+  public isConfirmPasswordCurrent: boolean = false;
+  public Usuario: FormGroup = null;
+  public Password: FormGroup = null;
+  public isChangeIMG = false;
+  public fileIMG = null;
 
-  constructor(private usuarioService: UsuarioService, private util: Utilerias, private renderer: Renderer2, private formBuilder: FormBuilder, private confirmPasswordCurrentDirective: ConfirmPasswordCurrentDirective, private confirmNewPasswordDirective: ConfirmNewPasswordDirective ) {
+  constructor(public usuarioService: UsuarioService, public util: Utilerias, public renderer: Renderer2, public formBuilder: FormBuilder, public confirmPasswordCurrentDirective: ConfirmPasswordCurrentDirective, public confirmNewPasswordDirective: ConfirmNewPasswordDirective ) {
 
   }
 
@@ -40,7 +40,7 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  private actionUpdateUsuario(){
+  public actionUpdateUsuario(){
     this.Usuario = this.formBuilder.group({
       id: [this.usuarioService.UsuarioCurrent.id, [Validators.required]],
       email: [this.usuarioService.UsuarioCurrent.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
@@ -50,7 +50,7 @@ export class PerfilComponent implements OnInit {
     });
     this.Usuario.get("tipo").disable();
   }
-  private actionResetPassword() {
+  public actionResetPassword() {
     this.isConfirmPasswordCurrent = false;
     this.Password = this.formBuilder.group({
       confirmPasswordCurrent: ['', {
@@ -60,7 +60,7 @@ export class PerfilComponent implements OnInit {
       }]
     });
   }
-  private getError(controlName: string, isPasswordReset = false): string {
+  public getError(controlName: string, isPasswordReset = false): string {
     //console.log(isPasswordReset);
     if (!isPasswordReset) {
       let error = '';
@@ -81,7 +81,7 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  private closeModal(nameModal = "#modalUsuarioUpdate") {
+  public closeModal(nameModal = "#modalUsuarioUpdate") {
     this.util.cerrarModal(nameModal);
     if (nameModal == "#modalUsuarioUpdate") {
       this.Usuario = null;
@@ -90,7 +90,7 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  private UpdateUsuario(){
+  public UpdateUsuario(){
     console.log("Value Usuario Form:= ", this.Usuario.value);
     this.util.msjLoading = "Actualizando datos de su perfil";
     this.util.crearLoading().then(() => {
@@ -113,7 +113,7 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  private UpdatePasword() {
+  public UpdatePasword() {
     if (this.isConfirmPasswordCurrent) {
       this.util.msjLoading = "Actualizando contraseña actual";
       this.util.crearLoading().then(() => {
@@ -131,7 +131,7 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  private verficarExpansion() {
+  public verficarExpansion() {
     this.renderer.setStyle(this.cntPermisos['nativeElement'], "transition", "height 500ms, max-height 500ms, padding 500ms");
     if (this.isExpandCntPermisos) { // Expandir
       //             this.expandir(575, 13, this.cntBackupsUser['_results'][indice].nativeElement);
@@ -145,10 +145,10 @@ export class PerfilComponent implements OnInit {
     }
     this.isExpandCntPermisos = !this.isExpandCntPermisos;
   }
-  private obtURLIMG() {
+  public obtURLIMG() {
     return this.usuarioService.url + 'util/avatar/' + this.usuarioService.UsuarioCurrent.imagen;
   }
-  private actualizarImagen(event) {
+  public actualizarImagen(event) {
     this.isChangeIMG = false;
     this.fileIMG = null;
     var files = event.target.files;
