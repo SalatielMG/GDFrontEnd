@@ -84,6 +84,7 @@ export class UsuarioService {
   }
   public agregarUsuario(usuario, isChange , imagen, permisosSelected): Observable <any> {
     const  parametro = new FormData();
+      parametro.append('id_usuario', this.usuarioCurrent.id.toString());
       parametro.append('usuario', JSON.stringify(usuario));
       parametro.append('isChange', isChange);
       parametro.append('imagen', imagen);
@@ -92,7 +93,8 @@ export class UsuarioService {
   }
   public actualizarUsuario(usuario, isChange , imagen, usuarioSelected, isChangePermisos): Observable <any> {
     const parametro = new FormData();
-      parametro.append('usuario', JSON.stringify(usuario));
+    parametro.append('id_usuario', this.usuarioCurrent.id.toString());
+    parametro.append('usuario', JSON.stringify(usuario));
       parametro.append('isChange', isChange);
       parametro.append('imagen', imagen);
       parametro.append('usuarioSelected', JSON.stringify(usuarioSelected));
@@ -118,7 +120,7 @@ export class UsuarioService {
     return this.http.post(URL + "UpdateImage", parametro);
   }
   public eliminarUsuario(usuarioSelected): Observable <any> {
-    return this.http.delete(URL + "eliminarUsuario", {params: {usuarioSelected: JSON.stringify(usuarioSelected)}});
+    return this.http.delete(URL + "eliminarUsuario", {params: {usuarioSelected: JSON.stringify(usuarioSelected), id_usuario: this.usuarioCurrent.id.toString()}});
   }
   public actualizarPermisos_Usuario(isChangePermisos): Observable<any> {
     const  parametro = new HttpParams()

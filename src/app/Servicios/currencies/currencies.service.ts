@@ -117,19 +117,21 @@ export class CurrenciesService {
   public insertCurrencies(): Observable<any> {
     return this.http.get(URL + 'insertCurrencies');
   }
-  public agregarCurrency(currency): Observable<any> {
+  public agregarCurrency(currency, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('currency', JSON.stringify(currency));
     return this.http.post(URL + "agregarCurrency", parametro);
   }
-  public actualizarCurrency(currency, indexUnique): Observable<any> {
+  public actualizarCurrency(currency, indexUnique, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('currency', JSON.stringify(currency))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + "actualizarCurrency", parametro);
   }
-  public eliminarCurrency(indexUnique): Observable<any> {
-    return this.http.delete(URL + "eliminarCurrency", {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarCurrency(indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + "eliminarCurrency", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

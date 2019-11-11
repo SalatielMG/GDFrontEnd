@@ -171,7 +171,7 @@ export class ExportacionComponent implements OnInit {
     console.log("Value typeExport Backup:=", this.typeEXport);
     this.util.msjLoading = "Exportando Respaldo con id_backup: " + this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected + " como fichero " + this.typeEXport;
     this.util.crearLoading().then(() => {
-      this.backupService.exportBackup(this.typeEXport, this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected).subscribe(result => {
+      this.backupService.exportBackup(this.typeEXport, this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (result.error == "warning") {

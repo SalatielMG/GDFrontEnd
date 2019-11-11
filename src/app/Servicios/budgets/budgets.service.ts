@@ -157,21 +157,23 @@ export class BudgetsService {
     return this.http.get(URL + 'buscarInconsistenciaDatosBudgets', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
-  public agregarBudget(budget): Observable<any> {
+  public agregarBudget(budget, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('budget', JSON.stringify(budget));
     return this.http.post(URL + 'agregarBudget', parametro);
   }
 
-  public actualizarBudget(budget, indexUnique): Observable<any> {
+  public actualizarBudget(budget, indexUnique,id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('budget', JSON.stringify(budget))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + 'actualizarBudget', parametro);
   }
 
-  public eliminarBudget(indexUnique): Observable<any> {
-    return this.http.delete(URL + 'eliminarBudget', {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarBudget(indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + 'eliminarBudget', {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

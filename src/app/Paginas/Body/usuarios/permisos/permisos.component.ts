@@ -36,7 +36,7 @@ export class PermisosComponent implements OnInit {
     this.util.QueryComplete.isComplete = false;
     this.util.msjLoading = "Cargando permisos registrados en la Base de Datos";
     this.util.crearLoading().then(() => {
-      this.permisoService.obtPermisosGral().subscribe(result => {
+      this.permisoService.obtPermisosGral(this.usuarioService.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -196,7 +196,7 @@ export class PermisosComponent implements OnInit {
   public agregarPermiso() {
     this.util.msjLoading = "Agregando nuevo Permiso " + this.Permiso.value.permiso;
     this.util.crearLoading().then(() => {
-      this.permisoService.agregarPermiso(this.Permiso.value, this.UsersSelected.value).subscribe(result => {
+      this.permisoService.agregarPermiso(this.Permiso.value, this.UsersSelected.value, this.usuarioService.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
@@ -222,7 +222,7 @@ export class PermisosComponent implements OnInit {
     //this.UsersSelected.value.
     this.util.msjLoading = "Actualizando Permiso " + this.PermisoSelected.permiso;
     this.util.crearLoading().then(() => {
-      this.permisoService.actualizarPermiso(this.Permiso.value, this.PermisoSelected, isChangeUsers).subscribe(result => {
+      this.permisoService.actualizarPermiso(this.Permiso.value, this.PermisoSelected, isChangeUsers, this.usuarioService.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
@@ -240,7 +240,7 @@ export class PermisosComponent implements OnInit {
   public eliminarPermiso() {
     this.util.msjLoading = "Eliminando Permiso " + this.PermisoSelected.permiso;
     this.util.crearLoading().then(() => {
-      this.permisoService.eliminarPermiso(this.PermisoSelected).subscribe(result => {
+      this.permisoService.eliminarPermiso(this.PermisoSelected, this.usuarioService.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
@@ -258,6 +258,7 @@ export class PermisosComponent implements OnInit {
     let isChangeUsers = { isChangeUsers: false, };
     if (!this.util.compare(this.UsersSelected.value, this.UsersSelected.valueAnt)) {
       isChangeUsers.isChangeUsers = true;
+      isChangeUsers["id_usuario"] = this.usuarioService.usuarioCurrent.id;
       isChangeUsers["userSelected"] = this.UsersSelected.value;
       isChangeUsers["permisoSelected"] = {id: this.PermisoSelected.id, permiso: this.PermisoSelected.permiso};
     }

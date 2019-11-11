@@ -87,19 +87,21 @@ export class ExtrasService {
     return this.http.get(URL + 'buscarInconsistenciaDatosExtras', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
-  public agregarExtra (extra): Observable<any> {
+  public agregarExtra (extra, id_usuario): Observable<any> {
     const parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append("extra", JSON.stringify(extra));
     return this.http.post(URL + "agregarExtra", parametro);
   }
-  public actualizarExtra (extra, indexUnique): Observable<any> {
+  public actualizarExtra (extra, indexUnique, id_usuario): Observable<any> {
     const parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append("extra", JSON.stringify(extra))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + "actualizarExtra", parametro);
   }
-  public eliminarExtra (indexUnique): Observable<any> {
-    return this.http.delete(URL + "eliminarExtra", {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarExtra (indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + "eliminarExtra", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

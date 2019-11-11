@@ -56,7 +56,7 @@ export class UsuariosComponent implements OnInit {
   public obtPermisosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando permisos";
     this.util.crearLoading().then(() => {
-      this.permisoService.obtPermisosGral("0").subscribe(result => {
+      this.permisoService.obtPermisosGral(this.usuarioService.usuarioCurrent.id, "0").subscribe(result => {
         this.util.detenerLoading();
         if (!result.error) {
           this.usuarioService.PermisosGral = result.permisos;
@@ -273,8 +273,9 @@ export class UsuariosComponent implements OnInit {
     let isChangePermisos = { isChangePermisos: false, };
     if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
       isChangePermisos.isChangePermisos = true;
+      isChangePermisos["id_usuario"] = this.usuarioService.usuarioCurrent.id;
       isChangePermisos["permisosSelected"] = this.PermisosSelected.value;
-      isChangePermisos["usuarioSelected"] = {id: this.UsuarioSelected.id, email: this.UsuarioSelected.email};
+      isChangePermisos["usuarioSelected"] = {id: this.UsuarioSelected.id, email: this.UsuarioSelected.email, tipo: this.UsuarioSelected.tipo};
     }
     console.log("isChangePermisos", isChangePermisos);
 

@@ -129,19 +129,21 @@ export class AccountsService {
     return this.http.get(URL + 'obtNewId_account', {params: {idBack: this.id_backup.toString()}});
   }
 
-  public agregarAccount(account): Observable<any> {
+  public agregarAccount(account, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('account', JSON.stringify(account));
     return this.http.post(URL + 'agregarAccount', parametro);
   }
-  public actualizarAccount(account, indexUnique): Observable<any> {
+  public actualizarAccount(account, indexUnique, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('account', JSON.stringify(account))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + 'actualizarAccount', parametro);
   }
-  public eliminarAccount (indexUnique): Observable<any> {
-    return this.http.delete(URL + 'eliminarAccount', {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarAccount (indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + 'eliminarAccount', {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
   public buscarAccountsBackup(symbolName = "1"): Observable<any> {

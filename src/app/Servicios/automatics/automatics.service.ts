@@ -160,21 +160,23 @@ export class AutomaticsService {
     return this.http.get(URL + 'buscarInconsistenciaDatosAutomatics', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
-  public agregarAutomatic(automatic): Observable<any> {
+  public agregarAutomatic(automatic, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('automatic', JSON.stringify(automatic));
     return this.http.post(URL + 'agregarAutomatic', parametro);
   }
 
-  public actualizarAutomatic(automatic, indexUnique): Observable<any> {
+  public actualizarAutomatic(automatic, indexUnique, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('automatic', JSON.stringify(automatic))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + 'actualizarAutomatic', parametro);
   }
 
-  public eliminarAutomatic(indexUnique): Observable<any> {
-    return this.http.delete(URL + 'eliminarAutomatic', {params : {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarAutomatic(indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + 'eliminarAutomatic', {params : {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

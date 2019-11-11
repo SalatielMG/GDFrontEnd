@@ -125,18 +125,20 @@ export class CardviewsService {
   public inconsistenciaDatos(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosCardviews', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
-  public agregarCardview(cardview): Observable<any> {
+  public agregarCardview(cardview, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('cardview', JSON.stringify(cardview));
     return this.http.post(URL + "agregarCardview", parametro);
   }
-  public actualizarCardview(cardview, indexUnique): Observable<any> {
+  public actualizarCardview(cardview, indexUnique, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('cardview', JSON.stringify(cardview))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + "actualizarCardview", parametro);
   }
-  public eliminarCardview(indexUnique): Observable<any> {
-    return this.http.delete(URL + "eliminarCardview", {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarCardview(indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + "eliminarCardview", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 }

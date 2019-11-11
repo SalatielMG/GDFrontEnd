@@ -137,7 +137,7 @@ export class ExtrasComponent implements OnInit {
     this.extra.patchValue({id_backup: this.extrasService.id_backup});
     this.util.msjLoading = "Extra con id_extra: " + this.extra.value.id_extra;
     this.util.crearLoading().then(() => {
-      this.extrasService.agregarExtra(this.extra.value).subscribe(result => {
+      this.extrasService.agregarExtra(this.extra.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -160,7 +160,7 @@ export class ExtrasComponent implements OnInit {
   public actualizarExtra () {
     this.util.msjLoading = "Extra con id_extra: " + this.indexUniqueExtrasSelected["id_extra"];
     this.util.crearLoading().then(() => {
-      this.extrasService.actualizarExtra(this.extra.value, this.indexUniqueExtrasSelected).subscribe(result => {
+      this.extrasService.actualizarExtra(this.extra.value, this.indexUniqueExtrasSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -185,7 +185,7 @@ export class ExtrasComponent implements OnInit {
   public eliminarExtra () {
     this.util.msjLoading = "Extra con id_extra: " + this.indexUniqueExtrasSelected["id_extra"];
     this.util.crearLoading().then(() => {
-      this.extrasService.eliminarExtra(this.indexUniqueExtrasSelected).subscribe(result => {
+      this.extrasService.eliminarExtra(this.indexUniqueExtrasSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

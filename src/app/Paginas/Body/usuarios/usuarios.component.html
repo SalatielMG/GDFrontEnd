@@ -219,7 +219,7 @@
   </div>
 </div>
 
-<button class="btn btn-outline-success rounded-circle addButton" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.OPERACION_AGREGAR)">
+<button [disabled]="usuarioService.isValidTipoUser(util.AUX)" class="btn btn-outline-success rounded-circle addButton" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faUserPlus" ></fa-icon>
   </span>

@@ -200,7 +200,7 @@ export class BackupsComponent implements OnInit {
   public eliminarBackup() {
     this.util.msjLoading = "Eliminando Respaldo con id_backup: " + this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected + " del usuario con email: " + this.backupService.userBackups[this.backupService.indexUser].email;
     this.util.crearLoading().then(()=> {
-      this.backupService.eliminarBackup().subscribe(
+      this.backupService.eliminarBackup(this.usuarioServicio.usuarioCurrent.id).subscribe(
         result => {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
@@ -231,7 +231,7 @@ export class BackupsComponent implements OnInit {
 
     this.msj = "Limpiando backups :\n" + Quien;
     this.util.crearLoading().then(() => {
-      this.backupService.limpiarBackupsUsers(this.users, this.rangoBackups.value).subscribe(result => {
+      this.backupService.limpiarBackupsUsers(this.users, this.rangoBackups.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
 

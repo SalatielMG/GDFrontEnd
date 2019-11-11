@@ -103,19 +103,21 @@ export class PreferencesService {
   public inconsistenciaDatos(data, pagina, backups): Observable<any> {
     return this.http.get(URL + 'buscarInconsistenciaDatosPreferences', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
-  public agregarPreference (preference): Observable<any> {
+  public agregarPreference (preference, id_usuario): Observable<any> {
     const parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append("preference", JSON.stringify(preference));
     return this.http.post(URL + "agregarPreference", parametro);
   }
-  public actualizarPreference (preference, indexUnique): Observable<any> {
+  public actualizarPreference (preference, indexUnique, id_usuario): Observable<any> {
     const parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append("preference", JSON.stringify(preference))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + "actualizarPreference", parametro);
   }
-  public eliminarPreference (indexUnique): Observable<any> {
-    return this.http.delete(URL + "eliminarPreference", {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarPreference (indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + "eliminarPreference", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
 }

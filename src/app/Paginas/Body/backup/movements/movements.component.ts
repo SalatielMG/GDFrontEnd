@@ -248,7 +248,7 @@ export class MovementsComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando Movimiento " + ((this.movement.value.sign) ? "Ingreso": "Gasto") + " del Respaldo con id_backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
-      this.movementsService.agregarMovement(this.movement.value).subscribe(result => {
+      this.movementsService.agregarMovement(this.movement.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -274,7 +274,7 @@ export class MovementsComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizado Movimiento " + ((this.movement.value.sign) ? "Ingreso": "Gasto") + " del Respaldo con id_backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
-      this.movementsService.actualizarMovement(this.movement.value, this.indexUniqueMovementSelected).subscribe(result => {
+      this.movementsService.actualizarMovement(this.movement.value, this.indexUniqueMovementSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
          this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -301,7 +301,7 @@ export class MovementsComponent implements OnInit {
   public eliminarMovement () {
     this.util.msjLoading = "Eliminando Movimiento " + ((this.movement.value.sign) ? "Ingreso": "Gasto") + " del Respaldo con id_backup: " + this.movementsService.id_backup;
     this.util.crearLoading().then(() => {
-      this.movementsService.eliminarMovement(this.indexUniqueMovementSelected).subscribe(result => {
+      this.movementsService.eliminarMovement(this.indexUniqueMovementSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

@@ -140,7 +140,7 @@ export class CardviewsComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.cardview.value.id_card + " del Respaldo con id_backup: " + this.cardviewService.id_backup;
     this.util.crearLoading().then(() => {
-      this.cardviewService.agregarCardview(this.cardview.value).subscribe(result => {
+      this.cardviewService.agregarCardview(this.cardview.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -172,7 +172,7 @@ export class CardviewsComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.indexUniqueAutomaticSelected["id_card"] + " del Respaldo con id_backup: " + this.cardviewService.id_backup;
     this.util.crearLoading().then(() => {
-      this.cardviewService.actualizarCardview(this.cardview.value, this.indexUniqueAutomaticSelected).subscribe(result => {
+      this.cardviewService.actualizarCardview(this.cardview.value, this.indexUniqueAutomaticSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -205,7 +205,7 @@ export class CardviewsComponent implements OnInit {
   public eliminarCardview() {
     this.util.msjLoading = "Agregando la Cardview con con id_card: " + this.indexUniqueAutomaticSelected["id_card"] + " del Rspaldo con id_backup: " + this.cardviewService.id_backup;
     this.util.crearLoading().then(() => {
-      this.cardviewService.eliminarCardview(this.indexUniqueAutomaticSelected).subscribe(result => {
+      this.cardviewService.eliminarCardview(this.indexUniqueAutomaticSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

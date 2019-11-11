@@ -159,7 +159,7 @@ export class BackupsComponent implements OnInit {
     };
     this.util.msjLoading = "Actualizando backup : " + this.backup.value.id_backup;
     this.util.crearLoading().then(() => {
-      this.backService.actualizarBackup(newBackup).subscribe(result => {
+      this.backService.actualizarBackup(newBackup, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -185,7 +185,7 @@ export class BackupsComponent implements OnInit {
 
   public eliminarBackup() {
       this.util.crearLoading().then(()=> {
-        this.backService.eliminarBackup().subscribe(
+        this.backService.eliminarBackup(this.usuarioServicio.usuarioCurrent.id).subscribe(
           result => {
             this.util.detenerLoading();
             this.util.msjToast(result.msj, result.titulo, result.error);

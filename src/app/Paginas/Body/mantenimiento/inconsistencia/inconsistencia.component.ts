@@ -171,7 +171,7 @@ export class InconsistenciaComponent implements OnInit {
   public operacion() {
     this.util.msjLoading = "Corrigiendo inconsistencia de datos en la Tabla : " + this.nameTable;
     this.util.crearLoading().then(() => {
-      this.backupService.corregirInconsistencia(this.nameTable).subscribe(result => {
+      this.backupService.corregirInconsistencia(this.nameTable, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         if (result.indice) { //Existe indice
            this.util.msjToast(result.msj, result.titulo, result.indice);

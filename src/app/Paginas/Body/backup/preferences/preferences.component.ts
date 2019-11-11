@@ -134,7 +134,7 @@ export class PreferencesComponent implements OnInit {
     this.preference.patchValue({id_backup: this.preferencesService.id_backup});
     this.util.msjLoading = "Preference con key_name: " + this.preference.value.key_name + " del Respaldo con id_backup: " + this.preferencesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.preferencesService.agregarPreference(this.preference.value).subscribe(result => {
+      this.preferencesService.agregarPreference(this.preference.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -155,7 +155,7 @@ export class PreferencesComponent implements OnInit {
   public actualizarPreference () {
     this.util.msjLoading = "Preference con key_name: " + this.indexUniquePreferenceSelected["key_name "] + " del Respaldo con id_backup: " + this.preferencesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.preferencesService.actualizarPreference(this.preference.value, this.indexUniquePreferenceSelected).subscribe(result => {
+      this.preferencesService.actualizarPreference(this.preference.value, this.indexUniquePreferenceSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -178,7 +178,7 @@ export class PreferencesComponent implements OnInit {
   public eliminarPreference () {
     this.util.msjLoading = "Preference con key_name: " + this.indexUniquePreferenceSelected[".key_name"] + " del Respaldo con id_backup: " + this.preferencesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.preferencesService.eliminarPreference(this.indexUniquePreferenceSelected).subscribe(result => {
+      this.preferencesService.eliminarPreference(this.indexUniquePreferenceSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

@@ -164,7 +164,7 @@ export class CurrenciesComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando Currency con iso_code: " + this.currency.value.iso_code + " del Respaldo con id_backup: " + this.currenciesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.currenciesService.agregarCurrency(this.currency.value).subscribe(result => {
+      this.currenciesService.agregarCurrency(this.currency.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -192,7 +192,7 @@ export class CurrenciesComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizando Currency con iso_code: " + this.indexUniqueCurrencySelected["iso_code"] + " del Respaldo con id_backup: " + this.currenciesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.currenciesService.actualizarCurrency(this.currency.value, this.indexUniqueCurrencySelected).subscribe(result => {
+      this.currenciesService.actualizarCurrency(this.currency.value, this.indexUniqueCurrencySelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -219,7 +219,7 @@ export class CurrenciesComponent implements OnInit {
   public eliminarCurrency () {
     this.util.msjLoading = "Eliminando Currency con iso_code: " + this.indexUniqueCurrencySelected["iso_code"] + " del Respaldo con id_backup: " + this.currenciesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.currenciesService.eliminarCurrency(this.indexUniqueCurrencySelected).subscribe(result => {
+      this.currenciesService.eliminarCurrency(this.indexUniqueCurrencySelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

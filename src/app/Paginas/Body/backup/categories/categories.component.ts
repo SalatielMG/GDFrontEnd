@@ -181,7 +181,7 @@ export class CategoriesComponent implements OnInit {
     this.category.patchValue({sign: this.util.signValue(this.category.value.sign)});
     this.util.msjLoading = "Agregando la nueva categoria con id_category: " + this.category.value.id_category + " del respaldo con id_backup: " + this.categoriesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.categoriesService.agregarCategory(this.category.value).subscribe(result => {
+      this.categoriesService.agregarCategory(this.category.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -207,7 +207,7 @@ export class CategoriesComponent implements OnInit {
     this.category.patchValue({sign: this.util.signValue(this.category.value.sign)});
     this.util.msjLoading = "Actualizando la categoria con id_category: " + this.category.value.id_category + " del respaldo con id_backup: " + this.categoriesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.categoriesService.actualizarCategory(this.category.value, this.indexUniqueCategorySelected).subscribe(result => {
+      this.categoriesService.actualizarCategory(this.category.value, this.indexUniqueCategorySelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -234,7 +234,7 @@ export class CategoriesComponent implements OnInit {
   public eliminarCategory() {
     this.util.msjLoading = "Eliminando la categoria con id_category: " + this.category.value.id_category + " del respaldo con id_backup: " + this.categoriesService.id_backup;
     this.util.crearLoading().then(() => {
-      this.categoriesService.eliminarCategory(this.indexUniqueCategorySelected).subscribe(result => {
+      this.categoriesService.eliminarCategory(this.indexUniqueCategorySelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

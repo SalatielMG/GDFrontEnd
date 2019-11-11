@@ -117,16 +117,17 @@ export class BackupService {
   // -------------------------------- Filter Backups users --------------------------------
 
 
-  public actualizarBackup(backup): Observable<any> {
+  public actualizarBackup(backup, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('backup', JSON.stringify(backup));
     //return this.http.post(URL + "actualizarBackup", {params: {backup: JSON.stringify(backup)}});
     return this.http.post(URL + "actualizarBackup", parametro);
   }
-  public eliminarBackup(): Observable<any> {
+  public eliminarBackup(id_usuario): Observable<any> {
     /*const  parametro = new HttpParams()
       .append('id', id);*/
-    return this.http.delete(URL + 'eliminarBackup', {params: {id_backup: this.userBackups[this.indexUser].id_BackupSelected.toString()}});
+    return this.http.delete(URL + 'eliminarBackup', {params: {id_usuario: id_usuario, id_backup: this.userBackups[this.indexUser].id_BackupSelected.toString()}});
   }
   public buscarBackupsUserEmail(email, pagina, order = "desc"): Observable<any> {
     return this.http.get(URL + 'buscarBackupsUserEmail', {params: {email: email, pagina: pagina, orderby: order}});
@@ -144,17 +145,17 @@ export class BackupService {
     // this.userBackups = [];
     return this.http.get(URL + 'buscarUsersExportacionBackups', {params: {email: email, pagina: this.pagina.toString()}});
   }
-  public corregirInconsistencia(Tabla): Observable<any> {
-    return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla);
+  public corregirInconsistencia(Tabla, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla, {params: {id_usuario: id_usuario}});
   }
   public limpiarBackups(idUser, email, rango , cantidad):Observable<any> {
     const param = (email == "Generales") ? {idUser: idUser, rango: rango} : {idUser: idUser, email: email , rango: rango, cantidad: cantidad};
     return this.http.delete(URL + 'limpiarBackups', {params : param});
   }
-  public limpiarBackupsUsers(users, rangoBackups): Observable<any> {
-    return this.http.delete(URL + "limpiarBackupsUsers", {params: {users: JSON.stringify(users), rangoBackups: rangoBackups}});
+  public limpiarBackupsUsers(users, rangoBackups, id_usuario): Observable<any> {
+    return this.http.delete(URL + "limpiarBackupsUsers", {params: {id_usuario: id_usuario, users: JSON.stringify(users), rangoBackups: rangoBackups}});
   }
-  public exportBackup(type, id_backup): Observable<any> {
-    return this.http.get(URL + "exportarBackup", {params: {id_backup: id_backup, typeExport: type}});
+  public exportBackup(type, id_backup, id_usuario): Observable<any> {
+    return this.http.get(URL + "exportarBackup", {params: {id_usuario: id_usuario, id_backup: id_backup, typeExport: type}});
   }
 }

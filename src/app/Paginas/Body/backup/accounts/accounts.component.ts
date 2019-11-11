@@ -200,7 +200,7 @@ export class AccountsComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Agregando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(()=> {
-      this.accountService.agregarAccount(this.account.value).subscribe(result => {
+      this.accountService.agregarAccount(this.account.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -232,7 +232,7 @@ export class AccountsComponent implements OnInit {
     this.patchValueFormDataBeforeOperation();
     this.util.msjLoading = "Actualizando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
-      this.accountService.actualizarAccount(this.account.value, this.indexUniqueAccountSelected).subscribe(result => {
+      this.accountService.actualizarAccount(this.account.value, this.indexUniqueAccountSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -259,7 +259,7 @@ export class AccountsComponent implements OnInit {
   public eliminarAccount() {
     this.util.msjLoading = "Eliminando cuenta Id_account: " + this.account.value.id_account + " del Respaldo Id_backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
-      this.accountService.eliminarAccount(this.indexUniqueAccountSelected).subscribe(result => {
+      this.accountService.eliminarAccount(this.indexUniqueAccountSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

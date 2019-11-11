@@ -203,7 +203,7 @@ export class AutomaticsComponent implements OnInit {
     this.patchValueFormDataDate();
     this.util.msjLoading = "Agregando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-      this.automaticService.agregarAutomatic(this.automatic.value).subscribe(result => {
+      this.automaticService.agregarAutomatic(this.automatic.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -229,7 +229,7 @@ export class AutomaticsComponent implements OnInit {
     this.patchValueFormDataDate();
     this.util.msjLoading = "Actualizando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-      this.automaticService.actualizarAutomatic(this.automatic.value, this.indexUniqueSelectedAutomatic).subscribe(result => {
+      this.automaticService.actualizarAutomatic(this.automatic.value, this.indexUniqueSelectedAutomatic, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -256,7 +256,7 @@ export class AutomaticsComponent implements OnInit {
   public eliminarAutomatic() {
     this.util.msjLoading = "Eliminando operación automática con Id_operation: " + this.automatic.value.id_operation + " del Respaldo Id_backup: " + this.automaticService.id_backup;
     this.util.crearLoading().then(() => {
-      this.automaticService.eliminarAutomatic(this.indexUniqueSelectedAutomatic).subscribe(result => {
+      this.automaticService.eliminarAutomatic(this.indexUniqueSelectedAutomatic, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;

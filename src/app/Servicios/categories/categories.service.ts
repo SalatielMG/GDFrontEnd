@@ -160,20 +160,22 @@ export class CategoriesService {
     return this.http.get(URL + 'buscarInconsistenciaDatosCategories', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
   }
 
-  public agregarCategory(category): Observable<any> {
+  public agregarCategory(category, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('category', JSON.stringify(category));
     return this.http.post(URL + 'agregarCategoria', parametro);
   }
 
-  public actualizarCategory(category, indexUnique): Observable<any> {
+  public actualizarCategory(category, indexUnique, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
+      .append('id_usuario', id_usuario)
       .append('category', JSON.stringify(category))
       .append("indexUnique", JSON.stringify(indexUnique));
     return this.http.post(URL + 'actualizarCategoria', parametro);
   }
-  public eliminarCategory(indexUnique): Observable<any> {
-    return this.http.delete(URL + "eliminarCategoria", {params: {indexUnique: JSON.stringify(indexUnique)}});
+  public eliminarCategory(indexUnique, id_usuario): Observable<any> {
+    return this.http.delete(URL + "eliminarCategoria", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
 
   }
 

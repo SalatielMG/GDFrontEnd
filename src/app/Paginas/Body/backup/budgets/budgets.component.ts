@@ -181,7 +181,7 @@ export class BudgetsComponent implements OnInit {
     this.addZeroDecimalValue();
     this.util.msjLoading = "Agregando nuevo presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
-      this.budgetService.agregarBudget(this.budget.value).subscribe(result => {
+      this.budgetService.agregarBudget(this.budget.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -208,7 +208,7 @@ export class BudgetsComponent implements OnInit {
     this.addZeroDecimalValue();
     this.util.msjLoading = "Actualizando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
-      this.budgetService.actualizarBudget(this.budget.value, this.indexUniqueBudgetSelected). subscribe(result => {
+      this.budgetService.actualizarBudget(this.budget.value, this.indexUniqueBudgetSelected, this.usuarioServicio.usuarioCurrent.id). subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -235,7 +235,7 @@ export class BudgetsComponent implements OnInit {
   public eliminarBudget() {
     this.util.msjLoading = "Eliminando presupuesto de la cuenta con id_account: " + this.budget.value.id_account + ", categoria con id_category: " + this.budget.value.id_category + " del Respaldo Id_backup: " + this.budgetService.id_backup;
     this.util.crearLoading().then(() => {
-      this.budgetService.eliminarBudget(this.indexUniqueBudgetSelected).subscribe(result => {
+      this.budgetService.eliminarBudget(this.indexUniqueBudgetSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
