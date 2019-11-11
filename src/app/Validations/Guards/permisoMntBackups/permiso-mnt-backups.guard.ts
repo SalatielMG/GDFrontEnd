@@ -7,17 +7,15 @@ import {Utilerias} from '../../../Utilerias/Util';
 @Injectable({
   providedIn: 'root'
 })
-export class IsSuperAdminGuard implements CanActivate {
+export class PermisoMntBackupsGuard implements CanActivate {
 
   constructor(private usuarioService: UsuarioService, private router: Router, private util: Utilerias) {  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.usuarioService.isValidTipoUser(this.util.SUPERADMIN)) {
+    if (this.usuarioService.isValidPermiso(this.util.PERMISO_MNTBACKUPS)){
       return true;
     }
-    this.util.msjToast("No tiene suficientes privilegios para operar sobre el submenu Permisos. Porfavor autentiquese como super Administrador.", "¡ Error de privilegios !", true);
-    this.router.navigate(['/login']);
+    this.util.msjToast("No tiene permiso para operar sobre el submenu Mantenimiento backups.", "¡ Error de privilegios !", true);
     return false;
   }
-
 }

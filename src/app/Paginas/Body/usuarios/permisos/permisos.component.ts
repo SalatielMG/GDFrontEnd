@@ -57,12 +57,12 @@ export class PermisosComponent implements OnInit {
   public obtUsuariosGral(isExpanded = true) {
     this.util.msjLoading = "Cargando usuarios";
     this.util.crearLoading().then(() => {
-      this.usuarioService.obtUsuariosGral(this.usuarioService.UsuarioCurrent.id.toString(), "0").subscribe(result => {
+      this.usuarioService.obtUsuariosGral(this.usuarioService.usuarioCurrent.id.toString(), "0").subscribe(result => {
         this.util.detenerLoading();
         if (!result.error) {
           this.permisoService.UsuariosGal = result.usuarios;
           this.isExpandUseCard = true;
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             for (let user of this.PermisoSelected.usuarios) {
               this.UsersSelected.valueAnt.push(user.id);
               this.permisoService.UsuariosGal.forEach((u) => {
@@ -96,7 +96,7 @@ export class PermisosComponent implements OnInit {
     this.buildForm(permiso);
     this.resetUserSelected();
     this.isExpandUseCard = false;
-    if (this.option != this.util.AGREGAR) {
+    if (this.option != this.util.OPERACION_AGREGAR) {
       this.PermisoSelected = permiso;
       this.permisoService.indexPermisoSelected = index;
       if (this.util.isDelete(this.option)) {
@@ -108,7 +108,7 @@ export class PermisosComponent implements OnInit {
     this.isUpdateUsuariosSelectPermiso = false;
     this.option = option;
     this.resetUserSelected();
-    if (this.option == this.util.CONSULTA) {
+    if (this.option == this.util.OPERACION_CONSULTA) {
       this.PermisoSelected = permiso;
       this.permisoService.indexPermisoSelected = index;
       this.obtUsuariosGral(false);
@@ -118,7 +118,7 @@ export class PermisosComponent implements OnInit {
   public checkUser(index) {
     console.log("this.option", this.option);
     console.log("this.isUpdateUsuariosSelectPermiso", this.isUpdateUsuariosSelectPermiso);
-    if (this.util.isDelete(this.option) || (this.option == this.util.CONSULTA && !this.isUpdateUsuariosSelectPermiso)) return;
+    if (this.util.isDelete(this.option) || (this.option == this.util.OPERACION_CONSULTA && !this.isUpdateUsuariosSelectPermiso)) return;
     if (this.permisoService.UsuariosGal[index].checked) { // Uncheck =>
       let posInArrayUserSelected = this.UsersSelected.value.indexOf(this.permisoService.UsuariosGal[index].id);
       if (posInArrayUserSelected != -1) {
@@ -179,13 +179,13 @@ export class PermisosComponent implements OnInit {
   }
   public operation() {
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarPermiso();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarPermiso();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarPermiso();
         break;
     }

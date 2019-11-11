@@ -191,12 +191,12 @@
         <td class="Celdas-Tabla">{{category.icon_name}}</td>
         <td class="Celdas-Tabla">{{category.number}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionCategory(util.ACTUALIZAR, category, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionCategory(util.OPERACION_ACTUALIZAR, category, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionCategory(util.ELIMINAR, category, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionCategory(util.OPERACION_ELIMINAR, category, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -225,12 +225,12 @@
         <td class="Celdas-Tabla">{{category.icon_name}}</td>
         <td class="Celdas-Tabla">{{category.number}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionCategory(util.ACTUALIZAR, category, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionCategory(util.OPERACION_ACTUALIZAR, category, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionCategory(util.ELIMINAR, category, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionCategory(util.OPERACION_ELIMINAR, category, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -241,7 +241,7 @@
   </table>
 </div>
 
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionCategory(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionCategory(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

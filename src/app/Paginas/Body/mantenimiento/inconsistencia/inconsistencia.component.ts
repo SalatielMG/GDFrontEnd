@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BackupService} from "../../../../Servicios/backup/backup.service";
 import {FiltrosSearchBackups} from "../../../../Modelos/Backup/filtros-search-backups";
 import {UsersBackupsMnt} from '../../../../Modelos/users/usersBackupsMnt';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-inconsistencia',
@@ -23,7 +24,7 @@ export class InconsistenciaComponent implements OnInit {
   /*public filtrosSearch = new FiltrosSearchBackups();
   public backupsFiltro: Backup[];*/
 
-  constructor(public backupService: BackupService, public util: Utilerias,  public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public backupService: BackupService, public util: Utilerias,  public route: ActivatedRoute,
               public router: Router) {
     // this.resetearFiltroSearch();
     this.search();

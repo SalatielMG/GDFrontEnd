@@ -309,12 +309,12 @@
         <td class="Celdas-Tabla">{{account.rate}}</td>
         <td class="Celdas-Tabla">{{account.icon_name}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionAccount(util.ACTUALIZAR, account, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionAccount(util.OPERACION_ACTUALIZAR, account, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionAccount(util.ELIMINAR, account, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionAccount(util.OPERACION_ELIMINAR, account, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -356,12 +356,12 @@
         <td class="Celdas-Tabla">{{account.rate}}</td>
         <td class="Celdas-Tabla">{{account.icon_name}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionAccount(util.ACTUALIZAR, account, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionAccount(util.OPERACION_ACTUALIZAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionAccount(util.ELIMINAR, account, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionAccount(util.OPERACION_ELIMINAR, account, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -373,7 +373,7 @@
 
 </div>
 
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionAccount(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionAccount(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

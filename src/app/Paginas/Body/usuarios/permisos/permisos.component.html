@@ -75,7 +75,7 @@
       </div>
       <form [formGroup]="Permiso" (ngSubmit)="operation()">
         <div class="modal-body">
-          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.OPERACION_ELIMINAR">
             <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el siguiente permiso ?</h5>
           </div>
           <div class="container">
@@ -171,19 +171,19 @@
       <td class="Celdas-Tabla ">{{permiso.permiso}}</td>
       <td class="Celdas-Tabla ">{{permiso.descripcion}}</td>
       <td class="Celdas-Tabla ">
-        <button type="button" class="btn btn-outline-info btn-show border-0" data-toggle="modal" data-target="#modalUsuarios_Permiso" (click)="actionUsuariosPermiso(util.CONSULTA, permiso, i)">
+        <button type="button" class="btn btn-outline-info btn-show border-0" data-toggle="modal" data-target="#modalUsuarios_Permiso" (click)="actionUsuariosPermiso(util.OPERACION_CONSULTA, permiso, i)">
             <span>
               <fa-icon [icon]="util.faEye"></fa-icon>
             </span>
         </button>
       </td>
       <td class="Celdas-Tabla ">
-        <button type="button" class="btn btn-primary btn-update" (click)="actionPermiso(util.ACTUALIZAR, permiso, i)" data-toggle="modal" data-target="#modalPermiso">
+        <button type="button" class="btn btn-primary btn-update" (click)="actionPermiso(util.OPERACION_ACTUALIZAR, permiso, i)" data-toggle="modal" data-target="#modalPermiso">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
         </button>
-        <button type="button" class="btn btn-danger btn-delete" (click)="actionPermiso(util.ELIMINAR, permiso, i)" data-toggle="modal" data-target="#modalPermiso">
+        <button [disabled]="permiso.id.toString() == util.PERMISO_INSERT || permiso.id.toString() == util.PERMISO_UPDATE || permiso.id.toString() == util.PERMISO_DELETE || permiso.id.toString() == util.PERMISO_EXPORT || permiso.id.toString() == util.PERMISO_MNTBACKUPS || permiso.id.toString() == util.PERMISO_MNTINCONSISTENCIA" type="button" class="btn btn-danger btn-delete" (click)="actionPermiso(util.OPERACION_ELIMINAR, permiso, i)" data-toggle="modal" data-target="#modalPermiso">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -195,7 +195,7 @@
   </table>
 </div>
 
-<button type="button" class="btn btn-outline-success rounded-circle addButton" (click)="actionPermiso(util.AGREGAR)" data-toggle="modal" data-target="#modalPermiso">
+<button type="button" class="btn btn-outline-success rounded-circle addButton" (click)="actionPermiso(util.OPERACION_AGREGAR)" data-toggle="modal" data-target="#modalPermiso">
   <span>
     <fa-icon [icon]="util.faPlus" ></fa-icon>
   </span>

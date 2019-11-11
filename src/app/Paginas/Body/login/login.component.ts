@@ -33,14 +33,17 @@ export class LoginComponent implements OnInit {
     console.log(this.usuario.value);
     this.util.crearLoading().then(()=> {
       this.userSerevice.login(this.usuario.value).subscribe(result => {
-        this.util.msjToast(result.msj, result. titulo, result.error);
         this.util.detenerLoading();
+        this.util.msjToast(result.msj, result. titulo, result.error);
         if (!result.error){
-          this.userSerevice.id = result.id;
-          if (!result.usuario.error)
-            this.userSerevice.UsuarioCurrent = result.usuario.usuarios[0];
-          this.userSerevice.actualizarStorage();
-          this.router.navigate(['/home']);
+          if (!result.usuario.error) {
+            this.userSerevice.isSesionOpen = true;
+            this.userSerevice.usuarioCurrent = result.usuario.usuarios[0];
+            this.userSerevice.actualizarStorage();
+            this.router.navigate(['/home']);
+          } else {
+            this.util.msjToast(result.usuario.msj + ". Porfavor verifique otra vez su sesión o pongase en contacto con el superAdministrador", result.usuario.titulo, result.usuario.error);
+          }
         }
         console.log("resultado Login:=", result);
       }, error => {

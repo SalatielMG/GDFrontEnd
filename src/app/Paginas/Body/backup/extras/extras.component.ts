@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Extras} from '../../../../Modelos/extras/extras';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-extras',
@@ -16,7 +17,7 @@ export class ExtrasComponent implements OnInit {
   public extra: FormGroup = null;
   public indexUniqueExtrasSelected= {};
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public extrasService: ExtrasService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.extrasService.id_backup = this.util.numberFormat(params.get("idBack"));
@@ -74,7 +75,7 @@ export class ExtrasComponent implements OnInit {
   public accionExtras(option, extras = new Extras(), i = null) {
     this.option = option;
     this.buildForm(extras);
-    if (this.option != this.util.AGREGAR) {
+    if (this.option != this.util.OPERACION_AGREGAR) {
       this.indexUniqueExtrasSelected["id_backup"] = extras.id_backup;
       this.indexUniqueExtrasSelected["id_extra"] = extras.id_extra;
       this.extrasService.indexExtraSelected = i;
@@ -121,13 +122,13 @@ export class ExtrasComponent implements OnInit {
   public operation() {
     console.log("this.valueExtrasForm:=", this.extra.value);
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarExtra();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarExtra();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarExtra();
         break;
     }

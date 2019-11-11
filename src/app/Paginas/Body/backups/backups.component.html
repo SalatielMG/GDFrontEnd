@@ -19,7 +19,7 @@
         </div>
         <form [formGroup]="backup" (ngSubmit)="operacion()">
           <div class="modal-body">
-            <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+            <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.OPERACION_ELIMINAR">
               <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el Respaldo num: {{(backService.userBackups[backService.indexUser].indexBackupSelected + 1)}} con Id_Backup: {{backup.value.id_backup}} ?</h5>
             </div>
             <div class="container">
@@ -36,14 +36,14 @@
                 <div class="form-group col">
                   <label for="date_creation">Date_creation</label>
                   <input type="text" [owlDateTimeTrigger]="dc" [owlDateTime]="dc" class="form-control" id="date_creation" formControlName="date_creation" placeholder="date_creation" [ngClass]="(getError('date_creation') == '') ? 'valid-control' : 'invalid-control'">
-                  <owl-date-time #dc [disabled]="option == util.ELIMINAR"></owl-date-time>
+                  <owl-date-time #dc [disabled]="option == util.OPERACION_ELIMINAR"></owl-date-time>
                   <div class="invalid-feedback">{{ getError('date_creation')}}</div>
 
                 </div>
                 <div class="form-group col">
                   <label for="date_download">Date_download</label>
                   <input type="text" [owlDateTimeTrigger]="dd" [owlDateTime]="dd"  class="form-control" id="date_download" formControlName="date_download" placeholder="date_download" [ngClass]="(getError('date_download') == '') ? 'valid-control' : 'invalid-control'">
-                  <owl-date-time #dd [disabled]="option == util.ELIMINAR"></owl-date-time>
+                  <owl-date-time #dd [disabled]="option == util.OPERACION_ELIMINAR"></owl-date-time>
                   <div class="invalid-feedback">{{ getError('date_download')}}</div>
 
                 </div>
@@ -164,12 +164,12 @@
           <td class="Celdas-Tabla width-lg">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
           <td class="Celdas-Tabla width-sm">{{back.created_in}}</td>
           <td class="Celdas-Tabla width-sm" >
-            <button type="submit" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.ACTUALIZAR, back, i)">
+            <button type="submit" class="btn btn-primary btn-update" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.OPERACION_ACTUALIZAR, back, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
             </button>
-            <button type="submit" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.ELIMINAR, back, i)">
+            <button type="submit" class="btn btn-danger btn-delete" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.OPERACION_ELIMINAR, back, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -200,12 +200,12 @@
         <td class="Celdas-Tabla width-lg">{{(back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss'}}</td>
         <td class="Celdas-Tabla width-sm">{{back.created_in}}</td>
         <td class="Celdas-Tabla width-sm">
-          <button type="button" class="btn btn-primary btn-update" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.ACTUALIZAR, back, i)">
+          <button type="button" class="btn btn-primary btn-update" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.OPERACION_ACTUALIZAR, back, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.ELIMINAR, back, i)">
+          <button type="button" class="btn btn-danger btn-delete" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" data-toggle="modal" data-target="#modalBackup" (click)="actionBackup(util.OPERACION_ELIMINAR, back, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>

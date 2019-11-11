@@ -541,6 +541,13 @@ app-gastos-entradas {
 .toast-title {
   font-weight: 500!important;
 }
+.toast-container {
+  width: 25% !important;
+}
+
+.toast-container .ngx-toastr {
+  width: 100% !important;
+}
 .desenfoque {
   height: 100%;
   width: 100%;

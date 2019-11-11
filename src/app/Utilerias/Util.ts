@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faKey, faEye, faChevronRight, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faCalendar, faArrowDown, faArrowUp, faSearch, faFilter, faArrowLeft, faRecycle, faRedo, faChevronLeft, faPen, faTrash, faSlidersH, faTools, faPlusSquare, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faKey, faEye, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faArrowUp, faSearch, faPen, faTrash, faSlidersH, faTools, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -9,17 +9,33 @@ declare var $: any;
 
 export class Utilerias {
 
+  /*----- Variables Opciones Operacion ------*/
+  public OPERACION_LIMPIARBACKUPSUSERS: string = "Limpiar Backups Usuarios";
+  public OPERACION_LIMPIARBACKUPSUSER: string = "Limpiar Backups usuario";
+  public OPERACION_CONSULTA: string = "Consulta";
+  public OPERACION_AGREGAR: string = "Agregar";
+  public OPERACION_ACTUALIZAR: string = "Actualizar";
+  public OPERACION_ELIMINAR: string = "Eliminar";
+  public OPERACION_EXPORTAR: string = "Exportar";
+  /*----- Variables Opciones Operacion ------*/
+
+  /*----- Variables Permisos  ------*/
+  public PERMISO_INSERT: string = "1";
+  public PERMISO_UPDATE: string = "2";
+  public PERMISO_DELETE: string = "3";
+  public PERMISO_EXPORT: string = "4";
+  public PERMISO_MNTBACKUPS: string = "5";
+  public PERMISO_MNTINCONSISTENCIA: string = "6";
+  /*----- Variables Permisos  ------*/
+
+  /*----- Variables Tipos de usuarios  ------*/
+  public SUPERADMIN: string = "superAdmin";
+  public ADMIN: string = "admin";
+  public AUX: string = "aux";
+  /*----- Variables Tipos de usuarios  ------*/
+
   public onScroll: boolean = false;
-  public LIMPIARBACKUPSUSERS: string = "Limpiar Backups Usuarios";
-  public LIMPIARBACKUPSUSER: string = "Limpiar Backups usuario";
-  public CONSULTA: string = "Consulta";
-  public AGREGAR: string = "Agregar";
-  public ACTUALIZAR: string = "Actualizar";
-  public ELIMINAR: string = "Eliminar";
-  public EXPORTAR: string = "Exportar";
-  public CatTransfer: string = "Trasnferencias";
-  public CataAccount_all: string = "Todas las cuentas";
-  public CatCategory_all: string = "Todas las categorias";
+
   public QueryComplete = {
     isComplete:  false,
     msj: "Fin de resultados"
@@ -94,6 +110,42 @@ export class Utilerias {
       name: 'Diciembre',
       nameSorth: 'DIC'
     },
+  ];
+  public backgroundColor = [
+    "rgba(128, 0, 128, 0.5)",
+    "rgba(255, 0, 255, 0.5)",
+    "rgba(0, 0, 128, 0.5)",
+    "rgba(0, 0, 255, 0.5)",
+    "rgba(0, 128, 128, 0.5)",
+    "rgba(0, 255, 255, 0.5)",
+    "rgba(0, 128, 0, 0.5)",
+    "rgba(0, 255, 0, 0.5)",
+    "rgba(128, 128, 0, 0.5)",
+    "rgba(255, 255, 0, 0.5)",
+    "rgba(128, 0, 0, 0.5)",
+    "rgba(255, 0, 0, 0.5)",
+    "rgba(0, 0, 0, 0.5)",
+    "rgba(128, 128, 128, 0.5)",
+    "rgba(192, 192, 192, 0.5)",
+    "rgba(205, 205, 205, 0.5)",
+  ];
+  public borderColor = [
+    "rgba(128, 0, 128, 1)",
+    "rgba(255, 0, 255, 1)",
+    "rgba(0, 0, 128, 1)",
+    "rgba(0, 0, 255, 1)",
+    "rgba(0, 128, 128, 1)",
+    "rgba(0, 255, 255, 1)",
+    "rgba(0, 128, 0, 1)",
+    "rgba(0, 255, 0, 1)",
+    "rgba(128, 128, 0, 1)",
+    "rgba(255, 255, 0, 1)",
+    "rgba(128, 0, 0, 1)",
+    "rgba(255, 0, 0, 1)",
+    "rgba(0, 0, 0, 1)",
+    "rgba(128, 128, 128, 1)",
+    "rgba(192, 192, 192, 1)",
+    "rgba(205, 205, 205, 1)",
   ];
 
   public faKey = faKey;
@@ -192,7 +244,6 @@ export class Utilerias {
       time[index] = (value.length == 1) ? "0" + value : value;
     });
     console.log(time);
-
     return time.toString().replace(/,/g,":");
   }
   public formatComponentDateCalendar(date) {
@@ -227,7 +278,7 @@ export class Utilerias {
     return parseInt(data);
   }
   public isDelete(option): boolean {
-    return option == this.ELIMINAR;
+    return option == this.OPERACION_ELIMINAR;
   }
   public hasError(control) {
     let error = '';
@@ -300,24 +351,6 @@ export class Utilerias {
       return dato;
     }
   }
-  public asignarNombre(id, nombre){
-    let name = "";
-    switch (id) {
-      case "10000":
-        name = this.CatTransfer;
-        break;
-      case "10001":
-        name = this.CataAccount_all;
-        break;
-      case "10002":
-        name = this.CatCategory_all;
-        break;
-      default:
-        name = nombre;
-        break;
-    }
-    return name;
-  }
   public calcularColoreAleatorios(length, border = false) {
     if (length <= this.backgroundColor.length) {
       return (border) ? this.borderColor.slice(0, (length)) : this.backgroundColor.slice(0, (length));
@@ -359,59 +392,12 @@ export class Utilerias {
       }
     });
   }
-  /*public onScrollPage() {
-    $(window).scroll(function () {
-      console.log($(this).scrollTop());
-      if ($(this).scrollTop() != 0) {
-        $("#navEncodeMX").css("height", "110px");
-        $("#navEncodeMX").css("heightbackground-color", "rgba(0, 19, 36, 1)");
-      } else {
-        $("#navEncodeMX").css("height", "125px");
-        $("#navEncodeMX").css("heightbackground-color", "rgba(0, 19, 36, 0,9)");
-      }
-    });
-  }*/
+
   public subir() {
     $('body, html').animate({
       scrollTop: 0
     }, 200);
   }
-  public backgroundColor = [
-    "rgba(128, 0, 128, 0.5)",
-    "rgba(255, 0, 255, 0.5)",
-    "rgba(0, 0, 128, 0.5)",
-    "rgba(0, 0, 255, 0.5)",
-    "rgba(0, 128, 128, 0.5)",
-    "rgba(0, 255, 255, 0.5)",
-    "rgba(0, 128, 0, 0.5)",
-    "rgba(0, 255, 0, 0.5)",
-    "rgba(128, 128, 0, 0.5)",
-    "rgba(255, 255, 0, 0.5)",
-    "rgba(128, 0, 0, 0.5)",
-    "rgba(255, 0, 0, 0.5)",
-    "rgba(0, 0, 0, 0.5)",
-    "rgba(128, 128, 128, 0.5)",
-    "rgba(192, 192, 192, 0.5)",
-    "rgba(205, 205, 205, 0.5)",
-  ];
-  public borderColor = [
-    "rgba(128, 0, 128, 1)",
-    "rgba(255, 0, 255, 1)",
-    "rgba(0, 0, 128, 1)",
-    "rgba(0, 0, 255, 1)",
-    "rgba(0, 128, 128, 1)",
-    "rgba(0, 255, 255, 1)",
-    "rgba(0, 128, 0, 1)",
-    "rgba(0, 255, 0, 1)",
-    "rgba(128, 128, 0, 1)",
-    "rgba(255, 255, 0, 1)",
-    "rgba(128, 0, 0, 1)",
-    "rgba(255, 0, 0, 1)",
-    "rgba(0, 0, 0, 1)",
-    "rgba(128, 128, 128, 1)",
-    "rgba(192, 192, 192, 1)",
-    "rgba(205, 205, 205, 1)",
-  ];
 
   public msjToast(msj, titulo, error) {
     if (error == "warning"){
@@ -447,7 +433,7 @@ export class Utilerias {
     if (loadingMain) this.loadingMain = false; else this.loadingModal = false;
     if (detenerLoading) this.detenerLoading();
     console.log(titulo, error);
-    this.toast.warning(error, "¡ ERROR INTERNO !", {
+    this.toast.warning(error.message, "¡ " + error.name + " !", {
       closeButton: true,
       disableTimeOut: true,
       timeOut: 6000,
@@ -476,10 +462,10 @@ export class Utilerias {
   public classModal(option): string {
     let classModal = "btn";
     switch (option) {
-      case this.ACTUALIZAR:
+      case this.OPERACION_ACTUALIZAR:
         classModal += " btn-primary";
         break;
-      case this.ELIMINAR:
+      case this.OPERACION_ELIMINAR:
         classModal += " btn-danger";
         break;
       default:
@@ -488,34 +474,11 @@ export class Utilerias {
     }
     return classModal;
   }
-  /*
-  compare([1,2,3],[1,2,3])
-  true
-
-  compare([1,2],[1,2,3])
-  false*/
   public compare(array1 = [],array2 = []){
-
     array1.sort();
     array2.sort();
-
     let result = (array1.length==array2.length && array1.every(function(v,i) { return v === array2[i] } ));
     console.log(result);
     return result;
-
-    /*
-    console.log("arr1", arr1);
-    console.log("arr2", arr2);
-    if (!arr1  || !arr2) return;
-    if (arr1.length == 0 && arr2.length == 0) return true;
-    let result: boolean = false;
-    arr1.forEach((e1,i) => arr2.forEach(e2 => {
-        if(e1.length > 1 && e2.length){
-          result = this.compare(e1,e2);
-        } else result = e1 === e2;
-      })
-    );
-    console.log("result", result);
-    return result;*/
   }
 }

@@ -156,12 +156,12 @@
         <td class="Celdas-Tabla">{{cardView.show_card}}</td>
         <td class="Celdas-Tabla">{{cardView.number}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionCardview(util.ACTUALIZAR, cardView, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionCardview(util.OPERACION_ACTUALIZAR, cardView, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionCardview(util.ELIMINAR, cardView, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionCardview(util.OPERACION_ELIMINAR, cardView, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -189,12 +189,12 @@
         <td class="Celdas-Tabla">{{cardView.show_card}}</td>
         <td class="Celdas-Tabla">{{cardView.number}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionCardview(util.ACTUALIZAR, cardView, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionCardview(util.OPERACION_ACTUALIZAR, cardView, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionCardview(util.ELIMINAR, cardView, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionCardview(util.OPERACION_ELIMINAR, cardView, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -204,7 +204,7 @@
     </tbody>
   </table>
 </div>
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionCardview(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionCardview(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

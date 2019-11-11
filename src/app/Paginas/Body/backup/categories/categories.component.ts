@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Categories} from '../../../../Modelos/categories/categories';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-categories',
@@ -17,7 +18,7 @@ export class CategoriesComponent implements OnInit {
   public indexUniqueCategorySelected = {};
   public indexCategorySelectModal: number = 0;
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public categoriesService: CategoriesService,  public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.categoriesService.id_backup = params.get("idBack");
@@ -81,7 +82,7 @@ export class CategoriesComponent implements OnInit {
         if (!result.error) {
           this.option = option;
           this.buildForm(category);
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             this.indexUniqueCategorySelected["id_backup"]= category.id_backup;
             this.indexUniqueCategorySelected["id_account"]= category.id_account;
             this.indexUniqueCategorySelected["id_category"]= category.id_category;
@@ -129,7 +130,7 @@ export class CategoriesComponent implements OnInit {
   public buildForm(category: Categories) {
     this.category = this.formBuilder.group({
       id_backup : [category.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
-      id_account : [(this.option == this.util.AGREGAR) ? "":category.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_account : [(this.option == this.util.OPERACION_AGREGAR) ? "":category.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
       id_category : [category.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
       name : [category.name, [Validators.required, Validators.maxLength(50)]],
       sign : [category.sign, [Validators.required, Validators.maxLength(1)]],
@@ -164,13 +165,13 @@ export class CategoriesComponent implements OnInit {
   public operation() {
     console.log("this.valueCategoriesForm:=", this.category.value);
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarCategory();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarCategory();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarCategory();
         break;
     }

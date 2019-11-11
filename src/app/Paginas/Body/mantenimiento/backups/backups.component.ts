@@ -8,6 +8,7 @@ import {FiltrosSearchBackups} from '../../../../Modelos/Backup/filtros-search-ba
 import {UserService} from '../../../../Servicios/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UsersBackupsMnt} from '../../../../Modelos/users/usersBackupsMnt';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-backups',
@@ -32,7 +33,7 @@ export class BackupsComponent implements OnInit {
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
-  constructor(public util: Utilerias, public backupService: BackupService, public renderer: Renderer2, public userService: UserService, public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public util: Utilerias, public backupService: BackupService, public renderer: Renderer2, public userService: UserService, public route: ActivatedRoute,
   public router: Router) {
     this.usersSelected = [];
     this.backupService.resetearBackups();
@@ -170,7 +171,7 @@ export class BackupsComponent implements OnInit {
   public accionLimpiarBackupsUser(option, userSpecified: UsersBackupsMnt =  null, i = 0) {
     this.option = option;
     this.users = [];
-    if (this.option == this.util.LIMPIARBACKUPSUSERS) {
+    if (this.option == this.util.OPERACION_LIMPIARBACKUPSUSERS) {
       this.users = this.users.concat(this.usersSelected);
     } else {
       let user = new UserSelect(userSpecified.id_user, userSpecified.email, userSpecified.cantRep, i);
@@ -188,7 +189,7 @@ export class BackupsComponent implements OnInit {
     console.log(this.option);
 
     switch (this.option) {
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarBackup();
         break;
       default:
@@ -238,7 +239,7 @@ export class BackupsComponent implements OnInit {
           this.util.msjToast(resultUser.msj, "", resultUser.error);
           console.log("resultUser:=", resultUser);
         }
-        if (this.option == this.util.LIMPIARBACKUPSUSERS) {
+        if (this.option == this.util.OPERACION_LIMPIARBACKUPSUSERS) {
           this.search();
         } else {
           this.backupService.userBackups.splice(this.users[0].index, 1);

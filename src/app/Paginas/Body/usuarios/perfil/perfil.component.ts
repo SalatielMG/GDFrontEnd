@@ -42,10 +42,10 @@ export class PerfilComponent implements OnInit {
 
   public actionUpdateUsuario(){
     this.Usuario = this.formBuilder.group({
-      id: [this.usuarioService.UsuarioCurrent.id, [Validators.required]],
-      email: [this.usuarioService.UsuarioCurrent.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
-      tipo: [this.usuarioService.UsuarioCurrent.tipo, [Validators.required]],
-      cargo: [this.usuarioService.UsuarioCurrent.cargo, [Validators.required]]
+      id: [this.usuarioService.usuarioCurrent.id, [Validators.required]],
+      email: [this.usuarioService.usuarioCurrent.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
+      tipo: [this.usuarioService.usuarioCurrent.tipo, [Validators.required]],
+      cargo: [this.usuarioService.usuarioCurrent.cargo, [Validators.required]]
       //imagen: [usuario.imagen, ],
     });
     this.Usuario.get("tipo").disable();
@@ -94,13 +94,13 @@ export class PerfilComponent implements OnInit {
     console.log("Value Usuario Form:= ", this.Usuario.value);
     this.util.msjLoading = "Actualizando datos de su perfil";
     this.util.crearLoading().then(() => {
-      this.usuarioService.UpdateProfile(this.Usuario.value, {id: this.usuarioService.UsuarioCurrent.id, email: this.usuarioService.UsuarioCurrent.email}).subscribe(result => {
+      this.usuarioService.UpdateProfile(this.Usuario.value, {id: this.usuarioService.usuarioCurrent.id, email: this.usuarioService.usuarioCurrent.email}).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         if (!result.error) {
           if (!result.usuario.error) {
-            this.usuarioService.UsuarioCurrent.email = result.usuario.usuarios[0].email;
-            this.usuarioService.UsuarioCurrent.cargo = result.usuario.usuarios[0].cargo;
+            this.usuarioService.usuarioCurrent.email = result.usuario.usuarios[0].email;
+            this.usuarioService.usuarioCurrent.cargo = result.usuario.usuarios[0].cargo;
             this.usuarioService.actualizarStorage();
           } else {
             this.util.msjToast(result.usuario.msj, this.util.errorRefreshListTable, result.usuario.error);
@@ -146,7 +146,7 @@ export class PerfilComponent implements OnInit {
     this.isExpandCntPermisos = !this.isExpandCntPermisos;
   }
   public obtURLIMG() {
-    return this.usuarioService.url + 'util/avatar/' + this.usuarioService.UsuarioCurrent.imagen;
+    return this.usuarioService.url + 'util/avatar/' + this.usuarioService.usuarioCurrent.imagen;
   }
   public actualizarImagen(event) {
     this.isChangeIMG = false;
@@ -167,8 +167,8 @@ export class PerfilComponent implements OnInit {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           if (!result.error) {
-            this.usuarioService.UsuarioCurrent.imagen = null;
-            this.usuarioService.UsuarioCurrent.imagen = result.generatedName;
+            this.usuarioService.usuarioCurrent.imagen = null;
+            this.usuarioService.usuarioCurrent.imagen = result.generatedName;
             this.usuarioService.actualizarStorage();
           }
         }, error => {

@@ -139,3 +139,7 @@
   right: -30px;
   border-color: aqua;
 }
+.addButton:hover {
+  background-color: #007bff !important;
+}
+

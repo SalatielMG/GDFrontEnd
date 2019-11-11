@@ -227,12 +227,12 @@
         <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla ">{{budget.number}}</td>
         <td class="Celdas-Tabla ">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionBudget(util.OPERACION_ACTUALIZAR, budget, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionBudget(util.ELIMINAR, budget, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionBudget(util.OPERACION_ELIMINAR, budget, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -264,12 +264,12 @@
         <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
         <td class="Celdas-Tabla ">{{budget.number}}</td>
         <td class="Celdas-Tabla ">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionBudget(util.ACTUALIZAR, budget, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionBudget(util.OPERACION_ACTUALIZAR, budget, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionBudget(util.ELIMINAR, budget, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionBudget(util.OPERACION_ELIMINAR, budget, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -280,7 +280,7 @@
   </table>
 </div>
 
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionBudget(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionBudget(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

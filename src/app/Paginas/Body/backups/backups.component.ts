@@ -6,6 +6,7 @@ import { UserService } from '../../../Servicios/user/user.service';
 import {Backup} from "../../../Modelos/Backup/backup";
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {UsersBackupsMnt} from '../../../Modelos/users/usersBackupsMnt';
+import {UsuarioService} from '../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-backups',
@@ -28,7 +29,7 @@ export class BackupsComponent implements OnInit {
   public dataBackupSelected = [];
   public indexBackupSelected: number = 0;*/
 
-  constructor(public userService: UserService, public backService: BackupService, public util: Utilerias, public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public userService: UserService, public backService: BackupService, public util: Utilerias, public route: ActivatedRoute,
               public router: Router, public formBuilder: FormBuilder) {
 
     //Consutar los bakups del usuario encontrado.
@@ -119,15 +120,15 @@ export class BackupsComponent implements OnInit {
     this.backup.enable();
   }
   public isDelete(): boolean {
-    return this.option == this.util.ELIMINAR;
+    return this.option == this.util.OPERACION_ELIMINAR;
   }
   public operacion() {
     // console.log(this.option, this.backup.value);
     switch (this.option) {
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarBackup();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarBackup();
         break;
     }

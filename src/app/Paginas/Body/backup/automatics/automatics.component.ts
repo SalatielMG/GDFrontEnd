@@ -4,6 +4,7 @@ import { ActivatedRoute, Router} from '@angular/router';
 import { Utilerias} from '../../../../Utilerias/Util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Automatics} from '../../../../Modelos/automatics/automatics';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-automatics',
@@ -17,7 +18,7 @@ export class AutomaticsComponent implements OnInit {
   public indexUniqueSelectedAutomatic = {};
   public indexSelectAutomaticModal: number = 0;
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public automaticService: AutomaticsService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.automaticService.id_backup = params.get("idBack");
@@ -76,7 +77,7 @@ export class AutomaticsComponent implements OnInit {
   public accionAutomatic(option, automatic = new Automatics(), i = null) {
       this.option = option;
 
-      if (this.option != this.util.AGREGAR) {
+      if (this.option != this.util.OPERACION_AGREGAR) {
         this.util.msjLoading = "Cargando cuentas y categorias del backup: " + this.automaticService.id_backup;
         this.util.crearLoading().then(() => {
           this.automaticService.obtAccountsBackup().then((error => {
@@ -144,19 +145,19 @@ export class AutomaticsComponent implements OnInit {
     this.automatic = this.formBuilder.group({
       id_backup : [automatic.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_operation : [automatic.id_operation, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
-      id_account : [(this.option == this.util.AGREGAR) ? "": automatic.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
-      id_category : [(this.option == this.util.AGREGAR) ? "": automatic.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_account : [(this.option == this.util.OPERACION_AGREGAR) ? "": automatic.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_category : [(this.option == this.util.OPERACION_AGREGAR) ? "": automatic.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
       period : [automatic.period, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("2"))]],
       repeat_number : [automatic.repeat_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       each_number : [automatic.each_number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       enabled : [this.util.valueChecked(automatic.enabled), [Validators.required]],
-      amount : [(this.option == this.util.AGREGAR) ? automatic.amount: this.util.unZeroFile(automatic.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      amount : [(this.option == this.util.OPERACION_AGREGAR) ? automatic.amount: this.util.unZeroFile(automatic.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       sign : [automatic.sign, [Validators.required, Validators.maxLength(1)]],
       detail : [automatic.detail, [Validators.maxLength(100)]],
-      initial_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.initial_date + " 00:00:00:00"), [Validators.required]],
-      next_date : [(this.option == this.util.AGREGAR) ? new Date() : new Date(automatic.next_date + " 00:00:00:00"), [Validators.required]],
-      operation_code : [(this.option == this.util.AGREGAR) ? this.util.randomOperation_Code() : automatic.operation_code, [Validators.required, Validators.minLength(15), Validators.maxLength(15), Validators.pattern(this.util.exprOperation_Code)]],
-      rate : [(this.option == this.util.AGREGAR) ? automatic.rate: this.util.unZeroFile(automatic.rate), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      initial_date : [(this.option == this.util.OPERACION_AGREGAR) ? new Date() : new Date(automatic.initial_date + " 00:00:00:00"), [Validators.required]],
+      next_date : [(this.option == this.util.OPERACION_AGREGAR) ? new Date() : new Date(automatic.next_date + " 00:00:00:00"), [Validators.required]],
+      operation_code : [(this.option == this.util.OPERACION_AGREGAR) ? this.util.randomOperation_Code() : automatic.operation_code, [Validators.required, Validators.minLength(15), Validators.maxLength(15), Validators.pattern(this.util.exprOperation_Code)]],
+      rate : [(this.option == this.util.OPERACION_AGREGAR) ? automatic.rate: this.util.unZeroFile(automatic.rate), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       counter : [automatic.counter, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
     });
     if (this.util.isDelete(this.option)) this.disableForm();
@@ -187,13 +188,13 @@ export class AutomaticsComponent implements OnInit {
 
   public operation() {
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarAutomatic();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarAutomatic();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarAutomatic();
         break;
     }

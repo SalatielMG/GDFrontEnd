@@ -10,10 +10,11 @@ import { CurrenciesComponent } from './currencies/currencies.component';
 import { ExtrasComponent } from './extras/extras.component';
 import { MovementsComponent } from './movements/movements.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import {PermisoMntInconsistenciaGuard} from '../../../../Validations/Guards/permisoMntInconsistencia/permiso-mnt-inconsistencia.guard';
 
 
 const routes: Routes = [
-  {path: '', component: InconsistenciaComponent, children: [
+  {path: '', component: InconsistenciaComponent, canActivateChild: [PermisoMntInconsistenciaGuard], children: [
       {path: 'accounts/:backups', component: AccountsComponent, },
       {path: 'automatics/:backups', component: AutomaticsComponent},
       {path: 'budgets/:backups', component: BudgetsComponent},

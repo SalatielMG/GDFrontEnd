@@ -12,10 +12,10 @@ export class IsSuperAdminOrAdminGuard implements  CanActivate{
 
   }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.usuarioService.isSuperAdmin() || this.usuarioService.isAdmin()) {
+    if (this.usuarioService.isValidTipoUser(this.util.SUPERADMIN) || this.usuarioService.isValidTipoUser(this.util.ADMIN)) {
       return true;
     }
-    this.util.msjToast("No tiene suficientes privilegios para operar sobre los Usaurios de la Aplicación Web. Porfavor autentiquese con una cuenta que tenga suficientes privilegios", "¡ Error de privilegios !", true);
+    this.util.msjToast("No tiene suficientes privilegios para operar sobre los Usuarios de la Aplicación Web. Porfavor autentiquese con una cuenta que tenga suficientes privilegios", "¡ Error de privilegios !", true);
     this.router.navigate(['/login']);
     return false;
   }

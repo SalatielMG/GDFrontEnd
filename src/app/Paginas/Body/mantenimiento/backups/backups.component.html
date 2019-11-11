@@ -12,7 +12,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="modalBackupsUserMntTitle">{{(option == util.ELIMINAR) ? option + " Backup" : option}}</h5>
+        <h5 class="modal-title centerTitleModal" id="modalBackupsUserMntTitle">{{(option == util.OPERACION_ELIMINAR) ? option + " Backup" : option}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="option = ''">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -20,12 +20,12 @@
       <div class="modal-body">
 
         <div *ngIf="!util.isDelete(option)">
-          <div *ngIf="option == util.LIMPIARBACKUPSUSERS">
+          <div *ngIf="option == util.OPERACION_LIMPIARBACKUPSUSERS">
             <div class="row titulo-Modal">
               <h5 class="text-center font-weight-500">¿ Esta seguro de limpiar los backups de los siguientes Usuarios ?</h5>
             </div>
           </div>
-          <div *ngIf="option == util.LIMPIARBACKUPSUSER">
+          <div *ngIf="option == util.OPERACION_LIMPIARBACKUPSUSER">
             <div class="row titulo-Modal">
               <h5 class="text-center font-weight-500">¿ Esta seguro de limpiar los backup del siguiente Usuario ?</h5>
             </div>
@@ -132,7 +132,7 @@
           <input type="number" value="10" class="form-control" pattern="^[0-9]+" min="1" id="rangoBackups" [(ngModel)]="rangoBackups.value" name="rangoBackups" (keyup)="keyUpEvent($event)" (blur)="afterBlur($event)" (focus)="beforeBlur($event)">
         </div>
         <div class="form-group col-4 col-btn-Filter">
-          <button id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.userBackups.length == 0" (click)="accionLimpiarBackupsUser(util.LIMPIARBACKUPSUSERS)">
+          <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_MNTBACKUPS)" id="btnSubmit" class="btn btn-outline-success" [disabled]="backupService.userBackups.length == 0" (click)="accionLimpiarBackupsUser(util.OPERACION_LIMPIARBACKUPSUSERS)">
             <span>
               <fa-icon [icon]="util.faTools"></fa-icon>
             </span>
@@ -259,10 +259,10 @@
             <th scope="col" class="v-a-middle width-sm" style="display: block;">
               Operacion
               <br>
-              <button class="btn btn-outline-success" (click)="accionLimpiarBackupsUser(util.LIMPIARBACKUPSUSER, user, i)">
-              <span>
-                <fa-icon [icon]="util.faTools"></fa-icon>
-              </span>
+              <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_MNTBACKUPS)" class="btn btn-outline-success" (click)="accionLimpiarBackupsUser(util.OPERACION_LIMPIARBACKUPSUSER, user, i)">
+                <span>
+                  <fa-icon [icon]="util.faTools"></fa-icon>
+                </span>
                 limpiar
               </button>
             </th>
@@ -277,7 +277,7 @@
             <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
-              <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT" (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
+              <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT" (click)="accionEliminar(util.OPERACION_ELIMINAR, back, i, pos)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -294,7 +294,7 @@
           <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
           <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
           <td scope="row" class="v-a-middle width-sm">
-            <button data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT"  (click)="accionEliminar(util.ELIMINAR, back, i, pos)">
+            <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" data-toggle="modal" data-target="#modalBackupsUserMnt" type="button" class="btn btn-danger btn-delete-MNT" (click)="accionEliminar(util.OPERACION_ELIMINAR, back, i, pos)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>

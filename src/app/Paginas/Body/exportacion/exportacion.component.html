@@ -12,14 +12,14 @@
   <div class="modal-dialog modal-dialog-centered modal" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title centerTitleModal" id="modalConfirmExportBackupTitle" *ngIf="option == util.EXPORTAR">Exportar Backup: {{backupService.userBackups[backupService.indexUser].id_BackupSelected}}</h5>
+        <h5 class="modal-title centerTitleModal" id="modalConfirmExportBackupTitle" *ngIf="option == util.OPERACION_EXPORTAR">Exportar Backup: {{backupService.userBackups[backupService.indexUser].id_BackupSelected}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="option = ''">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
-         <div *ngIf="option == util.EXPORTAR">
+         <div *ngIf="option == util.OPERACION_EXPORTAR">
 
           <div class="container" >
             <div class="row titulo-Modal">
@@ -208,7 +208,7 @@
             <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
-              <button data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionExportar(util.EXPORTAR, back.id_backup, i)">
+              <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_EXPORT)" data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionExportar(util.OPERACION_EXPORTAR, back.id_backup, i)">
               <span>
                 <fa-icon [icon]="util.faFileExport"></fa-icon>
               </span>
@@ -225,7 +225,7 @@
             <td scope="row" class="v-a-middle width-lg">{{ (back.date_download == '0000-00-00 00:00:00') ? back.date_download: back.date_download | date:'dd MMMM yyyy hh:mm:ss' }}</td>
             <td scope="row" class="v-a-middle width-sm">{{ back.created_in }}</td>
             <td scope="row" class="v-a-middle width-sm">
-              <button data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT"  (click)="accionExportar(util.EXPORTAR, back.id_backup, i)">
+              <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_EXPORT)" data-toggle="modal" data-target="#modalConfirmExportBackup" type="button" class="btn btn-primary btn-delete-MNT" (click)="accionExportar(util.OPERACION_EXPORTAR, back.id_backup, i)">
               <span>
                 <fa-icon [icon]="util.faFileExport"></fa-icon>
               </span>

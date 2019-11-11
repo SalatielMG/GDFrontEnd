@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Movements} from '../../../../Modelos/movements/movements';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-movements',
@@ -17,7 +18,7 @@ export class MovementsComponent implements OnInit {
   public indexUniqueMovementSelected = {};
   public indexMovementSelectModal: number = 0;
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public movementsService: MovementsService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.movementsService.id_backup = parseInt(params.get("idBack"));
@@ -87,7 +88,7 @@ export class MovementsComponent implements OnInit {
           this.movementsService.AccountsBackup = result.accounts;
           this.option = option;
           this.buildForm(movement);
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             this.indexUniqueMovementSelected["id_backup"] = movement.id_backup;
             this.indexUniqueMovementSelected["id_account"] = movement.id_account;
             this.indexUniqueMovementSelected["id_category"] = movement.id_category;
@@ -122,26 +123,26 @@ export class MovementsComponent implements OnInit {
   public buildForm(movement: Movements) {
     this.movement = this.formBuilder.group({
       id_backup : [movement.id_backup, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("10")), Validators.min(0)]],
-      id_account : [(this.option == this.util.AGREGAR) ? "" :movement.id_account, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("5")), Validators.min(0)]],
-      id_category : [(this.option == this.util.AGREGAR) ? "" :movement.id_category, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("5")), Validators.min(0)]],
-      amount : [(this.option == this.util.AGREGAR) ? movement.amount : this.util.unZeroFile(movement.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      id_account : [(this.option == this.util.OPERACION_AGREGAR) ? "" :movement.id_account, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("5")), Validators.min(0)]],
+      id_category : [(this.option == this.util.OPERACION_AGREGAR) ? "" :movement.id_category, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("5")), Validators.min(0)]],
+      amount : [(this.option == this.util.OPERACION_AGREGAR) ? movement.amount : this.util.unZeroFile(movement.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       sign : [movement.sign, [Validators.required, Validators.maxLength(1)]],
       detail : [movement.detail, [Validators.maxLength(200)]],
-      date_record : [(this.option == this.util.AGREGAR) ? new Date() : new Date(movement.date_record + " 00:00:00"), [Validators.required]],
-      time_record : [(this.option == this.util.AGREGAR) ? new Date() : new Date(movement.date_record + " " + movement.time_record), [Validators.required]],
+      date_record : [(this.option == this.util.OPERACION_AGREGAR) ? new Date() : new Date(movement.date_record + " 00:00:00"), [Validators.required]],
+      time_record : [(this.option == this.util.OPERACION_AGREGAR) ? new Date() : new Date(movement.date_record + " " + movement.time_record), [Validators.required]],
       confirmed : [this.util.valueChecked(movement.confirmed), [Validators.required]],
       transfer : [this.util.valueChecked(movement.transfer), [Validators.required]],
       date_idx : [movement.date_idx, [Validators.required, Validators.minLength(14)]],
       day : [movement.day, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2")), Validators.min(0)]],
       week : [movement.week, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2")), Validators.min(0)]],
       fortnight : [movement.fortnight, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2")), Validators.min(0)]],
-      month : [(this.option == this.util.AGREGAR) ? "" : ((movement.month.toString().length == 1) ? "0" + movement.month : movement.month), [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2")), Validators.min(0)]],
+      month : [(this.option == this.util.OPERACION_AGREGAR) ? "" : ((movement.month.toString().length == 1) ? "0" + movement.month : movement.month), [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2")), Validators.min(0)]],
       year : [movement.year, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("4")), Validators.min(0)]],
       operation_code : [movement.operation_code, [Validators.maxLength(15)]],
       picture : [movement.picture, [Validators.maxLength(100)]],
       iso_code : [movement.iso_code, [Validators.required, Validators.maxLength(3)]],
     });
-    if (this.util.isDelete(this.option)) this.disableForm(); else if (this.option == this.util.AGREGAR){
+    if (this.util.isDelete(this.option)) this.disableForm(); else if (this.option == this.util.OPERACION_AGREGAR){
       this.setValueDateRecord();
       this.setValueTimeRecord();
     }
@@ -231,13 +232,13 @@ export class MovementsComponent implements OnInit {
 
   public operation() {
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarMovement();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarMovement();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarMovement();
         break;
     }

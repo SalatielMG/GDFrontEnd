@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Utilerias } from '../../../../Utilerias/Util';
 import {Currencies} from '../../../../Modelos/currencies/currencies';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-currencies',
@@ -17,7 +18,7 @@ export class CurrenciesComponent implements OnInit {
   public indexUniqueCurrencySelected= {};
   public indexCurrencySelectModal: number = 0;
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public currenciesService: CurrenciesService, public util: Utilerias, public formBuilder: FormBuilder) {
 
     this.route.parent.paramMap.subscribe(params => {
@@ -85,7 +86,7 @@ export class CurrenciesComponent implements OnInit {
           this.currenciesService.CurrenciesGralBackup = result.currencies;
           this.option = option;
           this.buildForm(currency);
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             this.indexUniqueCurrencySelected["id_backup"] = currency.id_backup;
             this.indexUniqueCurrencySelected["iso_code"] = currency.iso_code;
             this.indexUniqueCurrencySelected["symbol"] = currency.symbol;
@@ -148,13 +149,13 @@ export class CurrenciesComponent implements OnInit {
   public operation() {
     console.log("this.valueCurrenciesForm:=", this.currency.value);
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarCurrency();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarCurrency();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarCurrency();
         break;
     }

@@ -5,6 +5,7 @@ import {UserService} from '../../../Servicios/user/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FiltrosSearchBackups} from '../../../Modelos/Backup/filtros-search-backups';
 import { URL } from '../../../Utilerias/URL';
+import {UsuarioService} from '../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-exportacion',
@@ -19,7 +20,7 @@ export class ExportacionComponent implements OnInit {
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
-  constructor(public util:Utilerias, public backupService: BackupService, public userService: UserService, public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public util:Utilerias, public backupService: BackupService, public userService: UserService, public route: ActivatedRoute,
   public router: Router, public renderer: Renderer2) {
     this.search();
   }

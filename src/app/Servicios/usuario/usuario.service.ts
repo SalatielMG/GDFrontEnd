@@ -12,8 +12,8 @@ import {Router} from '@angular/router';
 export class UsuarioService {
 
   public url = URL;
-  public id;
-  public UsuarioCurrent: Usuarios = null;
+  public isSesionOpen: boolean = false;
+  public usuarioCurrent: Usuarios = null;
   public Usuarios: Usuarios[] = [];
   public PermisosGral: Permisos[] = [];
   public indexUsuarioSelected: number = 0;
@@ -28,50 +28,46 @@ export class UsuarioService {
     this.Usuarios = [];
   }
 
-  public prueba() {
-    let storage = localStorage.getItem('id');
-    console.log('Valor actual del storage', storage);
-    console.log('Valor actual del id', this.id);
-  }
   public activo(): boolean {
-    if (this.id == null) return false;
-    return (this.id.toString() != "" );
+    return this.isSesionOpen;
   }
-  public isSuperAdmin(): boolean {
-    return (this.UsuarioCurrent.tipo == "superAdmin");
+
+  public isValidTipoUser(tipo: string): boolean {
+    return (this.usuarioCurrent.tipo == tipo);
   }
-  public isAdmin(): boolean {
-    return (this.UsuarioCurrent.tipo == "admin");
-  }
-  public isAux(): boolean {
-    return (this.UsuarioCurrent.tipo == "aux");
+
+  public isValidPermiso(permiso: string): boolean {
+    if (this.usuarioCurrent == null || this.usuarioCurrent.permisos.length == 0) return false;
+    let bnd: boolean = false;
+    this.usuarioCurrent.permisos.forEach(p => {
+      if (p.id.toString() == permiso) bnd = true;
+    });
+    return bnd;
   }
   public cargarStorage() {
-    let id = localStorage.getItem('id');
-    let usuario = localStorage.getItem('usuario');
-    this.id = id;
-    this.UsuarioCurrent = JSON.parse(usuario);
+    let isSesionOpen = localStorage.getItem('isSesionOpen');
+    let usuarioCurrent = localStorage.getItem('usuarioCurrent');
+    this.isSesionOpen = (!(isSesionOpen == "false" || isSesionOpen == null));
+    this.usuarioCurrent = null;
+    if (this.isSesionOpen)
+      this.usuarioCurrent = JSON.parse(usuarioCurrent);
     this.printVariables();
   }
   private printVariables() {
-    console.log("id", this.id);
-    console.log("UsuarioCurrent", this.UsuarioCurrent);
+    console.log("isSesionOpen", this.isSesionOpen);
+    console.log("usuarioCurrent", this.usuarioCurrent);
   }
   public actualizarStorage() {
-    localStorage.setItem('id', this.id);
-    localStorage.setItem("usuario", JSON.stringify(this.UsuarioCurrent));
+    if (!this.isSesionOpen) this.usuarioCurrent = null;
+    localStorage.setItem('isSesionOpen', String(this.isSesionOpen));
+    localStorage.setItem("usuarioCurrent", JSON.stringify(this.usuarioCurrent));
   }
 
   public logout() {
-    this.id = "";
-    this.UsuarioCurrent = null;
+    this.isSesionOpen = false;
     this.actualizarStorage();
     this.cargarStorage();
     this.router.navigate(['/login']);
-  }
-
-  public pass(): Observable<any> {
-    return this.http.get(URL + "contraseña");
   }
 
   public login(data): Observable<any> {
@@ -80,7 +76,9 @@ export class UsuarioService {
       .append('data', JSON.stringify(data));
     return this.http.post(URL + 'login', parametro);
   }
-
+  public obtenerUsuario(): Observable <any> {
+    return this.http.post(URL + "obtUsuario", new HttpParams().append("id_usuario", this.usuarioCurrent.id.toString()));
+  }
   public obtUsuariosGral(id_usuario = "0", show_permiso = "1"): Observable<any> {
     return this.http.get(URL + "obtUsuariosGral", {params: {id_usuario: id_usuario, show_permiso: show_permiso}});
   }
@@ -109,14 +107,14 @@ export class UsuarioService {
   public UpdatePassword(newPassword, ): Observable<any> {
     const parametro = new HttpParams()
       .append("newPassword", newPassword)
-      .append("id_usuario", this.UsuarioCurrent.id.toString());
+      .append("id_usuario", this.usuarioCurrent.id.toString());
     return this.http.post(URL + "UpdatePassword", parametro);
   }
   public UpdateImage(isChange, imagen): Observable<any> {
     const parametro = new FormData();
     parametro.append('isChange', isChange);
     parametro.append('imagen', imagen);
-    parametro.append('id_usuario', this.UsuarioCurrent.id.toString());
+    parametro.append('id_usuario', this.usuarioCurrent.id.toString());
     return this.http.post(URL + "UpdateImage", parametro);
   }
   public eliminarUsuario(usuarioSelected): Observable <any> {
@@ -129,7 +127,7 @@ export class UsuarioService {
   }
 
   public verifyPasswordCurrent(password): Observable<any> {
-    return this.http.get(URL + "verifyPasswordCurrent", {params: { password: password, id_usuario: this.UsuarioCurrent.id.toString()}});
+    return this.http.get(URL + "verifyPasswordCurrent", {params: { password: password, id_usuario: this.usuarioCurrent.id.toString()}});
   }
 
 }

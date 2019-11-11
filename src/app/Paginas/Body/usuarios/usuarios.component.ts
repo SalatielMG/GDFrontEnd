@@ -39,7 +39,7 @@ export class UsuariosComponent implements OnInit {
   public obtUsuarios() {
     this.util.msjLoading = "Buscando usuarios registrados en la Base de Datos";
     this.util.crearLoading().then(() => {
-      this.usuarioService.obtUsuariosGral(this.usuarioService.UsuarioCurrent.id.toString()).subscribe(result => {
+      this.usuarioService.obtUsuariosGral(this.usuarioService.usuarioCurrent.id.toString()).subscribe(result => {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
@@ -61,7 +61,7 @@ export class UsuariosComponent implements OnInit {
         if (!result.error) {
           this.usuarioService.PermisosGral = result.permisos;
           this.isExpandedPermisoCard = true;
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             for (let permiso of this.UsuarioSelected.permisos) {
               this.PermisosSelected.valueAnt.push(permiso.id);
               this.usuarioService.PermisosGral.forEach(p => {
@@ -94,7 +94,7 @@ export class UsuariosComponent implements OnInit {
     this.buildForm(usuario);
     this.resetPermisoSelected();
     this.isExpandedPermisoCard = false;
-    if (this.option != this.util.AGREGAR) {
+    if (this.option != this.util.OPERACION_AGREGAR) {
       this.UsuarioSelected = usuario;
       this.usuarioService.indexUsuarioSelected = index;
       if (this.util.isDelete(this.option)) {
@@ -106,7 +106,7 @@ export class UsuariosComponent implements OnInit {
     this.isUpdatePermisosSelectUsuario = false;
     this.option = option;
     this.resetPermisoSelected();
-    if (this.option == this.util.CONSULTA) {
+    if (this.option == this.util.OPERACION_CONSULTA) {
       this.UsuarioSelected = usuario;
       this.usuarioService.indexUsuarioSelected = index;
       this.obtPermisosGral(false);
@@ -114,7 +114,7 @@ export class UsuariosComponent implements OnInit {
   }
   // ---------------------------- CheckPermisos
   public checkPermiso(index) {
-    if (this.util.isDelete(this.option) || (this.option == this.util.CONSULTA && !this.isUpdatePermisosSelectUsuario)) return;
+    if (this.util.isDelete(this.option) || (this.option == this.util.OPERACION_CONSULTA && !this.isUpdatePermisosSelectUsuario)) return;
     if (this.usuarioService.PermisosGral[index].checked) { // Uncheck =>
       let posInArrayUserSelected = this.PermisosSelected.value.indexOf(this.usuarioService.PermisosGral[index].id);
       if (posInArrayUserSelected != -1) {
@@ -146,7 +146,7 @@ export class UsuariosComponent implements OnInit {
     this.Usuario = this.formBuilder.group({
       id: [usuario.id, [Validators.required]],
       email: [usuario.email, [Validators.required, Validators.email, Validators.maxLength(50)]],
-      password: [usuario.password, [(this.option == this.util.AGREGAR) ? Validators.required : Validators.nullValidator]],
+      password: [usuario.password, [(this.option == this.util.OPERACION_AGREGAR) ? Validators.required : Validators.nullValidator]],
       tipo: [usuario.tipo, [Validators.required]],
       cargo: [usuario.cargo, [Validators.required]]
       //imagen: [usuario.imagen, ],
@@ -155,7 +155,7 @@ export class UsuariosComponent implements OnInit {
     this.fileIMG = null;
     this.urlImg = this.usuarioService.url + "util/avatar/" + usuario.imagen;
     console.log(this.urlImg);
-    if (this.option != this.util.AGREGAR) {
+    if (this.option != this.util.OPERACION_AGREGAR) {
       if (this.util.isDelete(this.option)) {
         this.disable();
       }
@@ -186,13 +186,13 @@ export class UsuariosComponent implements OnInit {
   }
   public operation() {
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarUsuario();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarUsuario();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarUsuario();
         break;
     }

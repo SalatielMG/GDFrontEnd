@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Budgets} from '../../../../Modelos/budgets/budgets';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-budgets',
@@ -17,7 +18,7 @@ export class BudgetsComponent implements OnInit {
   public indexUniqueBudgetSelected = {};
   public indexBudgetSelectModal: number = 0;
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public budgetService: BudgetsService,  public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.budgetService.id_backup = params.get("idBack");
@@ -92,7 +93,7 @@ export class BudgetsComponent implements OnInit {
           console.log("Open this modal :)", error);
           this.option = option;
           this.buildForm(budget);
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             this.indexUniqueBudgetSelected["id_backup"] = budget.id_backup;
             this.indexUniqueBudgetSelected["id_account"] = budget.id_account;
             this.indexUniqueBudgetSelected["id_category"] = budget.id_category;
@@ -128,13 +129,13 @@ export class BudgetsComponent implements OnInit {
     console.log("Construyendo form");
     this.budget = this.formBuilder.group({
       id_backup : [budget.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
-      id_account : [(this.option == this.util.AGREGAR) ? "": budget.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
-      id_category : [(this.option == this.util.AGREGAR) ? "": budget.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_account : [(this.option == this.util.OPERACION_AGREGAR) ? "": budget.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
+      id_category : [(this.option == this.util.OPERACION_AGREGAR) ? "": budget.id_category, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
       period : [budget.period, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
-      amount : [(this.option == this.util.AGREGAR) ? budget.amount : this.util.unZeroFile(budget.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
-      budget : [(this.option == this.util.AGREGAR) ? budget.budget : this.util.unZeroFile(budget.budget), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
-      initial_date : [(this.option == this.util.AGREGAR) ? new Date() : this.util.formatComponentDateCalendar(budget.initial_date)],
-      final_date : [(this.option == this.util.AGREGAR) ? new Date() :  this.util.formatComponentDateCalendar(budget.final_date)],
+      amount : [(this.option == this.util.OPERACION_AGREGAR) ? budget.amount : this.util.unZeroFile(budget.amount), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      budget : [(this.option == this.util.OPERACION_AGREGAR) ? budget.budget : this.util.unZeroFile(budget.budget), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      initial_date : [(this.option == this.util.OPERACION_AGREGAR) ? new Date() : this.util.formatComponentDateCalendar(budget.initial_date)],
+      final_date : [(this.option == this.util.OPERACION_AGREGAR) ? new Date() :  this.util.formatComponentDateCalendar(budget.final_date)],
       number : [budget.number, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
     });
     if (this.util.isDelete(this.option)) this.disableForm();
@@ -164,13 +165,13 @@ export class BudgetsComponent implements OnInit {
   }
   public operation() {
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarBudget();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarBudget();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarBudget();
         break;
     }

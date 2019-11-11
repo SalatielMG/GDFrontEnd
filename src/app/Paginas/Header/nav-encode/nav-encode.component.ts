@@ -17,7 +17,7 @@ export class NavEncodeComponent implements OnInit {
   ngOnInit() {
   }
   public urlAvatar() {
-    return this.userService.url + "util/avatar/" + this.userService.UsuarioCurrent.imagen;
+    return this.userService.url + "util/avatar/" + this.userService.usuarioCurrent.imagen;
   }
   public eventLogo() {
     let ruta = this.router.url.split("/");
@@ -50,15 +50,6 @@ export class NavEncodeComponent implements OnInit {
       }, error => {
         this.util.msjErrorInterno(error);
       });
-    });
-  }
-
-  public generatePass(){
-    this.userService.pass().subscribe(result => {
-      console.log("resultado", result);
-
-    }, error =>{
-      console.log("error", error);
     });
   }
 

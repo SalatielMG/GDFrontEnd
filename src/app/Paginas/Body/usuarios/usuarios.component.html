@@ -73,7 +73,7 @@
       </div>
       <form [formGroup]="Usuario" (ngSubmit)="operation()">
         <div class="modal-body">
-          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.ELIMINAR">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" *ngIf="option == util.OPERACION_ELIMINAR">
             <h5 class="text-center" style="font-weight: 500;">¿ Esta seguro de eliminar el siguiente Usuario ?</h5>
           </div>
           <div class="container">
@@ -93,7 +93,7 @@
                   <div class="invalid-feedback">{{ getError('email')}}</div>
                 </div>
 
-                <div class="form-group" *ngIf="option == util.AGREGAR">
+                <div class="form-group" *ngIf="option == util.OPERACION_AGREGAR">
                   <label for="password">Password: </label>
                   <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="(getError('password') == '') ? 'valid-control' : 'invalid-control'">
                   <div class="invalid-feedback">{{ getError('password')}}</div>
@@ -103,7 +103,7 @@
                   <label for="tipo">Tipo: </label>
                   <select class="form-control" id="tipo" formControlName="tipo" [ngClass]="(getError('tipo') == '') ? 'valid-control' : 'invalid-control'">
                     <option value="">Seleccione un tipo</option>
-                    <option value="admin" *ngIf="usuarioService.isSuperAdmin()">Administrador</option>
+                    <option value="admin" *ngIf="usuarioService.isValidTipoUser(util.SUPERADMIN)">Administrador</option>
                     <option value="aux">Auxiliar</option>
                   </select>
                   <div class="invalid-feedback">{{ getError('tipo')}}</div>
@@ -192,21 +192,21 @@
           </div>
           <div class="row card-footer">
             <div class="col">
-                <button type="button" class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos" data-toggle="modal" data-target="#modalPermisos_Usuario" (click)="actionPermisosUsuario(util.CONSULTA, user, i)">
+                <button type="button" class="btn btn-outline-info button-option" data-toggle="tooltip" data-placement="top" title="Permisos" data-toggle="modal" data-target="#modalPermisos_Usuario" (click)="actionPermisosUsuario(util.OPERACION_CONSULTA, user, i)">
                   <span>
                   <fa-icon [icon]="util.faCheckSquare" ></fa-icon>
                 </span>
                 </button>
             </div>
             <div class="col">
-              <button type="button" class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ACTUALIZAR, user, i)">
+              <button type="button" class="btn btn-outline-primary button-option"  data-toggle="tooltip" data-placement="top" title="Actualizar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.OPERACION_ACTUALIZAR, user, i)">
                 <span>
                   <fa-icon [icon]="util.faPen" ></fa-icon>
                 </span>
               </button>
             </div>
             <div class="col">
-              <button type="button" class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.ELIMINAR, user, i)">
+              <button type="button" class="btn btn-outline-danger button-option" data-toggle="tooltip" data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.OPERACION_ELIMINAR, user, i)">
                 <span>
                   <fa-icon [icon]="util.faTrash" ></fa-icon>
                 </span>
@@ -219,7 +219,7 @@
   </div>
 </div>
 
-<button class="btn btn-outline-success rounded-circle addButton" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.AGREGAR)">
+<button class="btn btn-outline-success rounded-circle addButton" data-toggle="modal" data-target="#modalUsuario" (click)="actionUsuario(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faUserPlus" ></fa-icon>
   </span>

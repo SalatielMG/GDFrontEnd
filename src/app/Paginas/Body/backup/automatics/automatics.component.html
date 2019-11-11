@@ -326,12 +326,12 @@
         <td class="Celdas-Tabla ">{{automatic.rate}}</td>
         <td class="Celdas-Tabla ">{{automatic.counter}}</td>
         <td class="Celdas-Tabla ">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionAutomatic(util.OPERACION_ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionAutomatic(util.ELIMINAR, automatic, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionAutomatic(util.OPERACION_ELIMINAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -370,12 +370,12 @@
         <td class="Celdas-Tabla ">{{automatic.rate}}</td>
         <td class="Celdas-Tabla ">{{automatic.counter}}</td>
         <td class="Celdas-Tabla ">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionAutomatic(util.ACTUALIZAR, automatic, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionAutomatic(util.OPERACION_ACTUALIZAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionAutomatic(util.ELIMINAR, automatic, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionAutomatic(util.OPERACION_ELIMINAR, automatic, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -387,7 +387,7 @@
   </table>
 </div>
 
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionAutomatic(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionAutomatic(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

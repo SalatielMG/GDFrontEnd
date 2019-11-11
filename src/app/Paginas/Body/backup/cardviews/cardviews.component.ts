@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Cardviews} from '../../../../Modelos/cardviews/cardviews';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-cardviews',
@@ -16,7 +17,7 @@ export class CardviewsComponent implements OnInit {
   public cardview: FormGroup = null;
   public indexUniqueAutomaticSelected = {};
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public cardviewService: CardviewsService, public util: Utilerias, public formBuider: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.cardviewService.id_backup = parseInt(params.get("idBack"));
@@ -74,7 +75,7 @@ export class CardviewsComponent implements OnInit {
   public accionCardview(option, cardview = new Cardviews(), i = null) {
     this.option = option;
     this.buildForm(cardview);
-    if (this.option != this.util.AGREGAR) {
+    if (this.option != this.util.OPERACION_AGREGAR) {
       this.indexUniqueAutomaticSelected["id_backup"] = cardview.id_backup;
       this.indexUniqueAutomaticSelected["id_card"] = cardview.id_card;
       this.cardviewService.indexCardviewSelected = i;
@@ -124,13 +125,13 @@ export class CardviewsComponent implements OnInit {
   public operation() {
     console.log("this.valueCategoriesForm:=", this.cardview.value);
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarCardview();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarCardview();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarCardview();
         break;
     }

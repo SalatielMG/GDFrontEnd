@@ -88,12 +88,12 @@
         <td class="Celdas-Tabla">{{preference.key_name}}</td>
         <td class="Celdas-Tabla">{{preference.value}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionPreference(util.ACTUALIZAR, preference, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionPreference(util.OPERACION_ACTUALIZAR, preference, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionPreference(util.ELIMINAR, preference, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionPreference(util.OPERACION_ELIMINAR, preference, i)">
             <span>
             <fa-icon [icon]="util.faTrash"></fa-icon>
           </span>
@@ -117,12 +117,12 @@
         <td class="Celdas-Tabla">{{preference.key_name}}</td>
         <td class="Celdas-Tabla">{{preference.value}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionPreference(util.ACTUALIZAR, preference, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionPreference(util.OPERACION_ACTUALIZAR, preference, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionPreference(util.ELIMINAR, preference, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionPreference(util.OPERACION_ELIMINAR, preference, i)">
               <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -132,7 +132,7 @@
     </tbody>
   </table>
 </div>
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionPreference(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionPreference(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

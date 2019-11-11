@@ -4,6 +4,7 @@ import { AccountsService } from '../../../../Servicios/accounts/accounts.service
 import { Utilerias } from '../../../../Utilerias/Util';
 import {Accounts} from "../../../../Modelos/accounts/accounts";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-accounts',
@@ -15,9 +16,8 @@ export class AccountsComponent implements OnInit {
   public option: string = "";
   public account: FormGroup = null;
   public indexUniqueAccountSelected = {};
-  public currencySelected = "";
 
-  constructor( public route: ActivatedRoute,
+  constructor( public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public accountService: AccountsService, public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.accountService.id_backup = parseInt(params.get("idBack"));
@@ -87,7 +87,7 @@ export class AccountsComponent implements OnInit {
           this.accountService.CurrenciesGralBackup = result.currencies;
           this.option = option;
           this.buildForm(account);
-          if (this.option != this.util.AGREGAR) {
+          if (this.option != this.util.OPERACION_AGREGAR) {
             this.indexUniqueAccountSelected["id_backup"] = account.id_backup;
             this.indexUniqueAccountSelected["id_account"] = account.id_account;
             this.indexUniqueAccountSelected["name"] = account.name;
@@ -139,21 +139,21 @@ export class AccountsComponent implements OnInit {
       name : [account.name, [Validators.required, Validators.maxLength(50)]],
       detail : [account.detail, [Validators.maxLength(100)]],
       sign : [account.sign, [Validators.required, Validators.maxLength(1)]],
-      income : [(this.option == this.util.AGREGAR) ? account.income : this.util.unZeroFile(account.income), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
-      expense : [(this.option == this.util.AGREGAR) ? account.expense : this.util.unZeroFile(account.expense), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
-      initial_balance : [(this.option == this.util.AGREGAR) ? account.initial_balance : this.util.unZeroFile(account.initial_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
-      final_balance : [(this.option == this.util.AGREGAR) ? account.final_balance : this.util.unZeroFile(account.final_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      income : [(this.option == this.util.OPERACION_AGREGAR) ? account.income : this.util.unZeroFile(account.income), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      expense : [(this.option == this.util.OPERACION_AGREGAR) ? account.expense : this.util.unZeroFile(account.expense), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      initial_balance : [(this.option == this.util.OPERACION_AGREGAR) ? account.initial_balance : this.util.unZeroFile(account.initial_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      final_balance : [(this.option == this.util.OPERACION_AGREGAR) ? account.final_balance : this.util.unZeroFile(account.final_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       month : [account.month, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2"))]],
       year : [account.year, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       positive_limit : [account.positive_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       negative_limit : [account.negative_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
-      positive_max : [(this.option == this.util.AGREGAR) ? account.positive_max : this.util.unZeroFile(account.positive_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
-      negative_max : [(this.option == this.util.AGREGAR) ? account.negative_max : this.util.unZeroFile(account.negative_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
-      iso_code : [(this.option == this.util.AGREGAR)? ((this.accountService.CurrenciesSelected.length > 0) ? this.accountService.CurrenciesSelected[0].iso_code : ""): account.iso_code, [Validators.required, Validators.maxLength(3)]],
+      positive_max : [(this.option == this.util.OPERACION_AGREGAR) ? account.positive_max : this.util.unZeroFile(account.positive_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
+      negative_max : [(this.option == this.util.OPERACION_AGREGAR) ? account.negative_max : this.util.unZeroFile(account.negative_max), Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)])],
+      iso_code : [(this.option == this.util.OPERACION_AGREGAR)? ((this.accountService.CurrenciesSelected.length > 0) ? this.accountService.CurrenciesSelected[0].iso_code : ""): account.iso_code, [Validators.required, Validators.maxLength(3)]],
       selected : [this.util.valueChecked(account.selected),  [Validators.required]],
       value_type : [account.value_type,  [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
       include_total : [account.include_total,  Validators.compose([Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("1"))])],
-      rate : [(this.option == this.util.AGREGAR) ? account.rate : this.util.unZeroFile(account.rate), [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
+      rate : [(this.option == this.util.OPERACION_AGREGAR) ? account.rate : this.util.unZeroFile(account.rate), [Validators.required, Validators.pattern(this.util.exprRegular_6Decimal)]],
       icon_name : [account.icon_name,  [Validators.maxLength(20)]],
     });
     if (this.util.isDelete(this.option)) this.disable();
@@ -184,13 +184,13 @@ export class AccountsComponent implements OnInit {
   }
   public operacion() {
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarAccount();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarAccount();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarAccount();
         break;
     }

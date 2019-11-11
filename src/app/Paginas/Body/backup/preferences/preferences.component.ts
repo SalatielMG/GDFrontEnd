@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Preferences} from '../../../../Modelos/preferences/preferences';
+import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
 
 @Component({
   selector: 'app-preferences',
@@ -16,7 +17,7 @@ export class PreferencesComponent implements OnInit {
   public preference: FormGroup = null;
   public indexUniquePreferenceSelected= {};
 
-  constructor( public route: ActivatedRoute,
+  constructor(public usuarioServicio: UsuarioService, public route: ActivatedRoute,
                public router: Router, public preferencesService: PreferencesService,  public util: Utilerias, public formBuilder: FormBuilder) {
     this.route.parent.paramMap.subscribe(params => {
       this.preferencesService.id_backup = this.util.numberFormat(params.get("idBack"));
@@ -72,7 +73,7 @@ export class PreferencesComponent implements OnInit {
   public accionPreference(option, preference = new Preferences(), i = null) {
     this.option = option;
     this.buildForm(preference);
-    if (this.option != this.util.AGREGAR) {
+    if (this.option != this.util.OPERACION_AGREGAR) {
       this.indexUniquePreferenceSelected["id_backup"] = preference.id_backup;
       this.indexUniquePreferenceSelected["key_name"] = preference.key_name;
       this.preferencesService.indexPreferenceSelected = i;
@@ -118,13 +119,13 @@ export class PreferencesComponent implements OnInit {
   public operation() {
     console.log("this.valuepreferenceForm:=", this.preference.value);
     switch (this.option) {
-      case this.util.AGREGAR:
+      case this.util.OPERACION_AGREGAR:
         this.agregarPreference();
         break;
-      case this.util.ACTUALIZAR:
+      case this.util.OPERACION_ACTUALIZAR:
         this.actualizarPreference();
         break;
-      case this.util.ELIMINAR:
+      case this.util.OPERACION_ELIMINAR:
         this.eliminarPreference();
         break;
     }

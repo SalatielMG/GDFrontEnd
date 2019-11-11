@@ -112,12 +112,12 @@
         <td class="Celdas-Tabla">{{currency.icon_name}}</td>
         <td class="Celdas-Tabla">{{currency.selected}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionCurrency(util.ACTUALIZAR, currency, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionCurrency(util.OPERACION_ACTUALIZAR, currency, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionCurrency(util.ELIMINAR, currency, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionCurrency(util.OPERACION_ELIMINAR, currency, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -143,12 +143,12 @@
         <td class="Celdas-Tabla">{{currency.icon_name}}</td>
         <td class="Celdas-Tabla">{{currency.selected}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionCurrency(util.ACTUALIZAR, currency, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionCurrency(util.OPERACION_ACTUALIZAR, currency, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionCurrency(util.ELIMINAR, currency, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionCurrency(util.OPERACION_ELIMINAR, currency, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -158,7 +158,7 @@
     </tbody>
   </table>
 </div>
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionCurrency(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionCurrency(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

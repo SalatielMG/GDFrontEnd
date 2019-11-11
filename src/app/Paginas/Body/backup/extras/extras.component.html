@@ -98,12 +98,12 @@
         <td class="Celdas-Tabla">{{extra.account}}</td>
         <td class="Celdas-Tabla">{{extra.category}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionExtras(util.ACTUALIZAR, extra, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionExtras(util.OPERACION_ACTUALIZAR, extra, i)">
             <span>
               <fa-icon [icon]="util.faPen"></fa-icon>
             </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionExtras(util.ELIMINAR, extra, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionExtras(util.OPERACION_ELIMINAR, extra, i)">
             <span>
               <fa-icon [icon]="util.faTrash"></fa-icon>
             </span>
@@ -128,12 +128,12 @@
         <td class="Celdas-Tabla">{{extra.account}}</td>
         <td class="Celdas-Tabla">{{extra.category}}</td>
         <td class="Celdas-Tabla">
-          <button type="button" class="btn btn-primary btn-update" (click)="accionExtras(util.ACTUALIZAR, extra, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_UPDATE)" class="btn btn-primary btn-update" (click)="accionExtras(util.OPERACION_ACTUALIZAR, extra, i)">
               <span>
                 <fa-icon [icon]="util.faPen"></fa-icon>
               </span>
           </button>
-          <button type="button" class="btn btn-danger btn-delete" (click)="accionExtras(util.ELIMINAR, extra, i)">
+          <button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_DELETE)" class="btn btn-danger btn-delete" (click)="accionExtras(util.OPERACION_ELIMINAR, extra, i)">
               <span>
                 <fa-icon [icon]="util.faTrash"></fa-icon>
               </span>
@@ -143,7 +143,7 @@
     </tbody>
   </table>
 </div>
-<button type="button" class="btn btn-success rounded-circle addButton" (click)="accionExtras(util.AGREGAR)">
+<button type="button" [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_INSERT)" class="btn btn-success rounded-circle addButton" (click)="accionExtras(util.OPERACION_AGREGAR)">
   <span>
     <fa-icon [icon]="util.faPlus"></fa-icon>
   </span>

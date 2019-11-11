@@ -56,7 +56,6 @@
   </div>
 </div>
 
-
 <div class="modal fade" id="modalUsuarioUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUsuarioUpdateTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="Usuario != null">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -125,16 +124,16 @@
         <div class="row d-flex flex-column align-content-center justify-content-center">
           <div class="col d-flex flex-column mb-5 align-content-center justify-content-center padd">
             <h3 class="font-weight-light text-center">Email:</h3>
-            <h3 class="font-weight-normal text-center item-transparent">{{usuarioService.UsuarioCurrent.email}}</h3>
+            <h3 class="font-weight-normal text-center item-transparent">{{usuarioService.usuarioCurrent.email}}</h3>
           </div>
           <div class="col d-flex mb-5 flex-row align-content-center justify-content-center">
             <div class="col d-flex flex-column align-content-center justify-content-center">
               <h3 class="font-weight-light text-center">Tipo:</h3>
-              <h3 class="font-weight-normal text-center item-transparent">{{util.nameTipo(usuarioService.UsuarioCurrent.tipo)}}</h3>
+              <h3 class="font-weight-normal text-center item-transparent">{{util.nameTipo(usuarioService.usuarioCurrent.tipo)}}</h3>
             </div>
             <div class="col d-flex flex-column align-content-center justify-content-center">
               <h3 class="font-weight-light text-center">Cargo:</h3>
-              <h3 class="font-weight-normal text-center item-transparent">{{usuarioService.UsuarioCurrent.cargo}}</h3>
+              <h3 class="font-weight-normal text-center item-transparent">{{usuarioService.usuarioCurrent.cargo}}</h3>
             </div>
           </div>
         </div>
@@ -193,14 +192,14 @@
           </tr>
           </thead>
           <tbody >
-          <tr class="text-center"  *ngFor="let permiso of usuarioService.UsuarioCurrent.permisos; let pos = index">
+          <tr class="text-center"  *ngFor="let permiso of usuarioService.usuarioCurrent.permisos; let pos = index">
             <td scope="row" class="v-a-middle font-weight-bold width-sm">{{ pos + 1 }}</td>
             <td scope="row" class="v-a-middle width-md">{{ permiso.permiso }}</td>
             <td scope="row" class="v-a-middle width-lg">{{ permiso.descripcion }}</td>
           </tr>
           </tbody>
         </table>
-        <div class="container" *ngIf="usuarioService.UsuarioCurrent.permisos.length == 0">
+        <div class="container" *ngIf="usuarioService.usuarioCurrent.permisos.length == 0">
           <h5 class="font-weight-lighter">No tienes privilegios todavia, solo puedes ver los modulos habilitados para ti</h5>
         </div>
       </div>
@@ -208,7 +207,7 @@
   </div>
 </div>
 
-<button class="btn btn-outline-success rounded-circle addButton" data-toggle="tooltip" data-placement="top" title="Actualizar perfil" data-toggle="modal" data-target="#modalUsuarioUpdate" (click)="actionUpdateUsuario()">
+<button class="btn btn-outline-primary rounded-circle addButton" data-toggle="tooltip" data-placement="top" title="Actualizar perfil" data-toggle="modal" data-target="#modalUsuarioUpdate" (click)="actionUpdateUsuario()">
   <span>
     <fa-icon [icon]="util.faPen" ></fa-icon>
   </span>
