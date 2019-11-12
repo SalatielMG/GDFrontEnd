@@ -154,9 +154,9 @@ export class AccountsService {
     return this.http.get(URL + 'obtCurrenciesGralBackup', {params: {id_backup: this.id_backup.toString()}});
   }
 
-  public buscarInconsistenciaDatos(data, pagina, backups): Observable<any> {
+  public buscarInconsistenciaDatos(data, backups): Observable<any> {
     // this.Accounts = [];
-    return this.http.get(URL + 'buscarInconsistenciaDatosAccounts', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+    return this.http.get(URL + 'buscarInconsistenciaDatosAccounts', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
 
 }

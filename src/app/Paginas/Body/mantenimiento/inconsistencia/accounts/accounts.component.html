@@ -7,63 +7,183 @@
 <div class="container text-center" *ngIf="accountService.Accounts.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="accountService.Accounts.length > 0">
-  <table class="table table-hover">
+
+<div *ngIf="accountService.Accounts.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
-    <tr>
+      <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
-      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
-      <th scope="col" class="Encabezado-Tabla">Id Cuenta</th>
-      <th scope="col" class="Encabezado-Tabla">Nombre</th>
-      <th scope="col" class="Encabezado-Tabla">Detalles</th>
-      <th scope="col" class="Encabezado-Tabla">Signo</th>
-      <th scope="col" class="Encabezado-Tabla">Ingreso</th>
-      <th scope="col" class="Encabezado-Tabla">Gasto</th>
-      <th scope="col" class="Encabezado-Tabla">Balance inical</th>
-      <th scope="col" class="Encabezado-Tabla">Balance final</th>
-      <!--th scope="col" class="Encabezado-Tabla">Mes</th>
-      <th scope="col" class="Encabezado-Tabla">Año</th>
-      <th scope="col" class="Encabezado-Tabla">Limite positivo</th>
-      <th scope="col" class="Encabezado-Tabla">Limite negativo</th>
-      <th scope="col" class="Encabezado-Tabla">positive_max</th>
-      <th scope="col" class="Encabezado-Tabla">negative_max</th-->
-      <th scope="col" class="Encabezado-Tabla">iso_code</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
+
+            <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
+              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
+              <option *ngFor="let account of accountService.AccountsBackup" [value]="account.id_account">{{account.id_account}}</option>
+            </ng-container>
+
+            <ng-container *ngIf="accountService.filtersSearch.sign.value != '-1' && accountService.filtersSearch.id_account.value == '0'">
+              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
+              <ng-container  *ngFor="let account of accountService.AccountsBackup">
+                <option *ngIf="account.sign == accountService.filtersSearch.sign.value" [value]="account.id_account">{{account.id_account}}</option>
+              </ng-container>
+            </ng-container>
+
+          </select>
+          <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Name
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
+            <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
+              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
+              <option *ngFor="let account of accountService.AccountsBackup" [value]="account.id_account">[{{account.sign}}], {{account.name}}</option>
+            </ng-container>
+            <ng-container *ngIf="accountService.filtersSearch.sign.value != '-1' && accountService.filtersSearch.id_account.value == '0'">
+              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
+              <ng-container  *ngFor="let account of accountService.AccountsBackup">
+                <option *ngIf="account.sign == accountService.filtersSearch.sign.value" [value]="account.id_account">[{{account.sign}}], {{account.name}}</option>
+              </ng-container>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Detail</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Sign
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.sign.value" name="sign" (ngModelChange)="accountService.actionFilterEvent($event, 'sign')">
+            <option value="-1">Ambos</option>
+            <option value="-">-</option>
+            <option value="+">+</option>
+          </select>
+          <button type="button" [ngClass]="(accountService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('sign')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Income</th>
+      <th scope="col" class="Encabezado-Tabla">Expense</th>
+      <th scope="col" class="Encabezado-Tabla">Initial_balance</th>
+      <th scope="col" class="Encabezado-Tabla">Final_balance</th>
+      <th scope="col" class="Encabezado-Tabla">Month</th>
+      <th scope="col" class="Encabezado-Tabla">Year</th>
+      <th scope="col" class="Encabezado-Tabla">Positive_limit</th>
+      <th scope="col" class="Encabezado-Tabla">Negative_limit</th>
+      <th scope="col" class="Encabezado-Tabla">Positive_max</th>
+      <th scope="col" class="Encabezado-Tabla">Negative_max</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Iso_code
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.iso_code.value" name="iso_code" (keyup)="accountService.actionFilterEvent($event, 'iso_code', true)">
+          <button type="button" [ngClass]="(accountService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('iso_code')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Selected
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.selected.value" name="selected" (ngModelChange)="accountService.actionFilterEvent($event, 'selected')">
+            <option value="-1">Ambos</option>
+            <option value="0">No</option>
+            <option value="1">Sí</option>
+          </select>
+          <button type="button" [ngClass]="(accountService.filtersSearch.selected.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('selected')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Value_type</th>
+      <th scope="col" class="Encabezado-Tabla">Include_total</th>
+      <th scope="col" class="Encabezado-Tabla">Rate</th>
+      <th scope="col" class="Encabezado-Tabla">Icon_name</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="!accountService.isFilter()">
     <tr *ngFor="let account of accountService.Accounts; let i = index" >
-
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{account.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{account.id_backup}}</td>
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{account.cantidadRepetida}}</td>
       <td class="Celdas-Tabla">{{account.id_account}}</td>
       <td class="Celdas-Tabla">{{account.name}}</td>
       <td class="Celdas-Tabla">{{account.detail}}</td>
       <td class="Celdas-Tabla">{{account.sign}}</td>
-      <td class="Celdas-Tabla">{{account.income}}</td>
-      <td class="Celdas-Tabla">{{account.expense}}</td>
-      <td class="Celdas-Tabla">{{account.initial_balance}}</td>
-      <td class="Celdas-Tabla">{{account.final_balance }}</td>
-      <!--td class="Celdas-Tabla">{{account.month}}</td>
+      <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.month}}</td>
       <td class="Celdas-Tabla">{{account.year}}</td>
       <td class="Celdas-Tabla">{{account.positive_limit}}</td>
       <td class="Celdas-Tabla">{{account.negative_limit}}</td>
       <td class="Celdas-Tabla">{{account.positive_max}}</td>
-      <td class="Celdas-Tabla">{{account.negative_max}}</td-->
+      <td class="Celdas-Tabla">{{account.negative_max}}</td>
       <td class="Celdas-Tabla">{{account.iso_code}}</td>
-      <!--td class="Celdas-Tabla">
-        <button type="button" class="btn btn-primary">Corregir</button>
-      </td-->
+      <td class="Celdas-Tabla">{{account.selected}}</td>
+      <td class="Celdas-Tabla">{{account.value_type}}</td>
+      <td class="Celdas-Tabla">{{account.include_total}}</td>
+      <td class="Celdas-Tabla">{{account.rate}}</td>
+      <td class="Celdas-Tabla">{{account.icon_name}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+            <span>
+              <fa-icon [icon]="util.faTools"></fa-icon>
+            </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
       [infiniteScrollDistance]="2"
+      infiniteScrollContainer=".table-fixed-xl tbody"
       (scrolled)="onScroll()">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="accountService.isFilter()">
+    <tr *ngFor="let account of accountService.accountsFilter; let i = index" >
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{account.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla">{{account.id_account}}</td>
+      <td class="Celdas-Tabla">{{account.name}}</td>
+      <td class="Celdas-Tabla">{{account.detail}}</td>
+      <td class="Celdas-Tabla">{{account.sign}}</td>
+      <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{account.month}}</td>
+      <td class="Celdas-Tabla">{{account.year}}</td>
+      <td class="Celdas-Tabla">{{account.positive_limit}}</td>
+      <td class="Celdas-Tabla">{{account.negative_limit}}</td>
+      <td class="Celdas-Tabla">{{account.positive_max}}</td>
+      <td class="Celdas-Tabla">{{account.negative_max}}</td>
+      <td class="Celdas-Tabla">{{account.iso_code}}</td>
+      <td class="Celdas-Tabla">{{account.selected}}</td>
+      <td class="Celdas-Tabla">{{account.value_type}}</td>
+      <td class="Celdas-Tabla">{{account.include_total}}</td>
+      <td class="Celdas-Tabla">{{account.rate}}</td>
+      <td class="Celdas-Tabla">{{account.icon_name}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+            <span>
+              <fa-icon [icon]="util.faTools"></fa-icon>
+            </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>
