@@ -307,7 +307,7 @@
     <tbody *ngIf="!automaticService.isFilter()">
       <tr *ngFor="let automatic of automaticService.Automatics; let i = index" >
         <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic ">{{automatic.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
         <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
@@ -351,7 +351,7 @@
     <tbody *ngIf="automaticService.isFilter()">
       <tr *ngFor="let automatic of automaticService.automaticsFilter; let i = index" >
         <td scope="row" class="Celdas-Tabla ">{{(i+1)}}</td>
-        <td class="Celdas-Tabla font-italic ">{{automatic.cantidadRepetida}}</td>
+        <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
         <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
         <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
