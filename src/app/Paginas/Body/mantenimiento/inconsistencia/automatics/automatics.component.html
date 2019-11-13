@@ -22,45 +22,46 @@
     <tr>
       <th scope="col" class="Encabezado-Tabla ">#</th>
       <th scope="col" class="Encabezado-Tabla font-italic ">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">Id_Backup</th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_operation
-          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_operation.value" name="id_operation" (keyup)="automaticsService.actionFilterEvent($event, 'id_operation', true)">
+          <!--input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_operation.value" name="id_operation" (keyup)="automaticsService.actionFilterEvent($event, 'id_operation', true)">
           <button type="button" [ngClass]="(automaticsService.filtersSearch.id_operation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('id_operation')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_Account
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticsService.actionFilterEvent($event, 'indexAccount')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticsService.actionFilterEvent($event, 'indexAccount')">
             <option value="-1" *ngIf="automaticsService.AccountsBackup.length > 0">Todas</option>
             <option *ngFor="let account of automaticsService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
           </select>
           <button type="button" [ngClass]="(automaticsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('indexAccount')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Account
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticsService.actionFilterEvent($event, 'indexAccount')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticsService.actionFilterEvent($event, 'indexAccount')">
             <option value="-1" *ngIf="automaticsService.AccountsBackup.length > 0">Todas</option>
             <option *ngFor="let account of automaticsService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
           </select>
           <button type="button" [ngClass]="(automaticsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('indexAccount')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_Category
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticsService.actionFilterEvent($event, 'id_category')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticsService.actionFilterEvent($event, 'id_category')">
 
-            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) == -1"><!-- Listar todas categorias de todas la cuentas -->
+            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) == -1">
               <ng-container *ngIf="automaticsService.filtersSearch.sign.value == '-1' || automaticsService.filtersSearch.id_category.value != '0'">
                 <option value="0">Todas</option>
                 <ng-container *ngFor="let account of automaticsService.AccountsBackup">
@@ -78,7 +79,7 @@
               </ng-container>
             </ng-container>
 
-            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) != -1"><!-- Listar todas categorias de la cuenta seleccionada -->
+            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) != -1">
               <ng-container *ngIf="automaticsService.filtersSearch.sign.value == '-1' || automaticsService.filtersSearch.id_category.value != '0'">
                 <option value="0" *ngIf="automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
                 <option *ngFor="let category of automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
@@ -95,13 +96,13 @@
           </select>
           <button type="button" [ngClass]="(automaticsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('id_category')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Category
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticsService.actionFilterEvent($event, 'id_category')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticsService.actionFilterEvent($event, 'id_category')">
             <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) == -1">
               <option value="0">Todas</option>
               <ng-container *ngFor="let account of automaticsService.AccountsBackup">
@@ -115,7 +116,7 @@
           </select>
           <button type="button" [ngClass]="(automaticsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('id_category')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">Period</th>
@@ -125,23 +126,23 @@
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Amount
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.amount.value" name="amount" (keyup)="automaticsService.actionFilterEvent($event, 'amount', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.amount.value" name="amount" (keyup)="automaticsService.actionFilterEvent($event, 'amount', true)">
           <button type="button" [ngClass]="(automaticsService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('amount')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Sign
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.sign.value" name="sign" (ngModelChange)="automaticsService.actionFilterEvent($event, 'sign')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.sign.value" name="sign" (ngModelChange)="automaticsService.actionFilterEvent($event, 'sign')">
             <option value="-1">Ambos</option>
             <option value="-">-</option>
             <option value="+">+</option>
           </select>
           <button type="button" [ngClass]="(automaticsService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('sign')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">Detail</th>
@@ -157,6 +158,7 @@
     <tr *ngFor="let automatic of automaticsService.Automatics; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_backup}}</td>
       <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
       <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
       <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
@@ -196,6 +198,7 @@
     <tr *ngFor="let automatic of automaticsService.automaticsFilter; let i = index" >
       <td scope="row" class="Celdas-Tabla ">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_backup}}</td>
       <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
       <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
       <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>

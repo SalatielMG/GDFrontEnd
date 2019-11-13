@@ -23,28 +23,29 @@
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
       <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">Id_Backup</th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Iso_code
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
             <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
             <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.iso_code}}</option>
           </select>
           <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Symbol
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
             <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
             <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.symbol}}</option>
           </select>
           <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Icon_name</th>
@@ -55,6 +56,7 @@
     <tr *ngFor="let currency of currenciesService.Currencies; let i = index" >
       <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
+      <td class="Celdas-Tabla">{{currency.id_backup}}</td>
       <td class="Celdas-Tabla">{{currency.iso_code}}</td>
       <td class="Celdas-Tabla">{{currency.symbol}}</td>
       <td class="Celdas-Tabla">{{currency.icon_name}}</td>
@@ -81,6 +83,7 @@
     <tr *ngFor="let currency of currenciesService.currenciesFilter; let i = index">
       <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
+      <td class="Celdas-Tabla">{{currency.id_backup}}</td>
       <td class="Celdas-Tabla">{{currency.iso_code}}</td>
       <td class="Celdas-Tabla">{{currency.symbol}}</td>
       <td class="Celdas-Tabla">{{currency.icon_name}}</td>

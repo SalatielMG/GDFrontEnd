@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {Utilerias} from '../../../../Utilerias/Util';
-
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-gastos-entradas',
@@ -136,5 +138,77 @@ export class GastosEntradasComponent implements OnInit {
   }
   public diferencia(): number {
     return (this.util.numberFormat(this.TotalbarChartData[1].data[0]) - this.util.numberFormat(this.TotalbarChartData[0].data[0]));
+  }
+
+  public exportPDF()
+  {
+    var data = document.getElementById('dataUserExport');
+    var logoEMX = document.getElementById('logoEncodeMX');
+    html2canvas(logoEMX, { scale: 3}).then(canvaslogoEMX => {
+      html2canvas(data, { scale: 3}).then(canvas => {
+        var img = canvas.toDataURL("image/png");
+        var imgLogo = canvaslogoEMX.toDataURL("image/png");
+        var imgWidth = 216;
+        var pageHeight = 295;
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        const documentDefinition = {
+          defaultStyle: {
+            fontSize: 20,
+            bold: true,
+          },
+          info: {
+            title: 'Reporte Gastos vs Ingresos usuario ' + this.userService.User.email,
+            author: 'EncodeMX',
+            subject: 'Reporte Gastos vs Ingresos',
+            keywords: 'Gastos diarios.',
+          },
+          pageSize: 'letter',
+
+          pageOrientation: 'landscape ',
+          styles: {
+            imgLogo: {
+              borderBottom: ['#000000'],
+            },
+            header: {
+              fontSize: 15,
+              alignment: 'center',
+              bold: false,
+              bodyFontFamily: 'Century Gothic',
+              marginBottom: 5
+            },
+            anotherStyle: {
+              fontSize: 12,
+              bold: false,
+              fontWeight: 'lighter',
+              bodyFontFamily: 'Century Gothic',
+              alignment: 'center',
+              marginBottom: 50
+            }
+          },
+          pageMargins: [ 5, 15, 5, 5],
+
+          content: [
+            {
+              image: imgLogo,
+              height:  10 * 11,
+              width: 50 * 11,
+              alignment: 'center',
+            },
+            {
+              text: 'Reporte Gastos vs Ingresos', style: 'header'
+            },
+            {
+              text: 'usuario: ' + this.userService.User.email, style: 'anotherStyle'
+            },
+            {
+              image: img,
+              width: imgWidth * 2.78,
+              height: imgHeight * 2.78}]
+        };
+        pdfMake.createPdf(documentDefinition).open();
+
+      });
+    });
+
   }
 }

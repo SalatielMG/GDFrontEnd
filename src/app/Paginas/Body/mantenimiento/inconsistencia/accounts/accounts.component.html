@@ -12,12 +12,13 @@
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
       <tr>
-      <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
-      <th scope="col" class="Encabezado-Tabla">
+        <th scope="col" class="Encabezado-Tabla">#</th>
+        <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+        <th scope="col" class="Encabezado-Tabla">Id_Backup</th>
+        <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Account
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
 
             <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
               <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
@@ -34,13 +35,13 @@
           </select>
           <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Name
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
             <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
               <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
               <option *ngFor="let account of accountService.AccountsBackup" [value]="account.id_account">[{{account.sign}}], {{account.name}}</option>
@@ -54,21 +55,21 @@
           </select>
           <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Detail</th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Sign
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.sign.value" name="sign" (ngModelChange)="accountService.actionFilterEvent($event, 'sign')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.sign.value" name="sign" (ngModelChange)="accountService.actionFilterEvent($event, 'sign')">
             <option value="-1">Ambos</option>
             <option value="-">-</option>
             <option value="+">+</option>
           </select>
           <button type="button" [ngClass]="(accountService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('sign')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Income</th>
@@ -84,23 +85,23 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Iso_code
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.iso_code.value" name="iso_code" (keyup)="accountService.actionFilterEvent($event, 'iso_code', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.iso_code.value" name="iso_code" (keyup)="accountService.actionFilterEvent($event, 'iso_code', true)">
           <button type="button" [ngClass]="(accountService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('iso_code')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Selected
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.selected.value" name="selected" (ngModelChange)="accountService.actionFilterEvent($event, 'selected')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.selected.value" name="selected" (ngModelChange)="accountService.actionFilterEvent($event, 'selected')">
             <option value="-1">Ambos</option>
             <option value="0">No</option>
             <option value="1">Sí</option>
           </select>
           <button type="button" [ngClass]="(accountService.filtersSearch.selected.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('selected')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Value_type</th>
@@ -114,6 +115,7 @@
     <tr *ngFor="let account of accountService.Accounts; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
+      <td class="Celdas-Tabla">{{account.id_backup}}</td>
       <td class="Celdas-Tabla">{{account.id_account}}</td>
       <td class="Celdas-Tabla">{{account.name}}</td>
       <td class="Celdas-Tabla">{{account.detail}}</td>
@@ -156,6 +158,7 @@
     <tr *ngFor="let account of accountService.accountsFilter; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
+      <td class="Celdas-Tabla">{{account.id_backup}}</td>
       <td class="Celdas-Tabla">{{account.id_account}}</td>
       <td class="Celdas-Tabla">{{account.name}}</td>
       <td class="Celdas-Tabla">{{account.detail}}</td>

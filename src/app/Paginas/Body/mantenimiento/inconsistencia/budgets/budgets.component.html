@@ -22,34 +22,35 @@
     <tr>
       <th scope="col" class="Encabezado-Tabla ">#</th>
       <th scope="col" class="Encabezado-Tabla ">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla ">Id_Backup</th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_Account
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
             <option value="-1" *ngIf="budgetService.AccountsBackup.length > 0">Todas</option>
             <option *ngFor="let account of budgetService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
           </select>
           <button type="button" [ngClass]="(budgetService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('indexAccount')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Account
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
             <option value="-1" *ngIf="budgetService.AccountsBackup.length > 0">Todas</option>
             <option *ngFor="let account of budgetService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
           </select>
           <button type="button" [ngClass]="(budgetService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('indexAccount')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Id_Category
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
             <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) == -1">
               <option value="0">Todas</option>
               <ng-container *ngFor="let account of budgetService.AccountsBackup">
@@ -67,13 +68,13 @@
           </select>
           <button type="button" [ngClass]="(budgetService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('id_category')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Category
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
             <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) == -1">
               <option value="0">Todas</option>
               <ng-container *ngFor="let account of budgetService.AccountsBackup">
@@ -91,26 +92,26 @@
           </select>
           <button type="button" [ngClass]="(budgetService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('id_category')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">Period</th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Amount
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.amount.value" name="amount" (keyup)="budgetService.actionFilterEvent($event, 'amount', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.amount.value" name="amount" (keyup)="budgetService.actionFilterEvent($event, 'amount', true)">
           <button type="button" [ngClass]="(budgetService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('amount')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">
         <div class="row inline-grid">
           Budget
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.budget.value" name="budget" (keyup)="budgetService.actionFilterEvent($event, 'budget', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.budget.value" name="budget" (keyup)="budgetService.actionFilterEvent($event, 'budget', true)">
           <button type="button" [ngClass]="(budgetService.filtersSearch.budget.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('budget')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla ">Initial_date</th>
@@ -123,6 +124,7 @@
     <tr *ngFor="let budget of budgetService.Budgets; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
+      <td class="Celdas-Tabla ">{{budget.id_backup}}</td>
       <td class="Celdas-Tabla ">{{budget.id_account}}</td>
       <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
       <td class="Celdas-Tabla ">{{budget.id_category}}</td>
@@ -155,6 +157,7 @@
     <tr *ngFor="let budget of budgetService.budgetsFilter; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
+      <td class="Celdas-Tabla ">{{budget.id_backup}}</td>
       <td class="Celdas-Tabla ">{{budget.id_account}}</td>
       <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
       <td class="Celdas-Tabla ">{{budget.id_category}}</td>

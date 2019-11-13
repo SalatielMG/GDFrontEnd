@@ -23,25 +23,26 @@
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
       <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla ">Id_Backup</th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Key_Name
-          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="preferencesService.filtersSearch.key_name.value" name="key_name" (ngModelChange)="preferencesService.actionFilterEvent($event, 'key_name')">
+          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="preferencesService.filtersSearch.key_name.value" name="key_name" (ngModelChange)="preferencesService.actionFilterEvent($event, 'key_name')">
             <option value="-1" *ngIf="preferencesService.Preferences.length > 0">Todas</option>
             <option *ngFor="let preference of preferencesService.Preferences" [value]="preference.key_name">{{preference.key_name}}</option>
           </select>
           <button type="button" [ngClass]="(preferencesService.filtersSearch.key_name.isFilter) ? 'close': 'btnFilter-disabled'" (click)="preferencesService.resetValuefiltroSearch('key_name')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Value
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="preferencesService.filtersSearch.value.value" name="value" (keyup)="preferencesService.actionFilterEvent($event, 'value', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="preferencesService.filtersSearch.value.value" name="value" (keyup)="preferencesService.actionFilterEvent($event, 'value', true)">
           <button type="button" [ngClass]="(preferencesService.filtersSearch.value.isFilter) ? 'close': 'btnFilter-disabled'" (click)="preferencesService.resetValuefiltroSearch('value')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
@@ -50,6 +51,7 @@
     <tr *ngFor="let preference of preferencesService.Preferences; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{preference.repeated}}</td>
+      <td class="Celdas-Tabla">{{preference.id_backup}}</td>
       <td class="Celdas-Tabla">{{preference.key_name}}</td>
       <td class="Celdas-Tabla">{{preference.value}}</td>
       <td class="Celdas-Tabla">
@@ -74,6 +76,7 @@
     <tr *ngFor="let preference of preferencesService.preferencesFilter; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{preference.repeated}}</td>
+      <td class="Celdas-Tabla">{{preference.id_backup}}</td>
       <td class="Celdas-Tabla">{{preference.key_name}}</td>
       <td class="Celdas-Tabla">{{preference.value}}</td>
       <td class="Celdas-Tabla">

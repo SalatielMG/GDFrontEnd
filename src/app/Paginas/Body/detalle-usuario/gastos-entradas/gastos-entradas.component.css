@@ -11,3 +11,9 @@
 .border-b{
   border-bottom: 1px solid var(--secondary);
 }
+.col-4 {
+  width: 40% !important;
+}
+.col-8 {
+  width:60% !important;
+}

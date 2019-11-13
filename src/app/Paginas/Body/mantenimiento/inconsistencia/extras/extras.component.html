@@ -22,31 +22,32 @@
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
       <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">Id_Backup</th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Extra
-          <input type="number" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.id_extra.value" name="id_extra" (keyup)="extrasService.actionFilterEvent($event, 'id_extra', true)">
+          <!--input type="number" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.id_extra.value" name="id_extra" (keyup)="extrasService.actionFilterEvent($event, 'id_extra', true)">
           <button type="button" [ngClass]="(extrasService.filtersSearch.id_extra.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('id_extra')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Account
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.account.value" name="account" (keyup)="extrasService.actionFilterEvent($event, 'account', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.account.value" name="account" (keyup)="extrasService.actionFilterEvent($event, 'account', true)">
           <button type="button" [ngClass]="(extrasService.filtersSearch.account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('account')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Category
-          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.category.value" name="category" (keyup)="extrasService.actionFilterEvent($event, 'category', true)">
+          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.category.value" name="category" (keyup)="extrasService.actionFilterEvent($event, 'category', true)">
           <button type="button" [ngClass]="(extrasService.filtersSearch.category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('category')">
             <span aria-hidden="true">&times;</span>
-          </button>
+          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
@@ -55,6 +56,7 @@
     <tr *ngFor="let extra of extrasService.Extras; let i = index" >
       <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{extra.repeated}}</td>
+      <td class="Celdas-Tabla">{{extra.id_backup}}</td>
       <td class="Celdas-Tabla">{{extra.id_extra}}</td>
       <td class="Celdas-Tabla">{{extra.account}}</td>
       <td class="Celdas-Tabla">{{extra.category}}</td>
@@ -80,6 +82,7 @@
     <tr *ngFor="let extra of extrasService.extrasFilter; let i = index" >
       <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla">{{extra.repeated}}</td>
+      <td class="Celdas-Tabla">{{extra.id_backup}}</td>
       <td class="Celdas-Tabla">{{extra.id_extra}}</td>
       <td class="Celdas-Tabla">{{extra.account}}</td>
       <td class="Celdas-Tabla">{{extra.category}}</td>
