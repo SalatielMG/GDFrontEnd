@@ -83,8 +83,8 @@ export class ExtrasService {
   public buscarExtrasBackup(): Observable<any> {
     return this.http.get(URL + 'buscarExtrasBackup', {params:{id_backup: this.id_backup.toString(), pagina: this.pagina.toString()}});
   }
-  public inconsistenciaDatos(data, pagina, backups): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosExtras', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  public inconsistenciaDatos(data, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosExtras', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
 
   public agregarExtra (extra, id_usuario): Observable<any> {

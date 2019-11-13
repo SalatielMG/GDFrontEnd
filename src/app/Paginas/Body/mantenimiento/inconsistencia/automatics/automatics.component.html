@@ -16,61 +16,211 @@
 <div class="container text-center" *ngIf = "automaticsService.Automatics.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="automaticsService.Automatics.length > 0">
-  <table class="table table-hover table-responsive">
+<div *ngIf="automaticsService.Automatics.length > 0"  class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
-      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
-      <th scope="col" class="Encabezado-Tabla">Id Operacion</th>
-      <th scope="col" class="Encabezado-Tabla">Id Cuenta</th>
-      <th scope="col" class="Encabezado-Tabla">Id Categoria</th>
-      <th scope="col" class="Encabezado-Tabla">Periodo</th>
-      <th scope="col" class="Encabezado-Tabla">repeat_number</th>
-      <th scope="col" class="Encabezado-Tabla">each_number</th>
-      <th scope="col" class="Encabezado-Tabla">Habilitado</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad</th>
-      <th scope="col" class="Encabezado-Tabla">Signo</th>
-      <th scope="col" class="Encabezado-Tabla">Detalles</th>
-      <th scope="col" class="Encabezado-Tabla">Fecha inicio</th>
-      <th scope="col" class="Encabezado-Tabla">Fecha siguiente</th>
-      <th scope="col" class="Encabezado-Tabla">rate</th>
-      <th scope="col" class="Encabezado-Tabla">counter</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla ">#</th>
+      <th scope="col" class="Encabezado-Tabla font-italic ">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_operation
+          <input type="search" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_operation.value" name="id_operation" (keyup)="automaticsService.actionFilterEvent($event, 'id_operation', true)">
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.id_operation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('id_operation')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticsService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="automaticsService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of automaticsService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
+          </select>
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="automaticsService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="automaticsService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of automaticsService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticsService.actionFilterEvent($event, 'id_category')">
+
+            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) == -1"><!-- Listar todas categorias de todas la cuentas -->
+              <ng-container *ngIf="automaticsService.filtersSearch.sign.value == '-1' || automaticsService.filtersSearch.id_category.value != '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of automaticsService.AccountsBackup">
+                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="automaticsService.filtersSearch.sign.value != '-1' && automaticsService.filtersSearch.id_category.value == '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of automaticsService.AccountsBackup">
+                  <ng-container *ngFor="let category of account.categoriesAccount">
+                    <option *ngIf="category.sign == automaticsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) != -1"><!-- Listar todas categorias de la cuenta seleccionada -->
+              <ng-container *ngIf="automaticsService.filtersSearch.sign.value == '-1' || automaticsService.filtersSearch.id_category.value != '0'">
+                <option value="0" *ngIf="automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <option *ngFor="let category of automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
+              </ng-container>
+
+              <ng-container *ngIf="automaticsService.filtersSearch.sign.value != '-1' && automaticsService.filtersSearch.id_category.value == '0'">
+                <option value="0" *ngIf="automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <ng-container *ngFor="let category of automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                  <option *ngIf="category.sign == automaticsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+          </select>
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="automaticsService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of automaticsService.AccountsBackup">
+                <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(automaticsService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <option *ngFor="let category of automaticsService.AccountsBackup[util.numberFormat(automaticsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">Period</th>
+      <th scope="col" class="Encabezado-Tabla ">Repeat_number</th>
+      <th scope="col" class="Encabezado-Tabla ">Each_number</th>
+      <th scope="col" class="Encabezado-Tabla ">Enabled</th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Amount
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.amount.value" name="amount" (keyup)="automaticsService.actionFilterEvent($event, 'amount', true)">
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('amount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Sign
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="automaticsService.filtersSearch.sign.value" name="sign" (ngModelChange)="automaticsService.actionFilterEvent($event, 'sign')">
+            <option value="-1">Ambos</option>
+            <option value="-">-</option>
+            <option value="+">+</option>
+          </select>
+          <button type="button" [ngClass]="(automaticsService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="automaticsService.resetValuefiltroSearch('sign')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">Detail</th>
+      <th scope="col" class="Encabezado-Tabla ">Initial_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Next_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Operation_code:</th>
+      <th scope="col" class="Encabezado-Tabla ">Rate</th>
+      <th scope="col" class="Encabezado-Tabla ">Counter</th>
+      <th scope="col" class="Encabezado-Tabla ">Operación</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="!automaticsService.isFilter()">
     <tr *ngFor="let automatic of automaticsService.Automatics; let i = index" >
-
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{automatic.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{automatic.id_backup}}</td>
-      <td class="Celdas-Tabla">{{automatic.id_operation}}</td>
-      <td class="Celdas-Tabla">{{automatic.id_account}}</td>
-      <td class="Celdas-Tabla">{{automatic.id_category}}</td>
-      <td class="Celdas-Tabla">{{automatic.period}}</td>
-      <td class="Celdas-Tabla">{{automatic.repeat_number}}</td>
-      <td class="Celdas-Tabla">{{automatic.each_number}}</td>
-      <td class="Celdas-Tabla">{{(automatic.enabled == "0") ? "No": "Si"}}</td>
-      <td class="Celdas-Tabla">{{automatic.amount}}</td>
-      <td class="Celdas-Tabla">{{automatic.sign}}</td>
-      <td class="Celdas-Tabla">{{automatic.detail}}</td>
-      <td class="Celdas-Tabla">{{automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla">{{automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla">{{automatic.rate}}</td>
-      <td class="Celdas-Tabla">{{automatic.counter}}</td>
-      <!--td class="Celdas-Tabla">
-        <button class="btn btn-primary">Corregir</button>
-      </td-->
+      <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
+      <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
+      <td class="Celdas-Tabla ">{{automatic.nameCategory}}</td>
+      <td class="Celdas-Tabla ">{{automatic.period}}</td>
+      <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
+      <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
+      <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
+      <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla ">{{automatic.sign}}</td>
+      <td class="Celdas-Tabla ">{{automatic.detail}}</td>
+      <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
+      <td class="Celdas-Tabla ">{{automatic.rate}}</td>
+      <td class="Celdas-Tabla ">{{automatic.counter}}</td>
+      <td class="Celdas-Tabla ">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+            <span>
+              <fa-icon [icon]="util.faTools"></fa-icon>
+            </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
       [infiniteScrollDistance]="2"
+      infiniteScrollContainer=".table-fixed-xl tbody"
       (scrolled)="onScroll()">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="automaticsService.isFilter()">
+    <tr *ngFor="let automatic of automaticsService.automaticsFilter; let i = index" >
+      <td scope="row" class="Celdas-Tabla ">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
+      <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
+      <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
+      <td class="Celdas-Tabla ">{{automatic.nameCategory}}</td>
+      <td class="Celdas-Tabla ">{{automatic.period}}</td>
+      <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
+      <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
+      <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
+      <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla ">{{automatic.sign}}</td>
+      <td class="Celdas-Tabla ">{{automatic.detail}}</td>
+      <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
+      <td class="Celdas-Tabla ">{{automatic.rate}}</td>
+      <td class="Celdas-Tabla ">{{automatic.counter}}</td>
+      <td class="Celdas-Tabla ">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+            <span>
+              <fa-icon [icon]="util.faTools"></fa-icon>
+            </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>

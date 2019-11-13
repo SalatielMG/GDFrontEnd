@@ -110,8 +110,8 @@ export class CurrenciesService {
     // this.Currencies = [];
     return this.http.get(URL + 'buscarCurrenciesBackup', {params:{id_backup: this.id_backup.toString(), pagina: this.pagina.toString()}});
   }
-  public inconsistenciaDatos(data, pagina, backups): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosCurrencies', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  public inconsistenciaDatos(data, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosCurrencies', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
 
   public insertCurrencies(): Observable<any> {

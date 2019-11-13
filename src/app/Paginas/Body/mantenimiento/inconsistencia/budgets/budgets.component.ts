@@ -10,19 +10,18 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class BudgetsComponent implements OnInit {
 
-  public pagina: number = 0;
   public backups;
 
   constructor(public route: ActivatedRoute,
               public router: Router, public budgetService: BudgetsService, public util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
-      this.resetearVariable();
       let backs = JSON.parse(this.backups);
       if (backs.length == 0) {
         this.util.msj = "Porfavor filtre los backups a buscar en la tabla Budgets";
         return;
       }
+      this.budgetService.resetVariables();
       this.buscarInconsistencia();
     });
   }
@@ -30,43 +29,43 @@ export class BudgetsComponent implements OnInit {
   ngOnInit() {
     this.util.ready();
   }
-  onScroll () {
-    console.log('scrolled!!');
-    this.buscarInconsistencia();
-  }
-  public resetearVariable() {
-    this.budgetService.Budgets = [];
-    this.pagina = 0;
+  public onScroll() {
+    if (!this.budgetService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();
   }
   public buscarInconsistencia() {
     this.util.loadingMain = true;
-    if (this.pagina == 0) {
+    if (this.budgetService.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Budgets';
       this.util.crearLoading().then(() => {
-        this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
+        this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
-        this.resultado(result, false);
+      this.budgetService.inconsistenciaDatos(this.util.userMntInconsistencia, this.backups).subscribe(result => {
+        this.resultado(result);
       }, error => {
         this.util.msjErrorInterno(error, false);
       });
     }
   }
-  public resultado(result, bnd = true) {
-    if (bnd) {
+  public resultado(result) {
+    this.util.msj = result.msj;
+    if (this.budgetService.pagina == 0) {
       this.util.detenerLoading();
-      this.util.msjLoading =  result.msj;
-      this.util.msj =  result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.pagina += 1;
+      this.util.QueryComplete.isComplete = false;
+      if (this.budgetService.pagina == 0) {
+        this.util.QueryComplete.isComplete = result.budgets.length < this.util.limit;
+      }
+      this.budgetService.pagina += 1;
       this.budgetService.Budgets = this.budgetService.Budgets.concat(result.budgets);
+    } else {
+      this.util.QueryComplete.isComplete = this.budgetService.pagina != 0;
     }
     this.util.loadingMain = false;
   }

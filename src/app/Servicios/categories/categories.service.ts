@@ -156,8 +156,8 @@ export class CategoriesService {
     return this.http.get(URL + 'buscarCategoriesBackup', {params: {id_backup: this.id_backup, pagina: this.pagina}});
   }
 
-  public inconsistenciaDato(data, pagina, backups): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosCategories', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  public inconsistenciaDato(data, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosCategories', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
 
   public agregarCategory(category, id_usuario): Observable<any> {

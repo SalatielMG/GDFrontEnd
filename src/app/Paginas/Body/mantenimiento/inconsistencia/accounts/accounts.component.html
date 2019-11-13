@@ -113,7 +113,7 @@
     <tbody *ngIf="!accountService.isFilter()">
     <tr *ngFor="let account of accountService.Accounts; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic">{{account.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
       <td class="Celdas-Tabla">{{account.id_account}}</td>
       <td class="Celdas-Tabla">{{account.name}}</td>
       <td class="Celdas-Tabla">{{account.detail}}</td>
@@ -155,7 +155,7 @@
     <tbody *ngIf="accountService.isFilter()">
     <tr *ngFor="let account of accountService.accountsFilter; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic">{{account.cantidadRepetida}}</td>
+      <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
       <td class="Celdas-Tabla">{{account.id_account}}</td>
       <td class="Celdas-Tabla">{{account.name}}</td>
       <td class="Celdas-Tabla">{{account.detail}}</td>

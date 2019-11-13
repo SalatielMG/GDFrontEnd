@@ -122,8 +122,8 @@ export class CardviewsService {
     return this.http.get(URL + 'buscarCardviewsBackup', {params: {id_backup: this.id_backup.toString(), pagina: this.pagina.toString()}});
   }
 
-  public inconsistenciaDatos(data, pagina, backups): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosCardviews', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  public inconsistenciaDatos(data, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosCardviews', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
   public agregarCardview(cardview, id_usuario): Observable<any> {
     const  parametro = new HttpParams()

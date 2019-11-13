@@ -16,49 +16,263 @@
 <div class="container text-center" *ngIf="movementsService.Movements.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="movementsService.Movements.length > 0">
-  <table class="table table-hover table-responsive">
+<div *ngIf="movementsService.Movements.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad repetida</th>
-      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
-      <th scope="col" class="Encabezado-Tabla">id_account</th>
-      <th scope="col" class="Encabezado-Tabla">id_category</th>
-      <th scope="col" class="Encabezado-Tabla">amount</th>
-      <th scope="col" class="Encabezado-Tabla">sign</th>
-      <th scope="col" class="Encabezado-Tabla">detail</th>
-      <th scope="col" class="Encabezado-Tabla">date_record</th>
-      <th scope="col" class="Encabezado-Tabla">time_record</th>
-      <th scope="col" class="Encabezado-Tabla">confirmed</th>
-      <th scope="col" class="Encabezado-Tabla">iso_code</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="movementsService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="movementsService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of movementsService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
+          </select>
+          <button type="button" [ngClass]="(movementsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="movementsService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="movementsService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of movementsService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(movementsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="movementsService.actionFilterEvent($event, 'id_category')">
+
+            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) == -1"><!-- Listar todas categorias de todas la cuentas -->
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of movementsService.AccountsBackup">
+                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+                <option value="10000">10000</option>
+              </ng-container>
+
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of movementsService.AccountsBackup">
+                  <ng-container *ngFor="let category of account.categoriesAccount">
+                    <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                  </ng-container>
+                </ng-container>
+                <option value="10000">10000</option>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) != -1"><!-- Listar todas categorias de la cuenta seleccionada -->
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
+                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
+                <option value="10000">10000</option>
+              </ng-container>
+
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
+                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <ng-container *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                  <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+                <option value="10000">10000</option>
+              </ng-container>
+            </ng-container>
+
+          </select>
+          <button type="button" [ngClass]="(movementsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="movementsService.actionFilterEvent($event, 'id_category')">
+
+            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) == -1"><!-- Listar todas categorias de todas la cuentas -->
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of movementsService.AccountsBackup">
+                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                </ng-container>
+                <option value="10000">TRANSFERENCIAS</option>
+              </ng-container>
+
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
+                <option value="0">Todas</option>
+                <ng-container *ngFor="let account of movementsService.AccountsBackup">
+                  <ng-container *ngFor="let category of account.categoriesAccount">
+                    <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                  </ng-container>
+                </ng-container>
+                <option value="10000">TRANSFERENCIAS</option>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) != -1"><!-- Listar todas categorias de la cuenta seleccionada -->
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
+                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                <option value="10000">TRANSFERENCIAS</option>
+              </ng-container>
+
+              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
+                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+                <ng-container *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                  <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                </ng-container>
+                <option value="10000">TRANSFERENCIAS</option>
+              </ng-container>
+            </ng-container>
+
+          </select>
+          <button type="button" [ngClass]="(movementsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Amount
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.amount.value" name="amount" (keyup)="movementsService.actionFilterEvent($event, 'amount', true)">
+          <button type="button" [ngClass]="(movementsService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('amount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Sign
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.sign.value" name="sign" (ngModelChange)="movementsService.actionFilterEvent($event, 'sign')">
+            <option value="-1">Ambos</option>
+            <option value="-">-</option>
+            <option value="+">+</option>
+          </select>
+          <button type="button" [ngClass]="(movementsService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('sign')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Detail
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.detail.value" name="detail" (keyup)="movementsService.actionFilterEvent($event, 'detail', true)">
+          <button type="button" [ngClass]="(movementsService.filtersSearch.detail.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('detail')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Date_record
+
+          <input type="text" [owlDateTimeTrigger]="dateR" [owlDateTime]="dateR" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')">
+          <owl-date-time #dateR [pickerType]="'calendar'"></owl-date-time>
+
+          <!--input type="date" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')"-->
+          <button type="button" [ngClass]="(movementsService.filtersSearch.date_record.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('date_record')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Time_record</th>
+      <th scope="col" class="Encabezado-Tabla">Confirmed</th>
+      <th scope="col" class="Encabezado-Tabla">Transfer</th>
+      <th scope="col" class="Encabezado-Tabla">Date_idx</th>
+      <th scope="col" class="Encabezado-Tabla">Day</th>
+      <th scope="col" class="Encabezado-Tabla">Week</th>
+      <th scope="col" class="Encabezado-Tabla">Fortnight</th>
+      <th scope="col" class="Encabezado-Tabla">Month</th>
+      <th scope="col" class="Encabezado-Tabla">Year</th>
+      <th scope="col" class="Encabezado-Tabla">Operation_code</th>
+      <th scope="col" class="Encabezado-Tabla">Picture</th>
+      <th scope="col" class="Encabezado-Tabla">Iso_code</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
+    <tbody *ngIf="!movementsService.isFilter()">
     <tr *ngFor="let movement of movementsService.Movements; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{movement.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{movement.id_backup}}</td>
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{movement.repeated}}</td>
       <td class="Celdas-Tabla">{{movement.id_account}}</td>
+      <td class="Celdas-Tabla">{{movement.nameAccount}}</td>
       <td class="Celdas-Tabla">{{movement.id_category}}</td>
-      <td class="Celdas-Tabla">{{movement.amount}}</td>
-      <td class="Celdas-Tabla">{{(movement.sign == "-") ? "Gastos": "Ingresos"}}</td>
+      <td class="Celdas-Tabla">{{movement.nameCategory}}</td>
+      <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{movement.sign}}</td>
       <td class="Celdas-Tabla">{{movement.detail}}</td>
-      <td class="Celdas-Tabla">{{movement.date_record | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{(movement.date_record == '0000-00-00') ? movement.date_record : movement.date_record  | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla">{{movement.time_record}}</td>
       <td class="Celdas-Tabla">{{movement.confirmed}}</td>
+      <td class="Celdas-Tabla">{{movement.transfer}}</td>
+      <td class="Celdas-Tabla">{{movement.date_idx}}</td>
+      <td class="Celdas-Tabla">{{movement.day}}</td>
+      <td class="Celdas-Tabla">{{movement.week}}</td>
+      <td class="Celdas-Tabla">{{movement.fortnight}}</td>
+      <td class="Celdas-Tabla">{{movement.month}}</td>
+      <td class="Celdas-Tabla">{{movement.year}}</td>
+      <td class="Celdas-Tabla">{{movement.operation_code}}</td>
+      <td class="Celdas-Tabla">{{movement.picture}}</td>
       <td class="Celdas-Tabla">{{movement.iso_code}}</td>
-      <!--td class="Celdas-Tabla">
-        <button class="btn btn-primary">Corregir</button>
-      </td-->
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
-      [infiniteScrollDistance]="2"
-      (scrolled)="onScroll()">
+      [infiniteScrollDistance]="1"
+      infiniteScrollContainer=".table-fixed-xl tbody"
+      (scrolled)="onScroll($event)">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="movementsService.isFilter()">
+    <tr *ngFor="let movement of movementsService.movementsFilter; let i = index" >
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{movement.repeated}}</td>
+      <td class="Celdas-Tabla">{{movement.id_account}}</td>
+      <td class="Celdas-Tabla">{{movement.nameAccount}}</td>
+      <td class="Celdas-Tabla">{{movement.id_category}}</td>
+      <td class="Celdas-Tabla">{{movement.nameCategory}}</td>
+      <td class="Celdas-Tabla">{{movement.amount | currency: movement.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla">{{movement.sign}}</td>
+      <td class="Celdas-Tabla">{{movement.detail}}</td>
+      <td class="Celdas-Tabla ">{{(movement.date_record == '0000-00-00') ? movement.date_record : movement.date_record  | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla">{{movement.time_record}}</td>
+      <td class="Celdas-Tabla">{{movement.confirmed}}</td>
+      <td class="Celdas-Tabla">{{movement.transfer}}</td>
+      <td class="Celdas-Tabla">{{movement.date_idx}}</td>
+      <td class="Celdas-Tabla">{{movement.day}}</td>
+      <td class="Celdas-Tabla">{{movement.week}}</td>
+      <td class="Celdas-Tabla">{{movement.fortnight}}</td>
+      <td class="Celdas-Tabla">{{movement.month}}</td>
+      <td class="Celdas-Tabla">{{movement.year}}</td>
+      <td class="Celdas-Tabla">{{movement.operation_code}}</td>
+      <td class="Celdas-Tabla">{{movement.picture}}</td>
+      <td class="Celdas-Tabla">{{movement.iso_code}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>

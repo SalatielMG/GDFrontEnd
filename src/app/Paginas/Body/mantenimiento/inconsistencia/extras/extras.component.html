@@ -16,37 +16,82 @@
 <div class="container text-center" *ngIf="extrasService.Extras.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="extrasService.Extras.length > 0">
-  <table class="table table-hover">
+<div *ngIf="extrasService.Extras.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad repetida</th>
-      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
-      <th scope="col" class="Encabezado-Tabla">id_extra</th>
-      <th scope="col" class="Encabezado-Tabla">account</th>
-      <th scope="col" class="Encabezado-Tabla">category</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Extra
+          <input type="number" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.id_extra.value" name="id_extra" (keyup)="extrasService.actionFilterEvent($event, 'id_extra', true)">
+          <button type="button" [ngClass]="(extrasService.filtersSearch.id_extra.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('id_extra')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Account
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.account.value" name="account" (keyup)="extrasService.actionFilterEvent($event, 'account', true)">
+          <button type="button" [ngClass]="(extrasService.filtersSearch.account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('account')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Category
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.category.value" name="category" (keyup)="extrasService.actionFilterEvent($event, 'category', true)">
+          <button type="button" [ngClass]="(extrasService.filtersSearch.category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
+    <tbody *ngIf="!extrasService.isFilter()">
     <tr *ngFor="let extra of extrasService.Extras; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{extra.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{extra.id_backup}}</td>
+      <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{extra.repeated}}</td>
       <td class="Celdas-Tabla">{{extra.id_extra}}</td>
       <td class="Celdas-Tabla">{{extra.account}}</td>
       <td class="Celdas-Tabla">{{extra.category}}</td>
-      <!--td class="Celdas-Tabla">
-        <button class="btn btn-primary">Corregir</button>
-      </td-->
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
       [infiniteScrollDistance]="2"
+      infiniteScrollContainer=".table-fixed-xl tbody"
       (scrolled)="onScroll()">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="extrasService.isFilter()">
+    <tr *ngFor="let extra of extrasService.extrasFilter; let i = index" >
+      <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla">{{extra.repeated}}</td>
+      <td class="Celdas-Tabla">{{extra.id_extra}}</td>
+      <td class="Celdas-Tabla">{{extra.account}}</td>
+      <td class="Celdas-Tabla">{{extra.category}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>
+

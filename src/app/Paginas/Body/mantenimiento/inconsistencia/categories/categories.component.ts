@@ -10,19 +10,18 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class CategoriesComponent implements OnInit {
 
-  public pagina: number = 0;
   public backups;
 
   constructor(public route: ActivatedRoute,
               public router: Router, public categoriesService: CategoriesService, public util: Utilerias) {
     this.route.paramMap.subscribe((params) => {
       this.backups = params.get("backups");
-      this.resetearVariables();
       let backs = JSON.parse(this.backups);
       if (backs.length == 0) {
         this.util.msj = "Porfavor filtre los backups a buscar en la tabla Categories";
         return;
       }
+      this.categoriesService.resetVariables();
       this.buscarInconsistencia();
     });
   }
@@ -30,43 +29,43 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
     this.util.ready();
   }
-  onScroll () {
-    console.log('scrolled!!');
-    this.buscarInconsistencia();
-  }
-  public resetearVariables(){
-    this.categoriesService.Categories = [];
-    this.pagina = 0;
+  public onScroll() {
+    if (!this.categoriesService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();
   }
   public buscarInconsistencia() {
     this.util.loadingMain = true;
-    if (this.pagina == 0){
+    if (this.categoriesService.pagina == 0) {
       this.util.msjLoading = 'Buscando inconsistencia de datos en la tabla Categories';
       this.util.crearLoading().then(() => {
-        this.categoriesService.inconsistenciaDato(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
+        this.categoriesService.inconsistenciaDato(this.util.userMntInconsistencia, this.backups).subscribe(result => {
           this.resultado(result);
         }, error => {
           this.util.msjErrorInterno(error);
         });
       });
     } else {
-      this.categoriesService.inconsistenciaDato(this.util.userMntInconsistencia, this.pagina, this.backups).subscribe(result => {
-        this.resultado(result, false);
+      this.categoriesService.inconsistenciaDato(this.util.userMntInconsistencia, this.backups).subscribe(result => {
+        this.resultado(result);
       }, error => {
         this.util.msjErrorInterno(error, false);
       });
     }
   }
-  public resultado(result, bnd = true) {
-    if (bnd) {
+  public resultado(result) {
+    this.util.msj = result.msj;
+    if (this.categoriesService.pagina == 0) {
       this.util.detenerLoading();
-      this.util.msjLoading =  result.msj;
-      this.util.msj =  result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
-      this.pagina += 1;
+      this.util.QueryComplete.isComplete = false;
+      if (this.categoriesService.pagina == 0) {
+        this.util.QueryComplete.isComplete = result.categories.length < this.util.limit;
+      }
+      this.categoriesService.pagina += 1;
       this.categoriesService.Categories = this.categoriesService.Categories.concat(result.categories);
+    } else {
+      this.util.QueryComplete.isComplete = this.categoriesService.pagina != 0;
     }
     this.util.loadingMain = false;
   }

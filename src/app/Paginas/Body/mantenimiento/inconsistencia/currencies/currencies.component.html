@@ -16,39 +16,83 @@
 <div class="container text-center" *ngIf="currenciesService.Currencies.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="currenciesService.Currencies.length > 0">
-  <table class="table table-hover">
+
+<div *ngIf="currenciesService.Currencies.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad repetida</th>
-      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
-      <th scope="col" class="Encabezado-Tabla">iso_code</th>
-      <th scope="col" class="Encabezado-Tabla">symbol</th>
-      <th scope="col" class="Encabezado-Tabla">icon_name</th>
-      <th scope="col" class="Encabezado-Tabla">selected</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Iso_code
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
+            <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
+            <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.iso_code}}</option>
+          </select>
+          <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Symbol
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
+            <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
+            <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.symbol}}</option>
+          </select>
+          <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Icon_name</th>
+      <th scope="col" class="Encabezado-Tabla">Selected</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
-    <tr *ngFor="let currencie of currenciesService.Currencies; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{currencie.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{currencie.id_backup}}</td>
-      <td class="Celdas-Tabla">{{currencie.iso_code}}</td>
-      <td class="Celdas-Tabla">{{currencie.symbol}}</td>
-      <td class="Celdas-Tabla">{{currencie.icon_name}}</td>
-      <td class="Celdas-Tabla">{{currencie.selected}}</td>
-      <!--td class="Celdas-Tabla">
-        <button class="btn btn-primary">Corregir</button>
-      </td-->
+    <tbody *ngIf="!currenciesService.isFilter()">
+    <tr *ngFor="let currency of currenciesService.Currencies; let i = index" >
+      <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
+      <td class="Celdas-Tabla">{{currency.iso_code}}</td>
+      <td class="Celdas-Tabla">{{currency.symbol}}</td>
+      <td class="Celdas-Tabla">{{currency.icon_name}}</td>
+      <td class="Celdas-Tabla">{{currency.selected}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
       [infiniteScrollDistance]="2"
+      infiniteScrollContainer=".table-fixed-xl tbody"
       (scrolled)="onScroll()">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="currenciesService.isFilter()">
+    <tr *ngFor="let currency of currenciesService.currenciesFilter; let i = index">
+      <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
+      <td class="Celdas-Tabla">{{currency.iso_code}}</td>
+      <td class="Celdas-Tabla">{{currency.symbol}}</td>
+      <td class="Celdas-Tabla">{{currency.icon_name}}</td>
+      <td class="Celdas-Tabla">{{currency.selected}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>

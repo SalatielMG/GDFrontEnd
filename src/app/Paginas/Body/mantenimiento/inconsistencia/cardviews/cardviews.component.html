@@ -16,43 +16,100 @@
 <div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="cardviewService.Cardviews.length > 0">
-  <table class="table table-hover">
+<div *ngIf="cardviewService.Cardviews.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
       <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad repetida</th>
-      <th scope="col" class="Encabezado-Tabla">Id Backup</th>
-      <th scope="col" class="Encabezado-Tabla">Id Card</th>
-      <th scope="col" class="Encabezado-Tabla">Nombre</th>
-      <th scope="col" class="Encabezado-Tabla">Periodo</th>
-      <th scope="col" class="Encabezado-Tabla">sign</th>
-      <th scope="col" class="Encabezado-Tabla">show_card</th>
-      <th scope="col" class="Encabezado-Tabla">number</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla font-italic">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Id_Card
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.id_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'id_card')">
+            <option value="-1" *ngIf="cardviewService.CadViewsGralBackup.length > 0">Todas</option>
+            <option *ngFor="let cardview of cardviewService.CadViewsGralBackup" [value]="cardview.id_card">{{cardview.id_card}}</option>
+          </select>
+          <button type="button" [ngClass]="(cardviewService.filtersSearch.id_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('id_card')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Name
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.id_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'id_card')">
+            <option value="-1" *ngIf="cardviewService.CadViewsGralBackup.length > 0">Todas</option>
+            <option *ngFor="let cardview of cardviewService.CadViewsGralBackup" [value]="cardview.id_card">{{cardview.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(cardviewService.filtersSearch.id_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('id_card')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Period</th>
+      <th scope="col" class="Encabezado-Tabla">Sign</th>
+      <th scope="col" class="Encabezado-Tabla">
+        <div class="row inline-grid">
+          Show_Card
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.show_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'show_card')">
+            <option value="-1">Ambos</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+          </select>
+          <button type="button" [ngClass]="(cardviewService.filtersSearch.show_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('show_card')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla">Number</th>
+      <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody>
+    <tbody *ngIf="!cardviewService.isFilter()">
     <tr *ngFor="let cardView of cardviewService.Cardviews; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{cardView.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{cardView.id_backup}}</td>
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{cardView.repeated}}</td>
       <td class="Celdas-Tabla">{{cardView.id_card}}</td>
       <td class="Celdas-Tabla">{{cardView.name}}</td>
       <td class="Celdas-Tabla">{{cardView.period}}</td>
       <td class="Celdas-Tabla">{{cardView.sign}}</td>
       <td class="Celdas-Tabla">{{cardView.show_card}}</td>
       <td class="Celdas-Tabla">{{cardView.number}}</td>
-      <!--td class="Celdas-Tabla">
-        <button class="btn btn-primary">Corregir</button>
-      </td-->
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
       [infiniteScrollDistance]="2"
+      infiniteScrollContainer=".table-fixed-xl tbody"
       (scrolled)="onScroll()">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="cardviewService.isFilter()">
+    <tr *ngFor="let cardView of cardviewService.cardviewsFilter; let i = index" >
+      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic">{{cardView.repeated}}</td>
+      <td class="Celdas-Tabla">{{cardView.id_card}}</td>
+      <td class="Celdas-Tabla">{{cardView.name}}</td>
+      <td class="Celdas-Tabla">{{cardView.period}}</td>
+      <td class="Celdas-Tabla">{{cardView.sign}}</td>
+      <td class="Celdas-Tabla">{{cardView.show_card}}</td>
+      <td class="Celdas-Tabla">{{cardView.number}}</td>
+      <td class="Celdas-Tabla">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>

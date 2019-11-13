@@ -16,47 +16,163 @@
 <div class="container text-center" *ngIf="budgetService.Budgets.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
-<div *ngIf="budgetService.Budgets.length > 0">
-  <table class="table table-hover">
+<div *ngIf="budgetService.Budgets.length > 0" class="overflow-x-scroll">
+  <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">
     <tr>
-      <th scope="col" class="Encabezado-Tabla">#</th>
-      <th scope="col" class="Encabezado-Tabla">Cantidad Repetida</th>
-      <th scope="col" class="Encabezado-Tabla">id_backup</th>
-      <th scope="col" class="Encabezado-Tabla">id_account</th>
-      <th scope="col" class="Encabezado-Tabla">id_category</th>
-      <th scope="col" class="Encabezado-Tabla">period</th>
-      <th scope="col" class="Encabezado-Tabla">amount</th>
-      <th scope="col" class="Encabezado-Tabla">budget</th>
-      <th scope="col" class="Encabezado-Tabla">initial_date</th>
-      <th scope="col" class="Encabezado-Tabla">final_date</th>
-      <th scope="col" class="Encabezado-Tabla">number</th>
-      <!--th scope="col" class="Encabezado-Tabla">Operación</th-->
+      <th scope="col" class="Encabezado-Tabla ">#</th>
+      <th scope="col" class="Encabezado-Tabla ">Repeated</th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="budgetService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of budgetService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
+          </select>
+          <button type="button" [ngClass]="(budgetService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Account
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="budgetService.actionFilterEvent($event, 'indexAccount')">
+            <option value="-1" *ngIf="budgetService.AccountsBackup.length > 0">Todas</option>
+            <option *ngFor="let account of budgetService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
+          </select>
+          <button type="button" [ngClass]="(budgetService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('indexAccount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Id_Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of budgetService.AccountsBackup">
+                <ng-container *ngFor="let category of account.categoriesAccount">
+                  <option [value]="category.id_category">{{category.id_category}}</option>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <ng-container *ngFor="let category of budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                <option [value]="category.id_category">{{category.id_category}}</option>
+              </ng-container>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(budgetService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Category
+          <select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="budgetService.actionFilterEvent($event, 'id_category')">
+            <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) == -1">
+              <option value="0">Todas</option>
+              <ng-container *ngFor="let account of budgetService.AccountsBackup">
+                <ng-container *ngFor="let category of account.categoriesAccount">
+                  <option [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="util.numberFormat(budgetService.filtersSearch.indexAccount.value) != -1">
+              <option value="0" *ngIf="budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
+              <ng-container *ngFor="let category of budgetService.AccountsBackup[util.numberFormat(budgetService.filtersSearch.indexAccount.value)].categoriesAccount;">
+                <option [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
+              </ng-container>
+            </ng-container>
+          </select>
+          <button type="button" [ngClass]="(budgetService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('id_category')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">Period</th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Amount
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.amount.value" name="amount" (keyup)="budgetService.actionFilterEvent($event, 'amount', true)">
+          <button type="button" [ngClass]="(budgetService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('amount')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">
+        <div class="row inline-grid">
+          Budget
+          <input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="budgetService.filtersSearch.budget.value" name="budget" (keyup)="budgetService.actionFilterEvent($event, 'budget', true)">
+          <button type="button" [ngClass]="(budgetService.filtersSearch.budget.isFilter) ? 'close': 'btnFilter-disabled'" (click)="budgetService.resetValuefiltroSearch('budget')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </th>
+      <th scope="col" class="Encabezado-Tabla ">Initial_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Final_date</th>
+      <th scope="col" class="Encabezado-Tabla ">Number</th>
+      <th scope="col" class="Encabezado-Tabla ">Operación</th>
+    </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="!budgetService.isFilter()">
     <tr *ngFor="let budget of budgetService.Budgets; let i = index" >
-      <th scope="row" class="Celdas-Tabla">{{(i+1)}}</th>
-      <td class="Celdas-Tabla">{{budget.cantidadRepetida}}</td>
-      <td class="Celdas-Tabla">{{budget.id_backup}}</td>
-      <td class="Celdas-Tabla">{{budget.id_account}}</td>
-      <td class="Celdas-Tabla">{{budget.id_category}}</td>
-      <td class="Celdas-Tabla">{{budget.period}}</td>
-      <td class="Celdas-Tabla">{{budget.amount}}</td>
-      <td class="Celdas-Tabla">{{budget.budget}}</td>
-      <td class="Celdas-Tabla">{{(budget.initial_date == "0000-00-00") ? "Sin fecha" : budget.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla">{{(budget.final_date == "0000-00-00") ? "Sin fecha" : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla">{{budget.number}}</td>
-      <!--td class="Celdas-Tabla">
-        <button class="btn btn-primary">Corregir</button>
-      </td-->
+      <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
+      <td class="Celdas-Tabla ">{{budget.id_account}}</td>
+      <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
+      <td class="Celdas-Tabla ">{{budget.id_category}}</td>
+      <td class="Celdas-Tabla ">{{budget.nameCategory}}</td>
+      <td class="Celdas-Tabla ">{{budget.period}}</td>
+      <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla ">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{budget.number}}</td>
+      <td class="Celdas-Tabla ">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
     </tr>
     <div
+      [fromRoot]="true"
       infiniteScroll
       [infiniteScrollDistance]="2"
+      infiniteScrollContainer=".table-fixed-xl tbody"
       (scrolled)="onScroll()">
     </div>
+    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
+    </tbody>
+    <tbody *ngIf="budgetService.isFilter()">
+    <tr *ngFor="let budget of budgetService.budgetsFilter; let i = index" >
+      <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
+      <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
+      <td class="Celdas-Tabla ">{{budget.id_account}}</td>
+      <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
+      <td class="Celdas-Tabla ">{{budget.id_category}}</td>
+      <td class="Celdas-Tabla ">{{budget.nameCategory}}</td>
+      <td class="Celdas-Tabla ">{{budget.period}}</td>
+      <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+      <td class="Celdas-Tabla ">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{budget.number}}</td>
+      <td class="Celdas-Tabla ">
+        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+          <span>
+            <fa-icon [icon]="util.faTools"></fa-icon>
+          </span>
+        </button>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-
 </div>

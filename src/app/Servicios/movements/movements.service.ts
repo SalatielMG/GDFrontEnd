@@ -166,8 +166,8 @@ export class MovementsService {
   public buscarMovementsBackup(): Observable<any> {
     return this.http.get(URL + 'buscarMovementsBackup', {params:{id_backup: this.id_backup.toString(), pagina: this.pagina.toString()}});
   }
-  public inconsistenciaDatos(data, pagina, backups): Observable<any> {
-    return this.http.get(URL + 'buscarInconsistenciaDatosMovements', {params: {dataUser: JSON.stringify(data), pagina: pagina, backups: backups}});
+  public inconsistenciaDatos(data, backups): Observable<any> {
+    return this.http.get(URL + 'buscarInconsistenciaDatosMovements', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
   public agregarMovement (movement, id_usuario): Observable<any> {
     const  parametro = new HttpParams()
