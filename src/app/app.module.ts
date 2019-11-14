@@ -40,11 +40,9 @@ import { QueryCompleteModule } from './Components/query-complete/query-complete.
 import { TituloEncabezadoModule } from './Paginas/Header/titulo-encabezado/titulo-encabezado.module';
 import { LoginModule } from './Paginas/Body/login/login.module';
 import { HomeModule } from './Paginas/Body/home/home.module';
-import {PerfilComponent} from './Paginas/Body/usuarios/perfil/perfil.component';
 
 @NgModule({
   declarations: [
-    PerfilComponent,
     AppComponent,
     NavEncodeComponent,
     PaginaNoEmcontradaComponent,

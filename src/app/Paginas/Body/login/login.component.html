@@ -29,7 +29,7 @@
           <div class="button-container">
             <button class="btn btn-success btn-redondo buttonFadeInUp" type="submit" [disabled]="usuario.invalid">
               <span>
-                <fa-icon [icon]="faCheck"></fa-icon>
+                <fa-icon [icon]="util.faCheck"></fa-icon>
               </span>
             </button>
 
@@ -37,7 +37,7 @@
         </form>
       </div>
       <div class="d-flex justify-content-center align-content-center mt-5">
-        <button type="button" class="btn btn-outline-info border-0 ">¿ Olvido su contraseña ?</button>
+        <button type="button" class="btn btn-outline-info border-0 " [routerLink]="['/recuperarContraseña', usuario.value.email]">¿ Olvido su contraseña ?</button>
       </div>
     </div>
   </div>

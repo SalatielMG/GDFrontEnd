@@ -4,7 +4,8 @@ import {LoginComponent} from './login.component';
 
 
 const routes: Routes = [
-  {path: "", component: LoginComponent}
+  {path: "", component: LoginComponent},
+  {path: "recuperarContraseña/:email", loadChildren: () => import('./recuperar-contrasena/recuperar-contrasena.module').then(m => m.RecuperarContrasenaModule)}
 ];
 
 @NgModule({

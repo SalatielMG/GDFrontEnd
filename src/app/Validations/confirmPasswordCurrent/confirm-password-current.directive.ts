@@ -25,7 +25,6 @@ export class ConfirmPasswordCurrentDirective implements AsyncValidator{
     return this.usuarioService.verifyPasswordCurrent(password).pipe(map( result => {
       this.enviarPaswordVerify(result.error);
       if (result.error) {
-
         return {passwordNoVerify: true};
       }
       return null

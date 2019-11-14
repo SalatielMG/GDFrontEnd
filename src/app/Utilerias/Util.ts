@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { faKey, faEye, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faArrowUp, faSearch, faPen, faTrash, faSlidersH, faTools, faPlus} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faKey, faEye, faChevronUp, faChevronDown ,faUserPlus, faCheckSquare ,faList ,faBug ,faCog, faDatabase, faUserCircle ,faFileExport ,faTimesCircle, faArrowUp, faSearch, faPen, faTrash, faSlidersH, faTools, faPlus} from "@fortawesome/free-solid-svg-icons";
 import { DatePipe } from '@angular/common';
 declare var $: any;
 
@@ -148,6 +148,7 @@ export class Utilerias {
     "rgba(205, 205, 205, 1)",
   ];
 
+  public faCheck = faCheck;
   public faKey = faKey;
   public faEye = faEye;
   public faUserPlus = faUserPlus;
@@ -176,6 +177,7 @@ export class Utilerias {
   public stepDecimal: string = "0.000001";
   public limit: number= 50;
   public newPassword: string = "";
+  public emailResetPassword: string = "";
   public symbolDecimalNumber6Digits: string = "1.2-6";
 
   constructor(private toast: ToastrService, private spinnerService: NgxSpinnerService, private datePipe: DatePipe) {
@@ -287,6 +289,12 @@ export class Utilerias {
     }
     if (control.hasError("passwordNoVerify")) {
       error += "Contraseña incorrecta";
+    }
+    if (control.hasError("emailNoVerify")) {
+      error += "No existe el correo";
+    }
+    if (control.hasError("codeNoVerify")) {
+      error += "Codigo incorrecto";
     }
     if (control.hasError("NoConfirmNewPassword")) {
       error += "Las contraseñas no coinciden";

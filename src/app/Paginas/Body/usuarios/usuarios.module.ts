@@ -11,6 +11,7 @@ import {QueryCompleteModule} from '../../../Components/query-complete/query-comp
 import {PermisoService} from '../../../Servicios/permiso/permiso.service';
 import { ConfirmPasswordCurrentDirective } from '../../../Validations/confirmPasswordCurrent/confirm-password-current.directive';
 import { ConfirmNewPasswordDirective } from '../../../Validations/confirmNewPassword/confirm-new-password.directive';
+import {PerfilComponent} from './perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ConfirmNewPasswordDirective } from '../../../Validations/confirmNewPass
     PermisosComponent,
     ConfirmPasswordCurrentDirective,
     ConfirmNewPasswordDirective,
+    PerfilComponent
   ],
   imports: [
     FormsModule,

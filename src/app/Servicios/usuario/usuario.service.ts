@@ -132,4 +132,19 @@ export class UsuarioService {
     return this.http.get(URL + "verifyPasswordCurrent", {params: { password: password, id_usuario: this.usuarioCurrent.id.toString()}});
   }
 
+  public verifyEmailAndSendCode(email): Observable<any> {
+    return this.http.get(URL + "verifyEmailAndSendCode", {params: { email: email}});
+  }
+
+  public verifyCodeResetPasword(code, email): Observable<any> {
+    return this.http.get(URL + "verifyCodeResetPasword", {params: { code: code, email:email}});
+  }
+
+  public ResetPassword(newPassword, email): Observable<any> {
+    const  parametro = new HttpParams()
+      .append('newPassword', newPassword)
+      .append('email', email);
+    return this.http.post(URL + "ResetPassword", parametro);
+  }
+
 }
