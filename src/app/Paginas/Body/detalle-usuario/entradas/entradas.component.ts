@@ -18,7 +18,10 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./entradas.component.css']
 })
 export class EntradasComponent implements AfterViewInit {
+
   public msj;
+  public symbolsAccountsPieCharData: [] = [];
+  public totalesAccountsPieCharData: [] = [];
   public pieChartOptions: ChartOptions = {
     devicePixelRatio: 2,
     aspectRatio: 1.3,
@@ -102,10 +105,11 @@ export class EntradasComponent implements AfterViewInit {
     this.months = result.meses;
     this.month = result.ultimoMes;
 
-
     if (!result.error) {
       this.pieChartLabels = result.labels;
       this.pieChartData = result.values;
+      this.symbolsAccountsPieCharData = result.symbols;
+      this.totalesAccountsPieCharData = result.totales;
       this.pieChartColors[0].backgroundColor = this.util.calcularColoreAleatorios(this.pieChartData.length);
       this.pieChartColors[0].borderColor = this.util.calcularColoreAleatorios(this.pieChartData.length,true);
       this.colorCategorias.changes.subscribe(() => {
@@ -114,6 +118,8 @@ export class EntradasComponent implements AfterViewInit {
     }
   }
   public resetpiechar() {
+    this.symbolsAccountsPieCharData = [];
+    this.totalesAccountsPieCharData = [];
     this.pieChartLabels = [];
     this.pieChartData = [];
     this.pieChartColors[0].borderColor = [];

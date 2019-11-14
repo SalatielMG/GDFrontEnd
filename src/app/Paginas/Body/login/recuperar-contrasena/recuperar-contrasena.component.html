@@ -14,10 +14,10 @@
     <div class="container">
       <div class="card"></div>
       <div class="card">
-        <div class="row d-block text-center" style="width: 100%; margin-bottom: 20px;">
-          <h5 class="text-center font-weight-500" *ngIf="status == 0">Ingrese su correo de registro para enviarle un codigo de reseteo</h5>
-          <h5 class="text-center font-weight-500" *ngIf="status == 1">Ingrese el codigo que recibio</h5>
-          <h5 class="text-center font-weight-500" *ngIf="status == 2">Proorcione su nueva conraseña</h5>
+        <div class="row d-block text-center" style="margin-bottom: 80px;">
+          <h5 class="text-center font-weight-500" *ngIf="status == 0">Ingrese su correo de registro para enviarle un codigo de confirmación</h5>
+          <h5 class="text-center font-weight-500" *ngIf="status == 1">Ingrese el codigo de confirmación</h5>
+          <h5 class="text-center font-weight-500" *ngIf="status == 2">Proporcione su nueva contraseña</h5>
         </div>
         <form [formGroup]="formResetPasword" (ngSubmit)="resetPasword()">
           <div class="input-container" *ngIf="status == 0">
@@ -34,20 +34,20 @@
           </div>
           <div *ngIf="status == 2">
             <div class="input-container">
-              <input type="text" formControlName="newPassword" id="newPassword" class="label-center" (blur)="confirmNewPassword($event)"  [ngClass]="(getError('newPassword') == '') ? 'valid-control' : 'invalid-control'"/>
+              <input type="password" formControlName="newPassword" id="newPassword" class="label-center" (blur)="confirmNewPassword($event)"  [ngClass]="(getError('newPassword') == '') ? 'valid-control' : 'invalid-control'"/>
               <label for="newPassword">Nueva contraseña</label>
               <div class="bar"></div>
               <div class="invalid-feedback">{{ getError('newPassword')}}</div>
             </div>
             <div class="input-container">
-              <input type="text" formControlName="confirmNewPassword" id="confirmNewPassword" class="label-center"  [ngClass]="(getError('confirmNewPassword') == '') ? 'valid-control' : 'invalid-control'"/>
+              <input type="password" formControlName="confirmNewPassword" id="confirmNewPassword" class="label-center"  [ngClass]="(getError('confirmNewPassword') == '') ? 'valid-control' : 'invalid-control'"/>
               <label for="confirmNewPassword">Confirme la nueva Contraseña:</label>
               <div class="bar"></div>
               <div class="invalid-feedback">{{ getError('confirmNewPassword')}}</div>
             </div>
           </div>
           <div class="button-container">
-            <button class="btn btn-primary" type="submit" [disabled]="status == 2 && formResetPasword.invalid " *ngIf="status != 1">
+            <button class="btn btn-primary btn-redondo buttonFadeInUp" type="submit" [disabled]="status == 2 && formResetPasword.invalid " *ngIf="status != 1">
               <span>
                 <fa-icon [icon]="util.faCheck"></fa-icon>
               </span>

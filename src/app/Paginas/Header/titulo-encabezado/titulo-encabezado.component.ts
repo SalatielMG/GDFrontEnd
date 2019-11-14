@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TituloEncabezadoComponent implements OnInit {
   @Input() titulo;
-  @Input() subTitulo;
+  @Input() subTitulo = '';
   constructor() { }
 
   ngOnInit() {

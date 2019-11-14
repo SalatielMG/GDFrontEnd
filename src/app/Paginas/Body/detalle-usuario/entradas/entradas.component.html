@@ -98,14 +98,14 @@
           <div class="categoria" #colorCategorias></div>
         </td>
         <td style="width: 50%">{{pieChartLabels[i]}}</td>
-        <td style="width: 30%">{{pieChartData[i] | currency: '$':'symbol':'1.2-6'}}</td>
+        <td style="width: 30%">{{pieChartData[i] | currency: symbolsAccountsPieCharData[i] : 'symbol': util.symbolDecimalNumber6Digits}}</td>
       </tr>
       </tbody>
       <tbody style="height: 40px!important; overflow-y: hidden!important; overflow-x: hidden!important;">
-      <tr>
-        <td style="width: 70%" class="font-weight-500" colspan="3">TOTAL</td>
-        <td style="width: 30%">{{util.sumaTotal(pieChartData) | currency: '$':'symbol':'1.2-6'}}</td>
-      </tr>
+        <tr *ngFor="let total of totalesAccountsPieCharData">
+          <td style="width: 70%" class="font-weight-500" colspan="3">TOTAL</td>
+          <td style="width: 30%">{{total.total | currency: total.symbol : 'symbol' : util.symbolDecimalNumber6Digits}}</td>
+        </tr>
       </tbody>
     </table>
   </div>

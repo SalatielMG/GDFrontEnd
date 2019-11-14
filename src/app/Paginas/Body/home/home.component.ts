@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
 
   public construirFormulario() {
     this.usuarioSearch = this.formBuilder.group({
-      email: ['eduardocrysnamuk@gmail.com', Validators.email],
+      email: ['', Validators.email],
     });
   }
 

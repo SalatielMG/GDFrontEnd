@@ -46,21 +46,20 @@
         </canvas>
       </div>
       <div class="col-3">
-        <table class="table table-sm table-hover" style="font-size: small" *ngIf="TotalbarChartLabels.length > 0">
+        <table class="table table-sm table-hover table-fixed" style="font-size: small;" *ngIf="TotalbarChartLabels.length > 0">
           <thead class="thead-dark">
-
-          <th class="text-center"  style="width: 70%; padding-left: 30%;">
-            Año: {{TotalbarChartLabels}}
-          </th>
-          <th class="text-center" style="width: 30%">
-            <button class="btn btn-outline-info btn-sm" (click)="exportPDF()">
+          <tr>
+            <th class="text-center" colspan="4" style="width: 70%; padding-left: 30%;">
+              Año: {{TotalbarChartLabels}}
+            </th>
+            <th class="text-center" colspan="4" style="width: 30%">
+              <button class="btn btn-outline-info btn-sm" (click)="exportPDF()">
             <span>
                 <fa-icon [icon]="util.faFileExport"></fa-icon>
               </span>
-            </button>
-          </th>
-
-
+              </button>
+            </th>
+          </tr>
           </thead>
           <thead>
           <tr>
@@ -68,18 +67,18 @@
             <th scope="col" class="col-8">Total</th>
           </tr>
           </thead>
-          <tbody>
+          <tbody style="overflow-y: hidden">
           <tr>
             <td class="color-var-ingresos col-4">Ingresos</td>
-            <td class="col-8">{{TotalbarChartData[1].data[0] | currency: '$':'symbol': util.symbolDecimalNumber6Digits}}</td>
+            <td class="col-8">{{TotalbarChartData[1].data[0] | currency: SymbolsTotales.gastos:'symbol': util.symbolDecimalNumber6Digits}}</td>
           </tr>
           <tr class="mb-2">
             <td class="color-var-gastos col-4">Gastos</td>
-            <td class="border-b col-8">{{TotalbarChartData[0].data[0] | currency: '$': util.symbolDecimalNumber6Digits}}</td>
+            <td class="border-b col-8">{{TotalbarChartData[0].data[0] | currency: SymbolsTotales.ingresos: 'symbol': util.symbolDecimalNumber6Digits}}</td>
           </tr>
           <tr>
             <td class="col-4">Diferencia</td>
-            <td class="col-8">{{diferencia() | currency: '$':'symbol': util.symbolDecimalNumber6Digits}}</td>
+            <td class="col-8">{{diferencia() | currency: SymbolsTotales.diffe:'symbol': util.symbolDecimalNumber6Digits}}</td>
           </tr>
           </tbody>
         </table>

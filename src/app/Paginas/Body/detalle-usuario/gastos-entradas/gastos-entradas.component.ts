@@ -14,13 +14,14 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./gastos-entradas.component.css']
 })
 export class GastosEntradasComponent implements OnInit {
+
   public year;
   public backup;
-
   public msj= "";
   public barChartLabels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
+  public SymbolsTotales: any = {};
 
   public barChartData: ChartDataSets[] = [
     {data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: 'Gastos'},
@@ -116,6 +117,7 @@ export class GastosEntradasComponent implements OnInit {
     console.log("this.backups", this.backups);
     console.log("this.id_backup", this.backup);
     if (!result.error) {
+      this.SymbolsTotales = result.SymbolsTotales;
 
       this.barChartData[0].data = result.Gastos;
       this.barChartData[1].data = result.Ingresos;
@@ -129,6 +131,7 @@ export class GastosEntradasComponent implements OnInit {
     }
   }
   public resetbarchar(){
+    this.SymbolsTotales = {};
     this.barChartData[0].data = [];
     this.barChartData[1].data = [];
 

@@ -7,11 +7,15 @@ import {TituloEncabezadoModule} from '../../../Header/titulo-encabezado/titulo-e
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import {VerifyExixtsEmailAndSendCodeDirective} from '../../../../Validations/verifyExitsEmailAndSendCode/verify-exixts-email-and-send-code.directive';
+import {VerifyCodeResetPasswordDirective} from '../../../../Validations/verifyCodeResetPassword/verify-code-reset-password.directive';
 
 
 @NgModule({
   declarations: [
-    RecuperarContrasenaComponent
+    VerifyExixtsEmailAndSendCodeDirective,
+    RecuperarContrasenaComponent,
+    VerifyCodeResetPasswordDirective,
   ],
   imports: [
     CommonModule,
