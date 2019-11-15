@@ -206,6 +206,7 @@ export class BackupsComponent implements OnInit {
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.userBackups[this.backupService.indexUser].msj = result.msj;
           if (!result.error) {
+            this.backupService.userBackups[this.backupService.indexUser].cantRep -= 1;
             if (this.backupService.isFilter(this.backupService.indexUser)) {
               if (this.backupService.userBackups[this.backupService.indexUser].indexBackupSelected != -1) this.backupService.userBackups[this.backupService.indexUser].backups.splice(this.backupService.userBackups[this.backupService.indexUser].indexBackupSelected, 1);
 
@@ -235,11 +236,11 @@ export class BackupsComponent implements OnInit {
         this.util.detenerLoading();
         this.util.msjToast(result.msj, result.titulo, result.error);
 
-        for (let resultUser of result.resultCleanBackupsUser) {
-          this.util.msjToast(resultUser.msj, "", resultUser.error);
-          console.log("resultUser:=", resultUser);
-        }
+
         if (this.option == this.util.OPERACION_LIMPIARBACKUPSUSERS) {
+          for (let resultUser of result.resultCleanBackupsUser) {
+            this.util.msjToast(resultUser.msj, "", resultUser.error);
+          }
           this.search();
         } else {
           this.backupService.userBackups.splice(this.users[0].index, 1);

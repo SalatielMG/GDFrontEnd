@@ -1,19 +1,9 @@
-/*.phone-generic {
-  padding: 1px;
-  margin-top: 10px;
-  background: var(--light);
-  width: 100%;
-  height: 800px;
-  border: 5px solid #000;
-  border-radius: 15px;
-}*/
 
 .tammm {
   width: 33.33333% !important;
 }
 
 .flex-center-items {
-  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
   height: 800px;
   /*border: 5px solid #000;*/
   display: flex;
@@ -24,7 +14,7 @@
 
 .logo-property {
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.10);
   filter: saturate(2.3) !important;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.15), 1px 2px 3px rgba(0, 0, 0, 0.30);
   width: 150px;
