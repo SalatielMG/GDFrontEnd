@@ -44,7 +44,7 @@ export class RecuperarContrasenaComponent implements OnInit {
         this.formResetPasword.addControl("codigo", new FormControl('', {
           validators: [Validators.required, Validators.maxLength(5)],
           asyncValidators: [this.verifyCodeResetPasswordDirective.validate.bind(this.verifyCodeResetPasswordDirective)],
-          updateOn: "change"
+          updateOn: "submit"
         }));
       }
     });

@@ -43,7 +43,7 @@ export class GastosComponent implements AfterViewInit {
   };
   public pieChartLabels: Label[] = [];
   public pieChartData: number[] = [];
-  public pieChartType: ChartType = 'pie';
+  public pieChartType: ChartType = 'doughnut';
   public pieChartLegend = true;
   public pieChartColors = [
     {

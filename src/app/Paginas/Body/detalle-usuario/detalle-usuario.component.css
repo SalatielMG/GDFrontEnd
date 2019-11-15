@@ -23,23 +23,27 @@
 }
 
 .logo-property {
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  filter: saturate(2.3) !important;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.15), 1px 2px 3px rgba(0, 0, 0, 0.30);
   width: 150px;
 }
 .rounded {
 
-  border-radius: 10px !important;
+border-radius: 10px !important;
 }
 
 .width-80Percent {
-  width: 100%;
+width: 100%;
 }
 .shadow:hover {
-  box-shadow: 0 0 11px rgba(33,33,33,.3) !important;
+box-shadow: 0 0 11px rgba(33,33,33,.3) !important;
 }
 .membrete-logo {
-  position: fixed;
-  z-index: -1;
-  /* height: 1px; */
+position: fixed;
+z-index: -1;
+/* height: 1px; */
   top: -150px;
 }
 

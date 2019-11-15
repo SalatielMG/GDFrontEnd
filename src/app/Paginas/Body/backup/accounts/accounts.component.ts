@@ -26,6 +26,7 @@ export class AccountsComponent implements OnInit {
     });
   }
   public onScroll() {
+
     if (!this.accountService.isFilter() && !this.util.loadingMain) this.buscarAccounts();
   }
 

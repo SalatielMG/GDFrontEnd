@@ -11,24 +11,25 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  public usuario: FormGroup;
+  public usuario: FormGroup = null;
 
   constructor(public userSerevice: UsuarioService, public formBuilder: FormBuilder, public util: Utilerias, public route: ActivatedRoute,
-              public router: Router) { }
+              public router: Router) {
+    this.construirFormulario();
+  }
 
   ngOnInit() {
-    this.construirFormulario();
   }
 
   public construirFormulario() {
     this.usuario = this.formBuilder.group({
-      email: ['', Validators.required, Validators.email],
+      email: ['', Validators.email],
       pass: ['', Validators.required]
     });
   }
 
   public login() {
-    console.log(this.usuario.value);
+    this.util.msjLoading = "Comprobando datos";
     this.util.crearLoading().then(()=> {
       this.userSerevice.login(this.usuario.value).subscribe(result => {
         this.util.detenerLoading();

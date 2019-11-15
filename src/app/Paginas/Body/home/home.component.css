@@ -65,3 +65,8 @@
   filter: drop-shadow(5px 5px 3px #000000) !important;
   color: #001323;
 }
+.btn-primary.disabled, .btn-primary:disabled {
+  color: #fff;
+  background-color: #001323 !important;
+  border-color: #0063ad!important;
+}

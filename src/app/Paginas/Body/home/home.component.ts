@@ -13,20 +13,20 @@ import { Users } from '../../../Modelos/users/users';
 })
 export class HomeComponent implements OnInit {
 
-  public usuarioSearch: FormGroup;
+  public usuarioSearch: FormGroup = null;
 
   constructor(public formBuilder: FormBuilder, public util: Utilerias, public userService: UserService, public route: ActivatedRoute,
               public router: Router) {
+    this.construirFormulario();
 
   }
 
   ngOnInit() {
-    this.construirFormulario();
   }
 
   public construirFormulario() {
     this.usuarioSearch = this.formBuilder.group({
-      email: ['', Validators.email],
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 

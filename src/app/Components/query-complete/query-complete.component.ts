@@ -6,6 +6,7 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./query-complete.component.css']
 })
 export class QueryCompleteComponent implements OnInit {
+
   @Input() msj;
   constructor() { }
 

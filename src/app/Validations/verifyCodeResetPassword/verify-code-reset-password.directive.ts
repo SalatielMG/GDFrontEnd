@@ -23,10 +23,10 @@ export class VerifyCodeResetPasswordDirective implements AsyncValidator {
     const code = control.value;
     return this.usuarioService.verifyCodeResetPasword(code, this.util.emailResetPassword).pipe(map( result => {
       this.enviarCodeVerify(result.error);
+      this.util.msjToast(result.msj, result.titulo, result.error);
       if (result.error) {
         return {codeNoVerify: true};
       } else {
-        this.util.msjToast(result.msj, result.titulo, result.error);
       }
       return null
     }));

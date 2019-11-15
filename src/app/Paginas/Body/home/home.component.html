@@ -14,7 +14,7 @@
 <div class="searchBar">
   <form class="form-row form-container" [formGroup]="usuarioSearch" (ngSubmit)="search()">
     <div class="col-11">
-      <input formControlName="email" type="email"  name="correo" class="form-control-lg inputSearch" placeholder="Ingrese el correo del usuario" aria-label="Search">
+      <input formControlName="email" type="email"  name="email" class="form-control-lg inputSearch" placeholder="Ingrese el correo del usuario" aria-label="Search">
     </div>
     <div class="col-1">
       <button class="btn btn-lg btn-primary btnSearch shadow-sm" type="submit" [disabled]="usuarioSearch.invalid">
