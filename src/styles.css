@@ -36,7 +36,7 @@
 
 .addButton {
   background-color: #ffffff !important;
-  color: #000000 !important;
+  color: #004b1e !important;
   overflow: hidden;
   transition: all 0.2s ease-in-out;
   box-shadow: 3px 1px 3px rgba(0, 0, 0, 1);
@@ -78,12 +78,11 @@
   z-index: 100 !important;
 }
 .up-right {
-  border: 0px;
   position: fixed;
-  bottom: 15px;
-  right: 15px;
-  width: 55px;
-  height: 55px;
+  bottom: 20px !important;
+  right: 20px !important;
+  width: 65px !important;
+  height: 65px !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,6 +90,15 @@
   cursor: pointer;
   background: #E45E4E;
   z-index: 3;
+  transition: all 0.2s ease-in-out;
+}
+.up-right:hover {
+  bottom: 17.5px !important;
+  right: 17.5px !important;
+  background-color: #dc3545 !important;
+  font-size: 20px !important;
+  width: 70px !important;
+  height: 70px !important;
 }
 .up-left {
   border: 0px;

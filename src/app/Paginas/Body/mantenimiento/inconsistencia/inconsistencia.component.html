@@ -10,7 +10,7 @@
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="modal fade" id="modalConfirmInconsistencia" tabindex="-1" role="dialog" aria-labelledby="modalConfirmInconsistenciaTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+  <div class="modal-dialog modal-dialog-centered modal" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title centerTitleModal" id="modalConfirmInconsistenciaTitle">Corregir Inconsistencia</h5>
@@ -20,7 +20,7 @@
       </div>
       <div class="modal-body">
 
-            <div class="row titulo-Modal">
+            <div class="row titulo-Modal mt-5 mb-5">
               <h5 class="text-center font-weight-500">¿ Desea corregir las inconsistencias de la Tabla : {{nameTable}} ?</h5>
             </div>
 
@@ -54,7 +54,6 @@
               <thead class="thead-dark">
               <tr class="text-center">
                 <th scope="col" class="vertical-align-middle width-6">#</th>
-                <!--th scope="col" class="vertical-align-middle">Pos</th-->
                 <th scope="col" class="vertical-align-middle width-10">
                   <div class="row inline-grid">
                     Id_backup
@@ -93,7 +92,6 @@
                     <input type="text" [owlDateTimeTrigger]="dateC" [owlDateTime]="dateC" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backupService.actionFilterEvent($event, 'date_creation', false)">
                     <owl-date-time #dateC [pickerType]="'calendar'"></owl-date-time>
 
-                    <!--input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.date_creation.value" name="date_creation" (ngModelChange)="backupService.actionFilterEvent($event, 'date_creation', false)"-->
                     <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.date_creation.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_creation')">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -106,7 +104,6 @@
                     <input type="text" [owlDateTimeTrigger]="dateD" [owlDateTime]="dateD" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backupService.actionFilterEvent($event, 'date_download', false)">
                     <owl-date-time #dateD [pickerType]="'calendar'"></owl-date-time>
                     
-                    <!--input type="date" class="form-control mr-sm-2 form-control-sm input-header" [disabled]="todo" [(ngModel)]="backupService.userBackups[backupService.indexUser].filtrosSearch.date_download.value" name="date_download" (ngModelChange)="backupService.actionFilterEvent($event, 'date_download', false)"-->
                     <button type="button" [ngClass]="(backupService.userBackups[backupService.indexUser].filtrosSearch.date_download.isFilter) ? 'close': 'btnFilter-disabled'" (click)="backupService.resetValuefiltroSearch('date_download')">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -157,6 +154,8 @@
                 (scrolled)="onScroll()"
               >
               </div>
+                <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
+                <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
               </tbody>
 
               <tbody *ngIf="!todo && backupService.isFilter()">
@@ -180,8 +179,6 @@
               </ng-container>
               </tbody>
             </table>
-            <loading-spinner *ngIf="util.loadingModal"></loading-spinner>
-            <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
 
         </div>
         <div class="row" style="width: 100%; display: block" *ngIf="backupService.userBackups[backupService.indexUser].backups.length == 0">

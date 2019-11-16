@@ -48,12 +48,13 @@ export class BackupsComponent implements OnInit {
     this.util.ready();
   }
   public search() {
-    this.backupService.resetearBackups();
     if (this.email.length == 0) {
+      this.backupService.resetearBackups();
       this.util.emailUserMntBackup = "Generales";
       this.buscarBackupsUserMnt();
     } else {
       if ((this.util.regex_email).exec(this.email)) {
+        this.backupService.resetearBackups();
         this.util.emailUserMntBackup = this.email;
         this.buscarBackupsUserMnt();
       } else {
@@ -335,6 +336,7 @@ export class BackupsComponent implements OnInit {
   public detalleUsuario(index) {
     this.backupService.indexUser = index;
     this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
+    this.userService.actualizarStorageUser();
     if (!this.backupService.userBackups[this.backupService.indexUser].collapsed || this.backupService.userBackups[this.backupService.indexUser].collapsed == undefined) {
       this.util.msjLoading = "Cargando backups del usuario: " + this.backupService.userBackups[this.backupService.indexUser].email;
       this.util.crearLoading().then(() => {

@@ -20,8 +20,7 @@ export class PermisoMntInconsistenciaGuard implements CanActivate, CanActivateCh
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log("route local", childRoute);
-    console.log("this.router", this.router);
+
     if (this.usuarioService.isValidPermiso(this.util.PERMISO_MNTINCONSISTENCIA)){
       return true;
     }

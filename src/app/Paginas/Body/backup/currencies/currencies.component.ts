@@ -164,7 +164,7 @@ export class CurrenciesComponent {
         this.util.msj = result.msj;
         if (!result.error) {
 
-          if (this.util.QueryComplete.isComplete || this.currenciesService.Currencies.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.currenciesService.Currencies.length >= 0) {
             if (!result.currency.error) {
               this.currenciesService.Currencies.push(result.currency.new);
               if (this.currenciesService.isFilter()) this.currenciesService.proccessFilter();

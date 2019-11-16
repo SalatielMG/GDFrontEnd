@@ -140,7 +140,7 @@ export class CardviewsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.cardviewService.Cardviews.length == 0){
+          if (this.util.QueryComplete.isComplete || this.cardviewService.Cardviews.length >= 0){
             if (!result.cardview.error) {
               this.cardviewService.Cardviews.push(result.cardview.new);
               if (this.cardviewService.isFilter()) this.cardviewService.proccessFilter();

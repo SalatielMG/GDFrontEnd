@@ -233,7 +233,7 @@ export class MovementsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.movementsService.Movements.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.movementsService.Movements.length >= 0) {
             if (!result.movement.error) {
               this.movementsService.Movements.push(result.movement.new);
               if (this.movementsService.isFilter()) this.movementsService.proccessFilter();

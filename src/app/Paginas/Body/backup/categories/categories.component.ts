@@ -182,7 +182,7 @@ export class CategoriesComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.categoriesService.Categories.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.categoriesService.Categories.length >= 0) {
             if (!result.category.error) {
               this.categoriesService.Categories.push(result.category.new);
               if (this.categoriesService.isFilter()) this.categoriesService.proccessFilter();

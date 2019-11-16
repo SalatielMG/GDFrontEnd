@@ -199,7 +199,7 @@ export class AccountsComponent {
           /*
           * El nuevo account se agrega al arreglo original si esta completa la consulta y se filtran la busqueda nuevamente si esta activada.
           * */
-          if (this.util.QueryComplete.isComplete || this.accountService.Accounts.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.accountService.Accounts.length >= 0) {
             if (!result.account.error) { // Se recibio correctamente la consulta de la nueva cuenta creada.
               this.accountService.Accounts.push(result.account.new);
               if (this.accountService.isFilter()) {

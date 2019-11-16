@@ -134,7 +134,7 @@ export class PreferencesComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.preferencesService.Preferences.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.preferencesService.Preferences.length >= 0) {
             if (!result.preference.error) {
               this.preferencesService.Preferences.push(result.preference.new);
               if (this.preferencesService.isFilter()) this.preferencesService.proccessFilter();

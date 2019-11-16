@@ -33,6 +33,7 @@ export class HomeComponent {
       this.userService.buscarUser(this.usuarioSearch.value.email).subscribe(result => {
           if (!result.error) {
             this.userService.User = <Users>result.user;
+            this.userService.actualizarStorageUser();
             this.router.navigate(['home/backups']);
           }
           this.util.msjToast(result.msj, result.titulo, result.error);

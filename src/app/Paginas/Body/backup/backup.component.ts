@@ -18,7 +18,6 @@ export class BackupComponent implements OnInit {
       this.idBack = params.get('idBack');
     });
     this.router.navigate(["accounts"], {relativeTo: this.route});
-    // Consultar todos las tablas relacionadas co Backups.
   }
 
   ngOnInit() {

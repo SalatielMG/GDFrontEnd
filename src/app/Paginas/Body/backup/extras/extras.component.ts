@@ -136,7 +136,7 @@ export class ExtrasComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.extrasService.Extras.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.extrasService.Extras.length >= 0) {
             if (!result.extra.error) {
               this.extrasService.Extras.push(result.extra.new);
               if (this.extrasService.isFilter()) this.extrasService.proccessFilter();

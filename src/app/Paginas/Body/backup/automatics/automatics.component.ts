@@ -199,7 +199,7 @@ export class AutomaticsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.automaticService.Automatics.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.automaticService.Automatics.length >= 0) {
             if (!result.automatic.error) {
               this.automaticService.Automatics.push(result.automatic.new);
               if (this.automaticService.isFilter()) this.automaticService.proccessFilter();

@@ -175,7 +175,7 @@ export class BudgetsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.budgetService.Budgets.length == 0) {
+          if (this.util.QueryComplete.isComplete || this.budgetService.Budgets.length >= 0) {
             if (!result.budget.error) {
               this.budgetService.Budgets.push(result.budget.new);
               if (this.budgetService.isFilter()) this.budgetService.proccessFilter();

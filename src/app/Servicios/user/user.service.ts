@@ -9,9 +9,22 @@ import {Users} from '../../Modelos/users/users';
 })
 export class UserService {
 
-  public User: Users;
+  public User: Users = null;
 
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient) {
+    this.cargarStorageUser();
+  }
+
+  public actualizarStorageUser() {
+    let data = (this.User != null) ? JSON.stringify(this.User): null;
+    localStorage.setItem('userGD', data);
+  }
+
+  public cargarStorageUser() {
+    let userGD = localStorage.getItem('userGD');
+    this.User = (userGD == null || userGD == "null") ? null: JSON.parse(userGD);
+    console.log("this.USerStorage", this.User);
+  }
 
   public buscarUser(email): Observable<any> {
     this.User = <Users>{};
