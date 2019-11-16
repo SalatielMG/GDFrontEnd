@@ -7,12 +7,6 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<button class="up-right rounded-circle" (click)="util.subir()">
-    <span>
-      <fa-icon [icon]="util.faArrowUp"></fa-icon>
-    </span>
-</button>
-
 <div class="container text-center" *ngIf="movementsService.Movements.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -26,161 +20,41 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Account
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="movementsService.actionFilterEvent($event, 'indexAccount')">
-            <option value="-1" *ngIf="movementsService.AccountsBackup.length > 0">Todas</option>
-            <option *ngFor="let account of movementsService.AccountsBackup; let i = index" [value]="i">{{account.id_account}}</option>
-          </select>
-          <button type="button" [ngClass]="(movementsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('indexAccount')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Account
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.indexAccount.value" name="indexAccount" (ngModelChange)="movementsService.actionFilterEvent($event, 'indexAccount')">
-            <option value="-1" *ngIf="movementsService.AccountsBackup.length > 0">Todas</option>
-            <option *ngFor="let account of movementsService.AccountsBackup; let i = index" [value]="i">{{account.name}}</option>
-          </select>
-          <button type="button" [ngClass]="(movementsService.filtersSearch.indexAccount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('indexAccount')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Category
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="movementsService.actionFilterEvent($event, 'id_category')">
-
-            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) == -1">
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
-                <option value="0">Todas</option>
-                <ng-container *ngFor="let account of movementsService.AccountsBackup">
-                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">{{category.id_category}}</option>
-                </ng-container>
-                <option value="10000">10000</option>
-              </ng-container>
-
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
-                <option value="0">Todas</option>
-                <ng-container *ngFor="let account of movementsService.AccountsBackup">
-                  <ng-container *ngFor="let category of account.categoriesAccount">
-                    <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
-                  </ng-container>
-                </ng-container>
-                <option value="10000">10000</option>
-              </ng-container>
-            </ng-container>
-
-            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) != -1">
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
-                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-                <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">{{category.id_category}}</option>
-                <option value="10000">10000</option>
-              </ng-container>
-
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
-                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-                <ng-container *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;">
-                  <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">{{category.id_category}}</option>
-                </ng-container>
-                <option value="10000">10000</option>
-              </ng-container>
-            </ng-container>
-
-          </select>
-          <button type="button" [ngClass]="(movementsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('id_category')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Category
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.id_category.value" name="id_category" (ngModelChange)="movementsService.actionFilterEvent($event, 'id_category')">
-
-            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) == -1">
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
-                <option value="0">Todas</option>
-                <ng-container *ngFor="let account of movementsService.AccountsBackup">
-                  <option *ngFor="let category of account.categoriesAccount" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
-                </ng-container>
-                <option value="10000">TRANSFERENCIAS</option>
-              </ng-container>
-
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
-                <option value="0">Todas</option>
-                <ng-container *ngFor="let account of movementsService.AccountsBackup">
-                  <ng-container *ngFor="let category of account.categoriesAccount">
-                    <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
-                  </ng-container>
-                </ng-container>
-                <option value="10000">TRANSFERENCIAS</option>
-              </ng-container>
-            </ng-container>
-
-            <ng-container *ngIf="util.numberFormat(movementsService.filtersSearch.indexAccount.value) != -1">
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value == '-1' || movementsService.filtersSearch.id_category.value != '0'">
-                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-                <option *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
-                <option value="10000">TRANSFERENCIAS</option>
-              </ng-container>
-
-              <ng-container *ngIf="movementsService.filtersSearch.sign.value != '-1' && movementsService.filtersSearch.id_category.value == '0'">
-                <option value="0" *ngIf="movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount.length > 0">Todos</option>
-                <ng-container *ngFor="let category of movementsService.AccountsBackup[util.numberFormat(movementsService.filtersSearch.indexAccount.value)].categoriesAccount;">
-                  <option *ngIf="category.sign == movementsService.filtersSearch.sign.value" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
-                </ng-container>
-                <option value="10000">TRANSFERENCIAS</option>
-              </ng-container>
-            </ng-container>
-
-          </select>
-          <button type="button" [ngClass]="(movementsService.filtersSearch.id_category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('id_category')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Amount
-          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.amount.value" name="amount" (keyup)="movementsService.actionFilterEvent($event, 'amount', true)">
-          <button type="button" [ngClass]="(movementsService.filtersSearch.amount.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('amount')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Sign
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.sign.value" name="sign" (ngModelChange)="movementsService.actionFilterEvent($event, 'sign')">
-            <option value="-1">Ambos</option>
-            <option value="-">-</option>
-            <option value="+">+</option>
-          </select>
-          <button type="button" [ngClass]="(movementsService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('sign')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Detail
-          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.detail.value" name="detail" (keyup)="movementsService.actionFilterEvent($event, 'detail', true)">
-          <button type="button" [ngClass]="(movementsService.filtersSearch.detail.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('detail')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Date_record
-
-          <!--input type="text" [owlDateTimeTrigger]="dateR" [owlDateTime]="dateR" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="movementsService.filtersSearch.date_record.value" name="date_record" (ngModelChange)="movementsService.actionFilterEvent($event, 'date_record')">
-          <owl-date-time #dateR [pickerType]="'calendar'"></owl-date-time>
-          <button type="button" [ngClass]="(movementsService.filtersSearch.date_record.isFilter) ? 'close': 'btnFilter-disabled'" (click)="movementsService.resetValuefiltroSearch('date_record')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Time_record</th>

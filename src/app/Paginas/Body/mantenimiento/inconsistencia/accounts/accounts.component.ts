@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {AccountsService} from "../../../../../Servicios/accounts/accounts.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css']
 })
-export class AccountsComponent implements OnInit {
+export class AccountsComponent {
 
   public backups;
 
@@ -27,10 +27,6 @@ export class AccountsComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    console.log("ngOnInit()");
-    this.util.ready();
-  }
   public onScroll() {
     if (!this.accountService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();
   }

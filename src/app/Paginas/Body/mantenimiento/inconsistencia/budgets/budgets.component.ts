@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {BudgetsService} from "../../../../../Servicios/budgets/budgets.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './budgets.component.html',
   styleUrls: ['./budgets.component.css']
 })
-export class BudgetsComponent implements OnInit {
+export class BudgetsComponent {
 
   public backups;
 
@@ -24,10 +24,6 @@ export class BudgetsComponent implements OnInit {
       this.budgetService.resetVariables();
       this.buscarInconsistencia();
     });
-  }
-
-  ngOnInit() {
-    this.util.ready();
   }
   public onScroll() {
     if (!this.budgetService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();

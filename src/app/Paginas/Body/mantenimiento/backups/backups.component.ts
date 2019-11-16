@@ -29,7 +29,6 @@ export class BackupsComponent implements OnInit {
   };
   public users: UserSelect[] = [];
   public usersSelected : UserSelect[];
-  public msj = "";
 
   @ViewChildren("cntBackupsUser") cntBackupsUser = ElementRef;
 
@@ -41,7 +40,6 @@ export class BackupsComponent implements OnInit {
   }
 
   public onScroll () {
-    console.log('scrolled!!');
     this.buscarBackupsUserMnt();
   }
   ngOnInit() {
@@ -51,14 +49,12 @@ export class BackupsComponent implements OnInit {
   }
   public search() {
     this.backupService.resetearBackups();
-    console.log("email user:", this.email);
     if (this.email.length == 0) {
       this.util.emailUserMntBackup = "Generales";
       this.buscarBackupsUserMnt();
     } else {
       if ((this.util.regex_email).exec(this.email)) {
         this.util.emailUserMntBackup = this.email;
-        console.log("this.util.emailUserMntBackup ", this.util.emailUserMntBackup );
         this.buscarBackupsUserMnt();
       } else {
         this.util.msjToast(this.util.errorMsjEmailNoValido, this.util.errorTituloEmailNoValido, true);
@@ -68,7 +64,7 @@ export class BackupsComponent implements OnInit {
   public buscarBackupsUserMnt() {
     this.util.loadingMain = true;
     if (this.backupService.pagina == 0) {
-      this.msj = "Buscando usuario" + ((this.util.emailUserMntBackup == "Generales") ? "s: " : ": ") + this.util.emailUserMntBackup + " con un cantidad de Backups mayores a: " + this.rangoBackups.value;
+      this.util.msjLoading = "Buscando usuario" + ((this.util.emailUserMntBackup == "Generales") ? "s: " : ": ") + this.util.emailUserMntBackup + " con un cantidad de Backups mayores a: " + this.rangoBackups.value;
       this.util.crearLoading().then(() => {
         this.backupService.buscarBackupsUserMnt(this.util.emailUserMntBackup, this.rangoBackups.value).subscribe(result => {
           this.resultado(result);
@@ -88,32 +84,28 @@ export class BackupsComponent implements OnInit {
   public resultado(result, bnd = true) {
     if (bnd){
       this.util.detenerLoading();
-      this.msj = result.msj;
+      this.util.msj = result.msj;
       this.util.msjToast(result.msj, result.titulo, result.error);
     }
     if (!result.error) {
       this.util.QueryComplete.isComplete = false;
       this.backupService.pagina += 1;
       this.backupService.userBackups = this.backupService.userBackups.concat(result.backups);
-      //let nuevoBack = this.backupService.userBackups.concat(result.backups);
-      console.log("this.backupService.userBackups", this.backupService.userBackups);
     } else {
       this.util.QueryComplete.isComplete = this.backupService.pagina != 0;
     }
     this.util.loadingMain = false;
-    // console.log(result);
   }
 
   public verficarExpansion(indice, idUser, email) {
     if (!this.backupService.userBackups[indice].collapsed) { // Expandir
-      this.msj = "Cargando backups del usuario: " + email;
+      this.util.msjLoading = "Cargando backups del usuario: " + email;
       this.util.crearLoading().then(() => {
         this.backupService.buscarBackupsUserId(idUser, '-1' ,'asc').subscribe(result => {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.userBackups[indice].msj = result.msj;
           this.backupService.userBackups[indice].cantRep = result.backups.length;
-          console.log(result.backups);
 
           if (!result.error){
             this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackups();
@@ -136,20 +128,14 @@ export class BackupsComponent implements OnInit {
       this.backupService.userBackups[indice].backups = [];
 
     }
-    // this.backupService.userBackups[indice].collapsed  = !this.backupService.userBackups[indice].collapsed;
-    console.log(this.backupService.userBackups[indice].collapsed );
-    console.log(this.cntBackupsUser['_results']);
   }
   public minimizar(content: any) {
-    console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", "0px");
     this.renderer.setStyle(content, "max-height", "0px");
     this.renderer.setStyle(content, "padding", "0px 16px");
-    // this.renderer.setStyle(content, "overflow", "hidden");
   }
   public expandir(H, P, content) {
-    console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", H + "px");
     this.renderer.setStyle(content, "max-height", H + "px");
@@ -186,8 +172,6 @@ export class BackupsComponent implements OnInit {
   }
 
   public operation() {
-    console.log(this.option);
-
     switch (this.option) {
       case this.util.OPERACION_ELIMINAR:
         this.eliminarBackup();
@@ -217,7 +201,6 @@ export class BackupsComponent implements OnInit {
             this.util.cerrarModal("#modalBackupsUserMnt");
             this.option = "";
           }
-          console.log(result);
         },
         error => {
           this.util.msjErrorInterno(error);
@@ -230,7 +213,7 @@ export class BackupsComponent implements OnInit {
     for (let user of this.users)
       Quien = Quien + user.email + ", \n";
 
-    this.msj = "Limpiando backups :\n" + Quien;
+    this.util.msjLoading = "Limpiando backups :\n" + Quien;
     this.util.crearLoading().then(() => {
       this.backupService.limpiarBackupsUsers(this.users, this.rangoBackups.value, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
         this.util.detenerLoading();
@@ -268,35 +251,27 @@ export class BackupsComponent implements OnInit {
   }
 
   public eventSelectCollapse(index){
-    console.log("After Event Collapse Activated:= ", this.backupService.userBackups[index]);
-    console.log("this.backupService.userBackups[index].checked ", this.backupService.userBackups[index].checked);
     if (!this.backupService.userBackups[index].checked || this.backupService.userBackups[index].checked == undefined) { //Checked => push userSelected
       let user = new UserSelect(this.backupService.userBackups[index].id_user, this.backupService.userBackups[index]["email"], this.backupService.userBackups[index]["cantRep"], index);
       this.usersSelected.push(user);
-      console.log("Agregado user.index:=", index);
     } else { //No Checked => splice userSelected
       this.usersSelected.forEach((userU, indexU) => {
         if (userU.index == index) {
           this.usersSelected.splice(indexU, 1);
-          console.log("Elimnado user.index:=", index);
         }
       });
     }
     this.rangoUsers.value = this.usersSelected.length;
     this.rangoUsers.beforeValue = this.usersSelected.length;
     this.backupService.userBackups[index].checked = !this.backupService.userBackups[index].checked;
-    console.log("Before Event Collapse Activated:= ", this.backupService.userBackups[index]);
-    console.log("this.usersSelected", this.usersSelected);
   }
   public collapseSelected() {
     this.usersSelected = [];
     this.rangoUsers.value = 10;
     this.rangoUsers.beforeValue = 10;
-    console.log("this.rangoUsers.value", this.rangoUsers.value);
     if (this.backupService.userBackups.length >= this.rangoUsers.value) {
       for (let i = 0; i < this.rangoUsers.value; i++) {
         this.backupService.userBackups[i].checked = true;
-        console.log("this.backupService.userBackups[" + i + "].checked", this.backupService.userBackups[i].checked);
         let user = new UserSelect(this.backupService.userBackups[i].id_user, this.backupService.userBackups[i]["email"], this.backupService.userBackups[i]["cantRep"], i);
         this.usersSelected.push(user);
       }
@@ -310,7 +285,6 @@ export class BackupsComponent implements OnInit {
       this.rangoUsers.value = this.usersSelected.length;
       this.rangoUsers.beforeValue = this.usersSelected.length;
     }
-    console.log("this.usersSelected", this.usersSelected);
   }
   public afterBlur(event) {
     if (this.rangoBackups.beforeValue != this.rangoBackups.value) {
@@ -324,8 +298,6 @@ export class BackupsComponent implements OnInit {
   }
   public keyUpEvent(event){
     if (event.key == "Enter") {
-      console.log("this.rangoBackups.value", this.rangoBackups.value);
-      console.log("this.rangoBackups.beforeValue", this.rangoBackups.beforeValue);
       this.afterBlur(event);
       this.beforeBlur(event);
     }
@@ -337,11 +309,8 @@ export class BackupsComponent implements OnInit {
     }
   }
   public afterBlurRangoUsers() {// Evento filtroSeleccionar
-    console.log("this.rangoUsers", this.rangoUsers);
     if (this.rangoUsers.value > this.rangoUsers.beforeValue) { //Selecionar usuarios faatantes
       let faltantes = this.rangoUsers.value - this.rangoUsers.beforeValue;
-      console.log("Usuarios faltantes", faltantes);
-
       this.backupService.userBackups.forEach((back, index) => {
         if (faltantes == 0) return;
         if (!back.checked || back.checked == undefined) {
@@ -350,22 +319,13 @@ export class BackupsComponent implements OnInit {
           this.usersSelected.push(user);
           faltantes -= 1;
         }
-        console.log("encontrado faltantes", faltantes);
       });
     } else { //Deseleccionar usuarios restantes.
       let cant: number = this.rangoUsers.beforeValue - this.rangoUsers.value;
       for (let i = (this.rangoUsers.beforeValue - 1); i >= this.rangoUsers.value; i--) {
-        console.log(this.backupService.userBackups[this.usersSelected[i].index].checked);
         this.backupService.userBackups[this.usersSelected[i].index].checked = false;
-        console.log("this.backupService.userBackups[" + this.usersSelected[i].index + "].checked", this.backupService.userBackups[this.usersSelected[i].index].checked);
       }
-      /*for (let i = (this.usersSelected.length - 1); i >= this.rangoUsers.value; i--) {
-        console.log(this.backupService.userBackups[i].checked);
-        this.backupService.userBackups[i].checked = false;
-        console.log("this.backupService.userBackups[" + i + "].checked", this.backupService.userBackups[i].checked);
-      }*/
       this.usersSelected.splice(this.rangoUsers.value, cant);
-      console.log("this.usersSelected", this.usersSelected);
     }
   }
   public beforeBlurRangoUsers() {
@@ -375,24 +335,19 @@ export class BackupsComponent implements OnInit {
   public detalleUsuario(index) {
     this.backupService.indexUser = index;
     this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
-    //console.log(this.backupService.userBackups[this.backupService.indexUser].backups);
-    console.log(this.backupService.userBackups[this.backupService.indexUser].collapsed);
     if (!this.backupService.userBackups[this.backupService.indexUser].collapsed || this.backupService.userBackups[this.backupService.indexUser].collapsed == undefined) {
-      this.msj = "Cargando backups del usuario: " + this.backupService.userBackups[this.backupService.indexUser].email;
+      this.util.msjLoading = "Cargando backups del usuario: " + this.backupService.userBackups[this.backupService.indexUser].email;
       this.util.crearLoading().then(() => {
         this.backupService.buscarBackupsUserId(this.backupService.userBackups[this.backupService.indexUser].id_user, '-1' ,'asc').subscribe(result => {
           this.util.detenerLoading();
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.userBackups[this.backupService.indexUser].msj = result.msj;
           this.backupService.userBackups[this.backupService.indexUser].cantRep = result.backups.length;
-          console.log(result.backups);
-
           if (!result.error){
             this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
             this.backupService.userBackups[this.backupService.indexUser].backupsFiltro = [];
             this.backupService.userBackups[this.backupService.indexUser].backups = result.backups;
             this.router.navigate(['/home/backups/detalleUsuario']);
-
           }
         }, error =>  {
           this.util.msjErrorInterno(error);

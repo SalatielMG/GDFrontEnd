@@ -12,8 +12,6 @@ export class PermisoMntInconsistenciaGuard implements CanActivate, CanActivateCh
   constructor(private usuarioService: UsuarioService, private router: Router, private util: Utilerias) {  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log("route local", route);
-    console.log("this.router", this.router);
     if (this.usuarioService.isValidPermiso(this.util.PERMISO_MNTINCONSISTENCIA)){
       return true;
     }

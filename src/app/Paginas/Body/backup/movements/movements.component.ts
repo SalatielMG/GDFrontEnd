@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MovementsService } from '../../../../Servicios/movements/movements.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './movements.component.html',
   styleUrls: ['./movements.component.css']
 })
-export class MovementsComponent implements OnInit {
+export class MovementsComponent {
 
   public option: string = "";
   public movement: FormGroup = null;
@@ -27,14 +27,9 @@ export class MovementsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-  //public paginaAnt = 0;
   public onScroll(event) {
-    console.log("Event:=", event);
     if (!this.movementsService.isFilter() && !this.util.loadingMain) {
       this.searchMovements();
-      console.log("Scrolled [Pagina]:=", this.movementsService.pagina);
     }
   }
 
@@ -73,7 +68,7 @@ export class MovementsComponent implements OnInit {
           this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
         }
       }
-      this.movementsService.pagina += 1;console.log("i:=", this.movementsService.pagina);
+      this.movementsService.pagina += 1;
       this.movementsService.Movements = this.movementsService.Movements.concat(result.movements);
     } else {
       this.util.QueryComplete.isComplete = this.movementsService.pagina != 0;
@@ -151,7 +146,6 @@ export class MovementsComponent implements OnInit {
     let error = '';
     const control = this.movement.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -164,33 +158,22 @@ export class MovementsComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalMovement").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.movement = null;
     });
   }
   public changeEvent(event) {
     this.movement.patchValue({id_category: ''});
-    console.log("event changeradioBtutton:= ", event);
-    console.log("Value movement:=", this.movement.value);
-    console.log("mvement Form:=", this.movement);
   }
     public accountSelectedModal(event) {
     this.indexMovementSelectModal = event.target.selectedIndex;
     this.movement.patchValue({id_category: ''});
-    console.log("event:=", event.target.selectedIndex);
-    console.log("event:=", this.movement.value.id_account);
     this.movement.patchValue({iso_code: ((this.movement.value.id_account == "") ? "" : this.movementsService.AccountsBackup[this.util.numberFormat(this.indexMovementSelectModal) - 1].iso_code)});
 
     if (this.movement.value.id_account == "") return;
     this.movementsService.obtCategoriesAccountBackup(this.indexMovementSelectModal.toString());
   }
   public changeDateTime(event, isDate) {
-    console.log("event changeDateTime:=", event);
-    console.log("movement changeDateTime:=", this.movement.value);
-    console.log("isDate changeDateTime:=", isDate);
-    console.log("date_record changeDateTime:=", this.movement.value.date_record.toLocaleDateString());
-    console.log("time_record changeDateTime:=", this.movement.value.time_record.toLocaleTimeString());
     if (isDate) { // Extact Date
       this.setValueDateRecord();
     } else { //Extac Time
@@ -215,7 +198,6 @@ export class MovementsComponent implements OnInit {
         this.movement.patchValue({date_idx: date.toString().replace(/,/g,"") + "000000"});
       }
 
-      console.log("date", date);
     }
   }
   public setValueTimeRecord() {
@@ -226,7 +208,6 @@ export class MovementsComponent implements OnInit {
       });
       this.movement.patchValue({date_idx: ((this.movement.value.date_record != null) ? this.util.formatDateTimeSQL(this.movement, "date_record", false).split("-").toString().replace(/,/g,""): "00000000") + time.toString().replace(/,/g,"")});
 
-      console.log("time", time.toString());
     }
   }
 
@@ -242,7 +223,6 @@ export class MovementsComponent implements OnInit {
         this.eliminarMovement();
         break;
     }
-    console.log("Value movement:=", this.movement.value);
   }
   public agregarMovement () {
     this.patchValueFormDataBeforeOperation();
@@ -329,7 +309,6 @@ export class MovementsComponent implements OnInit {
     this.movement.patchValue({time_record: this.util.formatTimeSQL(this.movement.value.time_record.toLocaleTimeString())});
     this.movement.patchValue({confirmed: this.util.unValueChecked(this.movement.value.confirmed)});
     this.movement.patchValue({transfer: this.util.unValueChecked(this.movement.value.transfer)});
-    console.log("Value before error Operation:= ", this.movement.value);
 
   }
   public patchValueFormDataAfterOperationError () {
@@ -338,6 +317,5 @@ export class MovementsComponent implements OnInit {
     this.movement.patchValue({date_record: this.util.formatComponentDateCalendar(this.movement.value.date_record)});
     this.movement.patchValue({confirmed: this.util.valueChecked(this.movement.value.confirmed)});
     this.movement.patchValue({transfer: this.util.valueChecked(this.movement.value.transfer)});
-    console.log("Value after error Operation:= ", this.movement.value);
   }
 }

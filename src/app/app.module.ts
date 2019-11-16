@@ -3,6 +3,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import localeEs from '@angular/common/locales/es-MX';
 import { registerLocaleData } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 registerLocaleData(localeEs);
 
 import { AppRoutingModule } from './app-routing.module';
@@ -79,7 +80,8 @@ import { HomeModule } from './Paginas/Body/home/home.module';
     UsuarioService,
     UserService,
     BackupService,
-    { provide: LOCALE_ID, useValue: 'es-MX' }
+    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

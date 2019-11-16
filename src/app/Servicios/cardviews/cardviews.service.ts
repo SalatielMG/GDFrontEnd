@@ -32,10 +32,8 @@ export class CardviewsService {
       this.obtCardViewsGralBackup().subscribe(result => {
         if (!result.error){
           this.CadViewsGralBackup = result.cardviews;
-          console.log("new CadViewsGralBackup query := ", this.CadViewsGralBackup);
         }
       }, error => {
-        console.log(error);
       });
   }
   public actionFilterEvent(event, value, isKeyUp = false) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {CurrenciesService} from '../../../../../Servicios/currencies/currencies.service';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './currencies.component.html',
   styleUrls: ['./currencies.component.css']
 })
-export class CurrenciesComponent implements OnInit {
+export class CurrenciesComponent {
 
   public backups;
 
@@ -24,10 +24,6 @@ export class CurrenciesComponent implements OnInit {
       this.currenciesService.resetVariables();
       this.buscarInconsistencia();
     });
-  }
-
-  ngOnInit() {
-    this.util.ready();
   }
   public onScroll() {
     if (this.currenciesService.isFilter() && !this.util.loadingMain) {

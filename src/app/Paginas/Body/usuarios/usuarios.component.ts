@@ -126,11 +126,10 @@ export class UsuariosComponent implements OnInit {
       }
     }
     this.usuarioService.PermisosGral[index].checked = !this.usuarioService.PermisosGral[index].checked;
-    console.log(this.PermisosSelected);
+
   }
   // ---------------------------- CheckPermisos
   public verifyExpandCardUser() {
-    console.log(this.cntPermisos);
     let H = (this.util.obtisFullHDDisplay()) ? 300: 220;
     if (this.isExpandedPermisoCard) {
       this.renderer.setStyle(this.cntPermisos['nativeElement'], "transition", "height 500ms, max-height 500ms");
@@ -154,7 +153,7 @@ export class UsuariosComponent implements OnInit {
     this.isChangeIMG = false;
     this.fileIMG = null;
     this.urlImg = this.usuarioService.url + "util/avatar/" + usuario.imagen;
-    console.log(this.urlImg);
+
     if (this.option != this.util.OPERACION_AGREGAR) {
       if (this.util.isDelete(this.option)) {
         this.disable();
@@ -166,8 +165,7 @@ export class UsuariosComponent implements OnInit {
     let error = '';
     const control = this.Usuario.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
-      error = this.util.hasError(control);
+       error = this.util.hasError(control);
     }
     return error;
   }
@@ -196,8 +194,6 @@ export class UsuariosComponent implements OnInit {
         this.eliminarUsuario();
         break;
     }
-    console.log(this.Usuario.value);
-    console.log(this.PermisosSelected);
   }
   public agregarUsuario() {
     this.util.msjLoading = "Agregando nuevo Usuario: " + this.Usuario.value.email;
@@ -221,14 +217,11 @@ export class UsuariosComponent implements OnInit {
     });
   }
   public actualizarUsuario() {
-    console.log("this.PermisosSelected", this.PermisosSelected);
     let isChangePermisos = { isChangePermisos: false, };
     if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
       isChangePermisos.isChangePermisos = true;
       isChangePermisos["permisosSelected"] = this.PermisosSelected.value;
     }
-    console.log("isChangePermisos", isChangePermisos);
-
     this.util.msjLoading = "Actualizando Usuario: " + this.Usuario.value.email;
     this.util.crearLoading().then(() => {
       this.usuarioService.actualizarUsuario(this.Usuario.value, this.isChangeIMG, this.fileIMG, this.UsuarioSelected, isChangePermisos).subscribe(result => {
@@ -269,7 +262,6 @@ export class UsuariosComponent implements OnInit {
 
   }
   public actualizarPermisosUsuario() {
-    console.log("this.PermisosSelected", this.PermisosSelected);
     let isChangePermisos = { isChangePermisos: false, };
     if (!this.util.compare(this.PermisosSelected.value, this.PermisosSelected.valueAnt)) {
       isChangePermisos.isChangePermisos = true;
@@ -277,8 +269,6 @@ export class UsuariosComponent implements OnInit {
       isChangePermisos["permisosSelected"] = this.PermisosSelected.value;
       isChangePermisos["usuarioSelected"] = {id: this.UsuarioSelected.id, email: this.UsuarioSelected.email, tipo: this.UsuarioSelected.tipo};
     }
-    console.log("isChangePermisos", isChangePermisos);
-
     this.util.msjLoading = "Actualizando permisos asignados al Usuario: " + this.UsuarioSelected.email;
     this.util.crearLoading().then(() => {
       this.usuarioService.actualizarPermisos_Usuario(isChangePermisos).subscribe(result => {
@@ -311,22 +301,11 @@ export class UsuariosComponent implements OnInit {
       return;
     }
     if (files && file) {
-      /*var reader = new FileReader();
-      reader.onload = this._handleReaderLoaded.bind(this);
-      reader.readAsBinaryString(file);*/
       this.isChangeIMG = true;
       this.fileIMG = file;
       let img = document.getElementById("imgSalida");
       const objectURL = URL.createObjectURL(file);
       img.setAttribute("src", objectURL );
-      console.log("objectURL", objectURL);
     }
-    console.log(this.fileIMG);
   }
-  /*_handleReaderLoaded(readerEvent) {
-    console.log(readerEvent);
-    var binaryString = readerEvent.target.result;
-    this.archivo.base64textString = btoa(binaryString);
-    this.isChange = true;
-  }*/
 }

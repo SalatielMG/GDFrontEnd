@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Utilerias } from '../../../Utilerias/Util';
 import { UserService } from '../../../Servicios/user/user.service';
@@ -11,7 +11,7 @@ import { Users } from '../../../Modelos/users/users';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   public usuarioSearch: FormGroup = null;
 
@@ -21,9 +21,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-  }
-
   public construirFormulario() {
     this.usuarioSearch = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,10 +28,9 @@ export class HomeComponent implements OnInit {
   }
 
   public search() {
-    console.log(this.usuarioSearch.value);
+    this.util.msjLoading = "Buscando Usuario: "+ this.usuarioSearch.value.email +" y backups relacionados";
     this.util.crearLoading().then(() => {
       this.userService.buscarUser(this.usuarioSearch.value.email).subscribe(result => {
-
           if (!result.error) {
             this.userService.User = <Users>result.user;
             this.router.navigate(['home/backups']);
@@ -43,11 +39,8 @@ export class HomeComponent implements OnInit {
           this.util.detenerLoading();
         },
         error => {
-          this.util.detenerLoading();
           this.util.msjErrorInterno(error);
         });
     });
-
   }
-
 }

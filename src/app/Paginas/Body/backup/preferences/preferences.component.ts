@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PreferencesService } from '../../../../Servicios/preferences/preferences.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './preferences.component.html',
   styleUrls: ['./preferences.component.css']
 })
-export class PreferencesComponent implements OnInit {
+export class PreferencesComponent {
 
   public option = "";
   public preference: FormGroup = null;
@@ -26,8 +26,6 @@ export class PreferencesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
   public onScroll() {
     if (this.preferencesService.isFilter() && !this.util.loadingMain) this.searchPreferences();
   }
@@ -98,7 +96,6 @@ export class PreferencesComponent implements OnInit {
     let error = '';
     const control = this.preference.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -111,13 +108,11 @@ export class PreferencesComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalPreference").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.preference = null;
     });
   }
   public operation() {
-    console.log("this.valuepreferenceForm:=", this.preference.value);
     switch (this.option) {
       case this.util.OPERACION_AGREGAR:
         this.agregarPreference();

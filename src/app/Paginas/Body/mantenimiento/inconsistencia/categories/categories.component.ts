@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {CategoriesService} from '../../../../../Servicios/categories/categories.service';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent {
 
   public backups;
 
@@ -26,9 +26,6 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.util.ready();
-  }
   public onScroll() {
     if (!this.categoriesService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();
   }

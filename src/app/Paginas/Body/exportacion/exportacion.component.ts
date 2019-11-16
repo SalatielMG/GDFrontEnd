@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChildren} from '@angular/core';
+import {Component, OnInit, ElementRef, Renderer2, ViewChildren} from '@angular/core';
 import {Utilerias} from '../../../Utilerias/Util';
 import {BackupService} from '../../../Servicios/backup/backup.service';
 import {UserService} from '../../../Servicios/user/user.service';
@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../Servicios/usuario/usuario.service';
   templateUrl: './exportacion.component.html',
   styleUrls: ['./exportacion.component.css']
 })
-export class ExportacionComponent implements OnInit {
+export class ExportacionComponent implements  OnInit{
 
   public typeEXport: string = "sqlite";
   public email: string = "";
@@ -24,8 +24,8 @@ export class ExportacionComponent implements OnInit {
   public router: Router, public renderer: Renderer2) {
     this.search();
   }
-
   ngOnInit() {
+    this.util.ready();
   }
   public onScroll() {
     this.searchUsers();
@@ -82,8 +82,6 @@ export class ExportacionComponent implements OnInit {
   public detalleUsuario(index) {
     this.backupService.indexUser = index;
     this.userService.User = this.backupService.userBackups[this.backupService.indexUser];
-    //console.log(this.backupService.userBackups[this.backupService.indexUser].backups);
-    console.log(this.backupService.userBackups[this.backupService.indexUser].collapsed);
     if (!this.backupService.userBackups[this.backupService.indexUser].collapsed || this.backupService.userBackups[this.backupService.indexUser].collapsed == undefined) {
       this.util.msjLoading = "Cargando backups del usuario: " + this.backupService.userBackups[this.backupService.indexUser].email;
       this.util.crearLoading().then(() => {
@@ -92,7 +90,6 @@ export class ExportacionComponent implements OnInit {
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.userBackups[this.backupService.indexUser].msj = result.msj;
           this.backupService.userBackups[this.backupService.indexUser].cantRep = result.backups.length;
-          console.log(result.backups);
 
           if (!result.error){
             this.backupService.userBackups[this.backupService.indexUser].filtrosSearch = new FiltrosSearchBackups();
@@ -118,7 +115,6 @@ export class ExportacionComponent implements OnInit {
           this.util.msjToast(result.msj, result.titulo, result.error);
           this.backupService.userBackups[indice].msj = result.msj;
           this.backupService.userBackups[indice].cantRep = result.backups.length;
-          console.log(result.backups);
 
           if (!result.error){
             this.backupService.userBackups[indice].filtrosSearch = new FiltrosSearchBackups();
@@ -141,20 +137,15 @@ export class ExportacionComponent implements OnInit {
       this.backupService.userBackups[indice].backups = [];
 
     }
-    // this.backupService.userBackups[indice].collapsed  = !this.backupService.userBackups[indice].collapsed;
-    console.log(this.backupService.userBackups[indice].collapsed );
-    console.log(this.cntBackupsUser['_results']);
+
   }
   public minimizar(content: any) {
-    console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", "0px");
     this.renderer.setStyle(content, "max-height", "0px");
     this.renderer.setStyle(content, "padding", "0px 16px");
-    // this.renderer.setStyle(content, "overflow", "hidden");
   }
   public expandir(H, P, content) {
-    console.log(content);
     this.renderer.setStyle(content, "transition", "height 500ms, max-height 500ms, padding 500ms");
     this.renderer.setStyle(content, "height", H + "px");
     this.renderer.setStyle(content, "max-height", H + "px");
@@ -168,7 +159,6 @@ export class ExportacionComponent implements OnInit {
 
   }
   public exportBackup() {
-    console.log("Value typeExport Backup:=", this.typeEXport);
     this.util.msjLoading = "Exportando Respaldo con id_backup: " + this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected + " como fichero " + this.typeEXport;
     this.util.crearLoading().then(() => {
       this.backupService.exportBackup(this.typeEXport, this.backupService.userBackups[this.backupService.indexUser].id_BackupSelected, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
@@ -185,7 +175,6 @@ export class ExportacionComponent implements OnInit {
             window.open( URL + 'exports/Reporte.xlsx', '_blank');
           }
         }
-        console.log("Value Result:= ", result);
       }, error => {
         this.util.msjErrorInterno(error);
       });

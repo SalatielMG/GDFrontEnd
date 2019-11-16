@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BudgetsService } from '../../../../Servicios/budgets/budgets.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './budgets.component.html',
   styleUrls: ['./budgets.component.css']
 })
-export class BudgetsComponent implements OnInit {
+export class BudgetsComponent {
 
   public option: string = "";
   public budget: FormGroup = null;
@@ -24,12 +24,7 @@ export class BudgetsComponent implements OnInit {
       this.budgetService.id_backup = params.get("idBack");
       this.budgetService.resetVariables();
       this.searchBudgets();
-      console.log('Valor de id Backup', params.get('idBack'));
-      // this.idBack = params.get('idBack');
     });
-  }
-
-  ngOnInit() {
   }
 
   public onScroll() {
@@ -79,7 +74,6 @@ export class BudgetsComponent implements OnInit {
   public AccountsAndCategoriesBackup(result) {
     if (!result.accountsBackup.error) {
       this.budgetService.AccountsBackup = result.accountsBackup.accounts;
-      console.log("this.budgetService.AccountsBackup", this.budgetService.AccountsBackup);
     } else {
       this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
     }
@@ -90,7 +84,6 @@ export class BudgetsComponent implements OnInit {
     this.util.crearLoading().then(() => {
       this.budgetService.obtAccountsBackup().then(error => {
         if (!error && error != 400) {
-          console.log("Open this modal :)", error);
           this.option = option;
           this.buildForm(budget);
           if (this.option != this.util.OPERACION_AGREGAR) {
@@ -119,14 +112,12 @@ export class BudgetsComponent implements OnInit {
         } else {
           this.util.detenerLoading();
           this.util.msjToast((error == 400) ? "Ocurrio un error interno del servidor": "No se encontraron registros de cuentas y categorias asociadas con el id_backup: " + this.budgetService.id_backup, "¡ -- ERROR -- !", (error == 400) ? "warning": true);
-          console.log("No open this modal :(", error)
         }
       });
     });
   }
 
   public buildForm(budget: Budgets) {
-    console.log("Construyendo form");
     this.budget = this.formBuilder.group({
       id_backup : [budget.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_account : [(this.option == this.util.OPERACION_AGREGAR) ? "": budget.id_account, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
@@ -145,7 +136,6 @@ export class BudgetsComponent implements OnInit {
     let error = '';
     const control = this.budget.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -158,7 +148,6 @@ export class BudgetsComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalBudget").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.budget = null;
     });
@@ -260,8 +249,6 @@ export class BudgetsComponent implements OnInit {
   public accountSelectedModal(event) {
     this.indexBudgetSelectModal = event.target.selectedIndex;
     this.budget.patchValue({id_category: ''});
-    console.log("event:=", event.target.selectedIndex);
-    console.log("event:=", this.budget.value.id_account);
     if (this.budget.value.id_account == "" || this.budget.value.id_account == "10001") return;
 
     this.budgetService.obtCategoriesAccountBackup(this.indexBudgetSelectModal.toString());

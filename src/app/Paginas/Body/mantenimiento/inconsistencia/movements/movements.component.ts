@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {MovementsService} from '../../../../../Servicios/movements/movements.service';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './movements.component.html',
   styleUrls: ['./movements.component.css']
 })
-export class MovementsComponent implements OnInit {
+export class MovementsComponent {
 
   public pagina: number = 0;
   public backups;
@@ -25,10 +25,6 @@ export class MovementsComponent implements OnInit {
       this.movementsService.resetVariables();
       this.buscarInconsistencias();
     });
-  }
-
-  ngOnInit() {
-    this.util.ready();
   }
   public onScroll(event) {
     console.log("Event:=", event);

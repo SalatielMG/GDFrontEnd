@@ -82,8 +82,6 @@ export class BackupService {
                   date += ((d.length == 1) ? "0" + d : d) + "-";
                 });
                 date = date.substring(0, date.length - 1);
-                /*console.log("FiltroSearch Value = ", date);
-                console.log("Backup [" + k + "] Value = ", back[k]);*/
                 if (!back[k].toString().includes(date)){
                   bnd = false;
                   break;

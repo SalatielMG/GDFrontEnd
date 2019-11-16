@@ -7,12 +7,6 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<button class="up-right rounded-circle" (click)="util.subir()">
-    <span>
-      <fa-icon [icon]="util.faArrowUp"></fa-icon>
-    </span>
-</button>
-
 <div class="container text-center" *ngIf="currenciesService.Currencies.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -27,25 +21,11 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Iso_code
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
-            <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
-            <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.iso_code}}</option>
-          </select>
-          <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Symbol
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="currenciesService.filtersSearch.iso_code.value" name="iso_code" (ngModelChange)="currenciesService.actionFilterEvent($event, 'iso_code')">
-            <option value="-1" *ngIf="currenciesService.Currencies.length > 0">Todas</option>
-            <option *ngFor="let currency of currenciesService.Currencies" [value]="currency.iso_code">{{currency.symbol}}</option>
-          </select>
-          <button type="button" [ngClass]="(currenciesService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="currenciesService.resetValuefiltroSearch('iso_code')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Icon_name</th>

@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './extras.component.html',
   styleUrls: ['./extras.component.css']
 })
-export class ExtrasComponent implements OnInit {
+export class ExtrasComponent {
 
   public option = "";
   public extra: FormGroup = null;
@@ -24,9 +24,6 @@ export class ExtrasComponent implements OnInit {
       this.extrasService.resetVariables();
       this.searchExtras();
     });
-  }
-
-  ngOnInit() {
   }
 
   public onScroll() {
@@ -93,7 +90,7 @@ export class ExtrasComponent implements OnInit {
       id_backup : [extra.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
       id_extra : [extra.id_extra, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("5"))]],
       account : [extra.account, [Validators.required, Validators.maxLength(50)]],
-      category : [extra.category, [Validators.required, Validators.maxLength(50)]],
+      category : [extra.category, [ Validators.maxLength(50)]],
     });
     if (this.util.isDelete(this.option)) this.disableForm();
   }
@@ -101,7 +98,6 @@ export class ExtrasComponent implements OnInit {
     let error = '';
     const control = this.extra.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -114,13 +110,11 @@ export class ExtrasComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalExtra").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.extra = null;
     });
   }
   public operation() {
-    console.log("this.valueExtrasForm:=", this.extra.value);
     switch (this.option) {
       case this.util.OPERACION_AGREGAR:
         this.agregarExtra();

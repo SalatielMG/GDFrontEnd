@@ -7,12 +7,6 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<button class="up-right rounded-circle" (click)="util.subir()">
-    <span>
-      <fa-icon [icon]="util.faArrowUp"></fa-icon>
-    </span>
-</button>
-
 <div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -26,25 +20,11 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Card
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.id_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'id_card')">
-            <option value="-1" *ngIf="cardviewService.CadViewsGralBackup.length > 0">Todas</option>
-            <option *ngFor="let cardview of cardviewService.CadViewsGralBackup" [value]="cardview.id_card">{{cardview.id_card}}</option>
-          </select>
-          <button type="button" [ngClass]="(cardviewService.filtersSearch.id_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('id_card')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Name
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.id_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'id_card')">
-            <option value="-1" *ngIf="cardviewService.CadViewsGralBackup.length > 0">Todas</option>
-            <option *ngFor="let cardview of cardviewService.CadViewsGralBackup" [value]="cardview.id_card">{{cardview.name}}</option>
-          </select>
-          <button type="button" [ngClass]="(cardviewService.filtersSearch.id_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('id_card')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Period</th>
@@ -52,14 +32,6 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Show_Card
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="cardviewService.filtersSearch.show_card.value" name="id_card" (ngModelChange)="cardviewService.actionFilterEvent($event, 'show_card')">
-            <option value="-1">Ambos</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-          </select>
-          <button type="button" [ngClass]="(cardviewService.filtersSearch.show_card.isFilter) ? 'close': 'btnFilter-disabled'" (click)="cardviewService.resetValuefiltroSearch('show_card')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Number</th>

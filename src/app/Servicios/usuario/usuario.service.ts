@@ -18,8 +18,6 @@ export class UsuarioService {
   public PermisosGral: Permisos[] = [];
   public indexUsuarioSelected: number = 0;
 
-  public Headers = new HttpHeaders({'Content-Type':  'application/json'});
-
   constructor(public http: HttpClient, private router: Router) {
     this.cargarStorage();
   }
@@ -51,11 +49,6 @@ export class UsuarioService {
     this.usuarioCurrent = null;
     if (this.isSesionOpen)
       this.usuarioCurrent = JSON.parse(usuarioCurrent);
-    this.printVariables();
-  }
-  private printVariables() {
-    console.log("isSesionOpen", this.isSesionOpen);
-    console.log("usuarioCurrent", this.usuarioCurrent);
   }
   public actualizarStorage() {
     if (!this.isSesionOpen) this.usuarioCurrent = null;
@@ -71,7 +64,6 @@ export class UsuarioService {
   }
 
   public login(data): Observable<any> {
-    console.log(data);
     const  parametro = new HttpParams()
       .append('data', JSON.stringify(data));
     return this.http.post(URL + 'login', parametro);

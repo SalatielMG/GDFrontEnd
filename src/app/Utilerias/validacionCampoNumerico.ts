@@ -1,14 +1,12 @@
-
-
 export class CampoNumerico {
-  nodo;valor;
+  private nodo;
+  private valor;
   constructor(selector) {
     this.nodo = document.querySelector(selector);
     this.valor = '';
 
     this.empezarAEscucharEventos();
   }
-
   empezarAEscucharEventos() {
     this.nodo.addEventListener('keydown', function(evento) {
       const teclaPresionada = evento.key;

@@ -26,7 +26,7 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit() {
     this.confirmPasswordCurrentDirective.enviarPasswordVerifyObservable.subscribe(verifyNoPasssword => {
-      console.log("Password NO verify", verifyNoPasssword);
+
       if (!verifyNoPasssword) {
         this.isConfirmPasswordCurrent = true;
         this.Password.get("confirmPasswordCurrent").disable();
@@ -61,12 +61,11 @@ export class PerfilComponent implements OnInit {
     });
   }
   public getError(controlName: string, isPasswordReset = false): string {
-    //console.log(isPasswordReset);
     if (!isPasswordReset) {
       let error = '';
       const control = this.Usuario.get(controlName);
       if (control.touched && control.errors != null && control.invalid) {
-        //console.log("Error Control:=[" + controlName + "]", control.errors);
+
         error = this.util.hasError(control);
       }
       return error;
@@ -74,7 +73,7 @@ export class PerfilComponent implements OnInit {
       let error = '';
       const control = this.Password.get(controlName);
       if (control.touched && control.errors != null && control.invalid) {
-        //console.log("Error Control:=[" + controlName + "]", control.errors);
+
         error = this.util.hasError(control);
       }
       return error;
@@ -91,7 +90,7 @@ export class PerfilComponent implements OnInit {
   }
 
   public UpdateUsuario(){
-    console.log("Value Usuario Form:= ", this.Usuario.value);
+
     this.util.msjLoading = "Actualizando datos de su perfil";
     this.util.crearLoading().then(() => {
       this.usuarioService.UpdateProfile(this.Usuario.value, {id: this.usuarioService.usuarioCurrent.id, email: this.usuarioService.usuarioCurrent.email}).subscribe(result => {
@@ -127,7 +126,6 @@ export class PerfilComponent implements OnInit {
           this.util.msjErrorInterno(error);
         });
       });
-      console.log(this.Password.value);
     }
   }
 
@@ -176,7 +174,6 @@ export class PerfilComponent implements OnInit {
         });
       });
     }
-    console.log(this.fileIMG);
   }
   public confirmNewPassword(event) {
     this.util.newPassword = this.Password.value.newPassword;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {AutomaticsService} from "../../../../../Servicios/automatics/automatics.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './automatics.component.html',
   styleUrls: ['./automatics.component.css']
 })
-export class AutomaticsComponent implements OnInit {
+export class AutomaticsComponent {
 
   public backups;
 
@@ -24,10 +24,6 @@ export class AutomaticsComponent implements OnInit {
       this.buscarInconsistencia();
     });
 
-  }
-
-  ngOnInit() {
-    this.util.ready();
   }
   public onScroll() {
     if (!this.automaticsService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();

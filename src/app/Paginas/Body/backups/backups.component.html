@@ -80,11 +80,7 @@
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
 <!-- ------------------------------------------------------------------------------------------------------ -->
-<button class="up-left rounded-circle" (click)="util.subir()">
-    <span>
-      <fa-icon [icon]="util.faArrowUp"></fa-icon>
-    </span>
-</button>
+
 <div *ngIf="backService.userBackups[backService.indexUser].backups.length > 0" class="overflow-x-scroll">
   <table class="table table-hover table-fixed-xl">
     <thead class="thead-dark">

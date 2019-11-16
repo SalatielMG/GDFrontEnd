@@ -56,6 +56,7 @@ export class Utilerias {
 
   public regex_email = /^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/;
   public exprRegular_6Decimal: string = "([0-9]+\.?[0-9]{0,6})";
+  public exprRegular_6DecimalNegative: string = "([-]{0,1}?[0-9]+\.?[0-9]{0,6})";
   public exprOperation_Code: string = "([0-9A-Za-z]{15,15})";//(.[0-9]{1,6})?
   public characterAllowInOperationCode: string = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   public idCardView = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}];
@@ -233,19 +234,16 @@ export class Utilerias {
     return biweek;
   }
   public valueChecked(data: number): boolean {
-    console.log(data != 0);
     return (data != 0);
   }
   public unValueChecked(data: boolean): number {
     return ((data) ? 1 : 0);
   }
   public formatTimeSQL(timer){
-    console.log(timer);
     let time = timer.split(":");
     time.forEach((value, index) => {
       time[index] = (value.length == 1) ? "0" + value : value;
     });
-    console.log(time);
     return time.toString().replace(/,/g,":");
   }
   public formatComponentDateCalendar(date) {
@@ -319,8 +317,10 @@ export class Utilerias {
   private errorRegexPatern(pattern) {
     let error = "";
     if (pattern == "^([0-9A-Za-z]{15,15})$") {
-      error = "Campo estricto con cualquier Digito númerico y letra del alfabeto [0-9A-Za-z] de 15 caracteres.";
-    } else if (pattern == "^([0-9]+.?[0-9]{0,6})$") {
+      error = "Campo estricto con digitos y letras del alfabeto [0-9A-Za-z] de longitud exacta de 15 caracteres.";
+    } else if (pattern == "^" + this.exprRegular_6Decimal + "$") {
+      error = "Campo númerico de no más de 6 decimales.";
+    } else if (pattern == "^" + this.exprRegular_6DecimalNegative + "$") {
       error = "Campo númerico de no más de 6 decimales.";
     } else {
       let p = pattern.split(",");
@@ -339,7 +339,6 @@ export class Utilerias {
   }
   public zeroFile(dato) {
     let dataString: string = "" + dato;
-    console.log("dataString in zeroFile()", dataString);
     if (dataString.includes(".")) {
       let decimalFalt:number = 6 - (dataString.split(".")[1].length);
       for (let i = 0; i < decimalFalt; i++) {
@@ -364,15 +363,10 @@ export class Utilerias {
       return (border) ? this.borderColor.slice(0, (length)) : this.backgroundColor.slice(0, (length));
     } else  {
       let cociente = length / this.backgroundColor.length;
-      // console.log('cociente', cociente);
-      // let result = 10/2;
-      // console.log("Result:= ", result);
       if (cociente.toString().includes('.')) {
         cociente = parseInt(cociente.toString().slice(0, (cociente.toString().indexOf(".")))) + 1;
-        // console.log('parseInt(cociente.toString().slice(0, (cociente.toString().indexOf(".") -1))) + 1', cociente);
       } else {
         cociente = parseInt(cociente.toString()) + 1;
-        // console.log("cociente = parseInt(cociente.toString()) + 1", cociente);
       }
       return this.ajustarArregloColor(cociente, length, border);
     }
@@ -440,7 +434,6 @@ export class Utilerias {
   public msjErrorInterno(error, detenerLoading = true, loadingMain = true, titulo = '¡ ERROR INTERNO !') {
     if (loadingMain) this.loadingMain = false; else this.loadingModal = false;
     if (detenerLoading) this.detenerLoading();
-    console.log(titulo, error);
     this.toast.warning(error.message, "¡ " + error.name + " !", {
       closeButton: true,
       disableTimeOut: true,
@@ -486,7 +479,6 @@ export class Utilerias {
     array1.sort();
     array2.sort();
     let result = (array1.length==array2.length && array1.every(function(v,i) { return v === array2[i] } ));
-    console.log(result);
     return result;
   }
 }

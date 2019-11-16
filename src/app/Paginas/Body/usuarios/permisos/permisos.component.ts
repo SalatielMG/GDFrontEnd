@@ -44,7 +44,6 @@ export class PermisosComponent implements OnInit {
           this.util.QueryComplete.isComplete = true;
           this.permisoService.Permisos = result.permisos;
         }
-        console.log("Resultado ConsultaPermisos", result);
       }, error => {
         this.util.msjErrorInterno(error);
       });
@@ -116,8 +115,6 @@ export class PermisosComponent implements OnInit {
   }
   // ---------------------------- CheckUser
   public checkUser(index) {
-    console.log("this.option", this.option);
-    console.log("this.isUpdateUsuariosSelectPermiso", this.isUpdateUsuariosSelectPermiso);
     if (this.util.isDelete(this.option) || (this.option == this.util.OPERACION_CONSULTA && !this.isUpdateUsuariosSelectPermiso)) return;
     if (this.permisoService.UsuariosGal[index].checked) { // Uncheck =>
       let posInArrayUserSelected = this.UsersSelected.value.indexOf(this.permisoService.UsuariosGal[index].id);
@@ -130,12 +127,9 @@ export class PermisosComponent implements OnInit {
       }
     }
     this.permisoService.UsuariosGal[index].checked = !this.permisoService.UsuariosGal[index].checked;
-    console.log("this.UsersSelected.value", this.UsersSelected.value);
-    console.log("this.UsersSelected.valueAnt", this.UsersSelected.valueAnt);
   }
   // ---------------------------- CheckUser
   public verifyExpandCardUser() {
-    console.log(this.cntUsers);
     let H = (this.util.obtisFullHDDisplay()) ? 300: 220;
     if (this.isExpandUseCard) {
       this.renderer.setStyle(this.cntUsers['nativeElement'], "transition", "height 500ms, max-height 500ms");
@@ -159,7 +153,6 @@ export class PermisosComponent implements OnInit {
     let error = '';
     const control = this.Permiso.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -189,9 +182,6 @@ export class PermisosComponent implements OnInit {
         this.eliminarPermiso();
         break;
     }
-    console.log(this.Permiso.value);
-    console.log("this.UsersSelected.value", this.UsersSelected.value);
-    console.log("this.UsersSelected.valueAnt", this.UsersSelected.valueAnt);
   }
   public agregarPermiso() {
     this.util.msjLoading = "Agregando nuevo Permiso " + this.Permiso.value.permiso;
@@ -212,8 +202,6 @@ export class PermisosComponent implements OnInit {
     });
   }
   public actualizarPermiso() {
-    console.log("this.UsersSelected", this.UsersSelected);
-    console.log("value == ValueAnt", (this.UsersSelected.value == this.UsersSelected.valueAnt));
     let isChangeUsers = { isChangeUsers: false, };
     if (!this.util.compare(this.UsersSelected.value, this.UsersSelected.valueAnt)) {
       isChangeUsers.isChangeUsers = true;
@@ -254,7 +242,6 @@ export class PermisosComponent implements OnInit {
   }
 
   public actualizarUsuariosPermisos() {
-    console.log("this.UsersSelected", this.UsersSelected);
     let isChangeUsers = { isChangeUsers: false, };
     if (!this.util.compare(this.UsersSelected.value, this.UsersSelected.valueAnt)) {
       isChangeUsers.isChangeUsers = true;
@@ -281,7 +268,5 @@ export class PermisosComponent implements OnInit {
         this.util.msjErrorInterno(error);
       });
     });
-    console.log("isChangeUsers", isChangeUsers);
-    console.log("this.permisoService.indexPermisoSelected", this.permisoService.indexPermisoSelected);
   }
 }

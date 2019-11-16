@@ -35,10 +35,8 @@ export class CategoriesService {
     this.accountsCategoriesServices.obtCategoriesAccountBackup(this.id_backup, this.AccountsBackup[index].id_account.toString()).subscribe(result => {
       if (!result.error) {
         this.AccountsBackup[index].categoriesAccount = result.categories;
-        console.log("new Categories query:= ", this.AccountsBackup[index].categoriesAccount);
       }
     }, error => {
-      console.log(error);
     });
   }
   public obtAccountsBackup() {
@@ -46,11 +44,9 @@ export class CategoriesService {
       this.accountsCategoriesServices.obtAccountsBackup(this.id_backup).subscribe(result => {
         if (!result.error){
           this.AccountsBackup = result.accounts;
-          console.log("new Accounts query := ", this.AccountsBackup);
         }
         resolve(result.error);
       }, error => {
-        console.log("error:=", error);
         resolve(true);
       });
     });

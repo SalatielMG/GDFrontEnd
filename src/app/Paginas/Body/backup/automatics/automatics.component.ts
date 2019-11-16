@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AutomaticsService } from '../../../../Servicios/automatics/automatics.service';
 import { ActivatedRoute, Router} from '@angular/router';
 import { Utilerias} from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './automatics.component.html',
   styleUrls: ['./automatics.component.css']
 })
-export class AutomaticsComponent implements OnInit {
+export class AutomaticsComponent {
 
   public option: string = "";
   public automatic: FormGroup = null;
@@ -25,9 +25,6 @@ export class AutomaticsComponent implements OnInit {
       this.automaticService.resetearVarables();
       this.buscarAutomatics();
     });
-  }
-
-  ngOnInit() {
   }
 
   public onScroll() {
@@ -83,7 +80,6 @@ export class AutomaticsComponent implements OnInit {
           this.automaticService.obtAccountsBackup().then((error => {
             //this.util.detenerLoading();
             if (!error && error != 400) {
-              console.log("Open this modal :)", error);
               this.buildForm(automatic);
               this.automaticService.AccountsBackup.forEach((a, index) => {
                 if (a.id_account.toString() == automatic.id_account.toString()) {
@@ -108,12 +104,11 @@ export class AutomaticsComponent implements OnInit {
               }
               setTimeout(()=> {
                 this.util.detenerLoading();
-                console.log("Open this modal :)");
                 this.util.abrirModal("#modalAutomatic");
               }, this.util.timeOutMilliseconds);
             } else {
               this.util.msjToast((error == 400) ? "Ocurrio un error interno del servidor": "No se encontraron registros de cuentas y categorias asociadas con el id_backup: " + this.automaticService.id_backup, "¡ -- ERROR -- !", (error == 400) ? "warning": true);
-              console.log("No open this modal :(", error)
+
             }
           }));
         });
@@ -129,7 +124,6 @@ export class AutomaticsComponent implements OnInit {
               this.AccountsAndCategoriesBackup(result);
               setTimeout(()=> {
                 this.util.detenerLoading();
-                console.log("Open this modal :)");
                 this.util.abrirModal("#modalAutomatic");
               }, this.util.timeOutMilliseconds);
             } else this.util.detenerLoading();
@@ -166,7 +160,6 @@ export class AutomaticsComponent implements OnInit {
     let error = '';
     const control = this.automatic.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -179,11 +172,9 @@ export class AutomaticsComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalAutomatic").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.automatic = null;
     });
-    //console.log("Value Form := ", this.automatic.value.next_date.toLocaleDateString());
   }
 
   public operation() {
@@ -278,16 +269,12 @@ export class AutomaticsComponent implements OnInit {
   public accountSelectedModal(event) {
     this.indexSelectAutomaticModal = event.target.selectedIndex;
     this.automatic.patchValue({id_category: ''});
-    console.log("event:=", event.target.selectedIndex);
-    console.log("event:=", this.automatic.value.id_account);
-
     if (this.automatic.value.id_account == "") return;
     this.automaticService.obtCategoriesAccountBackup(this.indexSelectAutomaticModal.toString());
   }
   public AccountsAndCategoriesBackup(result) {
     if (!result.accountsBackup.error) {
       this.automaticService.AccountsBackup = result.accountsBackup.accounts;
-      console.log("this.automaticService.AccountsBackup", this.automaticService.AccountsBackup);
     } else {
       this.util.msjToast(result.accountsBackup.msj, "", result.accountsBackup.error);
     }

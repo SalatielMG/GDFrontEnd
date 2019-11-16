@@ -1,24 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../Servicios/usuario/usuario.service';
 import { Utilerias } from '../../../Utilerias/Util';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   public usuario: FormGroup = null;
 
   constructor(public userSerevice: UsuarioService, public formBuilder: FormBuilder, public util: Utilerias, public route: ActivatedRoute,
               public router: Router) {
     this.construirFormulario();
-  }
-
-  ngOnInit() {
   }
 
   public construirFormulario() {
@@ -44,7 +41,6 @@ export class LoginComponent implements OnInit {
             this.util.msjToast(result.usuario.msj + ". Porfavor verifique otra vez su sesión o pongase en contacto con el superAdministrador", result.usuario.titulo, result.usuario.error);
           }
         }
-        console.log("resultado Login:=", result);
       }, error => {
         this.util.msjErrorInterno(error);
       });

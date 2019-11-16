@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {CardviewsService} from '../../../../../Servicios/cardviews/cardviews.service';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './cardviews.component.html',
   styleUrls: ['./cardviews.component.css']
 })
-export class CardviewsComponent implements OnInit {
+export class CardviewsComponent {
 
   public backups;
 
@@ -24,10 +24,6 @@ export class CardviewsComponent implements OnInit {
       this.cardviewService.resetVariables();
       this.buscarInconsistencia();
     });
-  }
-
-  ngOnInit() {
-    this.util.ready();
   }
   public onScroll() {
     if (!this.cardviewService.isFilter() && !this.util.loadingMain) this.buscarInconsistencia();

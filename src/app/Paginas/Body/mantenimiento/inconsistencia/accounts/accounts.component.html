@@ -1,9 +1,3 @@
-<button class="up-right rounded-circle" (click)="util.subir()">
-    <span>
-      <fa-icon [icon]="util.faArrowUp"></fa-icon>
-    </span>
-</button>
-
 <div class="container text-center" *ngIf="accountService.Accounts.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -18,58 +12,17 @@
         <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Account
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
-
-            <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
-              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
-              <option *ngFor="let account of accountService.AccountsBackup" [value]="account.id_account">{{account.id_account}}</option>
-            </ng-container>
-
-            <ng-container *ngIf="accountService.filtersSearch.sign.value != '-1' && accountService.filtersSearch.id_account.value == '0'">
-              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
-              <ng-container  *ngFor="let account of accountService.AccountsBackup">
-                <option *ngIf="account.sign == accountService.filtersSearch.sign.value" [value]="account.id_account">{{account.id_account}}</option>
-              </ng-container>
-            </ng-container>
-
-          </select>
-          <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Name
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.id_account.value" name="id_account" (ngModelChange)="accountService.actionFilterEvent($event, 'id_account')">
-            <ng-container *ngIf="accountService.filtersSearch.sign.value == '-1' || accountService.filtersSearch.id_account.value != '0'">
-              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
-              <option *ngFor="let account of accountService.AccountsBackup" [value]="account.id_account">[{{account.sign}}], {{account.name}}</option>
-            </ng-container>
-            <ng-container *ngIf="accountService.filtersSearch.sign.value != '-1' && accountService.filtersSearch.id_account.value == '0'">
-              <option value="0" *ngIf="accountService.AccountsBackup.length > 0">Todas</option>
-              <ng-container  *ngFor="let account of accountService.AccountsBackup">
-                <option *ngIf="account.sign == accountService.filtersSearch.sign.value" [value]="account.id_account">[{{account.sign}}], {{account.name}}</option>
-              </ng-container>
-            </ng-container>
-          </select>
-          <button type="button" [ngClass]="(accountService.filtersSearch.id_account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('id_account')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Detail</th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Sign
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.sign.value" name="sign" (ngModelChange)="accountService.actionFilterEvent($event, 'sign')">
-            <option value="-1">Ambos</option>
-            <option value="-">-</option>
-            <option value="+">+</option>
-          </select>
-          <button type="button" [ngClass]="(accountService.filtersSearch.sign.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('sign')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Income</th>
@@ -85,23 +38,11 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Iso_code
-          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.iso_code.value" name="iso_code" (keyup)="accountService.actionFilterEvent($event, 'iso_code', true)">
-          <button type="button" [ngClass]="(accountService.filtersSearch.iso_code.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('iso_code')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Selected
-          <!--select class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="accountService.filtersSearch.selected.value" name="selected" (ngModelChange)="accountService.actionFilterEvent($event, 'selected')">
-            <option value="-1">Ambos</option>
-            <option value="0">No</option>
-            <option value="1">Sí</option>
-          </select>
-          <button type="button" [ngClass]="(accountService.filtersSearch.selected.isFilter) ? 'close': 'btnFilter-disabled'" (click)="accountService.resetValuefiltroSearch('selected')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Value_type</th>

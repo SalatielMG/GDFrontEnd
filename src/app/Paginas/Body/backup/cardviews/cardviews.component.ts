@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CardviewsService } from '../../../../Servicios/cardviews/cardviews.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './cardviews.component.html',
   styleUrls: ['./cardviews.component.css']
 })
-export class CardviewsComponent implements OnInit {
+export class CardviewsComponent {
 
   public option: string = "";
   public cardview: FormGroup = null;
@@ -24,8 +24,6 @@ export class CardviewsComponent implements OnInit {
       this.cardviewService.resetVariables();
       this.searchCardViews();
     });
-  }
-  ngOnInit() {
   }
   public onScroll() {
     if (!this.cardviewService.isFilter() && !this.util.loadingMain) this.searchCardViews();
@@ -104,7 +102,6 @@ export class CardviewsComponent implements OnInit {
     let error = '';
     const control = this.cardview.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -117,13 +114,11 @@ export class CardviewsComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalCardview").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.cardview = null;
     });
   }
   public operation() {
-    console.log("this.valueCategoriesForm:=", this.cardview.value);
     switch (this.option) {
       case this.util.OPERACION_AGREGAR:
         this.agregarCardview();
@@ -155,8 +150,6 @@ export class CardviewsComponent implements OnInit {
           }
           if (!result.cardviewsBackup.error) {
             this.cardviewService.CadViewsGralBackup = result.cardviewsBackup.cardviews;
-          } else {
-            console.log(result.cardviewsBackup);
           }
           this.closeModal();
         } else {
@@ -189,8 +182,6 @@ export class CardviewsComponent implements OnInit {
           }
           if (!result.cardviewsBackup.error) {
             this.cardviewService.CadViewsGralBackup = result.cardviewsBackup.cardviews;
-          } else {
-            console.log(result.cardviewsBackup);
           }
           this.closeModal();
         } else {
@@ -218,8 +209,6 @@ export class CardviewsComponent implements OnInit {
           }
           if (!result.cardviewsBackup.error) {
             this.cardviewService.CadViewsGralBackup = result.cardviewsBackup.cardviews;
-          } else {
-            console.log(result.cardviewsBackup);
           }
           this.closeModal();
         }

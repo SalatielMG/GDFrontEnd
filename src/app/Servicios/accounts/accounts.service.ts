@@ -71,7 +71,6 @@ export class AccountsService {
           this.AccountsBackup = result.accounts;
         }
       }, error => {
-        console.log("Error Interno:=", error);
       });
     }
     if (key == "sign") this.filtersSearch[key].value = "-1";

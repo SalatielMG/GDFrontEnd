@@ -90,7 +90,6 @@ export class RecuperarContrasenaComponent implements OnInit {
           this.util.msjErrorInterno(error);
         });
       });
-      console.log(this.formResetPasword.value);
     }
   }
 

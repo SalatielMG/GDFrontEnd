@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
+import {Component, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -7,19 +7,15 @@ import {Label} from 'ng2-charts';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-
 import html2canvas from 'html2canvas';
-
 
 @Component({
   selector: 'app-entradas',
   templateUrl: './entradas.component.html',
   styleUrls: ['./entradas.component.css']
 })
-export class EntradasComponent implements AfterViewInit {
+export class EntradasComponent {
 
-  public msj;
   public symbolsAccountsPieCharData: [] = [];
   public totalesAccountsPieCharData: [] = [];
   public pieChartOptions: ChartOptions = {
@@ -66,12 +62,11 @@ export class EntradasComponent implements AfterViewInit {
   constructor(public route: ActivatedRoute,
               public router: Router, public userService: UserService, public util: Utilerias, public renderer: Renderer2) {
     this.resetpiechar();
-    this.msj = "Creando Grafica de movimientos positivos del usuario solicitado";
+    this.util.msjLoading = "Creando Grafica de movimientos positivos del usuario solicitado";
     this.util.crearLoading().then(() => {
       this.userService.obtValoresGrafica(this.userService.User.id_user, "pos").subscribe(result => {
         this.resultado(result);
       }, error => {
-        this.util.detenerLoading();
         this.util.msjErrorInterno(error);
       });
     });
@@ -79,12 +74,11 @@ export class EntradasComponent implements AfterViewInit {
 
   public busquedaFiltrosGastos() {
     this.resetpiechar();
-    this.msj = "Generando Grafica de Entradas, ¡ Porfavor espere !";
+    this.util.msjLoading = "Generando Grafica de Entradas, ¡ Porfavor espere !";
     this.util.crearLoading().then(() => {
       this.userService.obtValoresGrafica(this.userService.User.id_user, "pos", this.backup, this.account, this.year, this.month).subscribe(result => {
         this.resultado(result);
       }, error => {
-        this.util.detenerLoading();
         this.util.msjErrorInterno(error);
       });
     });
@@ -197,15 +191,7 @@ export class EntradasComponent implements AfterViewInit {
               height: imgHeight * 2.78}]
         };
         pdfMake.createPdf(documentDefinition).open();
-
       });
     });
-
   }
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-  }
-
 }

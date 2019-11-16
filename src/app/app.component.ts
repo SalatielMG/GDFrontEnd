@@ -1,6 +1,6 @@
 import {Component, HostListener} from '@angular/core';
 import {UsuarioService} from './Servicios/usuario/usuario.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {Utilerias} from './Utilerias/Util';
 
 @Component({
@@ -11,7 +11,6 @@ import {Utilerias} from './Utilerias/Util';
 export class AppComponent {
   constructor(public userService: UsuarioService, public route: ActivatedRoute,
               public router: Router, public util: Utilerias){
-    console.log(this.router.url);
     if (userService.activo()) {
 
       this.util.msjLoading = "Cargando sus datos. Porfavor espere";
@@ -45,6 +44,5 @@ export class AppComponent {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event) {
     this.util.onScroll = window.pageYOffset > 20;
-    //console.log(window.pageYOffset);
   }
 }

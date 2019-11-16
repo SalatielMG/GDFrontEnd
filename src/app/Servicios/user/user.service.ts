@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { URL } from '../../Utilerias/URL';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Users} from '../../Modelos/users/users';
 
@@ -10,13 +10,11 @@ import {Users} from '../../Modelos/users/users';
 export class UserService {
 
   public User: Users;
-  public dataGrafica = [];
 
   constructor(public http: HttpClient) { }
 
   public buscarUser(email): Observable<any> {
     this.User = <Users>{};
-    console.log(email);
     const  parametro = new HttpParams()
       .append('email', email);
     return this.http.post(URL + 'buscarUser', parametro);

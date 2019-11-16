@@ -21,7 +21,6 @@ export class NavEncodeComponent implements OnInit {
   }
   public eventLogo() {
     let ruta = this.router.url.split("/");
-    console.log(ruta);
     if (ruta.length > 3) {
       switch (ruta[3]) {
         case "detalleRespaldo":

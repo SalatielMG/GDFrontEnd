@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountsService } from '../../../../Servicios/accounts/accounts.service';
 import { Utilerias } from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.css']
 })
-export class AccountsComponent implements OnInit {
+export class AccountsComponent {
 
   public option: string = "";
   public account: FormGroup = null;
@@ -75,10 +75,6 @@ export class AccountsComponent implements OnInit {
     this.util.loadingMain = false;
   }
 
-  ngOnInit() {
-  }
-
-
   public accionAccount(option, account = new Accounts(), i = null) {
     this.util.msjLoading = "Cargando currencies del backup: " + this.accountService.id_backup;
     this.util.crearLoading().then(() => {
@@ -116,13 +112,11 @@ export class AccountsComponent implements OnInit {
 
   }
   public getNewId_Account() {
-    console.log("account value:", this.account);
       this.util.msjLoading = "Calculando el id_account para la nueva cuenta a agregar";
       this.util.crearLoading().then(() => {
         this.accountService.obtNewId_account().subscribe(result => {
           this.util.detenerLoading();
           if (!result.error) {
-            console.log("account value:", this.account);
             this.account.patchValue({id_account: result.newId_account});
             this.util.abrirModal("#modalAccount");
           } else {
@@ -143,7 +137,7 @@ export class AccountsComponent implements OnInit {
       income : [(this.option == this.util.OPERACION_AGREGAR) ? account.income : this.util.unZeroFile(account.income), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       expense : [(this.option == this.util.OPERACION_AGREGAR) ? account.expense : this.util.unZeroFile(account.expense), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
       initial_balance : [(this.option == this.util.OPERACION_AGREGAR) ? account.initial_balance : this.util.unZeroFile(account.initial_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
-      final_balance : [(this.option == this.util.OPERACION_AGREGAR) ? account.final_balance : this.util.unZeroFile(account.final_balance), [Validators.required, Validators.min(0), Validators.pattern(this.util.exprRegular_6Decimal)]],
+      final_balance : [(this.option == this.util.OPERACION_AGREGAR) ? account.final_balance : this.util.unZeroFile(account.final_balance), [Validators.required, Validators.pattern(this.util.exprRegular_6DecimalNegative)]],
       month : [account.month, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("2"))]],
       year : [account.year, [Validators.required, Validators.pattern(this.util.reegex_MaxLengthNumber("4"))]],
       positive_limit : [account.positive_limit, [Validators.required,  Validators.pattern(this.util.reegex_MaxLengthNumber("1"))]],
@@ -158,13 +152,11 @@ export class AccountsComponent implements OnInit {
       icon_name : [account.icon_name,  [Validators.maxLength(20)]],
     });
     if (this.util.isDelete(this.option)) this.disable();
-    console.log("account after method buildForm()", this.account);
   }
   public getError(controlName: string): string {
     let error = '';
     const control = this.account.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -178,7 +170,6 @@ export class AccountsComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalAccount").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.account = null;
     });
@@ -195,7 +186,6 @@ export class AccountsComponent implements OnInit {
         this.eliminarAccount();
         break;
     }
-    console.log("value in Account FormGroup:=", this.account.value);
   }
   public agregarAccount() {
     this.patchValueFormDataBeforeOperation();
@@ -289,7 +279,6 @@ export class AccountsComponent implements OnInit {
     this.account.patchValue({rate: this.util.zeroFile(this.account.value.rate)});
     this.account.patchValue({sign: this.util.signValue(this.account.value.sign)});
     this.account.patchValue({selected: this.util.unValueChecked(this.account.value.selected)});
-    console.log("Value this.accout after addZeroFile:=", this.account.value);
   }
   public patchValueFormDataAfterOperationError () {
     this.account.patchValue({sign: this.util.signUnvalue(this.account.value.sign)});

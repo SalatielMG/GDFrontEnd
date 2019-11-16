@@ -7,12 +7,6 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
-<button class="up-right rounded-circle" (click)="util.subir()">
-    <span>
-      <fa-icon [icon]="util.faArrowUp"></fa-icon>
-    </span>
-</button>
-
 <div class="container text-center" *ngIf="extrasService.Extras.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -26,28 +20,16 @@
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Id_Extra
-          <!--input type="number" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.id_extra.value" name="id_extra" (keyup)="extrasService.actionFilterEvent($event, 'id_extra', true)">
-          <button type="button" [ngClass]="(extrasService.filtersSearch.id_extra.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('id_extra')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Account
-          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.account.value" name="account" (keyup)="extrasService.actionFilterEvent($event, 'account', true)">
-          <button type="button" [ngClass]="(extrasService.filtersSearch.account.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('account')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">
         <div class="row inline-grid">
           Category
-          <!--input type="text" class="form-control mr-sm-2 form-control-md input-header" [(ngModel)]="extrasService.filtersSearch.category.value" name="category" (keyup)="extrasService.actionFilterEvent($event, 'category', true)">
-          <button type="button" [ngClass]="(extrasService.filtersSearch.category.isFilter) ? 'close': 'btnFilter-disabled'" (click)="extrasService.resetValuefiltroSearch('category')">
-            <span aria-hidden="true">&times;</span>
-          </button-->
         </div>
       </th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Utilerias } from '../../../Utilerias/Util';
 import { BackupService } from '../../../Servicios/backup/backup.service';
@@ -13,28 +13,17 @@ import {UsuarioService} from '../../../Servicios/usuario/usuario.service';
   templateUrl: './backups.component.html',
   styleUrls: ['./backups.component.css']
 })
-export class BackupsComponent implements OnInit {
+export class BackupsComponent{
 
   public option: string = "";
 
   public isCreated = false;
   public isDownload = false;
-  //public backupSelected: Backup;
   public backup: FormGroup;
-
-
-  /*public pagina = 0;
-  public filtrosSearch = new FiltrosSearchBackupsUser();
-  public backupsFiltro: Backup[];
-  public dataBackupSelected = [];
-  public indexBackupSelected: number = 0;*/
 
   constructor(public usuarioServicio: UsuarioService, public userService: UserService, public backService: BackupService, public util: Utilerias, public route: ActivatedRoute,
               public router: Router, public formBuilder: FormBuilder) {
 
-    //Consutar los bakups del usuario encontrado.
-    // this.backupSelected.id_backup = 0;
-    // this.buildForm();
     this.backService.resetearBackups();
     this.backService.userBackups.push(new UsersBackupsMnt());
     this.buscar();
@@ -102,7 +91,6 @@ export class BackupsComponent implements OnInit {
     let error = '';
     const control = this.backup.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -123,7 +111,6 @@ export class BackupsComponent implements OnInit {
     return this.option == this.util.OPERACION_ELIMINAR;
   }
   public operacion() {
-    // console.log(this.option, this.backup.value);
     switch (this.option) {
       case this.util.OPERACION_ACTUALIZAR:
         this.actualizarBackup();
@@ -134,22 +121,15 @@ export class BackupsComponent implements OnInit {
     }
   }
   public cerrarModal() {
-    console.log("cerrando Modal :v");
     this.util.cerrarModal("#modalBackup").then(() => {
       this.option = "";
       this.backup = null;
     });
   }
-  prueba() {
-    console.log("clik modal :v");
-  }
 
   public actualizarBackup(){
-    console.log("Valor backup", this.backup.value);
     let dateTime_date_creation = this.util.formatDateTimeSQL( this.backup,"date_creation");
     let dateTime_date_download = this.util.formatDateTimeSQL( this.backup,"date_download");
-    console.log("dateTime_date_creation", dateTime_date_creation);
-    console.log("dateTime_date_download", dateTime_date_download);
     let newBackup = {
       id_backup : this.backup.value.id_backup,
       automatic : this.util.unValueChecked(this.backup.value.automatic),
@@ -198,7 +178,6 @@ export class BackupsComponent implements OnInit {
               }
               this.cerrarModal();
             }
-            console.log(result);
           },
             error => {
           this.util.msjErrorInterno(error);
@@ -206,9 +185,5 @@ export class BackupsComponent implements OnInit {
       });
   }
 
-
-  ngOnInit() {
-    this.util.ready("left");
-  }
 
 }

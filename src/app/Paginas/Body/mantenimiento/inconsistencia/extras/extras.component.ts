@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {ExtrasService} from '../../../../../Servicios/extras/extras.service';
 import {Utilerias} from '../../../../../Utilerias/Util';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './extras.component.html',
   styleUrls: ['./extras.component.css']
 })
-export class ExtrasComponent implements OnInit {
+export class ExtrasComponent {
 
   public backups;
 
@@ -26,9 +26,6 @@ export class ExtrasComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.util.ready();
-  }
   public onScroll() {
     if (this.extrasService.isFilter() && !this.util.loadingMain) {
       this.buscarInconsistencia();
@@ -53,7 +50,7 @@ export class ExtrasComponent implements OnInit {
       });
     }
   }
-  public resultado(result, bnd = true) {
+  public resultado(result) {
     this.util.msj = result.msj;
     if (this.extrasService.pagina == 0) {
       this.util.detenerLoading();

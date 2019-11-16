@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CategoriesService } from '../../../../Servicios/categories/categories.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {Utilerias} from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent {
 
   public option: string = "";
   public category: FormGroup = null;
@@ -27,8 +27,6 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
   public onScroll() {
     if (!this.categoriesService.isFilter() && !this.util.loadingMain) this.searchCategories();
   }
@@ -80,6 +78,7 @@ export class CategoriesComponent implements OnInit {
     this.util.crearLoading().then(() => {
       this.categoriesService.accountsCategoriesServices.obtAccountsBackup(this.categoriesService.id_backup, "0").subscribe(result => {
         if (!result.error) {
+          this.categoriesService.AccountsBackup = result.accounts;
           this.option = option;
           this.buildForm(category);
           if (this.option != this.util.OPERACION_AGREGAR) {
@@ -144,7 +143,6 @@ export class CategoriesComponent implements OnInit {
     let error = '';
     const control = this.category.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -157,13 +155,11 @@ export class CategoriesComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalCategory").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.category = null;
     });
   }
   public operation() {
-    console.log("this.valueCategoriesForm:=", this.category.value);
     switch (this.option) {
       case this.util.OPERACION_AGREGAR:
         this.agregarCategory();

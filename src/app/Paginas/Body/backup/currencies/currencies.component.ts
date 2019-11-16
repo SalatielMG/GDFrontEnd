@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CurrenciesService } from '../../../../Servicios/currencies/currencies.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utilerias } from '../../../../Utilerias/Util';
@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../Servicios/usuario/usuario.service';
   templateUrl: './currencies.component.html',
   styleUrls: ['./currencies.component.css']
 })
-export class CurrenciesComponent implements OnInit {
+export class CurrenciesComponent {
 
   public option = "";
   public currency: FormGroup = null;
@@ -28,9 +28,6 @@ export class CurrenciesComponent implements OnInit {
     });
   }
 
-
-  ngOnInit() {
-  }
   public onScroll() {
     if (this.currenciesService.isFilter() && !this.util.loadingMain) {
       this.searchCurrencies();
@@ -128,7 +125,6 @@ export class CurrenciesComponent implements OnInit {
     let error = '';
     const control = this.currency.get(controlName);
     if (control.touched && control.errors != null && control.invalid) {
-      console.log("Error Control:=[" + controlName + "]", control.errors);
       error = this.util.hasError(control);
     }
     return error;
@@ -141,13 +137,11 @@ export class CurrenciesComponent implements OnInit {
   }
   public closeModal() {
     this.util.cerrarModal("#modalCurrency").then(() => {
-      console.log("Modal cerrado :v");
       this.option = "";
       this.currency = null;
     });
   }
   public operation() {
-    console.log("this.valueCurrenciesForm:=", this.currency.value);
     switch (this.option) {
       case this.util.OPERACION_AGREGAR:
         this.agregarCurrency();

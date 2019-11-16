@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, OnInit, QueryList, Renderer2, ViewChildren} from '@angular/core';
+import {Component, QueryList, Renderer2, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../../../Servicios/user/user.service';
 import {Utilerias} from '../../../../Utilerias/Util';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
 
 import html2canvas from 'html2canvas';
 
@@ -17,9 +16,8 @@ import { Label } from 'ng2-charts';
   templateUrl: './gastos.component.html',
   styleUrls: ['./gastos.component.css']
 })
-export class GastosComponent implements AfterViewInit {
+export class GastosComponent {
 
-  public msj;
   public symbolsAccountsPieCharData: [] = [];
   public totalesAccountsPieCharData: [] = [];
   public pieChartOptions: ChartOptions = {
@@ -35,7 +33,6 @@ export class GastosComponent implements AfterViewInit {
       datalabels: {
         formatter: (value, ctx) => {
           const label = ctx.chart.data.labels[ctx.dataIndex];
-          console.log(label);
           return label;
         },
       },
@@ -62,32 +59,28 @@ export class GastosComponent implements AfterViewInit {
   public year;
   public month;
 
-  // @ViewChildren("colorCategorias") colorCategorias = ElementRef;
   @ViewChildren("colorCategorias") colorCategorias: QueryList<"colorCategorias">;
 
   constructor(public route: ActivatedRoute,
               public router: Router, public userService: UserService, public util: Utilerias, public renderer: Renderer2) {
     this.resetpiechar();
-    this.msj = "Creando Grafica de movimientos negativos del usuario solicitado";
+    this.util.msjLoading = "Creando Grafica de movimientos negativos del usuario solicitado";
     this.util.crearLoading().then(() => {
       this.userService.obtValoresGrafica(this.userService.User.id_user, "neg").subscribe(result => {
         this.resultado(result);
       }, error => {
-        this.util.detenerLoading();
         this.util.msjErrorInterno(error);
       });
     });
   }
 
-
   public busquedaFiltrosGastos() {
     this.resetpiechar();
-    this.msj = "Generando Grafica de Gastos, ¡ Porfavor espere !";
+    this.util.msjLoading = "Generando Grafica de Gastos, ¡ Porfavor espere !";
     this.util.crearLoading().then(() => {
       this.userService.obtValoresGrafica(this.userService.User.id_user, "neg", this.backup, this.account, this.year, this.month).subscribe(result => {
         this.resultado(result);
       }, error => {
-        this.util.detenerLoading();
         this.util.msjErrorInterno(error);
       });
     });
@@ -203,16 +196,7 @@ export class GastosComponent implements AfterViewInit {
             height: imgHeight * 2.78}]
       };
       pdfMake.createPdf(documentDefinition).open();
-
     });
     });
-
   }
-
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-  }
-
 }

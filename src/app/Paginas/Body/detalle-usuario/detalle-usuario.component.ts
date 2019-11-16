@@ -11,10 +11,6 @@ import { Utilerias } from '../../../Utilerias/Util';
   styleUrls: ['./detalle-usuario.component.css']
 })
 export class DetalleUsuarioComponent implements OnInit {
-  public msj;
-  public PieChart=[];
-  public etiquetas = [];
-  public valores = [];
   constructor(public route: ActivatedRoute,
               public router: Router, public userService: UserService, public backService: BackupService, public util: Utilerias) {
     this.router.navigate(['gastos'], {relativeTo: this.route});
