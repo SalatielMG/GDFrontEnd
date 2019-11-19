@@ -23,6 +23,7 @@ export class InconsistenciaComponent {
 
   constructor(public usuarioServicio: UsuarioService, public backupService: BackupService, public util: Utilerias,  public route: ActivatedRoute,
               public router: Router) {
+    this.email = (this.util.userMntInconsistencia.email == "Generales") ? "": this.util.userMntInconsistencia.email;
     this.search();
   }
   public changeOptionSelect(event) {
@@ -40,6 +41,7 @@ export class InconsistenciaComponent {
     }
     this.backupIndex = indices;
   }
+
   public search(isFiltro = false) {
     if (this.email.length == 0) {
       this.util.userMntInconsistencia.email = "Generales";
@@ -75,9 +77,11 @@ export class InconsistenciaComponent {
         if (!this.errorValidacionUserBackup) this.routeNavigate(ruta, isFiltro);
       });
     } else {
+      this.util.cerrarModal("#exampleModalCenter");
       this.routeNavigate(ruta, isFiltro);
     }
   }
+
   public routeNavigate(ruta, isFiltro)  {
     let route = ruta.split("/");
     if (route.length == 3) return;
@@ -173,13 +177,28 @@ export class InconsistenciaComponent {
     });
   }
   public nameTable: string = "";
-  public corregirTabla(){
+  public size: any = {};
+  public corregirTabla() {
     this.nameTable = "";
     let route = this.router.url.split("/");
     if (route.length == 3) return;
     this.nameTable = route[3];
-    this.util.abrirModal("#modalConfirmInconsistencia");
-    // this.operacion();
+    this.util.msjLoading = "Calculando tamaño y tiempo estimado de la peración Correcion Inconsistencia Tabla: " + this.nameTable;
+    this.util.crearLoading().then(() => {
+      this.backupService.obtSizeTable(this.nameTable, this.usuarioServicio.usuarioCurrent.id).subscribe(result => {
+        this.util.detenerLoading();
+        if (!result.error) {
+          this.size = result.size;
+          this.util.abrirModal("#modalConfirmInconsistencia");
+        } else {
+          this.util.msjToast(result.msj, result.titulo, result.error);
+        }
+
+      }, error => {
+        this.util.msjErrorInterno(error);
+      });
+    });
+
   }
   public onScroll() {
     if (!this.backupService.isFilter()) this.buscarBackups();
@@ -206,14 +225,13 @@ export class InconsistenciaComponent {
     this.searchWithFilter();
   }
   public searchWithFilter() {
-    this.lengthBackupFilter();
-    this.search(true);
-  }
-  public lengthBackupFilter() {
     if (this.backup.length == 0) {
-      alert("Porfavor filtre el(los) backup(s) " + ((this.util.userMntInconsistencia.email == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.userMntInconsistencia.email);
+      //console.log("error No  hay filtros");
+      this.util.abrirModal("#modalError");
+      //alert("Porfavor filtre el(los) backup(s) " + ((this.util.userMntInconsistencia.email == "Generales") ? "de los usuarios " : "del usuario : ") + this.util.userMntInconsistencia.email);
       return;
     }
+    this.search(true);
   }
   public reset() {
     this.backup = [];

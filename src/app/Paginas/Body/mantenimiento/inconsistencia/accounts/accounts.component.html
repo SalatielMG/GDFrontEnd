@@ -1,3 +1,153 @@
+<div class="modal fade" id="modalAccount" tabindex="-1" role="dialog" aria-labelledby="modalAccountTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalAccountTitle">Corregir Inconsistencia Account</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" >
+            <h5 class="text-center font-weight-500" >¿ Esta seguro de corregir las {{accountSeleced.repeated}} inconsistencias de dato de la siguiente cuenta ?</h5>
+            <h6 class="text-center font-weight-normal" >Id_Backup: {{accountSeleced.id_backup}}, Id_Account: {{accountSeleced.id_account}}</h6>
+          </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input readonly type="checkbox" class="custom-control-input" id="selected" [checked]="accountSeleced.selected">
+              <label class="custom-control-label" for="selected">Selected</label>
+            </div>
+          </div>
+
+          <fieldset class="form-group" >
+            <div class="form-row">
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input readonly type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" [(ngModel)]="accountSeleced.sign">
+                  <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
+                </div>
+              </div>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input readonly type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" [(ngModel)]="accountSeleced.sign">
+                  <label class="custom-control-label" for="customControlValidation3">Gastos</label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-group">
+            <label for="name">Name: </label>
+            <input readonly type="text" class="form-control" id="name" [(ngModel)]="accountSeleced.name">
+           </div>
+          <div class="form-group">
+            <label for="detail">Detail: </label>
+            <textarea  readonly type="text" class="form-control" id="detail" [(ngModel)]="accountSeleced.detail"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="income">Income: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="income" [(ngModel)]="accountSeleced.income">
+              </div>
+              <div class="col">
+                <label for="expense">Expense: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="expense" [(ngModel)]="accountSeleced.expense">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_balance">Initial_balance: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="initial_balance" [(ngModel)]="accountSeleced.initial_balance">
+              </div>
+              <div class="col">
+                <label for="final_balance">Final_balance: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="final_balance" [(ngModel)]="accountSeleced.final_balance">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="month">Month: </label>
+                <select readonly class="form-control" id="month" [(ngModel)]="accountSeleced.month">
+                  <option value="0">Selecciona un mes</option>
+                  <option *ngFor="let month of util.nameMonth" [value]="month.value">{{month.name}}</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="year">Year: </label>
+                <input readonly type="number" class="form-control" id="year" [(ngModel)]="accountSeleced.year">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="positive_limit">Positive_limit: </label>
+                <input readonly type="number" class="form-control" id="positive_limit" [(ngModel)]="accountSeleced.positive_limit">
+              </div>
+              <div class="col">
+                <label for="negative_limit">Negative_limit: </label>
+                <input readonly type="number" class="form-control" id="negative_limit" [(ngModel)]="accountSeleced.negative_limit">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="positive_max">Positive_max: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="positive_max" [(ngModel)]="accountSeleced.positive_max">
+              </div>
+              <div class="col">
+                <label for="negative_max">Negative_max: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="negative_max" [(ngModel)]="accountSeleced.negative_max">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="iso_code">Iso_code: </label>
+                <select readonly class="form-control" id="iso_code" [(ngModel)]="accountSeleced.iso_code">
+                  <option value="" *ngIf="accountService.CurrenciesGralBackup.length > 0">Seleccione una moneda</option>
+                  <option *ngFor="let currency of accountService.CurrenciesGralBackup" [value]="currency.iso_code">{{currency.iso_code}} ({{currency.symbol}})</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="value_type">Value_type: </label>
+                <input readonly type="number" class="form-control" id="value_type" [(ngModel)]="accountSeleced.value_type">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="include_total">Include_total: </label>
+                <input readonly type="number" class="form-control" id="include_total" [(ngModel)]="accountSeleced.include_total">
+              </div>
+              <div class="col">
+                <label for="rate">Rate: </label>
+                <input readonly type="number" class="form-control" [step]="util.stepDecimal" id="rate" [(ngModel)]="accountSeleced.rate">
+              </div>
+              <div class="col">
+                <label for="icon_name">Icon_name: </label>
+                <input readonly type="text" class="form-control" id="icon_name" [(ngModel)]="accountSeleced.icon_name">
+                  </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Corregir</button>
+        </div>
+    </div>
+  </div>
+</div>
+
 <div class="container text-center" *ngIf="accountService.Accounts.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
 </div>
@@ -52,82 +202,48 @@
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </tr>
     </thead>
-    <tbody *ngIf="!accountService.isFilter()">
-    <tr *ngFor="let account of accountService.Accounts; let i = index" >
-      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
-      <td class="Celdas-Tabla">{{account.id_backup}}</td>
-      <td class="Celdas-Tabla">{{account.id_account}}</td>
-      <td class="Celdas-Tabla">{{account.name}}</td>
-      <td class="Celdas-Tabla">{{account.detail}}</td>
-      <td class="Celdas-Tabla">{{account.sign}}</td>
-      <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.month}}</td>
-      <td class="Celdas-Tabla">{{account.year}}</td>
-      <td class="Celdas-Tabla">{{account.positive_limit}}</td>
-      <td class="Celdas-Tabla">{{account.negative_limit}}</td>
-      <td class="Celdas-Tabla">{{account.positive_max}}</td>
-      <td class="Celdas-Tabla">{{account.negative_max}}</td>
-      <td class="Celdas-Tabla">{{account.iso_code}}</td>
-      <td class="Celdas-Tabla">{{account.selected}}</td>
-      <td class="Celdas-Tabla">{{account.value_type}}</td>
-      <td class="Celdas-Tabla">{{account.include_total}}</td>
-      <td class="Celdas-Tabla">{{account.rate}}</td>
-      <td class="Celdas-Tabla">{{account.icon_name}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-            <span>
-              <fa-icon [icon]="util.faTools"></fa-icon>
-            </span>
-        </button>
-      </td>
-    </tr>
-    <div
-      [fromRoot]="true"
-      infiniteScroll
-      [infiniteScrollDistance]="2"
-      infiniteScrollContainer=".table-fixed-xl tbody"
-      (scrolled)="onScroll()">
-    </div>
-    <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
-    <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
-    </tbody>
-    <tbody *ngIf="accountService.isFilter()">
-    <tr *ngFor="let account of accountService.accountsFilter; let i = index" >
-      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
-      <td class="Celdas-Tabla">{{account.id_backup}}</td>
-      <td class="Celdas-Tabla">{{account.id_account}}</td>
-      <td class="Celdas-Tabla">{{account.name}}</td>
-      <td class="Celdas-Tabla">{{account.detail}}</td>
-      <td class="Celdas-Tabla">{{account.sign}}</td>
-      <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla">{{account.month}}</td>
-      <td class="Celdas-Tabla">{{account.year}}</td>
-      <td class="Celdas-Tabla">{{account.positive_limit}}</td>
-      <td class="Celdas-Tabla">{{account.negative_limit}}</td>
-      <td class="Celdas-Tabla">{{account.positive_max}}</td>
-      <td class="Celdas-Tabla">{{account.negative_max}}</td>
-      <td class="Celdas-Tabla">{{account.iso_code}}</td>
-      <td class="Celdas-Tabla">{{account.selected}}</td>
-      <td class="Celdas-Tabla">{{account.value_type}}</td>
-      <td class="Celdas-Tabla">{{account.include_total}}</td>
-      <td class="Celdas-Tabla">{{account.rate}}</td>
-      <td class="Celdas-Tabla">{{account.icon_name}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-            <span>
-              <fa-icon [icon]="util.faTools"></fa-icon>
-            </span>
-        </button>
-      </td>
-    </tr>
+    <tbody>
+      <tr *ngFor="let account of accountService.Accounts; let i = index" >
+        <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
+        <td class="Celdas-Tabla font-italic">{{account.repeated}}</td>
+        <td class="Celdas-Tabla">{{account.id_backup}}</td>
+        <td class="Celdas-Tabla">{{account.id_account}}</td>
+        <td class="Celdas-Tabla">{{account.name}}</td>
+        <td class="Celdas-Tabla">{{account.detail}}</td>
+        <td class="Celdas-Tabla">{{account.sign}}</td>
+        <td class="Celdas-Tabla">{{account.income | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla">{{account.expense | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla">{{account.initial_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla">{{account.final_balance | currency: account.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
+        <td class="Celdas-Tabla">{{account.month}}</td>
+        <td class="Celdas-Tabla">{{account.year}}</td>
+        <td class="Celdas-Tabla">{{account.positive_limit}}</td>
+        <td class="Celdas-Tabla">{{account.negative_limit}}</td>
+        <td class="Celdas-Tabla">{{account.positive_max}}</td>
+        <td class="Celdas-Tabla">{{account.negative_max}}</td>
+        <td class="Celdas-Tabla">{{account.iso_code}}</td>
+        <td class="Celdas-Tabla">{{account.selected}}</td>
+        <td class="Celdas-Tabla">{{account.value_type}}</td>
+        <td class="Celdas-Tabla">{{account.include_total}}</td>
+        <td class="Celdas-Tabla">{{account.rate}}</td>
+        <td class="Celdas-Tabla">{{account.icon_name}}</td>
+        <td class="Celdas-Tabla">
+          <button type="button" class="btn btn-primary btn-Mnt-Inconsistencia" (click)="accionCorreirRegistro(account, i)">
+              <span>
+                <fa-icon [icon]="util.faTools"></fa-icon>
+              </span>
+          </button>
+        </td>
+      </tr>
+      <div
+        [fromRoot]="true"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        infiniteScrollContainer=".table-fixed-xl tbody"
+        (scrolled)="onScroll()">
+      </div>
+      <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
+      <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
     </tbody>
   </table>
 </div>

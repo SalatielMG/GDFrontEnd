@@ -28,7 +28,7 @@ export class CategoriesComponent {
   }
 
   public onScroll() {
-    if (!this.categoriesService.isFilter() && !this.util.loadingMain) this.searchCategories();
+    if (!this.util.QueryComplete.isComplete && !this.categoriesService.isFilter() && !this.util.loadingMain) this.searchCategories();
   }
   public searchCategories() {
     this.util.loadingMain = true;
@@ -68,7 +68,7 @@ export class CategoriesComponent {
       this.categoriesService.pagina += 1;
       this.categoriesService.Categories = this.categoriesService.Categories.concat(result.categories);
     } else {
-      this.util.QueryComplete.isComplete = this.categoriesService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -182,7 +182,7 @@ export class CategoriesComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.categoriesService.Categories.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.category.error) {
               this.categoriesService.Categories.push(result.category.new);
               if (this.categoriesService.isFilter()) this.categoriesService.proccessFilter();

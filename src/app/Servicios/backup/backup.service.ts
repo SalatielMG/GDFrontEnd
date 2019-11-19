@@ -143,6 +143,11 @@ export class BackupService {
     // this.userBackups = [];
     return this.http.get(URL + 'buscarUsersExportacionBackups', {params: {email: email, pagina: this.pagina.toString()}});
   }
+  public obtSizeTable(Tabla, id_usuario): Observable<any> {
+    return this.http.get(URL + 'obtSizeTable' + Tabla, {params: {id_usuario: id_usuario}});
+  }
+
+
   public corregirInconsistencia(Tabla, id_usuario): Observable<any> {
     return this.http.get(URL + 'corregirInconsistenciaDatos' + Tabla, {params: {id_usuario: id_usuario}});
   }

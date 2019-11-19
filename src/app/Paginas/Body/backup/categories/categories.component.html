@@ -8,7 +8,7 @@
 </ngx-spinner>
 
 <div class="container text-center" *ngIf="categoriesService.Categories.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">{{util.msj}}</h2>
+  <h4 class="font-weight-normal">{{util.msj}}</h4>
 </div>
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="modal fade" id="modalCategory" tabindex="-1" role="dialog" aria-labelledby="modalCategoryTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="category != null">
@@ -237,6 +237,7 @@
           </button>
         </td>
       </tr>
+      <query-complete isFiltro="true"></query-complete>
     </tbody>
   </table>
 </div>

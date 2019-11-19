@@ -27,7 +27,7 @@ export class AccountsComponent {
   }
   public onScroll() {
 
-    if (!this.accountService.isFilter() && !this.util.loadingMain) this.buscarAccounts();
+    if (!this.util.QueryComplete.isComplete && !this.accountService.isFilter() && !this.util.loadingMain) this.buscarAccounts();
   }
 
   public buscarAccounts() {
@@ -70,7 +70,7 @@ export class AccountsComponent {
       this.accountService.pagina += 1;
       this.accountService.Accounts = this.accountService.Accounts.concat(result.accounts);
     } else {
-      this.util.QueryComplete.isComplete = this.accountService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -161,7 +161,6 @@ export class AccountsComponent {
     }
     return error;
   }
-
   public disable() {
     for (let key in this.account.getRawValue()) {
         this.account.get(key).disable();
@@ -199,7 +198,7 @@ export class AccountsComponent {
           /*
           * El nuevo account se agrega al arreglo original si esta completa la consulta y se filtran la busqueda nuevamente si esta activada.
           * */
-          if (this.util.QueryComplete.isComplete || this.accountService.Accounts.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.account.error) { // Se recibio correctamente la consulta de la nueva cuenta creada.
               this.accountService.Accounts.push(result.account.new);
               if (this.accountService.isFilter()) {

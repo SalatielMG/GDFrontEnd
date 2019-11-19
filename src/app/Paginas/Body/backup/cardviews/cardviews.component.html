@@ -95,7 +95,7 @@
 
 
 <div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
-  <h2 class="font-weight-lighter">{{util.msj}}</h2>
+  <h4 class="font-weight-normal">{{util.msj}}</h4>
 </div>
 <div *ngIf="cardviewService.Cardviews.length > 0" class="overflow-x-scroll">
   <table class="table table-hover table-fixed-xl">
@@ -201,6 +201,7 @@
           </button>
         </td>
       </tr>
+      <query-complete isFiltro="true"></query-complete>
     </tbody>
   </table>
 </div>

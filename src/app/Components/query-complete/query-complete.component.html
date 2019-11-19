@@ -1,5 +1,11 @@
 <div class="container-query-complete">
-  <div class="alert alert-success text-center" role="alert">
-    {{msj}}
+
+  <div *ngIf="!isFiltro" class="alert text-center alert-success" role="alert">
+    {{util.QueryComplete.msj}}
   </div>
+
+  <div *ngIf="isFiltro" class="alert text-center" [ngClass]="(util.QueryComplete.isComplete) ? 'alert-success': 'alert-warning'" role="alert">
+    {{(util.QueryComplete.isComplete) ? '¡ Resultados de fitros completos !' : '¡ Resultados de filtros incompletos. Porfavor considere cancelar todos los filtros y completar la consulta principal, para poder dar una mejor exactitud en los resultados de los filtros !'}}
+  </div>
+
 </div>

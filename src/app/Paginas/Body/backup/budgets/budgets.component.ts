@@ -28,7 +28,7 @@ export class BudgetsComponent {
   }
 
   public onScroll() {
-    if (!this.budgetService.isFilter() && !this.util.loadingMain) this.searchBudgets();
+    if (!this.util.QueryComplete.isComplete && !this.budgetService.isFilter() && !this.util.loadingMain) this.searchBudgets();
   }
 
   public searchBudgets() {
@@ -67,7 +67,7 @@ export class BudgetsComponent {
       this.budgetService.pagina += 1;
       this.budgetService.Budgets = this.budgetService.Budgets.concat(result.budgets);
     } else {
-      this.util.QueryComplete.isComplete = this.budgetService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -175,7 +175,7 @@ export class BudgetsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.budgetService.Budgets.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.budget.error) {
               this.budgetService.Budgets.push(result.budget.new);
               if (this.budgetService.isFilter()) this.budgetService.proccessFilter();

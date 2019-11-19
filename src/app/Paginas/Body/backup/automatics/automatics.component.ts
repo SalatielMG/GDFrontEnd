@@ -28,7 +28,7 @@ export class AutomaticsComponent {
   }
 
   public onScroll() {
-    if (!this.automaticService.isFilter() && !this.util.loadingMain) this.buscarAutomatics();
+    if (!this.util.QueryComplete.isComplete && !this.automaticService.isFilter() && !this.util.loadingMain) this.buscarAutomatics();
   }
 
   public buscarAutomatics() {
@@ -66,7 +66,7 @@ export class AutomaticsComponent {
       this.automaticService.pagina += 1;
       this.automaticService.Automatics = this.automaticService.Automatics.concat(result.automatics);
     } else {
-      this.util.QueryComplete.isComplete = this.automaticService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -134,7 +134,6 @@ export class AutomaticsComponent {
       }
 
   }
-
   public buildForm(automatic: Automatics) {
     this.automatic = this.formBuilder.group({
       id_backup : [automatic.id_backup, [Validators.required, Validators.min(0), Validators.pattern(this.util.reegex_MaxLengthNumber("10"))]],
@@ -176,7 +175,6 @@ export class AutomaticsComponent {
       this.automatic = null;
     });
   }
-
   public operation() {
     switch (this.option) {
       case this.util.OPERACION_AGREGAR:
@@ -199,7 +197,7 @@ export class AutomaticsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.automaticService.Automatics.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.automatic.error) {
               this.automaticService.Automatics.push(result.automatic.new);
               if (this.automaticService.isFilter()) this.automaticService.proccessFilter();

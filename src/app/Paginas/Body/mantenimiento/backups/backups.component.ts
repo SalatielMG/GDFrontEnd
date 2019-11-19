@@ -36,7 +36,8 @@ export class BackupsComponent implements OnInit {
   public router: Router) {
     this.usersSelected = [];
     this.backupService.resetearBackups();
-    this.buscarBackupsUserMnt();
+    this.email = (this.util.emailUserMntBackup == "Generales") ? "": this.util.emailUserMntBackup;
+    this.search();
   }
 
   public onScroll () {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AccountsService} from "../../../../../Servicios/accounts/accounts.service";
 import {Utilerias} from "../../../../../Utilerias/Util";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Accounts} from '../../../../../Modelos/accounts/accounts';
 
 @Component({
   selector: 'app-accounts',
@@ -10,6 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class AccountsComponent {
 
+  public accountSeleced: Accounts = new Accounts();
   public backups;
 
   constructor(public route: ActivatedRoute,
@@ -70,5 +72,14 @@ export class AccountsComponent {
     }
     this.util.loadingMain = false;
   }
+
+  public accionCorreirRegistro(account: Accounts, index) {
+    this.accountService.indexAccountSelected = index;
+    this.accountSeleced = account;
+    this.util.abrirModal("#modalAccount");
+  }
+  /*public corregirInconsistenciaRegistro(account: Accounts) {
+    this.util.
+  }*/
 
 }

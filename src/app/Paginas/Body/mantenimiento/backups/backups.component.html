@@ -117,8 +117,9 @@
 </div>
 
 <div class="text-center" style=" padding: 50px">
-  <h3 class="font-weight-500">Mantenimiento Backups:</h3>
-  <h3 class="font-weight-normal">{{util.emailUserMntBackup}}</h3>
+  <h3 class="font-weight-500">Mantenimiento Backups</h3>
+  <h3 class="font-weight-normal" *ngIf="util.emailUserMntBackup == 'Generales'">Usuarios {{util.emailUserMntBackup}}</h3>
+  <h3 class="font-weight-normal" *ngIf="util.emailUserMntBackup != 'Generales'">Usuario: {{util.emailUserMntBackup}}</h3>
   <div class="row">
     <div class="col-9"></div>
     <div class="col-3">
@@ -320,5 +321,5 @@
 
 </div>
 <div class="container" *ngIf="backupService.userBackups.length == 0">
-  <h3 class="font-weight-lighter text-center">{{util.msj}}</h3>
+  <h4 class="font-weight-normal text-center">{{util.msj}}</h4>
 </div>

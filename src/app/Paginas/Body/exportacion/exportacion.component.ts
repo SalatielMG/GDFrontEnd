@@ -22,7 +22,8 @@ export class ExportacionComponent implements  OnInit{
 
   constructor(public usuarioServicio: UsuarioService, public util:Utilerias, public backupService: BackupService, public userService: UserService, public route: ActivatedRoute,
   public router: Router, public renderer: Renderer2) {
-    this.search();
+      this.email = (this.util.emailUserExportacionBackups == "Generales") ? "": this.util.emailUserExportacionBackups;
+      this.search();
   }
   ngOnInit() {
     this.util.ready();
@@ -30,7 +31,6 @@ export class ExportacionComponent implements  OnInit{
   public onScroll() {
     this.searchUsers();
   }
-
   public search() {
     if (this.email.length == 0) {
       this.backupService.resetearBackups();

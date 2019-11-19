@@ -28,7 +28,7 @@ export class MovementsComponent {
   }
 
   public onScroll(event) {
-    if (!this.movementsService.isFilter() && !this.util.loadingMain) {
+    if (!this.util.QueryComplete.isComplete && !this.movementsService.isFilter() && !this.util.loadingMain) {
       this.searchMovements();
     }
   }
@@ -71,7 +71,7 @@ export class MovementsComponent {
       this.movementsService.pagina += 1;
       this.movementsService.Movements = this.movementsService.Movements.concat(result.movements);
     } else {
-      this.util.QueryComplete.isComplete = this.movementsService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -233,7 +233,7 @@ export class MovementsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.movementsService.Movements.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.movement.error) {
               this.movementsService.Movements.push(result.movement.new);
               if (this.movementsService.isFilter()) this.movementsService.proccessFilter();

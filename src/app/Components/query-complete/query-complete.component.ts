@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Utilerias} from '../../Utilerias/Util';
 
 @Component({
   selector: 'query-complete',
@@ -8,7 +9,8 @@ import {Component, Input, OnInit} from '@angular/core';
 export class QueryCompleteComponent implements OnInit {
 
   @Input() msj;
-  constructor() { }
+  @Input() isFiltro: boolean = false;
+  constructor(private util: Utilerias) { }
 
   ngOnInit() {
   }

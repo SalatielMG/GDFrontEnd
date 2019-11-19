@@ -56,8 +56,6 @@
 </div>
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
-
-
 <div class="tamaño-titulo-encabezado">
   <div class="tam-titulo-encabezado"  style="padding-top: 160px !important;">
     <nav class="navbar navbar-light bg-light" style = "padding-left: 40px; padding-right: 40px; background: transparent !important">
@@ -78,8 +76,9 @@
 </div>
 
 <div class="text-center" style=" padding: 50px">
-  <h3 class="font-weight-500">Exportación Backups:</h3>
-  <h3 class="font-weight-normal">{{util.emailUserExportacionBackups}}</h3>
+  <h3 class="font-weight-500">Exportación Backups</h3>
+  <h3 class="font-weight-normal" *ngIf="util.emailUserExportacionBackups == 'Generales'">Usuarios {{util.emailUserExportacionBackups}}</h3>
+  <h3 class="font-weight-normal" *ngIf="util.emailUserExportacionBackups != 'Generales'">Usuario: {{util.emailUserExportacionBackups}}</h3>
 </div>
 
 <button class="btn btn-danger rounded-circle up-right" (click)="util.subir()">
@@ -250,6 +249,6 @@
   <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
 
 </div>
-<div class="container" *ngIf="backupService.userBackups.length == 0">
-  <h3 class="font-weight-lighter text-center">{{util.msj}}</h3>
+<div class="container mt-5" *ngIf="backupService.userBackups.length == 0">
+  <h4 class="font-weight-normal text-center">{{util.msj}}</h4>
 </div>

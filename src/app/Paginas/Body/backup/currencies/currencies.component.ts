@@ -29,7 +29,7 @@ export class CurrenciesComponent {
   }
 
   public onScroll() {
-    if (this.currenciesService.isFilter() && !this.util.loadingMain) {
+    if (!this.util.QueryComplete.isComplete && this.currenciesService.isFilter() && !this.util.loadingMain) {
       this.searchCurrencies();
     }
   }
@@ -71,7 +71,7 @@ export class CurrenciesComponent {
       this.currenciesService.pagina += 1;
       this.currenciesService.Currencies  = this.currenciesService.Currencies.concat(result.currencies);
     } else {
-      this.util.QueryComplete.isComplete = this.currenciesService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -164,7 +164,7 @@ export class CurrenciesComponent {
         this.util.msj = result.msj;
         if (!result.error) {
 
-          if (this.util.QueryComplete.isComplete || this.currenciesService.Currencies.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.currency.error) {
               this.currenciesService.Currencies.push(result.currency.new);
               if (this.currenciesService.isFilter()) this.currenciesService.proccessFilter();

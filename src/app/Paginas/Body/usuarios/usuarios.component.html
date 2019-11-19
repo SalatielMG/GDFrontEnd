@@ -174,7 +174,7 @@
 
   <div class="row row-card">
     <div *ngIf="usuarioService.Usuarios.length == 0">
-      <h2 class="font-weight-lighter">{{util.msj}}</h2>
+      <h4 class="font-weight-normal">{{util.msj}}</h4>
     </div>
     <ng-container *ngFor="let user of usuarioService.Usuarios; let i = index">
       <div class="col-4 col-user">

@@ -7,6 +7,29 @@
   <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
 </ngx-spinner>
 
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalErrorTitle" aria-hidden="true" style="    z-index: 1051;">
+  <div class="modal-dialog modal-dialog-centered modal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalErrorTitle">Error</h5>
+        <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row titulo-Modal mt-5 mb-5">
+          <h6 class="text-center font-weight-500">Porfavor filtre el(los) backup(s) : {{((util.userMntInconsistencia.email == "Generales") ? "de los usuarios " : "del usuario : ") + util.userMntInconsistencia.email}}</h6>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" >Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
 <div class="modal fade" id="modalConfirmInconsistencia" tabindex="-1" role="dialog" aria-labelledby="modalConfirmInconsistenciaTitle" aria-hidden="true">
@@ -14,21 +37,36 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title centerTitleModal" id="modalConfirmInconsistenciaTitle">Corregir Inconsistencia</h5>
-        <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_MNTINCONSISTENCIA)" type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
             <div class="row titulo-Modal mt-5 mb-5">
-              <h5 class="text-center font-weight-500">¿ Desea corregir las inconsistencias de la Tabla : {{nameTable}} ?</h5>
+              <h5 class="text-center font-weight-500">¿ Desea corregir las inconsistencias de datos en la Tabla : {{nameTable}} ?</h5>
+              <h6 class="text-center font-weight-normal mt-3">Considere los siguientes datos.</h6>
             </div>
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th class="font-weight-500 text-center">Tabla</th>
+                  <th class="font-weight-500 text-center">Peso (GB)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-weight-500 text-center">{{size.Tables}}</td>
+                  <td class="font-weight-500 text-center">{{size.Size}}</td>
+                </tr>
+              </tbody>
+            </table>
 
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" >Cerrar</button>
-        <button type="button" class="btn btn-success" (click)="operacion()">Corregir</button>
+        <button [disabled]="!usuarioServicio.isValidPermiso(util.PERMISO_MNTINCONSISTENCIA)" type="button" class="btn btn-success" (click)="operacion()">Corregir</button>
       </div>
     </div>
   </div>
@@ -36,7 +74,7 @@
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -187,7 +225,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="cerrarModal()">Cerrar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="guardarValorBackups()">Guardar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarValorBackups()">Filtrar</button>
       </div>
     </div>
   </div>
@@ -217,12 +255,13 @@
 <!-- Buscador -->
 <div class="text-center" style=" padding: 50px">
   <div class="row" style="display: block">
-    <h3 class="font-weight-500 text-center">Mantenimiento Inconsistencia de Datos:</h3>
+    <h3 class="font-weight-500 text-center">Mantenimiento Inconsistencia de Datos</h3>
   </div>
   <div class="row" >
     <div class="col-3"></div>
     <div class="col-6">
-      <h3 class="font-weight-normal text-center">{{util.userMntInconsistencia.email}}</h3>
+      <h3 class="font-weight-normal text-center" *ngIf="util.userMntInconsistencia.email == 'Generales'">Usuarios {{util.userMntInconsistencia.email}}</h3>
+      <h3 class="font-weight-normal text-center" *ngIf="util.userMntInconsistencia.email != 'Generales'">Usuario: {{util.userMntInconsistencia.email}}</h3>
     </div>
     <div class="col-3">
         <div class="form-group row">
@@ -287,5 +326,5 @@
 </ng-container>
 
 <div *ngIf="errorValidacionUserBackup">
-  <h3 class="font-weight-normal text-center">{{util.msjModal}}</h3>
+  <h4 class="font-weight-normal text-center">{{util.msjModal}}</h4>
 </div>

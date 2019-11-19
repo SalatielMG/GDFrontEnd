@@ -26,7 +26,7 @@ export class CardviewsComponent {
     });
   }
   public onScroll() {
-    if (!this.cardviewService.isFilter() && !this.util.loadingMain) this.searchCardViews();
+    if (!this.util.QueryComplete.isComplete && !this.cardviewService.isFilter() && !this.util.loadingMain) this.searchCardViews();
   }
   public searchCardViews() {
     this.util.loadingMain = true;
@@ -66,7 +66,7 @@ export class CardviewsComponent {
       this.cardviewService.pagina += 1;
       this.cardviewService.Cardviews = this.cardviewService.Cardviews.concat(result.cardviews);
     } else {
-      this.util.QueryComplete.isComplete = this.cardviewService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -140,7 +140,7 @@ export class CardviewsComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.cardviewService.Cardviews.length >= 0){
+          if (this.util.QueryComplete.isComplete){
             if (!result.cardview.error) {
               this.cardviewService.Cardviews.push(result.cardview.new);
               if (this.cardviewService.isFilter()) this.cardviewService.proccessFilter();

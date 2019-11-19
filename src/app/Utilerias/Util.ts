@@ -38,7 +38,7 @@ export class Utilerias {
 
   public QueryComplete = {
     isComplete:  false,
-    msj: "Fin de resultados"
+    msj: "¡ Consulta completa !"
   };
 
   public userMntInconsistencia = {
@@ -46,7 +46,6 @@ export class Utilerias {
     id : "0",
   };
 
-  public timeOutMilliseconds: number = 1000;
   public emailUserMntBackup: string = "Generales";
   public emailUserExportacionBackups: string = "Generales";
   public errorRefreshListTable: string = "RECARGA LA PÁGINA";
@@ -176,7 +175,8 @@ export class Utilerias {
   public msjLoading: string = "";
   public msj: string = "";
   public stepDecimal: string = "0.000001";
-  public limit: number= 50;
+  public limit: number = 50;
+  public timeOutMilliseconds: number = 1000;
   public newPassword: string = "";
   public emailResetPassword: string = "";
   public symbolDecimalNumber6Digits: string = "1.2-6";

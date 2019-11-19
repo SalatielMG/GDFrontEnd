@@ -27,7 +27,7 @@ export class PreferencesComponent {
   }
 
   public onScroll() {
-    if (this.preferencesService.isFilter() && !this.util.loadingMain) this.searchPreferences();
+    if (!this.util.QueryComplete.isComplete && this.preferencesService.isFilter() && !this.util.loadingMain) this.searchPreferences();
   }
 
   public searchPreferences() {
@@ -64,7 +64,7 @@ export class PreferencesComponent {
       this.preferencesService.pagina += 1;
       this.preferencesService.Preferences = this.preferencesService.Preferences.concat(result.preferences);
     } else {
-      this.util.QueryComplete.isComplete = this.preferencesService.pagina != 0;
+      this.util.QueryComplete.isComplete = true;
     }
     this.util.loadingMain = false;
   }
@@ -134,7 +134,7 @@ export class PreferencesComponent {
         this.util.msjToast(result.msj, result.titulo, result.error);
         this.util.msj = result.msj;
         if (!result.error) {
-          if (this.util.QueryComplete.isComplete || this.preferencesService.Preferences.length >= 0) {
+          if (this.util.QueryComplete.isComplete) {
             if (!result.preference.error) {
               this.preferencesService.Preferences.push(result.preference.new);
               if (this.preferencesService.isFilter()) this.preferencesService.proccessFilter();
