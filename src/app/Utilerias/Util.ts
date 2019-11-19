@@ -37,13 +37,13 @@ export class Utilerias {
   public onScroll: boolean = false;
 
   public QueryComplete = {
-    isComplete:  false,
+    isComplete: false,
     msj: "¡ Consulta completa !"
   };
 
   public userMntInconsistencia = {
-    email : "Generales",
-    id : "0",
+    email: "Generales",
+    id: "0",
   };
 
   public emailUserMntBackup: string = "Generales";
@@ -65,47 +65,47 @@ export class Utilerias {
       value: 1,
       name: 'Enero',
       nameSorth: 'ENE'
-    },{
+    }, {
       value: 2,
       name: 'Febrero',
       nameSorth: 'FEB'
-    },{
+    }, {
       value: 3,
       name: 'Marzo',
       nameSorth: 'MAR'
-    },{
+    }, {
       value: 4,
       name: 'Abril',
       nameSorth: 'ABR'
-    },{
+    }, {
       value: 5,
       name: 'Mayo',
       nameSorth: 'MAY'
-    },{
+    }, {
       value: 6,
       name: 'Junio',
       nameSorth: 'JUN'
-    },{
+    }, {
       value: 7,
       name: 'Julio',
       nameSorth: 'JUL'
-    },{
+    }, {
       value: 8,
       name: 'Agosto',
       nameSorth: 'AGO'
-    },{
+    }, {
       value: 9,
       name: 'Septiembre',
       nameSorth: 'SEP'
-    },{
+    }, {
       value: 10,
       name: 'Octubre',
       nameSorth: 'OCT'
-    },{
+    }, {
       value: 11,
       name: 'Noviembre',
       nameSorth: 'NOV'
-    },{
+    }, {
       value: 12,
       name: 'Diciembre',
       nameSorth: 'DIC'
@@ -167,8 +167,8 @@ export class Utilerias {
   public faSlidersH = faSlidersH;
   public faTrash = faTrash;
   public faPen = faPen;
-  public faChevronUp =  faChevronUp;
-  public faChevronDown =  faChevronDown;
+  public faChevronUp = faChevronUp;
+  public faChevronDown = faChevronDown;
   public loadingMain: boolean = true;
   public loadingModal: boolean = true;
   public msjModal: string = "";
@@ -176,6 +176,7 @@ export class Utilerias {
   public msj: string = "";
   public stepDecimal: string = "0.000001";
   public limit: number = 50;
+  public limit_Inconsistencia: number = 10;
   public timeOutMilliseconds: number = 1000;
   public newPassword: string = "";
   public emailResetPassword: string = "";
@@ -199,12 +200,14 @@ export class Utilerias {
     }
     return name;
   }
+
   public obtisFullHDDisplay(): boolean {
-    return  window.innerHeight > 768;
+    return window.innerHeight > 768;
   }
+
   public sumaTotal(arreglo) {
     let total: number = 0;
-    for (let data of arreglo){
+    for (let data of arreglo) {
       total += this.numberFormat(data);
     }
     return total;
@@ -213,16 +216,18 @@ export class Utilerias {
   public formatDatePipe(date, time = " hh:mm:ss") {
     return ((date == "0000-00-00") || (date == "0000-00-00 00:00:00")) ? date : this.datePipe.transform(date, "dd MMMM yyyy" + time);
   }
+
   public getWeekNumber = function (now: Date) {
-    let i=0,f,sem=(new Date(now.getFullYear(), 0,1).getDay()>0)?1:0;
-    while( (f=new Date(now.getFullYear(), 0, ++i)) < now ){
-      if(!f.getDay()){
+    let i = 0, f, sem = (new Date(now.getFullYear(), 0, 1).getDay() > 0) ? 1 : 0;
+    while ((f = new Date(now.getFullYear(), 0, ++i)) < now) {
+      if (!f.getDay()) {
         sem++;
       }
     }
     return sem;
   };
-  public getBiweekNumber(date): number{
+
+  public getBiweekNumber(date): number {
     let biweek: number = 0;
     let day: number = date[2];
     let month: number = date[1];
@@ -233,25 +238,31 @@ export class Utilerias {
     }
     return biweek;
   }
+
   public valueChecked(data: number): boolean {
     return (data != 0);
   }
+
   public unValueChecked(data: boolean): number {
     return ((data) ? 1 : 0);
   }
-  public formatTimeSQL(timer){
+
+  public formatTimeSQL(timer) {
     let time = timer.split(":");
     time.forEach((value, index) => {
       time[index] = (value.length == 1) ? "0" + value : value;
     });
-    return time.toString().replace(/,/g,":");
+    return time.toString().replace(/,/g, ":");
   }
+
   public formatComponentDateCalendar(date) {
     return (date != "0000-00-00") ? new Date(date + " 00:00:00") : "";
   }
+
   public formatComponentTime(date, Time) {
     return new Date(date + " " + Time);
   }
+
   public formatDateTimeSQL(dataForm, key, isTime = true) {
     let dateTime = "";
     if (dataForm.value[key] != null && dataForm.value[key] != "") {
@@ -268,18 +279,20 @@ export class Utilerias {
   public randomOperation_Code() {
     let operation_code: string = '';
     let lengthOC: number = this.characterAllowInOperationCode.length;
-    for ( let i: number = 0; i < 15; i++ ) {
+    for (let i: number = 0; i < 15; i++) {
       operation_code += this.characterAllowInOperationCode.charAt(Math.floor(Math.random() * lengthOC));
     }
     return operation_code;
   }
 
-  public numberFormat(data){
+  public numberFormat(data) {
     return parseInt(data);
   }
+
   public isDelete(option): boolean {
     return option == this.OPERACION_ELIMINAR;
   }
+
   public hasError(control) {
     let error = '';
     if (control.hasError("required")) {
@@ -314,6 +327,7 @@ export class Utilerias {
     }
     return error;
   }
+
   private errorRegexPatern(pattern) {
     let error = "";
     if (pattern == "^([0-9A-Za-z]{15,15})$") {
@@ -328,19 +342,23 @@ export class Utilerias {
     }
     return error;
   }
+
   public signValue(sign) {
-    return (sign == "+") ? "1" : "0" ;
+    return (sign == "+") ? "1" : "0";
   }
+
   public signUnvalue(sign) {
-    return (sign == "1" ? "+": "-");
+    return (sign == "1" ? "+" : "-");
   }
+
   public reegex_MaxLengthNumber(lenght) {
     return "([0-9]{1," + lenght + "})";
   }
+
   public zeroFile(dato) {
     let dataString: string = "" + dato;
     if (dataString.includes(".")) {
-      let decimalFalt:number = 6 - (dataString.split(".")[1].length);
+      let decimalFalt: number = 6 - (dataString.split(".")[1].length);
       for (let i = 0; i < decimalFalt; i++) {
         dataString += "0";
       }
@@ -349,6 +367,7 @@ export class Utilerias {
     }
     return dataString;
   }
+
   public unZeroFile(dato) {
     let dataString: string = "" + dato;
     let dataSplit = dataString.split(".");
@@ -358,10 +377,11 @@ export class Utilerias {
       return dato;
     }
   }
+
   public calcularColoreAleatorios(length, border = false) {
     if (length <= this.backgroundColor.length) {
       return (border) ? this.borderColor.slice(0, (length)) : this.backgroundColor.slice(0, (length));
-    } else  {
+    } else {
       let cociente = length / this.backgroundColor.length;
       if (cociente.toString().includes('.')) {
         cociente = parseInt(cociente.toString().slice(0, (cociente.toString().indexOf(".")))) + 1;
@@ -371,6 +391,7 @@ export class Utilerias {
       return this.ajustarArregloColor(cociente, length, border);
     }
   }
+
   private ajustarArregloColor(cociente, length, border) {
     let color = [];
     if (border) {
@@ -384,9 +405,10 @@ export class Utilerias {
     }
     return color.slice(0, (length - 1));
   }
+
   public ready(up = 'right') {
     $('.up-' + up).hide();
-    $(window).scroll(function(){
+    $(window).scroll(function () {
       if ($(this).scrollTop() > 100) {
         $('.up-' + up).fadeIn('1000');
       } else {
@@ -402,11 +424,11 @@ export class Utilerias {
   }
 
   public msjToast(msj, titulo, error) {
-    if (error == "warning"){
+    if (error == "warning") {
       this.msjToastWarning(msj, titulo);
       return;
     }
-    if (error == "success"){
+    if (error == "success") {
       this.msjToastSucces(msj, titulo);
       return;
     }
@@ -424,6 +446,7 @@ export class Utilerias {
   private msjToastError(msj, titulo) {
     this.toast.error(msj, titulo);
   }
+
   private msjToastWarning(msj, titulo) {
     this.toast.warning(msj, titulo, {
       closeButton: true,
@@ -431,6 +454,7 @@ export class Utilerias {
       timeOut: 6000
     });
   }
+
   public msjErrorInterno(error, detenerLoading = true, loadingMain = true, titulo = '¡ ERROR INTERNO !') {
     if (loadingMain) this.loadingMain = false; else this.loadingModal = false;
     if (detenerLoading) this.detenerLoading();
@@ -457,7 +481,7 @@ export class Utilerias {
   }
 
   public abrirModal(modal) {
-      $(modal).modal('show');
+    $(modal).modal('show');
   }
 
   public classModal(option): string {
@@ -475,10 +499,20 @@ export class Utilerias {
     }
     return classModal;
   }
-  public compare(array1 = [],array2 = []){
+
+  public compare(array1 = [], array2 = []) {
     array1.sort();
     array2.sort();
-    let result = (array1.length==array2.length && array1.every(function(v,i) { return v === array2[i] } ));
+    let result = (array1.length == array2.length && array1.every(function (v, i) {
+      return v === array2[i]
+    }));
     return result;
+  }
+  public key_Names(object) {
+    let result = "";
+    for (let index in object) {
+      result += index + ": " + object[index] + ", ";
+    }
+    return (result.substring(0, result.length - 2));
   }
 }

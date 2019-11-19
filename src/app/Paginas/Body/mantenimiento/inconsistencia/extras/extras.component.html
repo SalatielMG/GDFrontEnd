@@ -1,11 +1,41 @@
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
-  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
-</ngx-spinner>
+<div class="modal fade" id="modalExtra" tabindex="-1" role="dialog" aria-labelledby="modalExtraTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalExtraTitle">Corregir Incosnsistencia Extra</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" >
+            <h5 class="text-center font-weight-500" >¿ Esta seguro de corregir {{extraSelected.repeated}} inconsistencias de datos del siguiente registro Extra ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{extraSelected.id_backup}}</h5>
+          </div>
+
+          <div class="form">
+            <label for="id_extra">Id_Extra: </label>
+            <input type="number" class="form-control" id="id_extra" [(ngModel)]="extraSelected.id_extra" readonly>
+          </div>
+
+          <div class="form">
+            <label for="account">Account: </label>
+            <input type="text" class="form-control" id="account" [(ngModel)]="extraSelected.account" readonly>
+          </div>
+
+          <div class="form">
+            <label for="category">Category: </label>
+            <input type="text" class="form-control" id="category" [(ngModel)]="extraSelected.category" readonly>
+          </div>
+
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary" (click)="corregirInconsistenciaRegistro()">Corregir</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="container text-center" *ngIf="extrasService.Extras.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
@@ -34,7 +64,7 @@
       </th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody *ngIf="!extrasService.isFilter()">
+    <tbody >
     <tr *ngFor="let extra of extrasService.Extras; let i = index" >
       <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{extra.repeated}}</td>
@@ -43,7 +73,7 @@
       <td class="Celdas-Tabla">{{extra.account}}</td>
       <td class="Celdas-Tabla">{{extra.category}}</td>
       <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+        <button type="button" class="btn btn-primary btn-Mnt-Inconsistencia" (click)="accionCorregirRegistro(extra, i)">
           <span>
             <fa-icon [icon]="util.faTools"></fa-icon>
           </span>
@@ -59,23 +89,6 @@
     </div>
     <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
     <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
-    </tbody>
-    <tbody *ngIf="extrasService.isFilter()">
-    <tr *ngFor="let extra of extrasService.extrasFilter; let i = index" >
-      <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla">{{extra.repeated}}</td>
-      <td class="Celdas-Tabla">{{extra.id_backup}}</td>
-      <td class="Celdas-Tabla">{{extra.id_extra}}</td>
-      <td class="Celdas-Tabla">{{extra.account}}</td>
-      <td class="Celdas-Tabla">{{extra.category}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-          <span>
-            <fa-icon [icon]="util.faTools"></fa-icon>
-          </span>
-        </button>
-      </td>
-    </tr>
     </tbody>
   </table>
 </div>

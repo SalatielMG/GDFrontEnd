@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import {FiltersSearchAutomatics} from '../../Modelos/automatics/filters-search-automatics';
 import {Accounts} from '../../Modelos/accounts/accounts';
 import {AccountscategoriesService} from '../accounts/accountscategories.service';
+import {stringify} from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -174,5 +175,7 @@ export class AutomaticsService {
   public eliminarAutomatic(indexUnique, id_usuario): Observable<any> {
     return this.http.delete(URL + 'eliminarAutomatic', {params : {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
-
+  public corregirInconsistenciaRegistro(automatic, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroAutomatic',  {params: {indexUnique: JSON.stringify(automatic), id_usuario: id_usuario}});
+  }
 }

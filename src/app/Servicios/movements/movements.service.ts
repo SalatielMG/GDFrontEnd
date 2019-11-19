@@ -179,4 +179,7 @@ export class MovementsService {
   public eliminarMovement (indexUnique, id_usuario): Observable<any> {
     return this.http.delete(URL + "eliminarMovement", {params : {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
+  public corregirInconsistenciaRegistro(movement, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroMovement', {params: {indexUnique: JSON.stringify(movement), id_usuario: id_usuario}})
+  }
 }

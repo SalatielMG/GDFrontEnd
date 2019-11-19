@@ -1,11 +1,122 @@
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
-  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
-</ngx-spinner>
+<div class="modal fade" id="modalAutomatic" tabindex="-1" role="dialog" aria-labelledby="modalAutomaticTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalAutomaticTitle">Corregir Inconsistencia Automatic</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" >
+            <h5 class="text-center font-weight-500" >¿ Esta seguro de corregir las {{(automaticSelected.repeated)}} inconsistencias de datos de la siguiente Operación Automática ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{automaticSelected.id_backup}}, Id_Operation: {{automaticSelected.id_operation}}</h5>
+          </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input disabled type="checkbox" class="custom-control-input" id="enabled" [checked]="(automaticSelected.enabled == 1)">
+              <label class="custom-control-label" for="enabled">Enabled</label>
+            </div>
+          </div>
+
+          <fieldset class="form-group" >
+            <div class="form-row">
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input disabled type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" [(ngModel)]="automaticSelected.sign">
+                  <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
+                </div>
+              </div>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input disabled type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" [(ngModel)]="automaticSelected.sign">
+                  <label class="custom-control-label" for="customControlValidation3">Gastos</label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_operation">Id_operation: </label>
+                <input type="number" readonly class="form-control" id="id_operation" [(ngModel)]="automaticSelected.id_operation" >
+              </div>
+              <div class="form col">
+                <label for="id_account">Account: </label>
+                <input type="text" readonly class="form-control" id="id_account" [(ngModel)]="automaticSelected.nameAccount" >
+              </div>
+              <div class="form col">
+                <label for="id_category">Category: </label>
+                <input type="text" readonly class="form-control" id="id_category" [(ngModel)]="automaticSelected.nameCategory" >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="period">Period</label>
+                <input type="number" readonly class="form-control" id="period" [(ngModel)]="automaticSelected.period" >
+              </div>
+              <div class="form col">
+                <label for="repeat_number">Repeat_number</label>
+                <input type="number" readonly class="form-control" id="repeat_number" [(ngModel)]="automaticSelected.repeat_number" >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="each_number">Each_number</label>
+                <input type="number" readonly class="form-control" id="each_number" [(ngModel)]="automaticSelected.each_number" >
+              </div>
+              <div class="form col">
+                <label for="amount">Amount</label>
+                <input type="number" readonly class="form-control" id="amount" [(ngModel)]="automaticSelected.amount" [step]="util.stepDecimal">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="detail">Detail: </label>
+            <textarea  type="text" readonly class="form-control" id="detail" [(ngModel)]="automaticSelected.detail"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_date">Initial_date</label>
+                <input type="text" readonly class="form-control" id="initial_date" [value]="(automaticSelected.initial_date == '0000-00-00') ? automaticSelected.initial_date : automaticSelected.initial_date | date: 'dd/MMMM/yyyy'" >
+              </div>
+              <div class="col">
+                <label for="next_date">Next_date</label>
+                <input type="text" readonly class="form-control" id="next_date" [value]="(automaticSelected.next_date == '0000-00-00') ? automaticSelected.next_date : automaticSelected.next_date | date: 'dd/MMMM/yyyy'" >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="operation_code">Operation_code: </label>
+                <input type="text" readonly class="form-control" id="operation_code" [(ngModel)]="automaticSelected.operation_code" >
+              </div>
+              <div class="form col">
+                <label for="rate">Rate: </label>
+                <input type="number" readonly class="form-control" id="rate" [(ngModel)]="automaticSelected.rate" [step]="util.stepDecimal" >
+              </div>
+              <div class="form col">
+                <label for="counter">Counter: </label>
+                <input type="number" readonly class="form-control" id="counter" [(ngModel)]="automaticSelected.counter" >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary" (click)="corregirInconsistenciaRegistro()">Corregir</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 <div class="container text-center" *ngIf = "automaticsService.Automatics.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
@@ -65,7 +176,7 @@
       <th scope="col" class="Encabezado-Tabla ">Operación</th>
     </tr>
     </thead>
-    <tbody *ngIf="!automaticsService.isFilter()">
+    <tbody>
     <tr *ngFor="let automatic of automaticsService.Automatics; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
@@ -83,12 +194,12 @@
       <td class="Celdas-Tabla ">{{automatic.sign}}</td>
       <td class="Celdas-Tabla ">{{automatic.detail}}</td>
       <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla ">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
+      <td class="Celdas-Tabla ">{{(automatic.next_date == '0000-00-00') ? automatic.next_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
       <td class="Celdas-Tabla ">{{automatic.rate}}</td>
       <td class="Celdas-Tabla ">{{automatic.counter}}</td>
       <td class="Celdas-Tabla ">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+        <button type="button" class="btn btn-primary btn-Mnt-Inconsistencia" (click)="accionCorreirRegistro(automatic, i)">
             <span>
               <fa-icon [icon]="util.faTools"></fa-icon>
             </span>
@@ -104,37 +215,6 @@
     </div>
     <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
     <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
-    </tbody>
-    <tbody *ngIf="automaticsService.isFilter()">
-    <tr *ngFor="let automatic of automaticsService.automaticsFilter; let i = index" >
-      <td scope="row" class="Celdas-Tabla ">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic ">{{automatic.repeated}}</td>
-      <td class="Celdas-Tabla ">{{automatic.id_backup}}</td>
-      <td class="Celdas-Tabla ">{{automatic.id_operation}}</td>
-      <td class="Celdas-Tabla ">{{automatic.id_account}}</td>
-      <td class="Celdas-Tabla ">{{automatic.nameAccount}}</td>
-      <td class="Celdas-Tabla ">{{automatic.id_category}}</td>
-      <td class="Celdas-Tabla ">{{automatic.nameCategory}}</td>
-      <td class="Celdas-Tabla ">{{automatic.period}}</td>
-      <td class="Celdas-Tabla ">{{automatic.repeat_number}}</td>
-      <td class="Celdas-Tabla ">{{automatic.each_number}}</td>
-      <td class="Celdas-Tabla ">{{automatic.enabled}}</td>
-      <td class="Celdas-Tabla ">{{automatic.amount | currency: automatic.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla ">{{automatic.sign}}</td>
-      <td class="Celdas-Tabla ">{{automatic.detail}}</td>
-      <td class="Celdas-Tabla ">{{(automatic.initial_date == '0000-00-00') ? automatic.initial_date : automatic.initial_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla ">{{(automatic.final_date == '0000-00-00') ? automatic.final_date : automatic.next_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla ">{{automatic.operation_code}}</td>
-      <td class="Celdas-Tabla ">{{automatic.rate}}</td>
-      <td class="Celdas-Tabla ">{{automatic.counter}}</td>
-      <td class="Celdas-Tabla ">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-            <span>
-              <fa-icon [icon]="util.faTools"></fa-icon>
-            </span>
-        </button>
-      </td>
-    </tr>
     </tbody>
   </table>
 </div>

@@ -1,11 +1,79 @@
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
-  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
-</ngx-spinner>
+<div class="modal fade" id="modalCardview" tabindex="-1" role="dialog" aria-labelledby="modalCardviewTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalCardviewTitle">Corregir Inconsistencia Cardview</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" >
+            <h5 class="text-center font-weight-500">¿ Esta seguro de corregir las {{(cardviewSelected.repeated)}} inconsistencias de datos de la siguiente Cardview ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{cardviewSelected.id_backup}}</h5>
+          </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="show_card" [checked]="(cardviewSelected.show_card == 1)" disabled>
+              <label class="custom-control-label" for="show_card">Show Card</label>
+            </div>
+          </div>
+
+          <fieldset class="form-group" >
+            <div class="form-row">
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" [(ngModel)]="cardviewSelected.sign" disabled>
+                  <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
+                </div>
+              </div>
+              <div class="form col checkRadioCenter">
+                <div class="custom-control custom-radio width-90">
+                  <input type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" [(ngModel)]="cardviewSelected.sign" disabled>
+                  <label class="custom-control-label" for="customControlValidation3">Gastos</label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_card">Id_Card: </label>
+                <select disabled class="form-control" id="id_card" [(ngModel)]="cardviewSelected.id_card">
+                  <option value="-1">Seleccione un id_card</option>
+                  <option *ngFor="let id_card of util.idCardView" [value]="id_card.id">{{id_card.id}}</option>
+                </select>
+              </div>
+              <div class="form col">
+                <label for="name">Name: </label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="cardviewSelected.name" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="period">Period</label>
+                <input type="text" class="form-control" id="period" [(ngModel)]="cardviewSelected.period" readonly>
+              </div>
+              <div class="form col">
+                <label for="number">Number</label>
+                <input type="number" class="form-control" id="number" [(ngModel)]="cardviewSelected.number" readonly>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary" (click)="corregirInconsistenciaRegistro()">Corregir</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 <div class="container text-center" *ngIf="cardviewService.Cardviews.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
@@ -37,7 +105,7 @@
       <th scope="col" class="Encabezado-Tabla">Number</th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody *ngIf="!cardviewService.isFilter()">
+    <tbody >
     <tr *ngFor="let cardView of cardviewService.Cardviews; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{cardView.repeated}}</td>
@@ -49,7 +117,7 @@
       <td class="Celdas-Tabla">{{cardView.show_card}}</td>
       <td class="Celdas-Tabla">{{cardView.number}}</td>
       <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+        <button type="button" class="btn btn-primary btn-Mnt-Inconsistencia" (click)="accionCorregirRegistro(cardView, i)">
           <span>
             <fa-icon [icon]="util.faTools"></fa-icon>
           </span>
@@ -65,26 +133,6 @@
     </div>
     <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
     <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
-    </tbody>
-    <tbody *ngIf="cardviewService.isFilter()">
-    <tr *ngFor="let cardView of cardviewService.cardviewsFilter; let i = index" >
-      <td scope="row" class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic">{{cardView.repeated}}</td>
-      <td class="Celdas-Tabla">{{cardView.id_backup}}</td>
-      <td class="Celdas-Tabla">{{cardView.id_card}}</td>
-      <td class="Celdas-Tabla">{{cardView.name}}</td>
-      <td class="Celdas-Tabla">{{cardView.period}}</td>
-      <td class="Celdas-Tabla">{{cardView.sign}}</td>
-      <td class="Celdas-Tabla">{{cardView.show_card}}</td>
-      <td class="Celdas-Tabla">{{cardView.number}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-          <span>
-            <fa-icon [icon]="util.faTools"></fa-icon>
-          </span>
-        </button>
-      </td>
-    </tr>
     </tbody>
   </table>
 </div>

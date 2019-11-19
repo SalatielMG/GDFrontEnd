@@ -134,4 +134,7 @@ export class CurrenciesService {
     return this.http.delete(URL + "eliminarCurrency", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
+  public corregirInconsistenciaRegistro(currency, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroCurrency', {params: {indexUnique: JSON.stringify(currency), id_usuario: id_usuario}});
+  }
 }

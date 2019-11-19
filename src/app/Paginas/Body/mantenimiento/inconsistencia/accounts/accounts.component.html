@@ -9,13 +9,13 @@
       </div>
         <div class="modal-body">
           <div class="row" style="width: 100%; display: block; margin-bottom: 20px;" >
-            <h5 class="text-center font-weight-500" >¿ Esta seguro de corregir las {{accountSeleced.repeated}} inconsistencias de dato de la siguiente cuenta ?</h5>
-            <h6 class="text-center font-weight-normal" >Id_Backup: {{accountSeleced.id_backup}}, Id_Account: {{accountSeleced.id_account}}</h6>
+            <h5 class="text-center font-weight-500" >¿ Esta seguro de corregir las {{accountSeleced.repeated}} inconsistencias de datos de la siguiente Cuenta ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{accountSeleced.id_backup}}, Id_Account: {{accountSeleced.id_account}}</h5>
           </div>
 
           <div class="flex-row-reverse">
             <div class="custom-control custom-switch">
-              <input readonly type="checkbox" class="custom-control-input" id="selected" [checked]="accountSeleced.selected">
+              <input disabled type="checkbox" class="custom-control-input" id="selected" [checked]="(accountSeleced.selected == 1)">
               <label class="custom-control-label" for="selected">Selected</label>
             </div>
           </div>
@@ -24,13 +24,13 @@
             <div class="form-row">
               <div class="form col checkRadioCenter">
                 <div class="custom-control custom-radio width-90">
-                  <input readonly type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" [(ngModel)]="accountSeleced.sign">
+                  <input disabled type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" [(ngModel)]="accountSeleced.sign">
                   <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
                 </div>
               </div>
               <div class="form col checkRadioCenter">
                 <div class="custom-control custom-radio width-90">
-                  <input readonly type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" [(ngModel)]="accountSeleced.sign">
+                  <input disabled type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" [(ngModel)]="accountSeleced.sign">
                   <label class="custom-control-label" for="customControlValidation3">Gastos</label>
                 </div>
               </div>
@@ -73,8 +73,8 @@
             <div class="form-row">
               <div class="col">
                 <label for="month">Month: </label>
-                <select readonly class="form-control" id="month" [(ngModel)]="accountSeleced.month">
-                  <option value="0">Selecciona un mes</option>
+                <select disabled class="form-control" id="month" [(ngModel)]="accountSeleced.month">
+                  <option value="0">0</option>
                   <option *ngFor="let month of util.nameMonth" [value]="month.value">{{month.name}}</option>
                 </select>
               </div>
@@ -112,10 +112,7 @@
             <div class="form-row">
               <div class="col">
                 <label for="iso_code">Iso_code: </label>
-                <select readonly class="form-control" id="iso_code" [(ngModel)]="accountSeleced.iso_code">
-                  <option value="" *ngIf="accountService.CurrenciesGralBackup.length > 0">Seleccione una moneda</option>
-                  <option *ngFor="let currency of accountService.CurrenciesGralBackup" [value]="currency.iso_code">{{currency.iso_code}} ({{currency.symbol}})</option>
-                </select>
+                <input readonly type="text" class="form-control" [step]="util.stepDecimal" id="iso_code" [(ngModel)]="accountSeleced.iso_code">
               </div>
               <div class="col">
                 <label for="value_type">Value_type: </label>
@@ -142,7 +139,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary">Corregir</button>
+          <button type="submit" class="btn btn-primary" (click)="corregirInconsistenciaRegistro()">Corregir</button>
         </div>
     </div>
   </div>

@@ -1,11 +1,51 @@
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
-  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
-</ngx-spinner>
+<div class="modal fade" id="modalCurrency" tabindex="-1" role="dialog" aria-labelledby="modalCurrencyTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalCurrencyTitle">Corregir Inconsistencia Currency</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
+            <h5 class="text-center font-weight-500">¿ Esta seguro de corregir {{currencySelected.repeated}} inconsistencias de datos de la siguiente Moneda ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{currencySelected.id_backup}}</h5>
+          </div>
+
+          <div class="flex-row-reverse">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="selected" [checked]="currencySelected.selected" disabled>
+              <label class="custom-control-label" for="selected">Selected</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="iso_code">Iso_Code: </label>
+                <input type="text" class="form-control" id="iso_code" [(ngModel)]="currencySelected.iso_code" readonly>
+              </div>
+              <div class="form col">
+                <label for="symbol">Symbol: </label>
+                <input type="text" class="form-control" id="symbol" [(ngModel)]="currencySelected.symbol" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="form">
+            <label for="icon_name">Icon_Name: </label>
+            <input type="text" class="form-control" id="icon_name" [(ngModel)]="currencySelected.icon_name" readonly>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary" (click)="corregirInconsistenciaRegistro()">Corregir</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 <div class="container text-center" *ngIf="currenciesService.Currencies.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
@@ -32,7 +72,7 @@
       <th scope="col" class="Encabezado-Tabla">Selected</th>
       <th scope="col" class="Encabezado-Tabla">Operación</th>
     </thead>
-    <tbody *ngIf="!currenciesService.isFilter()">
+    <tbody >
     <tr *ngFor="let currency of currenciesService.Currencies; let i = index" >
       <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
@@ -42,7 +82,7 @@
       <td class="Celdas-Tabla">{{currency.icon_name}}</td>
       <td class="Celdas-Tabla">{{currency.selected}}</td>
       <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+        <button type="button" class="btn btn-primary btn-Mnt-Inconsistencia" (click)="accionCorregirRegistro(currency, i)">
           <span>
             <fa-icon [icon]="util.faTools"></fa-icon>
           </span>
@@ -58,24 +98,6 @@
     </div>
     <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
     <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
-    </tbody>
-    <tbody *ngIf="currenciesService.isFilter()">
-    <tr *ngFor="let currency of currenciesService.currenciesFilter; let i = index">
-      <td class="Celdas-Tabla font-weight-bold">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic">{{currency.repeated}}</td>
-      <td class="Celdas-Tabla">{{currency.id_backup}}</td>
-      <td class="Celdas-Tabla">{{currency.iso_code}}</td>
-      <td class="Celdas-Tabla">{{currency.symbol}}</td>
-      <td class="Celdas-Tabla">{{currency.icon_name}}</td>
-      <td class="Celdas-Tabla">{{currency.selected}}</td>
-      <td class="Celdas-Tabla">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-          <span>
-            <fa-icon [icon]="util.faTools"></fa-icon>
-          </span>
-        </button>
-      </td>
-    </tr>
     </tbody>
   </table>
 </div>

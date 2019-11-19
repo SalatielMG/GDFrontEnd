@@ -158,4 +158,8 @@ export class AccountsService {
     return this.http.get(URL + 'buscarInconsistenciaDatosAccounts', {params: {dataUser: JSON.stringify(data), pagina: this.pagina.toString(), backups: backups}});
   }
 
+  public corregirInconsistenciaRegistro(account, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroAccount', {params: {indexUnique: JSON.stringify(account), id_usuario: id_usuario}});
+  }
+
 }

@@ -1,11 +1,73 @@
-<ngx-spinner
-  bdColor="rgba(51,51,51,0.8)"
-  size="medium"
-  color="#fff"
-  type="ball-scale-multiple"
->
-  <p style="font-size: 20px; color: white">{{util.msjLoading}}</p>
-</ngx-spinner>
+<div class="modal fade" id="modalBudget" tabindex="-1" role="dialog" aria-labelledby="modalBudgetTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title centerTitleModal" id="modalBudgetTitle">Corregir inconsistencia Budget</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
+            <h5 class="text-center font-weight-500">¿ Esta seguro de corregir las {{(budgetSelected.repeated)}} inconsistencias  de datos del siguiente presupesto ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{budgetSelected.id_backup}}</h5>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="id_account">Account: </label>
+                <input type="text" class="form-control" id="id_account" [(ngModel)]="budgetSelected.nameAccount" readonly>
+              </div>
+              <div class="form col">
+                <label for="id_category">Category: </label>
+                <input type="text" class="form-control" id="id_category" [(ngModel)]="budgetSelected.nameCategory" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="amount">Amount</label>
+                <input type="number" class="form-control" id="amount" [(ngModel)]="budgetSelected.amount" readonly>
+              </div>
+              <div class="form col">
+                <label for="budget">Budget</label>
+                <input type="number" class="form-control" id="budget" [(ngModel)]="budgetSelected.budget" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col">
+                <label for="initial_date">Initial_date</label>
+                <input type="text" readonly class="form-control" id="initial_date" [value]="(budgetSelected.initial_date == '0000-00-00') ? budgetSelected.initial_date : budgetSelected.initial_date | date: 'dd/MMMM/yyyy'" >
+              </div>
+              <div class="col">
+                <label for="final_date">Final_date</label>
+                <input type="text" readonly class="form-control" id="final_date" [value]="(budgetSelected.final_date == '0000-00-00') ? budgetSelected.final_date : budgetSelected.final_date | date: 'dd/MMMM/yyyy'" >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="form col">
+                <label for="period">Period</label>
+                <input type="number" class="form-control" id="period" [(ngModel)]="budgetSelected.period" readonly>
+              </div>
+              <div class="form col">
+                <label for="number">Number</label>
+                <input type="number" class="form-control" id="number" [(ngModel)]="budgetSelected.number" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary" (click)="corregirInconsistenciaRegistro()">Corregir</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 <div class="container text-center" *ngIf="budgetService.Budgets.length == 0" style="margin-top: 200px;">
   <h2 class="font-weight-lighter">{{util.msj}}</h2>
@@ -54,7 +116,7 @@
       <th scope="col" class="Encabezado-Tabla ">Operación</th>
     </tr>
     </thead>
-    <tbody *ngIf="!budgetService.isFilter()">
+    <tbody>
     <tr *ngFor="let budget of budgetService.Budgets; let i = index" >
       <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
       <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
@@ -70,7 +132,7 @@
       <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
       <td class="Celdas-Tabla ">{{budget.number}}</td>
       <td class="Celdas-Tabla ">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
+        <button type="button" class="btn btn-primary btn-Mnt-Inconsistencia" (click)="accionCorregirRegistro(budget, i)">
           <span>
             <fa-icon [icon]="util.faTools"></fa-icon>
           </span>
@@ -86,30 +148,6 @@
     </div>
     <loading-spinner *ngIf="util.loadingMain"></loading-spinner>
     <query-complete *ngIf="util.QueryComplete.isComplete" [msj]="util.QueryComplete.msj"></query-complete>
-    </tbody>
-    <tbody *ngIf="budgetService.isFilter()">
-    <tr *ngFor="let budget of budgetService.budgetsFilter; let i = index" >
-      <td scope="row" class="Celdas-Tabla font-weight-bold ">{{(i+1)}}</td>
-      <td class="Celdas-Tabla font-italic ">{{budget.repeated}}</td>
-      <td class="Celdas-Tabla ">{{budget.id_backup}}</td>
-      <td class="Celdas-Tabla ">{{budget.id_account}}</td>
-      <td class="Celdas-Tabla ">{{budget.nameAccount}}</td>
-      <td class="Celdas-Tabla ">{{budget.id_category}}</td>
-      <td class="Celdas-Tabla ">{{budget.nameCategory}}</td>
-      <td class="Celdas-Tabla ">{{budget.period}}</td>
-      <td class="Celdas-Tabla ">{{budget.amount | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla ">{{budget.budget | currency: budget.symbol :'symbol': util.symbolDecimalNumber6Digits}}</td>
-      <td class="Celdas-Tabla ">{{(budget.initial_date == '0000-00-00') ? budget.initial_date : budget.initial_date  | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla ">{{(budget.final_date == '0000-00-00') ? budget.final_date : budget.final_date | date: 'dd/MMMM/yyyy'}}</td>
-      <td class="Celdas-Tabla ">{{budget.number}}</td>
-      <td class="Celdas-Tabla ">
-        <button type="button" [disabled]="true" class="btn btn-primary btn-Mnt-Inconsistencia">
-          <span>
-            <fa-icon [icon]="util.faTools"></fa-icon>
-          </span>
-        </button>
-      </td>
-    </tr>
     </tbody>
   </table>
 </div>

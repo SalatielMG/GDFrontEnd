@@ -174,5 +174,8 @@ export class CategoriesService {
     return this.http.delete(URL + "eliminarCategoria", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
 
   }
+  public corregirInconsistenciaRegistro(category, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroCategory', {params: {indexUnique: JSON.stringify(category), id_usuario: id_usuario}});
+  }
 
 }

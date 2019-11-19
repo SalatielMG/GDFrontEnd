@@ -139,4 +139,7 @@ export class CardviewsService {
   public eliminarCardview(indexUnique, id_usuario): Observable<any> {
     return this.http.delete(URL + "eliminarCardview", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
+  public corregirInconsistenciaRegistro(cardview, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroCardview', {params: {indexUnique: JSON.stringify(cardview), id_usuario: id_usuario}});
+  }
 }

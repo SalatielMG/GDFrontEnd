@@ -103,5 +103,8 @@ export class ExtrasService {
   public eliminarExtra (indexUnique, id_usuario): Observable<any> {
     return this.http.delete(URL + "eliminarExtra", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
+  public corregirInconsistenciaRegistro(extra, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroExtra', {params: {indexUnique: JSON.stringify(extra), id_usuario: id_usuario}});
+  }
 
 }

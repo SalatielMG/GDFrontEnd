@@ -172,4 +172,7 @@ export class BudgetsService {
     return this.http.delete(URL + 'eliminarBudget', {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
 
+  public corregirInconsistenciaRegistro(budget, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroBudget', {params: {indexUnique: JSON.stringify(budget), id_usuario: id_usuario}});
+  }
 }
