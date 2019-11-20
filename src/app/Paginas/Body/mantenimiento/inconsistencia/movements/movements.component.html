@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalMovement" tabindex="-1" role="dialog" aria-labelledby="modalMovementTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static" *ngIf="movement != null">
+<div class="modal fade" id="modalMovement" tabindex="-1" role="dialog" aria-labelledby="modalMovementTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,24 +9,24 @@
       </div>
         <div class="modal-body">
           <div class="row" style="width: 100%; display: block; margin-bottom: 20px;">
-            <h5 class="text-center font-weight-500">¿ Esta seguro de eliminar el Movimiento {{(movement.value.sign == "-") ? "Gasto" : "Ingreso"}} del Respaldo Id_backup: {{movementsService.id_backup}} ?</h5>
+            <h5 class="text-center font-weight-500">¿ Esta seguro de corregir las {{movementSelected.repeated}} inconsistencias de datos del siguiente Movimiento ?</h5>
+            <h5 class="text-center font-weight-normal" >Id_Backup: {{movementSelected.id_backup}}</h5>
           </div>
 
           <fieldset class="form-group" >
             <div class="form-row">
               <div class="form col checkRadioCenter">
                 <div class="custom-control custom-radio width-90">
-                  <input type="radio" class="custom-control-input" id="customControlValidation2" name="sign" (change)="changeEvent($event)" value="+" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <input type="radio" class="custom-control-input" id="customControlValidation2" name="sign" value="+" [(ngModel)]="movementSelected.sign" disabled>
                   <label class="custom-control-label" for="customControlValidation2">Ingresos</label>
                 </div>
               </div>
               <div class="form col checkRadioCenter">
                 <div class="custom-control custom-radio width-90">
-                  <input type="radio" class="custom-control-input" id="customControlValidation3" name="sign"  (change)="changeEvent($event)" value="-" formControlName="sign" [ngClass]="(getError('sign') == '') ? 'valid-control' : 'invalid-control'">
+                  <input type="radio" class="custom-control-input" id="customControlValidation3" name="sign" value="-" [(ngModel)]="movementSelected.sign" disabled>
                   <label class="custom-control-label" for="customControlValidation3">Gastos</label>
                 </div>
               </div>
-              <div class="invalid-feedback">{{ getError('sign')}}</div>
             </div>
           </fieldset>
 
@@ -34,61 +34,33 @@
             <div class="form-row">
               <div class="form col">
                 <label for="id_account">Account: </label>
-                <select class="form-control" id="id_account" formControlName="id_account" [ngClass]="(getError('id_account') == '') ? 'valid-control' : 'invalid-control'" (change)="accountSelectedModal($event)">
-                  <option *ngIf="movementsService.AccountsBackup.length > 0" value="">Seleccione una cuenta</option>
-                  <option *ngFor="let account of movementsService.AccountsBackup" [value]="account.id_account">{{account.name}}</option>
-                </select>
+                <input type="text" class="form-control" id="id_account" [(ngModel)]="movementSelected.nameAccount" readonly>
               </div>
               <div class="form col">
                 <label for="id_category">Category: </label>
-                <select class="form-control" id="id_category" formControlName="id_category" [ngClass]="(getError('id_category') == '') ? 'valid-control' : 'invalid-control'">
-
-                  <ng-container *ngIf="movement.value.id_account != ''"><!-- Listar todas las categorias de la cuenta seleccionada-->
-                    <option *ngIf="movementsService.AccountsBackup[indexMovementSelectModal - 1].categoriesAccount.length > 0" value="">Seleccione una categoria</option>
-                    <ng-container *ngFor="let category of movementsService.AccountsBackup[indexMovementSelectModal - 1].categoriesAccount">
-                      <option *ngIf="category.sign == movement.value.sign" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
-                    </ng-container>
-                  </ng-container>
-
-                  <ng-container *ngIf="movement.value.id_account == ''"><!-- Listar todas las categorias de todas la cuentas-->
-                    <option value="">Seleccione una categoria</option>
-                    <ng-container *ngFor="let account of movementsService.AccountsBackup">
-                      <ng-container *ngFor="let category of account.categoriesAccount">
-                        <option *ngIf="category.sign == movement.value.sign" [value]="category.id_category">[{{category.sign}}] {{category.name}}</option>
-                      </ng-container>
-                    </ng-container>
-                  </ng-container>
-                  <option value="10000">TRANSFERENCIAS</option>
-
-                </select>
+                <input type="text" class="form-control" id="id_category" [(ngModel)]="movementSelected.nameCategory" readonly>
               </div>
               <div class="form col">
                 <label for="amount">Amount</label>
-                <input type="number" class="form-control" id="amount" formControlName="amount" [step]="util.stepDecimal" [ngClass]="(getError('amount') == '') ? 'valid-control' : 'invalid-control'">
-                <div class="invalid-feedback">{{ getError('amount')}}</div>
+                <input type="number" class="form-control" id="amount" [(ngModel)]="movementSelected.amount" [step]="util.stepDecimal" readonly>
               </div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="detail">Detail: </label>
-            <textarea  type="text" class="form-control" id="detail" formControlName="detail" [ngClass]="(getError('detail') == '') ? 'valid-control' : 'invalid-control'"></textarea>
-            <div class="invalid-feedback">{{ getError('detail')}}</div>
+            <textarea  type="text" class="form-control" id="detail" [(ngModel)]="movementSelected.detail" readonly></textarea>
           </div>
 
           <div class="form-group">
             <div class="form-row">
               <div class="col">
                 <label for="date_record">Date_Record</label>
-                <input [owlDateTimeTrigger]="date" (dateTimeChange)="changeDateTime($event, true)" [owlDateTime]="date" class="form-control" id="date_record" formControlName="date_record" placeholder="date_record" [ngClass]="(getError('date_record') == '') ? 'valid-control' : 'invalid-control'">
-                <owl-date-time [pickerType]="'calendar'" #date></owl-date-time>
-                <div class="invalid-feedback">{{ getError('date_record')}}</div>
+                <input type="text" readonly class="form-control" id="date_record" [value]="(movementSelected.date_record == '0000-00-00') ? movementSelected.date_record : movementSelected.date_record | date: 'dd/MMMM/yyyy'" >
               </div>
               <div class="col">
                 <label for="time_record">Time_Record</label>
-                <input [owlDateTimeTrigger]="timer" (dateTimeChange)="changeDateTime($event, false)" [owlDateTime]="timer" class="form-control" id="time_record" formControlName="time_record" placeholder="time_record" [ngClass]="(getError('time_record') == '') ? 'valid-control' : 'invalid-control'">
-                <owl-date-time [pickerType]="'timer'" #timer ></owl-date-time>
-                <div class="invalid-feedback">{{ getError('time_record')}}</div>
+                <input type="text" readonly class="form-control" id="time_record" [value]="movementSelected.time_record" >
               </div>
             </div>
           </div>
@@ -99,24 +71,21 @@
                 <div class="row">
                   <div class="col">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="confirmed" formControlName="confirmed" [ngClass]="(getError('confirmed') == '') ? 'valid-control' : 'invalid-control'" >
+                      <input type="checkbox" class="custom-control-input" id="confirmed" [checked]="(movementSelected.confirmed == 1)" disabled>
                       <label class="custom-control-label" for="confirmed">Confirmed</label>
-                      <div class="invalid-feedback">{{ getError('confirmed')}}</div>
                     </div>
                   </div>
                   <div class="col">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="transfer" formControlName="transfer" [ngClass]="(getError('transfer') == '') ? 'valid-control' : 'invalid-control'">
+                      <input type="checkbox" class="custom-control-input" id="transfer" [checked]="(movementSelected.transfer == 1)" disabled>
                       <label class="custom-control-label" for="transfer">Transfer</label>
-                      <div class="invalid-feedback">{{ getError('transfer')}}</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col">
                 <label for="date_idx">Date_Idx: </label>
-                <input [readOnly]="true" type="text" class="form-control" id="date_idx" formControlName="date_idx" [ngClass]="(getError('date_idx') == '') ? 'valid-control' : 'invalid-control'">
-                <div class="invalid-feedback">{{ getError('date_idx')}}</div>
+                <input type="text" class="form-control" id="date_idx" [(ngModel)]="movementSelected.date_idx" readonly>
               </div>
             </div>
           </div>
@@ -127,13 +96,11 @@
                 <div class="row">
                   <div class="col">
                     <label for="week">Week</label>
-                    <input [readOnly]="true" type="number" class="form-control" id="week" formControlName="week" [ngClass]="(getError('week') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('week')}}</div>
+                    <input type="number" class="form-control" id="week" [(ngModel)]="movementSelected.week" readonly>
                   </div>
                   <div class="col">
                     <label for="fortnight">Fortnight</label>
-                    <input [readOnly]="true" type="number" class="form-control" id="fortnight" formControlName="fortnight" [ngClass]="(getError('fortnight') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('fortnight')}}</div>
+                    <input type="number" class="form-control" id="fortnight" [(ngModel)]="movementSelected.fortnight" readonly>
                   </div>
                 </div>
               </div>
@@ -141,21 +108,18 @@
                 <div class="row">
                   <div class="col">
                     <label for="day">Day</label>
-                    <input [readOnly]="true" type="number" class="form-control" id="day" formControlName="day" [ngClass]="(getError('day') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('day')}}</div>
+                    <input type="number" class="form-control" id="day" [(ngModel)]="movementSelected.day" readonly>
                   </div>
                   <div class="col">
                     <label for="month">Month</label>
-                    <select disabled class="form-control disabled" id="month" formControlName="month" [ngClass]="(getError('month') == '') ? 'valid-control' : 'invalid-control'">
+                    <select disabled class="form-control" id="month" [(ngModel)]="movementSelected.month">
                       <option value="">Seleccione un mes</option>
-                      <option *ngFor="let month of util.nameMonth" [value]="(month.value < 10) ? '0' + month.value : month.value">{{month.nameSorth}}</option>
+                      <option *ngFor="let month of util.nameMonth" [value]="month.value">{{month.nameSorth}}</option>
                     </select>
-                    <div class="invalid-feedback">{{ getError('month')}}</div>
                   </div>
                   <div class="col">
                     <label for="year">Year</label>
-                    <input [readOnly]="true" type="number" class="form-control" id="year" formControlName="year" [ngClass]="(getError('year') == '') ? 'valid-control' : 'invalid-control'">
-                    <div class="invalid-feedback">{{ getError('year')}}</div>
+                    <input type="number" class="form-control" id="year" [(ngModel)]="movementSelected.year" readonly>
                   </div>
                 </div>
               </div>
@@ -166,21 +130,18 @@
             <div class="form row">
               <div class="form col">
                 <label for="operation_code">Operation_Code</label>
-                <input type="text" class="form-control" id="operation_code" formControlName="operation_code" [ngClass]="(getError('operation_code') == '') ? 'valid-control' : 'invalid-control'">
-                <div class="invalid-feedback">{{ getError('operation_code')}}</div>
+                <input type="text" class="form-control" id="operation_code" [(ngModel)]="movementSelected.operation_code" readonly>
               </div>
               <div class="col">
                 <label for="iso_code">Iso_Code</label>
-                <input type="text" class="form-control" id="iso_code" formControlName="iso_code" [readOnly]="true" [ngClass]="(getError('iso_code') == '') ? 'valid-control' : 'invalid-control'">
-                <div class="invalid-feedback">{{ getError('iso_code')}}</div>
+                <input type="text" class="form-control" id="iso_code" [(ngModel)]="movementSelected.iso_code" readonly>
               </div>
             </div>
           </div>
 
           <div class="form-group">
             <label for="picture">Picture</label>
-            <input type="text" class="form-control" id="picture" formControlName="picture" [ngClass]="(getError('picture') == '') ? 'valid-control' : 'invalid-control'">
-            <div class="invalid-feedback">{{ getError('picture')}}</div>
+            <input type="text" class="form-control" id="picture" [(ngModel)]="movementSelected.picture" readonly>
           </div>
 
         </div>

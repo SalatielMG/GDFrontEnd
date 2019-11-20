@@ -119,5 +119,7 @@ export class PreferencesService {
   public eliminarPreference (indexUnique, id_usuario): Observable<any> {
     return this.http.delete(URL + "eliminarPreference", {params: {id_usuario: id_usuario, indexUnique: JSON.stringify(indexUnique)}});
   }
-
+  public corregirInconsistenciaRegistro(preference, id_usuario): Observable<any> {
+    return this.http.get(URL + 'corregirInconsistenciaRegistroPreference', {params: {indexUnique: JSON.stringify(preference), id_usuario: id_usuario}})
+  }
 }
