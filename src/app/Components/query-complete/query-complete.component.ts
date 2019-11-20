@@ -10,7 +10,7 @@ export class QueryCompleteComponent implements OnInit {
 
   @Input() msj;
   @Input() isFiltro: boolean = false;
-  constructor(private util: Utilerias) { }
+  constructor(public util: Utilerias) { }
 
   ngOnInit() {
   }

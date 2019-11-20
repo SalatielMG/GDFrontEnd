@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class PreferencesComponent {
 
-  public preferenceSelected: Preferences = new Preferences();
+  public preferenceSelected: any = new Preferences();
   public backups;
 
   constructor(public route: ActivatedRoute,

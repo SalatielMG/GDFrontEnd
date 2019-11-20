@@ -11,7 +11,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class AutomaticsComponent {
 
-  public automaticSelected: Automatics = new Automatics();
+  public automaticSelected: any = new Automatics();
   public backups;
 
   constructor(public route: ActivatedRoute,

@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class CardviewsComponent {
 
-  public cardviewSelected: Cardviews = new Cardviews();
+  public cardviewSelected: any = new Cardviews();
   public backups;
 
   constructor(public route: ActivatedRoute,

@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class MovementsComponent {
 
-  public movementSelected: Movements = new Movements();
+  public movementSelected: any = new Movements();
   public backups;
 
   constructor(public route: ActivatedRoute,

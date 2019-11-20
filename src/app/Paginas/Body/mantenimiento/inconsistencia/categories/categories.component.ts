@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class CategoriesComponent {
 
-  public categorySelected: Categories = new Categories();
+  public categorySelected: any = new Categories();
   public backups;
 
   constructor(public route: ActivatedRoute,

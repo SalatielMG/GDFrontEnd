@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class CurrenciesComponent {
 
-  public currencySelected: Currencies = new Currencies();
+  public currencySelected: any = new Currencies();
   public backups;
 
   constructor(public route: ActivatedRoute,

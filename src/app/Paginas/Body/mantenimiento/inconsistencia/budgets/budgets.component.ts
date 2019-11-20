@@ -12,7 +12,7 @@ import {UsuarioService} from '../../../../../Servicios/usuario/usuario.service';
 })
 export class BudgetsComponent {
 
-  public budgetSelected: Budgets = new Budgets();
+  public budgetSelected: any = new Budgets();
   public backups;
 
   constructor(public route: ActivatedRoute,
